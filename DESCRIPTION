@@ -1,0 +1,42 @@
+Package: SMART
+Version: 1.0.0
+Date: 2023-08-03
+Title: Shiny Modular Academic Reproducible Template
+Description: The 'shiny' application SMART is a modular platform for 
+    creating reproducible applications to academic standards. 'SMART' is 
+    forked from 'wallace' and provides a template for producing applications 
+    that are interactive, reproducible, adaptable and built to high standards.
+Authors@R: 
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
+Depends:
+    R (>= 3.5.0),
+    shiny (>= 1.6.0),
+    leaflet (>= 2.0.2),
+    terra,
+    R6,
+    gargoyle,
+    leaflet.extras (>= 1.0.0)
+Imports:
+    dplyr (>= 1.0.2),
+    DT (>= 0.5),
+    geosphere,
+    glue,
+    knitcitations,
+    leafem,
+    magrittr,
+    raster,
+    RColorBrewer,
+    rlang,
+    rmarkdown,
+    shinyalert,
+    shinyjs,
+    shinytest2,
+    shinyWidgets (>= 0.6.0),
+    tools,
+    zip
+Suggests: 
+    testthat
+License: GPL-3
+URL: 
+Encoding: UTF-8
+RoxygenNote: 7.2.3
