@@ -1,4 +1,4 @@
-#library(shiny_disag)
+#library(shinydisag)
 
 function(input, output, session) {
 
@@ -372,7 +372,7 @@ function(input, output, session) {
 
   output$save_session <- downloadHandler(
     filename = function() {
-      paste0("SMART-session-", Sys.Date(), ".rds")
+      paste0("shiny_disag-session-", Sys.Date(), ".rds")
     },
     content = function(file) {
       save_session(file)
@@ -389,7 +389,7 @@ function(input, output, session) {
     temp <- load_session(input$load_session$datapath)
     temp_names <- names(temp)
     #exclude the non-public and function objects
-    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "logger")]
+    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger")]
     for (name in temp_names){
       common[[name]] <- temp[[name]]
     }
