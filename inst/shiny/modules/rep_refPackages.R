@@ -10,4 +10,5 @@ rep_refPackages_module_ui <- function(id) {
   )
 }
 
-rep_refPackages_module_server <- function(input, output, session, common) {}
+rep_refPackages_module_server <- function(id, common) {
+  moduleServer(id, function(input, output, session) {} )}
