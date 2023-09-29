@@ -1,4 +1,4 @@
-library(SMART)
+library(shiny-disag)
 
 function(input, output, session) {
 
@@ -8,7 +8,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SMART***"
+    intro <- "***WELCOME TO SHINY-DISAG***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -63,10 +63,11 @@ function(input, output, session) {
   })
 
   # Help Module
-  observeEvent(input$select_queryHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$select_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$plot_histHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$plot_scatterHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$shape_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$fit_fitHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$pred_predHelp, updateTabsetPanel(session, "main", "Module Guidance"))
 
   ######################## #
   ### MAPPING LOGIC ####
@@ -122,97 +123,31 @@ function(input, output, session) {
     #shinyjs::toggleState("dl_table", !is.null(common$ras))
   })
 
-  ############################################# #
-  ### TABLE TAB ####
-  ############################################# #
-
-  sample_table <- reactive({
-  req(common$ras)
-  gargoyle::watch("select_user")
-  gargoyle::watch("select_query")
-  set.seed(12345)
-  sample_table <- terra::spatSample(common$ras, 100, method = "random", xy = TRUE, as.df = TRUE)
-  colnames(sample_table) <- c("Longitude", "Latitude", "Value")
-  sample_table %>%
-    dplyr::mutate(Longitude = round(as.numeric(Longitude), digits = 4),
-                  Latitude = round(as.numeric(Latitude), digits = 4))
-  sample_table
-  })
-
-  # TABLE
-  output$table <- DT::renderDataTable({
-    # check that a raster exists
-    req(common$ras)
-    sample_table()
-  }, rownames = FALSE, options = list(scrollX = TRUE))
-
-  # DOWNLOAD
-  output$dl_table <- downloadHandler(
-    filename = function() {
-      "SMART_sample_table.csv"
-    },
-    content = function(file) {
-      write.csv(sample_table(), file, row.names = FALSE)
-    }
-  )
-
-  ############################################# #
-  ### CODE TAB ####
-  ############################################# #
-
-    output$code_module <- renderPrint({
-    req(module())
-
-    if (input$code_choice == "Module"){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.R"),package = "SMART"))
-    }
-    if (input$code_choice == "Function"){
-      #separate call required in case there are multiple functions
-      ga_call <- getAnywhere(module())
-      code <- capture.output(print(getAnywhere(module())[which(ga_call$where == "package:SMART")]))
-      code <- code[1:(length(code)-2)]
-    }
-    if (input$code_choice == "Markdown"){
-      code <- readLines(system.file(glue("shiny/modules/{module()}.Rmd"), package = "SMART"))
-    }
-    cat(code,sep="\n")
-  })
-
   ########################################### #
   ### PLOT OBSERVERS ####
   ########################################### #
 
   #switch to the results tab so that the plot is shown when run
-  observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
-  observeEvent(gargoyle::watch("plot_scatter"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
+  #observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
 
   ########################################### #
   ### DOWNLOAD PLOTS ####
   ########################################### #
 
-  output$dl_hist <- downloadHandler(
-    filename = function() {
-      "SMART_histogram.png"
-    },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
-      pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-      bins <- common$meta$hist$bins
-      cols <- pal_ramp(bins)
-      plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
-      dev.off()
-  })
+  # output$dl_hist <- downloadHandler(
+  #   filename = function() {
+  #     "SMART_histogram.png"
+  #   },
+  #   content = function(file) {
+  #     png(file, width = 1000, height = 500)
+  #     pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
+  #     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
+  #     bins <- common$meta$hist$bins
+  #     cols <- pal_ramp(bins)
+  #     plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
+  #     dev.off()
+  # })
 
-  output$dl_scatter <- downloadHandler(
-    filename = function() {
-      "SMART_scatterplot.png"
-      },
-    content = function(file) {
-      png(file, width = 1000, height = 500)
-      plot(common$scat[[1]], common$scat[[2]], xlab = common$meta$scat$axis_long, ylab = common$meta$scat$name)
-      dev.off()
-    })
 
   ########################################### #
   ### RMARKDOWN FUNCTIONALITY ####
@@ -359,13 +294,24 @@ function(input, output, session) {
   common_class <- R6::R6Class(
     classname = "common",
     public = list(
-      ras = NULL,
-      hist = NULL,
-      scat = NULL,
-      meta = NULL,
+      shape = NULL,
+      popn = NULL,
+      covs = NULL,
+      prep = NULL,
+      fit = NULL,
+      pred = NULL,
+      map_layers = NULL,
       poly = NULL,
       logger = NULL,
-      state = NULL
+      meta = NULL,
+      add_map_layer = function(new_names) {
+        for (new_name in new_names){
+          if (!(new_name %in% self$map_layers)){
+            self$map_layers <- c(self$map_layers,new_name)
+            invisible(self)
+          }
+        }
+      }
     )
   )
 
