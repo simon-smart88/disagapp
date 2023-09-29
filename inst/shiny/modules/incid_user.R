@@ -1,4 +1,4 @@
-shape_user_module_ui <- function(id) {
+incid_user_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
@@ -6,7 +6,7 @@ shape_user_module_ui <- function(id) {
   )
 }
 
-shape_user_module_server <- function(id, common) {
+incid_user_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
@@ -37,18 +37,18 @@ shape_user_module_server <- function(id, common) {
 })
 }
 
-shape_user_module_result <- function(id) {
+incid_user_module_result <- function(id) {
   ns <- NS(id)
 
   # Result UI
   verbatimTextOutput(ns("result"))
 }
 
-shape_user_module_map <- function(map, common) {
+incid_user_module_map <- function(map, common) {
   # Map logic
 }
 
-shape_user_module_rmd <- function(common) {
+incid_user_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     shape_user_knit = !is.null(common$some_object),

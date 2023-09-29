@@ -1,10 +1,10 @@
 resourcePath <- system.file("shiny", "www", package = "SMART")
-shiny::addResourcePath("smartres", resourcePath)
+shiny::addResourcePath("shiny-disag-res", resourcePath)
 
 tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
-    script = file.path("smartres", "js", "shinyjs-funcs.js"),
+    script = file.path("shiny-disag-res", "js", "shinyjs-funcs.js"),
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
@@ -17,10 +17,13 @@ tagList(
     ),
     title = img(src = "logo.png", height = '50', width = '50',
                 style = "margin-top: -15px"),
-    windowTitle = "#SMART",
+    windowTitle = "Shiny disag",
     tabPanel("Intro", value = 'intro'),
-    tabPanel("Select data", value = 'select'),
-    tabPanel("Plot data", value = 'plot'),
+    tabPanel("Incidence", value = 'incid'),
+    tabPanel("Covariates", value = 'cov'),
+    tabPanel("Prepare", value = 'prep'),
+    tabPanel("Fit", value = 'fit'),
+    tabPanel("Predict", value = 'pred'),
     tabPanel("Reproduce", value = 'rep'),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
@@ -37,31 +40,67 @@ tagList(
             "input.tabs == 'intro'",
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
-          # SELECT DATA ####
+          # INCIDENCE DATA ####
           conditionalPanel(
-            "input.tabs == 'select'",
-            div("Component: Select Data", class = "componentName"),
-            help_comp_ui("selectHelp"),
+            "input.tabs == 'incid'",
+            div("Component: Incidence Data", class = "componentName"),
+            help_comp_ui("incidHelp"),
             radioButtons(
               "selectSel", "Modules Available:",
-              choices = insert_modules_options("select"),
+              choices = insert_modules_options("incid"),
               selected = character(0)
             ),
             tags$hr(),
-            insert_modules_ui("select")
+            insert_modules_ui("incid")
           ),
           # PLOT DATA ####
           conditionalPanel(
-            "input.tabs == 'plot'",
-            div("Component: Plot Data", class = "componentName"),
-            help_comp_ui("plotHelp"),
+            "input.tabs == 'cov'",
+            div("Component: Covariate Data", class = "componentName"),
+            help_comp_ui("covHelp"),
             radioButtons(
-              "plotSel", "Modules Available:",
-              choices = insert_modules_options("plot"),
+              "covSel", "Modules Available:",
+              choices = insert_modules_options("cov"),
               selected = character(0)
             ),
             tags$hr(),
-            insert_modules_ui("plot")
+            insert_modules_ui("cov")
+          ),
+          # PREPARE DATA ####
+          conditionalPanel(
+            "input.tabs == 'prep'",
+            div("Component: Prepare Data", class = "componentName"),
+            help_comp_ui("prepHelp"),
+            radioButtons(
+              "prepSel", "Modules Available:",
+              choices = insert_modules_options("prep")
+            ),
+            tags$hr(),
+            insert_modules_ui("prep")
+          ),
+          # FIT MODEL ####
+          conditionalPanel(
+            "input.tabs == 'fit'",
+            div("Component: Fit Model", class = "componentName"),
+            help_comp_ui("fitHelp"),
+            radioButtons(
+              "fitSel", "Modules Available:",
+              choices = insert_modules_options("fit")
+            ),
+            tags$hr(),
+            insert_modules_ui("fit")
+          ),
+          # MAKE PREDICTION ####
+          conditionalPanel(
+            "input.tabs == 'pred'",
+            div("Component: Make Prediction", class = "componentName"),
+            help_comp_ui("predHelp"),
+            radioButtons(
+              "predSel", "Modules Available:",
+              choices = insert_modules_options("pred")
+            ),
+            tags$hr(),
+            insert_modules_ui("pred")
           ),
           # REPRODUCIBILITY
           conditionalPanel(
@@ -117,11 +156,11 @@ tagList(
                 )
               )
             ),
-            tabPanel(
-              'Table', br(),
-              DT::dataTableOutput('table'),
-              downloadButton('dl_table', "CSV file")
-            ),
+            # tabPanel(
+            #   'Table', br(),
+            #   DT::dataTableOutput('table'),
+            #   downloadButton('dl_table', "CSV file")
+            # ),
             tabPanel(
               'Results',
               lapply(COMPONENTS, function(component) {
@@ -138,11 +177,6 @@ tagList(
             tabPanel(
               'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
               uiOutput('gtext_module')
-            ),
-            tabPanel(
-              'Code',
-              radioButtons("code_choice","Choose file", choices=c('Module','Function','Markdown'),selected='Module'),
-              verbatimTextOutput('code_module')
             ),
             tabPanel(
               'Save', icon = icon("floppy-disk", class = "save_icon"),
@@ -168,22 +202,14 @@ tagList(
                 p(paste0("Download data/results from analyses from currently selected module")),
                 ## save module data BEGIN ##
                 # save histogram #
-                conditionalPanel(
-                  "input.plotSel == 'plot_hist'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download histogram")),
-                    column(2, downloadButton('dl_hist', "PNG file"))
-                  )
-                ),
-                conditionalPanel(
-                  "input.plotSel == 'plot_scatter'",
-                  br(),
-                  fluidRow(
-                    column(3, h5("Download scatterplot")),
-                    column(2, downloadButton('dl_scatter', "PNG file"))
-                  )
-                )
+                # conditionalPanel(
+                #   "input.plotSel == 'plot_hist'",
+                #   br(),
+                #   fluidRow(
+                #     column(3, h5("Download histogram")),
+                #     column(2, downloadButton('dl_hist', "PNG file"))
+                #   )
+                # )
 
               )
             )

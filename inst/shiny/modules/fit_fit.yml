@@ -1,5 +1,5 @@
-component: ""
-short_name: ""
-long_name: ""
-authors: ""
-package: []
+component: "fit"
+short_name: "fit_fit"
+long_name: "Fit model"
+authors: "Simon E H Smart"
+package: [disaggregation]

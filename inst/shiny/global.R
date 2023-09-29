@@ -1,4 +1,5 @@
 library(glue)
+library(SMART)
 
 MB <- 1024^2
 
@@ -11,17 +12,18 @@ source("helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("select", "plot", "rep")
+COMPONENTS <- c("incid", "cov", "prep", "fit", "pred", "rep")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
 # Load all SMART base modules
 base_module_configs <- c(
-  "modules/select_query.yml",
-  "modules/select_user.yml",
-  "modules/plot_hist.yml",
-  "modules/plot_scatter.yml",
+  "modules/incid_user.yml",
+  "modules/cov_upload.yml",
+  "modules/prep_prep.yml",
+  "modules/fit_fit.yml",
+  "modules/pred_pred.yml",
   "modules/rep_markdown.yml",
   "modules/rep_refPackages.yml"
 )

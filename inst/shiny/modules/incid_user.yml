@@ -1,0 +1,5 @@
+component: "incid"
+short_name: "incid_user"
+long_name: "Upload incidence data"
+authors: "Simon E H Smart"
+package: [sf]

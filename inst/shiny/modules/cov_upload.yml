@@ -1,5 +1,5 @@
-component: ""
-short_name: ""
-long_name: ""
-authors: ""
-package: []
+component: "cov"
+short_name: "cov_upload"
+long_name: "Upload covariates"
+authors: "Simon E H Smart"
+package: [terra]

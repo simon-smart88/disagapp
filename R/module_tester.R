@@ -12,10 +12,10 @@
 test_module <- function(module){
 
 #load the module functions
-source(system.file(glue::glue("shiny/modules/{module}.R"), package = "SMART"))
+source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shiny-disag"))
 
 #load js
-resourcePath <- system.file("shiny", "www", package = "SMART")
+resourcePath <- system.file("shiny", "www", package = "shiny-disag")
 shiny::addResourcePath("smartres", resourcePath)
 
 test_ui <- tagList(
@@ -25,7 +25,7 @@ test_ui <- tagList(
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   fluidPage(
-  div(id = "wallaceLog",div(id = "logHeader", div(id = "logContent"))),
+  div(id = "messageLog",div(id = "logHeader", div(id = "logContent"))),
   do.call(glue::glue("{module}_module_ui"),list(module)),
   if (exists(glue::glue("{module}_module_result"))){do.call(glue::glue("{module}_module_result"),list(module))},
   if (exists(glue::glue("{module}_module_map"))){leaflet::leafletOutput("map", height = 700)}
@@ -39,7 +39,7 @@ test_server <- function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SMART***"
+    intro <- "***WELCOME TO SHINY-DISAG***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -70,7 +70,7 @@ test_server <- function(input, output, session) {
 
   #load demo raster data if testing a plotting module
   if (grepl("plot", module)){
-    path <- list.files(system.file("extdata/wc", package = "SMART"),
+    path <- list.files(system.file("extdata/wc", package = "shiny-disag"),
                        pattern = ".tif$", full.names = TRUE)
     common$ras <- terra::rast(path)
   }
@@ -97,7 +97,7 @@ test_server <- function(input, output, session) {
   }) %>% bindEvent(input$map_draw_new_feature)
 
   #main server function
-  callModule(get(glue::glue("{module}_module_server")), module, common)
+  do.call(get(module$server_function), args = list(id = module$id, common = common))
 
   #load map function if it exists
   if (exists(glue::glue("{module}_module_map"))){

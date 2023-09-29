@@ -1,0 +1,9 @@
+---
+title: "cov"
+output: html_document
+---
+
+### **Component: Covariate Data**
+
+**ORIENTATION**
+

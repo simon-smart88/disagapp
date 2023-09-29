@@ -1,0 +1,9 @@
+---
+title: "incid"
+output: html_document
+---
+
+### **Component: Incidence Data**
+
+**ORIENTATION**
+

@@ -1,4 +1,4 @@
-library(shiny-disag)
+#library(shiny_disag)
 
 function(input, output, session) {
 
@@ -63,7 +63,7 @@ function(input, output, session) {
   })
 
   # Help Module
-  observeEvent(input$shape_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$incid_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$fit_fitHelp, updateTabsetPanel(session, "main", "Module Guidance"))

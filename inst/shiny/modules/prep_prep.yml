@@ -1,5 +1,5 @@
-component: ""
-short_name: ""
-long_name: ""
-authors: ""
-package: []
+component: "prep"
+short_name: "prep_prep"
+long_name: "Prepare data"
+authors: "Simon E H Smart"
+package: [disaggregation]
