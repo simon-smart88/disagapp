@@ -8,7 +8,7 @@ function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SHINY-DISAG***"
+    intro <- "***WELCOME TO SHINYDISAG***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -296,7 +296,7 @@ function(input, output, session) {
     public = list(
       shape = NULL,
       popn = NULL,
-      covs = NULL,
+      covs = list(),
       prep = NULL,
       fit = NULL,
       pred = NULL,

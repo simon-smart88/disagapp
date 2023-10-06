@@ -23,7 +23,6 @@ incid_user_module_server <- function(id, common) {
     }
 
     # FUNCTION CALL ####
-
     shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
     shape <- incid_user(shpdf)
     # LOAD INTO COMMON ####
@@ -32,10 +31,6 @@ incid_user_module_server <- function(id, common) {
     common$meta$shape$path <- shape_file_path
     # TRIGGER
     gargoyle::trigger(incid_user)
-  })
-
-  output$result <- renderText({
-    # Result
   })
 
   return(list(
@@ -47,13 +42,6 @@ incid_user_module_server <- function(id, common) {
     }
   ))
 })
-}
-
-incid_user_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
 }
 
 incid_user_module_map <- function(map, common) {

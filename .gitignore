@@ -31,3 +31,5 @@ inst/shiny/rsconnect/
 inst/shiny/debug*
 inst/shiny/install*
 .lintr
+_modules
+_shiny
