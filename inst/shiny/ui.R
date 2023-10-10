@@ -21,6 +21,7 @@ tagList(
     tabPanel("Intro", value = 'intro'),
     tabPanel("Incidence", value = 'incid'),
     tabPanel("Covariates", value = 'cov'),
+    tabPanel("Aggregation", value = 'agg'),
     tabPanel("Prepare", value = 'prep'),
     tabPanel("Fit", value = 'fit'),
     tabPanel("Predict", value = 'pred'),

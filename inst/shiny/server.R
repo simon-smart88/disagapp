@@ -56,7 +56,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("select","plot")
+  help_components <- c("incid","cov","agg","prep","fit","pred")
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -295,7 +295,7 @@ function(input, output, session) {
     classname = "common",
     public = list(
       shape = NULL,
-      popn = NULL,
+      agg = NULL,
       covs = list(),
       prep = NULL,
       fit = NULL,
