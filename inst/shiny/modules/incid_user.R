@@ -30,7 +30,7 @@ incid_user_module_server <- function(id, common) {
     # METADATA ####
     common$meta$shape$path <- shape_file_path
     # TRIGGER
-    gargoyle::trigger(incid_user)
+    gargoyle::trigger("incid_user")
   })
 
   return(list(

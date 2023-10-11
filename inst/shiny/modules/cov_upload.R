@@ -34,7 +34,7 @@ cov_upload_module_server <- function(id, common) {
     common$meta$cov$path <- covdf$name
     common$meta$cov$upload <- TRUE
     # TRIGGER
-    gargoyle::trigger(cov_upload)
+    gargoyle::trigger("cov_upload")
   })
 
 

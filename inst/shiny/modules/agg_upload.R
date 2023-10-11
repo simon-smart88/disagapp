@@ -43,7 +43,7 @@ agg_upload_module_server <- function(id, common) {
     common$meta$agg$log <- input$log
     common$meta$agg$upload <- TRUE
     # TRIGGER
-    gargoyle::trigger(agg_upload)
+    gargoyle::trigger("agg_upload")
   })
 
 

@@ -57,7 +57,7 @@ prep_prep_module_server <- function(id, common) {
     common$meta$prep$na_action <- input$na_action
     common$meta$prep$make_mesh <- input$mesh_make
     # TRIGGER
-    gargoyle::trigger(prep_prep)
+    gargoyle::trigger("prep_prep")
   })
 
   output$result <- renderText({
