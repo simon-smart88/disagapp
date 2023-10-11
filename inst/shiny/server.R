@@ -65,6 +65,7 @@ function(input, output, session) {
   # Help Module
   observeEvent(input$incid_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$agg_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$fit_fitHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$pred_predHelp, updateTabsetPanel(session, "main", "Module Guidance"))

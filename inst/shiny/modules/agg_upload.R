@@ -3,7 +3,7 @@ agg_upload_module_ui <- function(id) {
   tagList(
     fileInput(inputId = ns("agg"),
               label = "Upload aggregation data",
-              multiple = TRUE,
+              multiple = FALSE,
               accept = c('.tif')),
     textInput(ns("name"),
               label = "Aggregation name",
