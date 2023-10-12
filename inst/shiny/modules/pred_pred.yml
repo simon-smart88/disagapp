@@ -1,5 +1,5 @@
 component: "pred"
-short_name: "pred_pred"
-long_name: "Make predictions"
+short_name: "Make predictions"
+long_name: "Make predictions from model"
 authors: "Simon E H Smart"
 package: [disaggregation]

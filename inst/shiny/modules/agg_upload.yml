@@ -1,5 +1,5 @@
 component: "agg"
-short_name: "agg_upload"
+short_name: "Upload aggregation"
 long_name: "Upload aggregation raster"
 authors: "Simon E H Smart"
 package: [terra]

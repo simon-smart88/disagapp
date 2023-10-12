@@ -1,5 +1,5 @@
 component: "cov"
-short_name: "cov_upload"
-long_name: "Upload covariates"
+short_name: "Upload covariates"
+long_name: "Upload covariate rasters"
 authors: "Simon E H Smart"
 package: [terra]

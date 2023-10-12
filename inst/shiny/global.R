@@ -12,7 +12,7 @@ source("helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("incid", "cov", "prep", "fit", "pred", "rep")
+COMPONENTS <- c("incid", "cov", "agg", "prep", "fit", "pred", "rep")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()

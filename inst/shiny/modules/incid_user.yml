@@ -1,5 +1,5 @@
 component: "incid"
-short_name: "incid_user"
+short_name: "Upload incidence"
 long_name: "Upload incidence data"
 authors: "Simon E H Smart"
 package: [sf]

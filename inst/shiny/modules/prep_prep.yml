@@ -1,5 +1,5 @@
 component: "prep"
-short_name: "prep_prep"
-long_name: "Prepare data"
+short_name: "Prepare data"
+long_name: "Prepare data for fitting"
 authors: "Simon E H Smart"
 package: [disaggregation]

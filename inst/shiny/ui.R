@@ -48,8 +48,8 @@ tagList(
             help_comp_ui("incidHelp"),
             radioButtons(
               "selectSel", "Modules Available:",
-              choices = insert_modules_options("incid"),
-              selected = character(0)
+              choices = insert_modules_options("incid")#,
+              #selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("incid")
@@ -61,8 +61,8 @@ tagList(
             help_comp_ui("covHelp"),
             radioButtons(
               "covSel", "Modules Available:",
-              choices = insert_modules_options("cov"),
-              selected = character(0)
+              choices = insert_modules_options("cov")#,
+              #selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("cov")

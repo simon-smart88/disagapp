@@ -1,5 +1,5 @@
 component: "fit"
-short_name: "fit_fit"
-long_name: "Fit model"
+short_name: "Fit model"
+long_name: "Fit disaggregation model"
 authors: "Simon E H Smart"
 package: [disaggregation]
