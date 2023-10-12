@@ -1,5 +1,6 @@
 library(glue)
 library(SMART)
+library(shinydisag)
 
 MB <- 1024^2
 

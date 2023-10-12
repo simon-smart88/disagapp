@@ -1,5 +1,3 @@
-#library(shinydisag)
-
 function(input, output, session) {
 
   ########################## #
@@ -56,7 +54,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("incid","cov","agg","prep","fit","pred")
+  help_components <- c("incid", "cov", "agg", "prep", "fit", "pred")
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -134,20 +132,6 @@ function(input, output, session) {
   ########################################### #
   ### DOWNLOAD PLOTS ####
   ########################################### #
-
-  # output$dl_hist <- downloadHandler(
-  #   filename = function() {
-  #     "SMART_histogram.png"
-  #   },
-  #   content = function(file) {
-  #     png(file, width = 1000, height = 500)
-  #     pal <- RColorBrewer::brewer.pal(9, common$meta$hist$pal)
-  #     pal_ramp <- colorRampPalette(c(pal[1], pal[9]))
-  #     bins <- common$meta$hist$bins
-  #     cols <- pal_ramp(bins)
-  #     plot(common$hist, freq = FALSE, main = "", xlab = common$meta$hist$name, ylab = "Frequency (%)", col = cols)
-  #     dev.off()
-  # })
 
 
   ########################################### #

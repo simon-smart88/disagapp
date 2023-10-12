@@ -1,4 +1,15 @@
-
+#' @title incid_user
+#' @description
+#' This function is called by the incid_user module and loads a
+#'  shapefile into an sf object
+#'
+#' @param shpdf dataframe. As produced by shiny::fileInput, containing name and
+#' datapath columns
+#' @return an sf object
+#' @author Simon Smart <simon.smart@@cantab.net>
+#' @author Paula Moraga
+#' @export
+#'
 # https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 incid_user <- function(shpdf) {
   tempdirname <- dirname(shpdf$datapath[1])
@@ -10,7 +21,7 @@ incid_user <- function(shpdf) {
   }
   if (nrow(shpdf) == 4){
     shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-    shape <- sf::st_read(paste(tempdirname,shape_file_path,sep = "/"))
+    shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"))
   }
 
   #else raise log

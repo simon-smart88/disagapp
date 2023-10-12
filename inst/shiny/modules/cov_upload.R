@@ -5,7 +5,7 @@ cov_upload_module_ui <- function(id) {
               label = "Upload covariate data",
               multiple = TRUE,
               accept = c('.tif')),
-    actionButton(ns("run"), "Upload file")
+    actionButton(ns("run"), "Upload file(s)")
   )
 }
 
@@ -25,18 +25,28 @@ cov_upload_module_server <- function(id, common) {
 
     # FUNCTION CALL ####
     covdf <- input$cov
-    cov_list <- incid_user(covdf)
-
+    cov_list <- cov_upload(covdf)
+    common$logger %>% writeLog("Covariates uploaded")
+    #common$covs <- cov_list
     # LOAD INTO COMMON ####
-    common$covs <- append(common$covs,cov_list)
+    # append if covariates already exist
+    if (is.null(common$covs)){
+    common$covs <- cov_list
+    } else {
+    common$covs <- append(common$covs, cov_list)
+    }
 
     # METADATA ####
-    common$meta$cov$path <- covdf$name
+    common$meta$cov <- list()
+    common$meta$cov$path <- as.vector(covdf$name)
     common$meta$cov$upload <- TRUE
     # TRIGGER
     gargoyle::trigger("cov_upload")
   })
 
+  output$result <- renderPlot({
+    plot(common$covs)
+  })
 
   return(list(
     save = function() {
@@ -49,27 +59,28 @@ cov_upload_module_server <- function(id, common) {
 })
 }
 
-# cov_upload_module_result <- function(id) {
-#   ns <- NS(id)
-#
-#   # Result UI
-#   verbatimTextOutput(ns("result"))
-# }
+cov_upload_module_result <- function(id) {
+  ns <- NS(id)
+
+  # Result UI
+  plotOutput(ns("result"))
+}
 
 cov_upload_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("cov_upload"), {
     req(common$covs)
     common$add_map_layer(names(common$covs))
     for (s in 1:length(names(common$covs))){
-      pal <- colorBin("YlOrRd", domain = terra::values(common$covs[[s]]), bins = 9, na.color = "#00000000")
+    #for (s in 1:4){
+      #pal <- colorBin("YlOrRd", domain = terra::values(common$covs[[s]]), bins = 9, na.color = "#00000000")
       map %>%
-        clearGroup(names(common$covs)[s]) %>%
-        addRasterImage(common$covs[[s]], group = names(common$covs)[s], colors = pal) %>%
-        addLegend(position="bottomleft", pal = pal, values = terra::values(common$covs[[s]]), group = names(common$covs)[s], title = names(common$covs)[s])
+        #clearGroup(names(common$covs)[s]) %>%
+        addRasterImage(raster::raster(common$covs[[s]]))#, group = names(common$covs)[s], colors = pal) %>%
+        #addLegend(position="bottomleft", pal = pal, values = terra::values(common$covs[[s]]), group = names(common$covs)[s], title = names(common$covs)[s])
     }
-    map %>%
-      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-      hideGroup(common$map_layers[2:(length(common$map_layers)-1)])
+    # map %>%
+    #   addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+    #   hideGroup(common$map_layers[2:(length(common$map_layers)-1)])
   })
 }
 

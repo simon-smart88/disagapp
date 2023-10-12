@@ -51,16 +51,17 @@ pred_pred_module_server <- function(id, common) {
 pred_pred_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("pred_pred"),{
   req(common$pred)
-  common$add_map_layer(c("Field","Prediction"))
+  common$add_map_layer(c("Field", "Prediction"))
 
   ex <- as.vector(terra::ext(common$shape))
-  pal1 <- colorBin("YlOrRd", domain = terra::values(common$pred$mean_prediction$field), bins = 9, na.color ="#00000000")
-  pal2 <- colorBin("YlOrRd", domain = terra::values(common$pred$mean_prediction$prediction), bins = 9, na.color ="#00000000")
+  pal1 <- colorBin("YlOrRd", domain = terra::values(common$pred$mean_prediction$field), bins = 9, na.color = "#00000000")
+  pal2 <- colorBin("YlOrRd", domain = terra::values(common$pred$mean_prediction$prediction), bins = 9, na.color = "#00000000")
+  print("pred_pred doing stuff")
   map %>%
-    addRasterImage(common$pred$mean_prediction$field,group="Field",colors = pal1) %>%
-    addLegend(position ="bottomleft",pal = pal1, values = terra::values(common$pred$mean_prediction$field), group="Field", title="Field") %>%
+    addRasterImage(common$pred$mean_prediction$field, group = "Field", colors = pal1) %>%
+    addLegend(position = "bottomleft", pal = pal1, values = terra::values(common$pred$mean_prediction$field), group = "Field", title = "Field") %>%
     addRasterImage(common$pred$mean_prediction$prediction, group = "Prediction", colors = pal2) %>%
-    addLegend(position ="bottomright",pal = pal2, values = terra::values(common$pred$mean_prediction$prediction), group="Prediction", title="Prediction") %>%
+    addLegend(position = "bottomright", pal = pal2, values = terra::values(common$pred$mean_prediction$prediction), group = "Prediction", title = "Prediction") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
     hideGroup(common$map_layers[2:(length(common$map_layers)-2)]) #hide all but first and last two layers

@@ -10,4 +10,6 @@
 
  cov_upload <- function(covdf) {
   covs <- lapply(covdf$datapath,terra::rast)
+  names(covs) <- as.vector(covdf$name)
+  return(covs)
 }

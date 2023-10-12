@@ -72,13 +72,14 @@ agg_upload_module_map <- function(map, common) {
     if (common$meta$agg$log == TRUE){
       agg_map_raster = log10(common$agg)
       agg_map_title = paste0(common$meta$agg$name, " (log 10)")
+      pal <- colorBin("YlOrRd", domain = log10(terra::values(common$agg)), bins = 9, na.color = "#00000000")
       } else {
       agg_map_raster = common$agg
       agg_map_title = common$meta$agg$name
       }
     map %>%
       clearGroup(common$meta$agg$name) %>%
-      addRasterImage(agg_map_raster, group = common$meta$agg$name, colors = pal) %>%
+      addRasterImage(raster::raster(agg_map_raster), group = common$meta$agg$name, colors = pal) %>%
       addLegend(position = "bottomleft", pal = pal, values = values(agg_map_raster), group = common$meta$agg$name, title = agg_map_title) %>%
       addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
   })
