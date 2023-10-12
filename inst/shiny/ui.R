@@ -15,17 +15,17 @@ tagList(
     header = tagList(
       tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
     ),
-    title = img(src = "logo.png", height = '50', width = '50',
+    title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),
     windowTitle = "Shiny disag",
-    tabPanel("Intro", value = 'intro'),
-    tabPanel("Incidence", value = 'incid'),
-    tabPanel("Covariates", value = 'cov'),
-    tabPanel("Aggregation", value = 'agg'),
-    tabPanel("Prepare", value = 'prep'),
-    tabPanel("Fit", value = 'fit'),
-    tabPanel("Predict", value = 'pred'),
-    tabPanel("Reproduce", value = 'rep'),
+    tabPanel("Intro", value = "intro"),
+    tabPanel("Incidence", value = "incid"),
+    tabPanel("Covariates", value = "cov"),
+    tabPanel("Aggregation", value = "agg"),
+    tabPanel("Prepare", value = "prep"),
+    tabPanel("Fit", value = "fit"),
+    tabPanel("Predict", value = "pred"),
+    tabPanel("Reproduce", value = "rep"),
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/SMART/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
@@ -54,7 +54,7 @@ tagList(
             tags$hr(),
             insert_modules_ui("incid")
           ),
-          # PLOT DATA ####
+          # COVARIATE DATA ####
           conditionalPanel(
             "input.tabs == 'cov'",
             div("Component: Covariate Data", class = "componentName"),
@@ -66,6 +66,19 @@ tagList(
             ),
             tags$hr(),
             insert_modules_ui("cov")
+          ),
+          # AGGREGATION DATA ####
+          conditionalPanel(
+            "input.tabs == 'agg'",
+            div("Component: Aggregation Data", class = "componentName"),
+            help_comp_ui("aggHelp"),
+            radioButtons(
+              "aggSel", "Modules Available:",
+              choices = insert_modules_options("agg")#,
+              #selected = character(0)
+            ),
+            tags$hr(),
+            insert_modules_ui("agg")
           ),
           # PREPARE DATA ####
           conditionalPanel(

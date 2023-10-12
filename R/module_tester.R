@@ -12,10 +12,10 @@
 test_module <- function(module){
 
 #load the module functions
-source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shiny-disag"))
+source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shinydisag"))
 
 #load js
-resourcePath <- system.file("shiny", "www", package = "shiny-disag")
+resourcePath <- system.file("shiny", "www", package = "shinydisag")
 shiny::addResourcePath("smartres", resourcePath)
 
 test_ui <- tagList(
@@ -39,7 +39,7 @@ test_server <- function(input, output, session) {
 
   # Variable to keep track of current log message
   initLogMsg <- function() {
-    intro <- "***WELCOME TO SHINY-DISAG***"
+    intro <- "***WELCOME TO SHINYDISAG***"
     brk <- paste(rep("------", 14), collapse = "")
     expl <- "Please find messages for the user in this log window."
     logInit <- gsub(".{4}$", "", paste(intro, brk, expl, brk, "", sep = "<br>"))
@@ -56,12 +56,24 @@ test_server <- function(input, output, session) {
   common_class <- R6::R6Class(
     classname = "common",
     public = list(
-      ras = NULL,
-      hist = NULL,
-      scat = NULL,
-      meta = NULL,
+      shape = NULL,
+      agg = NULL,
+      covs = NULL,
+      prep = NULL,
+      fit = NULL,
+      pred = NULL,
+      map_layers = NULL,
       poly = NULL,
-      logger = NULL
+      logger = NULL,
+      meta = NULL,
+      add_map_layer = function(new_names) {
+        for (new_name in new_names){
+          if (!(new_name %in% self$map_layers)){
+            self$map_layers <- c(self$map_layers,new_name)
+            invisible(self)
+          }
+        }
+      }
     )
   )
 
@@ -70,7 +82,7 @@ test_server <- function(input, output, session) {
 
   #load demo raster data if testing a plotting module
   if (grepl("plot", module)){
-    path <- list.files(system.file("extdata/wc", package = "shiny-disag"),
+    path <- list.files(system.file("extdata/wc", package = "shinydisag"),
                        pattern = ".tif$", full.names = TRUE)
     common$ras <- terra::rast(path)
   }
@@ -97,7 +109,7 @@ test_server <- function(input, output, session) {
   }) %>% bindEvent(input$map_draw_new_feature)
 
   #main server function
-  do.call(get(module$server_function), args = list(id = module$id, common = common))
+  do.call(get(glue::glue("{module}_module_server")), args = list(id = module, common = common))
 
   #load map function if it exists
   if (exists(glue::glue("{module}_module_map"))){

@@ -297,7 +297,7 @@ function(input, output, session) {
     public = list(
       shape = NULL,
       agg = NULL,
-      covs = list(),
+      covs = NULL,
       prep = NULL,
       fit = NULL,
       pred = NULL,

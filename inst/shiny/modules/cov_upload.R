@@ -1,7 +1,7 @@
 cov_upload_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    fileInput(inputId = NS(id,"cov"),
+    fileInput(inputId = ns("cov"),
               label = "Upload covariate data",
               multiple = TRUE,
               accept = c('.tif')),
@@ -49,23 +49,23 @@ cov_upload_module_server <- function(id, common) {
 })
 }
 
-cov_upload_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
-}
+# cov_upload_module_result <- function(id) {
+#   ns <- NS(id)
+#
+#   # Result UI
+#   verbatimTextOutput(ns("result"))
+# }
 
 cov_upload_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("cov_upload"), {
     req(common$covs)
     common$add_map_layer(names(common$covs))
     for (s in 1:length(names(common$covs))){
-      pal <- colorBin("YlOrRd", domain = values(common$covs[[s]]), bins = 9,na.color ="#00000000")
+      pal <- colorBin("YlOrRd", domain = terra::values(common$covs[[s]]), bins = 9, na.color = "#00000000")
       map %>%
         clearGroup(names(common$covs)[s]) %>%
-        addRasterImage(common$covs[[s]],group=names(common$covs)[s],colors = pal) %>%
-        addLegend(position="bottomleft",pal=pal,values=values(common$covs[[s]]),group=names(common$covs)[s],title=names(common$covs)[s])
+        addRasterImage(common$covs[[s]], group = names(common$covs)[s], colors = pal) %>%
+        addLegend(position="bottomleft", pal = pal, values = terra::values(common$covs[[s]]), group = names(common$covs)[s], title = names(common$covs)[s])
     }
     map %>%
       addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
