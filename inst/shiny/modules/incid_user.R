@@ -45,17 +45,20 @@ incid_user_module_server <- function(id, common) {
 }
 
 incid_user_module_map <- function(map, common) {
+  observeEvent(gargoyle::watch("incid_user"), {
   req(common$shape)
-  ex <- extent(common$shape)
+  ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Incidence")
   pal <- colorBin("YlOrRd", domain = as.numeric(common$shape$inc), bins = 9,na.color ="#00000000")
   map %>%
     clearGroup("Incidence") %>%
-    addPolygons(data=common$shape,fillColor = ~ pal(as.numeric(common$shape$inc)),color='black',fillOpacity = 0.7,weight=3, group="Incidence") %>%
-    fitBounds(lng1=ex@xmin,lng2=ex@xmax,lat1=ex@ymin,lat2=ex@ymax) %>%
-    addLegend(position ="bottomright",pal = pal, values = as.numeric(common$shape$inc), group="Incidence", title="Incidence") %>%
+    addPolygons(data = common$shape, fillColor = ~pal(as.numeric(common$shape$inc)), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
+    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+    addLegend(position = "bottomright", pal = pal, values = as.numeric(common$shape$inc), group = "Incidence", title = "Incidence") %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
-}
+  })
+  }
+
 
 incid_user_module_rmd <- function(common) {
   # Variables used in the module's Rmd code

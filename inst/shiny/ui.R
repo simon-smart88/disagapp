@@ -47,7 +47,7 @@ tagList(
             div("Component: Incidence Data", class = "componentName"),
             help_comp_ui("incidHelp"),
             radioButtons(
-              "selectSel", "Modules Available:",
+              "incidSel", "Modules Available:",
               choices = insert_modules_options("incid")#,
               #selected = character(0)
             ),
