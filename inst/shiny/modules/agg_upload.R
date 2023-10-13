@@ -5,6 +5,7 @@ agg_upload_module_ui <- function(id) {
               label = "Upload aggregation data",
               multiple = FALSE,
               accept = c('.tif')),
+    checkboxInput(ns("example"), "Use example data", TRUE),
     textInput(ns("name"),
               label = "Aggregation name",
               value = "Population density"),
@@ -22,16 +23,21 @@ agg_upload_module_server <- function(id, common) {
   observeEvent(input$run, {
     # WARNING ####
     # check a file is selected
-    if (is.null(input$agg)) {
-      common$logger %>% writeLog(type = "error", "Please select a raster file")
-      return()
+    if (input$example == FALSE){
+      if (is.null(input$agg)) {
+        common$logger %>% writeLog(type = "error", "Please select a raster file")
+        return()
+      }
+      aggdf <- input$agg
     }
 
     # check all files are .tif
-
-
+    if (input$example == TRUE){
+    aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="shinydisag"), full.names = TRUE),
+                        name = list.files(system.file("extdata/aggregation", package="shinydisag")))
+    }
     # FUNCTION CALL ####
-    aggdf <- input$agg
+
     agg_raster <- agg_upload(aggdf)
 
     # LOAD INTO COMMON ####

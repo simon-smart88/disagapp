@@ -7,6 +7,8 @@ MB <- 1024^2
 UPLOAD_SIZE_MB <- 5000
 options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
 
+options(shiny.fullstacktrace = TRUE)
+
 SAVE_SESSION_SIZE_MB_WARNING <- 100
 
 source("helpers.R")

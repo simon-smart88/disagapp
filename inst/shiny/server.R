@@ -282,6 +282,7 @@ function(input, output, session) {
       shape = NULL,
       agg = NULL,
       covs = NULL,
+      cov_sum = NULL,
       prep = NULL,
       fit = NULL,
       pred = NULL,

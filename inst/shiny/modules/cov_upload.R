@@ -5,6 +5,7 @@ cov_upload_module_ui <- function(id) {
               label = "Upload covariate data",
               multiple = TRUE,
               accept = c('.tif')),
+    checkboxInput(ns("example"), "Use example data", TRUE),
     actionButton(ns("run"), "Upload file(s)")
   )
 }
@@ -14,17 +15,25 @@ cov_upload_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-    # check a file is selected
-    if (is.null(input$cov)) {
-      common$logger %>% writeLog(type = "error", "Please select a raster file")
-      return()
-    }
 
     # check all files are .tif
 
+    if (input$example == FALSE){
+      # check a file is selected
+      if (is.null(input$cov)) {
+        common$logger %>% writeLog(type = "error", "Please select a raster file")
+        return()
+      }
+      covdf <- input$cov
+    }
+
+    if (input$example == TRUE){
+      covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="shinydisag"), full.names = TRUE),
+                          name = list.files(system.file("extdata/covariates", package="shinydisag")))
+    }
 
     # FUNCTION CALL ####
-    covdf <- input$cov
+
     cov_list <- cov_upload(covdf)
     common$logger %>% writeLog("Covariates uploaded")
     #common$covs <- cov_list

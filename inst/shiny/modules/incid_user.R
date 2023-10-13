@@ -5,6 +5,7 @@ incid_user_module_ui <- function(id) {
               label = "Upload all shapefile data",
               multiple = TRUE,
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
+    checkboxInput(ns("example"), "Use example data", TRUE),
     actionButton(ns("run"), "Load data")
   )
 }
@@ -14,7 +15,14 @@ incid_user_module_server <- function(id, common) {
 
   observeEvent(input$run, {
 
-    shpdf <- input$shape
+    if (input$example == FALSE){
+      shpdf <- input$shape
+    }
+
+    if (input$example == TRUE){
+      shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
+                          name = list.files(system.file("extdata/shapes", package="shinydisag")))
+    }
 
     # WARNING ####
     if (nrow(shpdf) != 4) {

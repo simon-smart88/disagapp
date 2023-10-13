@@ -34,8 +34,8 @@ prep_prep_module_server <- function(id, common) {
     # FUNCTION CALL ####
     common$logger %>% writeLog(type='info', 'Data preparation has started - please be patient')
     prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
-                                         covariate_rasters = common$covs,
-                                         aggregation_raster = common$popn,
+                                         covariate_rasters = terra::rast(common$covs),
+                                         aggregation_raster = common$agg,
                                          id_var = as.character(input$id_var),
                                          response_var = as.character(input$resp_var),
                                          mesh.args = list(max.edge = input$mesh_edge,
