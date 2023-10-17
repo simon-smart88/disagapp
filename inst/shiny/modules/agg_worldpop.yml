@@ -1,0 +1,5 @@
+component: "agg"
+short_name: "Worldpop"
+long_name: "Download population density from Worldpop"
+authors: "Simon E H Smart"
+package: [terra]
