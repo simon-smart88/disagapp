@@ -32,7 +32,7 @@ cov_bioclim_module_server <- function(id, common) {
     countries <- readRDS(system.file("ex/countries.rds", package="geodata"))
 
     output$country_out <- renderUI({
-      selectInput(session$ns("country"), "Select country", countries$NAME)
+      selectInput(session$ns("country"), "Select country", countries$NAME, selected = NULL)
     })
 
   observeEvent(input$run, {

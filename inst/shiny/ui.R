@@ -208,6 +208,8 @@ tagList(
                          "downloaded file may be large and the download might",
                          " take a long time.")
                   )),
+
+                verbatimTextOutput("common_covs"),
                 downloadButton("save_session", "Save Session"),
                 br()
               ),

@@ -38,7 +38,6 @@ cov_landuse <- function(shape, year, landuses) {
   for (l in landuses){
     raster_tiles <- NULL
     for (t in tiles$url){
-      print(url)
       url <- glue::glue("https://s3-eu-west-1.amazonaws.com/vito.landcover.global/v3.0.1/{year}/{t}_PROBAV_LC100_global_v3.0.1_2019-nrt_{l}-CoverFraction-layer_EPSG-4326.tif")
       ras <- terra::rast(url)
       if (is.null(raster_tiles)){
