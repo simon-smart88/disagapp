@@ -10,31 +10,30 @@
 #' @export
 
 prep_summary <- function(covs, remove = FALSE){
-  cov_res <- lapply(covs,terra::res)
-  x_res <- unlist(cov_res)[seq(1,length(covs)*2,2)]
-  y_res <- unlist(cov_res)[seq(2,length(covs)*2,2)]
+  cov_res <- lapply(covs, terra::res)
+  x_res <- unlist(cov_res)[seq(1,length(covs)*2, 2)]
+  y_res <- unlist(cov_res)[seq(2,length(covs)*2, 2)]
 
-  cov_ext <- lapply(covs,terra::ext)
+  cov_ext <- lapply(covs, terra::ext)
   cov_ext <- lapply(cov_ext,as.vector)
   cov_ext <- lapply(cov_ext,unlist)
   cov_ext <- as.data.frame(t(as.data.frame(cov_ext)))
 
-  cov_origin <- lapply(covs,terra::origin)
-  x_origin <- unlist(cov_origin)[seq(1,length(covs)*2,2)]
-  y_origin <- unlist(cov_origin)[seq(2,length(covs)*2,2)]
+  cov_origin <- lapply(covs, terra::origin)
+  x_origin <- unlist(cov_origin)[seq(1, length(covs)*2, 2)]
+  y_origin <- unlist(cov_origin)[seq(2, length(covs)*2, 2)]
 
-  cov_crs <- unlist(lapply(covs,terra::crs, proj = TRUE))
+  cov_crs <- unlist(lapply(covs, terra::crs, proj = TRUE))
 
+  cov_ncell <- lapply(covs, terra::ncell)
 
-  cov_ncell <- lapply(covs,terra::ncell)
-
-  cov_df <- data.frame(x_resolution=x_res,
-                       y_resolution=y_res,
-                       x_origin,y_origin,
-                       crs=cov_crs,
+  cov_df <- data.frame(x_resolution = x_res,
+                       y_resolution = y_res,
+                       x_origin, y_origin,
+                       crs = cov_crs,
                        number_of_cells = unlist(cov_ncell))
   row.names(cov_df) <- names(covs)
-  cov_df <- cbind(cov_df,cov_ext)
+  cov_df <- cbind(cov_df, cov_ext)
 
   if (remove == TRUE){
     # remove columns with the same values

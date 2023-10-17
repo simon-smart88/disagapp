@@ -34,8 +34,8 @@ fit_fit_module_server <- function(id, common) {
   })
 
     output$model_plot <- renderPlot({
-      req(common$fit)
       gargoyle::watch("fit_fit")
+      req(common$fit)
       plot(common$fit)
     })
 
@@ -52,7 +52,7 @@ fit_fit_module_server <- function(id, common) {
 
 fit_fit_module_result <- function(id) {
   ns <- NS(id)
-  verbatimTextOutput(ns("model_plot"))
+  plotOutput(ns("model_plot"))
 }
 
 
