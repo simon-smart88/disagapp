@@ -36,18 +36,21 @@ cov_landuse <- function(shape, year, landuses) {
   #request each tile
   raster_layers <- list()
   for (l in landuses){
-    raster_tiles <- list()
+    raster_tiles <- NULL
     for (t in tiles$url){
-      url <- glue::glue("/vsicurl/https://s3-eu-west-1.amazonaws.com/vito.landcover.global/v3.0.1/{year}/{t}_PROBAV_LC100_global_v3.0.1_2019-nrt_{l}-CoverFraction-layer_EPSG-4326.tif")
+      print(url)
+      url <- glue::glue("https://s3-eu-west-1.amazonaws.com/vito.landcover.global/v3.0.1/{year}/{t}_PROBAV_LC100_global_v3.0.1_2019-nrt_{l}-CoverFraction-layer_EPSG-4326.tif")
       ras <- terra::rast(url)
-      raster_tiles <- append(raster_tiles, ras)
+      if (is.null(raster_tiles)){
+        raster_tiles <- ras
+      } else {
+        raster_tiles <- terra::merge(raster_tiles, ras)
+      }
     }
-    combined_tiles <-  do.call(terra::merge, raster_tiles)
-    combined_tiles <- terra::crop(combined_tiles, shape)
-    raster_layers <- append(raster_layers, combined_tiles)
+    raster_tiles <- terra::crop(raster_tiles, shape)
+    raster_layers[[l]] <- raster_tiles
+    names(raster_layers[[l]]) <- paste0(l,"_land_use")
   }
 
-  #name layers
-  names(raster_layers) <- landuses
   return(raster_layers)
 }

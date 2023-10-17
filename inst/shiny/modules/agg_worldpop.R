@@ -21,12 +21,19 @@ agg_worldpop_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(input$country)) {
+      common$logger %>% writeLog(type = "error", "Please select a country")
+      return()
+    }
     # FUNCTION CALL ####
+    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
+                          This window will close once it is complete.", easyClose = FALSE))
     country_code <- countries$ISO3[countries$NAME == input$country]
     agg_ras <- agg_worldpop(country_code)
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
+    removeModal()
+    common$logger %>% writeLog("Worldpop data has been downloaded")
     # METADATA ####
     common$meta$agg$name <- "Population"
     common$meta$agg$log <- input$log

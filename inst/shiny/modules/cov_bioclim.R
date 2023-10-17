@@ -37,12 +37,23 @@ cov_bioclim_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(input$country)) {
+      common$logger %>% writeLog(type = "error", "Please select a country")
+      return()
+    }
+    if (is.null(input$variables)) {
+      common$logger %>% writeLog(type = "error", "Please select the variables to download")
+      return()
+    }
     # FUNCTION CALL ####
+    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
+                          This window will close once it is complete.", easyClose = FALSE))
     country_code <- countries$ISO3[countries$NAME == input$country]
     bioclim <- cov_bioclim(country_code, input$variables)
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, bioclim)
+    removeModal()
+    common$logger %>% writeLog("Bioclim data has been downloaded")
     # METADATA ####
     common$meta$bioclim$used <- T
     common$meta$bioclim$country <- input$country
@@ -70,9 +81,9 @@ cov_bioclim_module_map <- function(map, common) {
 cov_bioclim_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_bioclim_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    cov_bioclim_knit = common$meta$bioclim$used,
+    cov_bioclim_country = common$meta$bioclim$country,
+    cov_bioclim_variables = printVecAsis(common$meta$bioclim$variables)
   )
 }
 
