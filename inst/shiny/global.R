@@ -24,6 +24,9 @@ COMPONENT_MODULES <- list()
 base_module_configs <- c(
   "modules/incid_user.yml",
   "modules/cov_upload.yml",
+  "modules/cov_landuse.yml",
+  "modules/cov_bioclim.yml",
+  "modules/agg_worldpop.yml",
   "modules/agg_upload.yml",
   "modules/prep_summary.yml",
   "modules/prep_prep.yml",

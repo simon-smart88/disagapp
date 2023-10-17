@@ -1,0 +1,5 @@
+component: "cov"
+short_name: "Bioclim data"
+long_name: "Download climatic data from bioclim"
+authors: "Simon E H Smart"
+package: [geodata]
