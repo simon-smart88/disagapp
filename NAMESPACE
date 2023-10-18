@@ -2,6 +2,7 @@
 
 export(agg_upload)
 export(agg_worldpop)
+export(cov_access)
 export(cov_bioclim)
 export(cov_landuse)
 export(cov_upload)

@@ -400,9 +400,9 @@ function(input, output, session) {
   ################################
   ### DEBUGGING ####
   ################################
-  output$common <- renderPrint({
-    gargoyle::watch(c("agg_upload","agg_worldpop","cov_bioclim","cov_landuse","cov_upload"))
-    print(common$covs)})
+  output$common_covs <- renderPrint({
+    print(common$covs)
+    })
 
   ################################
   ### EXPORT TEST VALUES ####
