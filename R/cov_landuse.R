@@ -44,11 +44,13 @@ cov_landuse <- function(shape, year, landuses) {
         raster_tiles <- ras
       } else {
         raster_tiles <- terra::merge(raster_tiles, ras)
+
       }
     }
+    tile_name <- paste0(l,"_land_use")
     raster_tiles <- terra::crop(raster_tiles, shape)
-    raster_layers[[l]] <- raster_tiles
-    names(raster_layers[[l]]) <- paste0(l,"_land_use")
+    raster_layers[[tile_name]] <- raster_tiles
+    names(raster_layers[[l]]) <- tile_name
   }
 
   return(raster_layers)
