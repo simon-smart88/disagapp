@@ -22,7 +22,7 @@ COMPONENT_MODULES <- list()
 
 # Load all SMART base modules
 base_module_configs <- c(
-  "modules/incid_user.yml",
+  "modules/incid_shape.yml",
   "modules/cov_upload.yml",
   "modules/cov_access.yml",
   "modules/cov_bioclim.yml",

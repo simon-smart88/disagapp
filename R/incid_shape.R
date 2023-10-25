@@ -1,6 +1,6 @@
-#' @title incid_user
+#' @title incid_shape
 #' @description
-#' This function is called by the incid_user module and loads a
+#' This function is called by the incid_shape module and loads a
 #'  shapefile into an sf object
 #'
 #' @param shpdf dataframe. As produced by shiny::fileInput, containing name and
@@ -11,7 +11,7 @@
 #' @export
 #'
 # https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
-incid_user <- function(shpdf) {
+incid_shape <- function(shpdf) {
   tempdirname <- dirname(shpdf$datapath[1])
   for (i in 1:nrow(shpdf)) {
     file.rename(

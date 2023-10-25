@@ -1,4 +1,4 @@
-incid_user_module_ui <- function(id) {
+incid_shape_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     fileInput(inputId = ns("shape"),
@@ -10,7 +10,7 @@ incid_user_module_ui <- function(id) {
   )
 }
 
-incid_user_module_server <- function(id, common) {
+incid_shape_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
@@ -32,7 +32,7 @@ incid_user_module_server <- function(id, common) {
 
     # FUNCTION CALL ####
     shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-    shape <- incid_user(shpdf)
+    shape <- incid_shape(shpdf)
     # LOAD INTO COMMON ####
     common$shape <- shape
     # METADATA ####
@@ -52,7 +52,7 @@ incid_user_module_server <- function(id, common) {
 })
 }
 
-incid_user_module_map <- function(map, common) {
+incid_shape_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("incid_user"), {
   req(common$shape)
   ex <- as.vector(terra::ext(common$shape))
@@ -68,11 +68,11 @@ incid_user_module_map <- function(map, common) {
   }
 
 
-incid_user_module_rmd <- function(common) {
+incid_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    incid_user_knit = !is.null(common$shape),
-    incid_user_path = common$meta$shape$path
+    incid_shape_knit = !is.null(common$shape),
+    incid_shape_path = common$meta$shape$path
   )
 }
 
