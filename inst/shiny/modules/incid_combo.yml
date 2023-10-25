@@ -1,0 +1,6 @@
+component: "incid"
+short_name: "Upload spreadsheet"
+long_name: "Upload incidence spreadsheet"
+authors: "Simon E H Smart"
+package: [sf, openxlsx]
+

@@ -1,5 +1,5 @@
 component: "incid"
-short_name: "Upload incidence"
-long_name: "Upload incidence data"
+short_name: "Upload shapefile"
+long_name: "Upload incidence shapefile"
 authors: "Simon E H Smart"
 package: [sf]
