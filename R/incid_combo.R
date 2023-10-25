@@ -1,30 +1,39 @@
-#' @title incid_shape
+#' @title incid_combo
 #' @description
-#' This function is called by the incid_shape module and loads a
-#'  shapefile into an sf object
+#' This function is called by the incid_combo module and merges incidence data
+#'  from a spreadsheet with boundary data into an sf object
 #'
-#' @param shpdf dataframe. As produced by shiny::fileInput, containing name and
+#' @param spdf dataframe. As produced by shiny::fileInput, containing name and
 #' datapath columns
+#' @param country_code character. ISO3 code of the country.
+#' @param admin_level character. The administrative level requested e.g. ADM1 or ADM2
 #' @return an sf object
 #' @author Simon Smart <simon.smart@@cantab.net>
-#' @author Paula Moraga
 #' @export
 #'
-# https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
-incid_shape <- function(shpdf) {
-  tempdirname <- dirname(shpdf$datapath[1])
-  for (i in 1:nrow(shpdf)) {
-    file.rename(
-      shpdf$datapath[i],
-      paste0(tempdirname, "/", shpdf$name[i])
-    )
-  }
-  if (nrow(shpdf) == 4){
-    shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-    shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"))
+incid_combo <- function(spdf, country_code, admin_level) {
+
+  file_format <- tools::file_ext(spdf$datapath[1])
+  if (file_format == "csv"){
+    df <- read.csv(spdf$datapath[1])
+  } else if (file_format == "xlsx"){
+    df <- openxlsx::read.xlsx(spdf$datapath[1])
+  } else {
+    common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
+    return()
   }
 
-  #else raise log
+  #Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866.
+
+  url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{country_code}/{admin_level}/")
+  req <- httr::GET(url)
+  cont <- httr::content(req)
+  shape <- sf::st_read(cont$gjDownloadURL)
+
+  shape %>%
+    dplyr::full_join(df)
 
   return(shape)
 }
+
+

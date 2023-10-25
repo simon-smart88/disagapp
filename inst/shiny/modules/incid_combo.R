@@ -1,7 +1,10 @@
 incid_combo_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
+    fileInput(inputId = ns("spread"),
+              label = "Upload incidence spreadsheet",
+              multiple = FALSE,
+              accept = c('.csv','.xlsx')),
     actionButton(ns("run"), "Run module incid_combo")
   )
 }
