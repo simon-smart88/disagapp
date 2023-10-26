@@ -290,6 +290,7 @@ function(input, output, session) {
       poly = NULL,
       logger = NULL,
       meta = NULL,
+      countries = readRDS(system.file("ex/countries.rds", package="geodata")),
       add_map_layer = function(new_names) {
         for (new_name in new_names){
           if (!(new_name %in% self$map_layers)){

@@ -13,10 +13,8 @@ agg_worldpop_module_ui <- function(id) {
 agg_worldpop_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-  countries <- readRDS(system.file("ex/countries.rds", package="geodata"))
-
   output$country_out <- renderUI({
-    selectInput(session$ns("country"), "Select country", countries$NAME)
+    selectInput(session$ns("country"), "Select country", common$countries$NAME)
   })
 
   observeEvent(input$run, {
@@ -28,7 +26,7 @@ agg_worldpop_module_server <- function(id, common) {
     # FUNCTION CALL ####
     showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
                           This window will close once it is complete.", easyClose = FALSE))
-    country_code <- countries$ISO3[countries$NAME == input$country]
+    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     agg_ras <- agg_worldpop(country_code)
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
