@@ -17,13 +17,15 @@ prep_prep_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
     output$id_var_out <- renderUI({
-      gargoyle::watch("incid_user")
+      gargoyle::watch("incid_shape")
+      gargoyle::watch("incid_combo")
       req(common$shape)
       selectInput(session$ns("id_var"), "Select ID variable", names(common$shape), selected = 'ID_2')
     })
 
     output$resp_var_out <- renderUI({
-      gargoyle::watch("incid_user")
+      gargoyle::watch("incid_shape")
+      gargoyle::watch("incid_combo")
       req(common$shape)
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = 'inc')
     })

@@ -38,7 +38,7 @@ incid_shape_module_server <- function(id, common) {
     # METADATA ####
     common$meta$shape$path <- shape_file_path
     # TRIGGER
-    gargoyle::trigger("incid_user")
+    gargoyle::trigger("incid_shape")
   })
 
   return(list(
@@ -53,7 +53,7 @@ incid_shape_module_server <- function(id, common) {
 }
 
 incid_shape_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("incid_user"), {
+  observeEvent(gargoyle::watch("incid_shape"), {
   req(common$shape)
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Incidence")
