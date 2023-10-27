@@ -16,12 +16,13 @@ fit_fit_module_server <- function(id, common) {
     # WARNING ####
 
     # FUNCTION CALL ####
-    common$logger %>% writeLog(type='info', 'Model fitting has begun - please be patient')
+
+    show_loading_modal("Please while wait the model is fitted")
     fitted <- disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,
                                           iid = input$iid)
-
+    close_loading_modal()
     common$logger %>% writeLog('Model fitting has completed')
     # LOAD INTO COMMON ####
     common$fit <- fitted

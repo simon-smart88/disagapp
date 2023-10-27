@@ -16,12 +16,11 @@ cov_access_module_server <- function(id, common) {
       return()
     }
     # FUNCTION CALL ####
-    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
-                          This window will close once it is complete.", easyClose = FALSE))
+    show_loading_modal("Please wait while the data is loaded")
     access <- cov_access(common$shape)
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, access)
-    removeModal()
+    close_loading_modal()
     # METADATA ####
     common$meta$access$used <- TRUE
     # TRIGGER

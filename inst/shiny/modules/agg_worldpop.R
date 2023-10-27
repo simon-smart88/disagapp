@@ -24,13 +24,12 @@ agg_worldpop_module_server <- function(id, common) {
       return()
     }
     # FUNCTION CALL ####
-    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
-                          This window will close once it is complete.", easyClose = FALSE))
+    show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     agg_ras <- agg_worldpop(country_code)
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
-    removeModal()
+    close_loading_modal()
     common$logger %>% writeLog("Worldpop data has been downloaded")
     # METADATA ####
     common$meta$agg$name <- "Population"

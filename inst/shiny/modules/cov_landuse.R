@@ -25,12 +25,11 @@ cov_landuse_module_server <- function(id, common) {
       return()
     }
     # FUNCTION CALL ####
-    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
-                          This window will close once it is complete.", easyClose = FALSE))
+    show_loading_modal("Please wait while the data is loaded")
     land_use <- cov_landuse(common$shape, input$year, input$uses)
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs,land_use)
-    removeModal()
+    close_loading_modal()
     common$logger %>% writeLog("Land use data has been downloaded")
     # METADATA ####
     common$meta$landuse$used <- TRUE

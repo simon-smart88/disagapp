@@ -29,10 +29,8 @@ cov_bioclim_module_ui <- function(id) {
 cov_bioclim_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-    countries <- readRDS(system.file("ex/countries.rds", package="geodata"))
-
     output$country_out <- renderUI({
-      selectInput(session$ns("country"), "Select country", countries$NAME, selected = NULL)
+      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = NULL)
     })
 
   observeEvent(input$run, {
@@ -46,16 +44,15 @@ cov_bioclim_module_server <- function(id, common) {
       return()
     }
     # FUNCTION CALL ####
-    showModal(modalDialog(title = "Info", "Please wait while the data is loaded.
-                          This window will close once it is complete.", easyClose = FALSE))
-    country_code <- countries$ISO3[countries$NAME == input$country]
+    show_loading_modal("Please wait while the data is loaded")
+    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     bioclim <- cov_bioclim(country_code, input$variables)
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, bioclim)
-    removeModal()
+    close_loading_modal()
     common$logger %>% writeLog("Bioclim data has been downloaded")
     # METADATA ####
-    common$meta$bioclim$used <- T
+    common$meta$bioclim$used <- TRUE
     common$meta$bioclim$country <- input$country
     common$meta$bioclim$variables <- input$variables
 

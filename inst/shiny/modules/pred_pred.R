@@ -13,10 +13,11 @@ pred_pred_module_server <- function(id, common) {
     # WARNING ####
 
     # FUNCTION CALL ####
-    common$logger %>% writeLog(type='info', 'Model predictions are being generated - please be patient')
+    show_loading_modal("Model predictions are being generated - please be patient")
     prediction <- disaggregation::predict_model(common$fit)
     prediction$mean_prediction$field <- terra::mask(prediction$mean_prediction$field, common$agg)
     terra::crs(prediction$mean_prediction$field) <- terra::crs(common$covs[[1]])
+    close_loading_modal()
     common$logger %>% writeLog('Model predictions are available')
     # LOAD INTO COMMON ####
     common$pred <- prediction

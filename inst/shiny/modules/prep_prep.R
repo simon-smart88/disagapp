@@ -20,25 +20,22 @@ prep_prep_module_server <- function(id, common) {
       gargoyle::watch("incid_shape")
       gargoyle::watch("incid_combo")
       req(common$shape)
-      selectInput(session$ns("id_var"), "Select ID variable", names(common$shape), selected = 'ID_2')
+      selectInput(session$ns("id_var"), "Select ID variable", names(common$shape))
     })
 
     output$resp_var_out <- renderUI({
       gargoyle::watch("incid_shape")
       gargoyle::watch("incid_combo")
       req(common$shape)
-      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = 'inc')
+      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape))
     })
 
   observeEvent(input$run, {
     # WARNING ####
 
     # FUNCTION CALL ####
-    print(as.character(input$id_var))
-    print(as.character(input$resp_var))
-    print(head(common$shape[, c(as.character(input$id_var), as.character(input$resp_var)), drop = TRUE]))
 
-    common$logger %>% writeLog(type='info', 'Data preparation has started - please be patient')
+    show_loading_modal('Please wait while the data is prepared')
     prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
                                          covariate_rasters = terra::rast(common$covs),
                                          aggregation_raster = common$agg,
@@ -50,7 +47,7 @@ prep_prep_module_server <- function(id, common) {
                                          ncores = 8,
                                          na.action = input$na_action,
                                          makeMesh=input$mesh_make)
-
+    close_loading_modal()
     common$logger %>% writeLog('Data preparation is completed')
     # LOAD INTO COMMON ####
     common$prep <- prep
