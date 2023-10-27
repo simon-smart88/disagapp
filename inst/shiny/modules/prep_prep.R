@@ -44,7 +44,6 @@ prep_prep_module_server <- function(id, common) {
                                          mesh.args = list(max.edge = input$mesh_edge,
                                                           cut = input$mesh_cut,
                                                           offset = input$mesh_offset),
-                                         ncores = 8,
                                          na.action = input$na_action,
                                          makeMesh=input$mesh_make)
     close_loading_modal()
