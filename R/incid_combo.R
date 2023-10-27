@@ -30,7 +30,7 @@ incid_combo <- function(df, area_column, incid_column, country_code, admin_level
     shape <- sf::st_read(cont$gjDownloadURL)
 
     shape <- shape %>%
-      dplyr::full_join(df, by = setNames(column_name, "shapeName"))
+      dplyr::full_join(df, by = setNames(area_column, "shapeName"))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[incid_column]]))),(any(is.na(shape$shapeISO))))){

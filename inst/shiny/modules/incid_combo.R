@@ -48,6 +48,7 @@ incid_combo_module_server <- function(id, common) {
     # WARNING ####
 
     # FUNCTION CALL ####
+    show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     shape <- incid_combo(df = df(),
                          area_column = input$area_column,
@@ -55,6 +56,7 @@ incid_combo_module_server <- function(id, common) {
                          country_code = country_code,
                          admin_level = input$admin,
                          logger = common$logger)
+    close_loading_modal()
     # LOAD INTO COMMON ####
     common$shape <- shape
     # METADATA ####

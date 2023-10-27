@@ -18,9 +18,15 @@ incid_combo(
 
 \item{area_column}{character. The column name of the dataframe containing the administrative areas}
 
+\item{incid_column}{character. The column name of the dataframe containing the incidence data}
+
 \item{country_code}{character. ISO3 code of the country.}
 
 \item{admin_level}{character. The administrative level requested e.g. ADM1 or ADM2}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 an sf object
