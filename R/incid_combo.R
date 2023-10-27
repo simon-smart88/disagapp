@@ -32,18 +32,23 @@ incid_combo <- function(df, area_column, incid_column, country_code, admin_level
     shape <- shape %>%
       dplyr::full_join(df, by = setNames(column_name, "shapeName"))
 
-    #look for NA in merged shapes and log errors
+    #look for any NA in merged shapes, raise a warning if any found
+    if (any(c(any(is.na(shape[[incid_column]]))),(any(is.na(shape$shapeISO))))){
+      logger %>% writeLog(type = "warning")
+      }
+
+    #log the individual errors
     if (any(is.na(shape[[incid_column]]))){
       missing <- shape$shapeName[is.na(shape[[incid_column]])]
       for (m in missing){
-      logger %>% writeLog(glue::glue("Incidence data could not be matched for {m}"))
+      logger %>% writeLog(glue::glue("Area data for {m} could not be matched with incidence data"))
       }
     }
 
     if (any(is.na(shape$shapeISO))){
       missing <- shape$shapeName[is.na(shape$shapeISO)]
       for (m in missing){
-        logger %>% writeLog(glue::glue("The incidence data for {m} could not be matched with an area"))
+        logger %>% writeLog(glue::glue("Incidence data for {m} could not be matched with an area"))
       }
     }
     return(shape)
