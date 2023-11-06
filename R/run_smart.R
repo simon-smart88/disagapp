@@ -14,7 +14,7 @@
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
 run_smart <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
-  app_path <- system.file("shiny", package = "SMART")
+  app_path <- system.file("shiny", package = "shinydisag")
   knitcitations::cleanbib()
   options("citation_format" = "pandoc")
   preexisting_objects <- ls(envir = .GlobalEnv)
