@@ -4,17 +4,22 @@
 \alias{cov_access}
 \title{cov_access}
 \usage{
-cov_access(shape)
+cov_access(shape, layer)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
+
+\item{layer}{character. The layer to be returned - one of: Travel Speed
+Friction Surface (2015), Travel Time to Cities (2015), Motorized Friction
+Surface (2020), Walking Only Friction Surface (2020), Motorized Travel Time
+to Healthcare (2010) or Walking Only Travel Time to Healthcare (2020)}
 }
 \value{
 a SpatRaster object
 }
 \description{
-This function is called by the cov_access module and downloads data on the
-travel time to cities for 2015 as quantified by the Malaria Atlas Project.
+This function is called by the cov_access module and downloads data on
+accessibility using data from the Malaria Atlas Project.
 }
 \author{
 Simon Smart <simon.smart@cantab.net>

@@ -22,12 +22,13 @@ cov_access_module_server <- function(id, common) {
     }
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    access <- cov_access(common$shape)
+    access <- cov_access(common$shape, input$layer)
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, access)
     close_loading_modal()
     # METADATA ####
     common$meta$access$used <- TRUE
+    common$meta$access$layer <- input$layer
     # TRIGGER
     gargoyle::trigger("cov_access")
   })
