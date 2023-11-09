@@ -2,7 +2,9 @@ prep_summary_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    actionButton(ns("run"), "Prepare covariate summary")
+    actionButton(ns("run"), "Prepare covariate summary"),
+    checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
+    actionButton(ns("resample"), "Resample covariates")
   )
 }
 
@@ -13,7 +15,7 @@ prep_summary_module_server <- function(id, common) {
     # WARNING ####
 
     # FUNCTION CALL ####
-    cov_summary <- prep_summary(common$covs)
+    cov_summary <- prep_summary(common$covs, remove = input$remove)
     # LOAD INTO COMMON ####
     common$cov_sum <- cov_summary
     # METADATA ####
@@ -22,8 +24,23 @@ prep_summary_module_server <- function(id, common) {
     gargoyle::trigger("prep_summary")
   })
 
+    observeEvent(input$resample, {
+      # WARNING ####
+      req(input$result_rows_selected)
+      # FUNCTION CALL ####
+      common$covs <- lapply(common$covs, terra::resample, common$covs[[input$result_rows_selected]])
+      common$cov_sum <- prep_summary(common$covs, remove = input$remove)
+      # LOAD INTO COMMON ####
+
+      # METADATA ####
+
+      # TRIGGER
+      gargoyle::trigger("prep_summary")
+    })
+
   output$result <- DT::renderDataTable({
-    common$cov_sum
+    gargoyle::watch("prep_summary")
+    DT::datatable(common$cov_sum,selection = 'single')
   })
 
   return(list(
