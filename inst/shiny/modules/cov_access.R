@@ -5,7 +5,7 @@ cov_access_module_ui <- function(id) {
                                                   "Travel Time to Cities (2015)",
                                                   "Motorized Friction Surface (2020)",
                                                   "Walking Only Friction Surface (2020)",
-                                                  "Motorized Travel Time to Healthcare (2010)",
+                                                  "Motorized Travel Time to Healthcare (2020)",
                                                   "Walking Only Travel Time to Healthcare (2020)")),
     actionButton(ns("run"), "Download data")
   )
