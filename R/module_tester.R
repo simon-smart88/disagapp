@@ -14,6 +14,9 @@ test_module <- function(module){
 #load the module functions
 source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shinydisag"))
 
+#load common
+source(system.file("shiny/common.R", package = "shinydisag"))
+
 #load js
 resourcePath <- system.file("shiny", "www", package = "shinydisag")
 shiny::addResourcePath("smartres", resourcePath)
@@ -52,41 +55,8 @@ test_server <- function(input, output, session) {
     shinyjs::js$scrollLogger()
   })
 
-  #create common class and then initiate instance
-  common_class <- R6::R6Class(
-    classname = "common",
-    public = list(
-      shape = NULL,
-      agg = NULL,
-      covs = NULL,
-      prep = NULL,
-      fit = NULL,
-      pred = NULL,
-      map_layers = NULL,
-      poly = NULL,
-      logger = NULL,
-      meta = NULL,
-      countries = readRDS(system.file("ex/countries.rds", package="geodata")),
-      add_map_layer = function(new_names) {
-        for (new_name in new_names){
-          if (!(new_name %in% self$map_layers)){
-            self$map_layers <- c(self$map_layers,new_name)
-            invisible(self)
-          }
-        }
-      }
-    )
-  )
-
   common <- common_class$new()
   common$logger <- reactiveVal(initLogMsg())
-
-  #load demo raster data if testing a plotting module
-  if (grepl("plot", module)){
-    path <- list.files(system.file("extdata/wc", package = "shinydisag"),
-                       pattern = ".tif$", full.names = TRUE)
-    common$ras <- terra::rast(path)
-  }
 
   # create map
   output$map <- renderLeaflet({
