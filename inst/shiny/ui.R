@@ -10,7 +10,7 @@ tagList(
   navbarPage(
     theme = bslib::bs_theme(version = 3,
                             bootswatch = "spacelab"),
-    id = 'tabs',
+    id = "tabs",
     collapsible = TRUE,
     header = tagList(
       tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
@@ -154,29 +154,29 @@ tagList(
         conditionalPanel(
           "input.tabs != 'intro' & input.tabs != 'rep'",
           tabsetPanel(
-            id = 'main',
+            id = "main",
             tabPanel(
-              'Map',
+              "Map",
               leaflet::leafletOutput("map", height = 700),
               absolutePanel(
                 top = 160, right = 20, width = 150, draggable = TRUE,
                 selectInput("bmap", "",
-                            choices = c('ESRI Topo' = "Esri.WorldTopoMap",
-                                        'Stamen Terrain' = "Stamen.Terrain",
-                                        'Open Topo' = "OpenTopoMap",
-                                        'ESRI Imagery' = "Esri.WorldImagery",
-                                        'ESRI Nat Geo' = 'Esri.NatGeoWorldMap'),
+                            choices = c("ESRI Topo" = "Esri.WorldTopoMap",
+                                        "Stamen Terrain" = "Stamen.Terrain",
+                                        "Open Topo" = "OpenTopoMap",
+                                        "ESRI Imagery" = "Esri.WorldImagery",
+                                        "ESRI Nat Geo" = "Esri.NatGeoWorldMap"),
                             selected = "Esri.WorldTopoMap"
                 )
               )
             ),
             # tabPanel(
-            #   'Table', br(),
-            #   DT::dataTableOutput('table'),
-            #   downloadButton('dl_table', "CSV file")
+            #   "Table", br(),
+            #   DT::dataTableOutput("table"),
+            #   downloadButton("dl_table", "CSV file")
             # ),
             tabPanel(
-              'Results',
+              "Results",
               lapply(COMPONENTS, function(component) {
                 conditionalPanel(
                   glue::glue("input.tabs == '{component}'"),
@@ -185,15 +185,15 @@ tagList(
               })
             ),
             tabPanel(
-              'Component Guidance', icon = icon("circle-info"),
-              uiOutput('gtext_component')
+              "Component Guidance", icon = icon("circle-info"),
+              uiOutput("gtext_component")
             ),
             tabPanel(
-              'Module Guidance', icon = icon("circle-info", class = "mod_icon"),
-              uiOutput('gtext_module')
+              "Module Guidance", icon = icon("circle-info", class = "mod_icon"),
+              uiOutput("gtext_module")
             ),
             tabPanel(
-              'Save', icon = icon("floppy-disk", class = "save_icon"),
+              "Save", icon = icon("floppy-disk", class = "save_icon"),
               br(),
               h5(em("Note: To save your session code or metadata, use the Reproduce component")),
               wellPanel(
@@ -253,28 +253,28 @@ tagList(
         conditionalPanel(
           "input.tabs == 'intro'",
           tabsetPanel(
-            id = 'introTabs',
+            id = "introTabs",
             tabPanel(
-              'About',
+              "About",
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
-              'Team',
+              "Team",
               fluidRow(
                 column(8, includeMarkdown("Rmd/text_team.Rmd")
                 )
               )
             ),
             tabPanel(
-              'How To Use',
+              "How To Use",
               includeMarkdown("Rmd/text_how_to_use.Rmd")
             ),
             tabPanel(
-              'Load Prior Session',
+              "Load Prior Session",
               h4("Load session"),
               includeMarkdown("Rmd/text_loadsesh.Rmd"),
               fileInput("load_session", "", accept = ".rds"),
-              actionButton('goLoad_session', 'Load RDS')
+              actionButton("goLoad_session", "Load RDS")
             )
           )
         )
