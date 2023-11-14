@@ -30,6 +30,7 @@ base_module_configs <- c(
   "modules/cov_landuse.yml",
   "modules/agg_worldpop.yml",
   "modules/agg_upload.yml",
+  "modules/agg_uniform.yml",
   "modules/prep_summary.yml",
   "modules/prep_prep.yml",
   "modules/fit_fit.yml",

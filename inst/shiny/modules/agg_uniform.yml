@@ -1,0 +1,5 @@
+component: "agg"
+short_name: "Uniform"
+long_name: "Create a uniform aggregation raster"
+authors: "Simon E H Smart"
+package: [terra]
