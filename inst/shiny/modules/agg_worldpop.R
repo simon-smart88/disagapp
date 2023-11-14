@@ -3,6 +3,8 @@ agg_worldpop_module_ui <- function(id) {
   tagList(
     # UI
     uiOutput(ns("country_out")),
+    selectInput(ns("method"), "Method", choices = c("Constrained", "Unconstrained")),
+    selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     checkboxInput(ns("log"),
                   label = 'Plot as log values',
                   value = TRUE),
@@ -24,7 +26,7 @@ agg_worldpop_module_server <- function(id, common) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    agg_ras <- agg_worldpop(country_code)
+    agg_ras <- agg_worldpop(country_code, input$method, input$resolution)
 
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
