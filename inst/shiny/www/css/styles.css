@@ -21,15 +21,7 @@ hr {
     color: #333; /* old IE */
     background-color: #333; /* Modern Browsers */
 }
-.shiny-progress .bar {
-  background-color:#FF0000;
-  opacity:0.8;
-}
-.shiny-progress .progress {
-  height:7px;
-}
 .componentName {
-  color:#dd4814;
   display:inline-block;
   font-size:16pt;
   font-weight:bold;
