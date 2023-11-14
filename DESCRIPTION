@@ -30,6 +30,7 @@ Imports:
     rlang,
     rmarkdown,
     shinyalert,
+    shinybusy,
     shinyjs,
     shinytest2,
     shinyWidgets (>= 0.6.0),
