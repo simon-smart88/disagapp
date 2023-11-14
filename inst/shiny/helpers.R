@@ -116,3 +116,18 @@ help_comp_ui <- function(name) {
   actionLink(name, label = "", icon = icon("circle-question"),
              class = "compHelpButton")
 }
+
+# UI for country drop down list
+country_out <- function(session, common){
+  gargoyle::init("country_out")
+  renderUI({
+    gargoyle::watch("country_out")
+    if (is.null(common$selected_country)){
+      selectInput(session$ns("country"), "Select country", c('',common$countries$NAME))
+    } else {
+      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = common$selected_country)
+    }
+  })
+}
+
+

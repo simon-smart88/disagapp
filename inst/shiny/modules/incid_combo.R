@@ -16,9 +16,7 @@ incid_combo_module_ui <- function(id) {
 incid_combo_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-    output$country_out <- renderUI({
-      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = NULL)
-    })
+    output$country_out <- country_out(session, common)
 
     df <- reactive({
       req(input$spread)
@@ -59,6 +57,7 @@ incid_combo_module_server <- function(id, common) {
     close_loading_modal()
     # LOAD INTO COMMON ####
     common$shape <- shape
+    common$selected_country <- input$country
     # METADATA ####
     common$meta$shape$combo <- TRUE
     common$meta$shape$datapath <- input$spread$name[1]
@@ -68,6 +67,7 @@ incid_combo_module_server <- function(id, common) {
     common$meta$shape$country <- country_code
     # TRIGGER
     gargoyle::trigger("incid_combo")
+    gargoyle::trigger("country_out")
   })
 
   return(list(

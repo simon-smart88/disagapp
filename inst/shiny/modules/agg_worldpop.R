@@ -13,9 +13,7 @@ agg_worldpop_module_ui <- function(id) {
 agg_worldpop_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-  output$country_out <- renderUI({
-    selectInput(session$ns("country"), "Select country", common$countries$NAME)
-  })
+  output$country_out <- country_out(session, common)
 
   observeEvent(input$run, {
     # WARNING ####
@@ -27,15 +25,20 @@ agg_worldpop_module_server <- function(id, common) {
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     agg_ras <- agg_worldpop(country_code)
+
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
+    common$selected_country <- input$country
     close_loading_modal()
     common$logger %>% writeLog("Worldpop data has been downloaded")
+
     # METADATA ####
     common$meta$agg$name <- "Population"
     common$meta$agg$log <- input$log
+
     # TRIGGER
     gargoyle::trigger("agg_worldpop")
+    gargoyle::trigger("country_out")
   })
 
   return(list(
