@@ -25,6 +25,7 @@ Imports:
     knitcitations,
     leafem,
     magrittr,
+    openxlsx,
     raster,
     RColorBrewer,
     rlang,
