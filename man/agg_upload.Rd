@@ -4,10 +4,10 @@
 \alias{agg_upload}
 \title{agg_upload}
 \usage{
-agg_upload(aggdf)
+agg_upload(path)
 }
 \arguments{
-\item{ras_path}{character. Path to file to be loaded}
+\item{path}{character. The location of the file to be loaded.}
 }
 \value{
 a SpatRaster object

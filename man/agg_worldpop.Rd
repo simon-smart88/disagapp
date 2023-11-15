@@ -4,10 +4,14 @@
 \alias{agg_worldpop}
 \title{agg_worldpop}
 \usage{
-agg_worldpop(country_code)
+agg_worldpop(country_code, method, resolution)
 }
 \arguments{
 \item{country_code}{character. ISO3 code of the country.}
+
+\item{method}{character. The method used to estimate population. Either Constrained or Unconstrained.}
+
+\item{resolution}{character. The resolution of the returned raster. Either 100m ior 1km.}
 }
 \value{
 a SpatRaster object

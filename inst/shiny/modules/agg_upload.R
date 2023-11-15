@@ -31,14 +31,16 @@ agg_upload_module_server <- function(id, common) {
       aggdf <- input$agg
     }
 
-    # check all files are .tif
+    # check all files are .tif(?)
+
+
     if (input$example == TRUE){
     aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="shinydisag"), full.names = TRUE),
                         name = list.files(system.file("extdata/aggregation", package="shinydisag")))
     }
     # FUNCTION CALL ####
 
-    agg_raster <- agg_upload(aggdf)
+    agg_raster <- agg_upload(aggdf$datapath)
 
     # LOAD INTO COMMON ####
     common$agg <- agg_raster

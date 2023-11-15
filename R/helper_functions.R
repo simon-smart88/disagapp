@@ -41,8 +41,10 @@ printVecAsis <- function(x, asChar = FALSE) {
 spurious <- function(x) {
   DT::renderDataTable(x)
   RColorBrewer::brewer.pal(x)
+  R6::R6Class(x)
   leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
+  gargoyle::init(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)

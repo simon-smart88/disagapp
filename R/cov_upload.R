@@ -3,13 +3,14 @@
 #' This function is called by the cov_upload module and loads a
 #'  raster image.
 #'
-#' @param ras_path character. Path to file to be loaded
+#' @param path_df data.frame. Containing datapath and name columns of the
+#' file(s) to be uploaded.
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
- cov_upload <- function(covdf) {
-  covs <- lapply(covdf$datapath,terra::rast)
-  names(covs) <- as.vector(covdf$name)
+ cov_upload <- function(path_df) {
+  covs <- lapply(path_df$datapath,terra::rast)
+  names(covs) <- as.vector(path_df$name)
   return(covs)
 }

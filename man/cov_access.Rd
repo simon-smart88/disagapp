@@ -12,7 +12,7 @@ cov_access(shape, layer)
 \item{layer}{character. The layer to be returned - one of: Travel Speed
 Friction Surface (2015), Travel Time to Cities (2015), Motorized Friction
 Surface (2020), Walking Only Friction Surface (2020), Motorized Travel Time
-to Healthcare (2010) or Walking Only Travel Time to Healthcare (2020)}
+to Healthcare (2020) or Walking Only Travel Time to Healthcare (2020)}
 }
 \value{
 a SpatRaster object

@@ -4,7 +4,7 @@
 #' population density for a single country from worldpop
 #'
 #' @param country_code character. ISO3 code of the country.
-#' @param method. character. The method used to estimate population. Either Constrained or Unconstrained.
+#' @param method character. The method used to estimate population. Either Constrained or Unconstrained.
 #' @param resolution character. The resolution of the returned raster. Either 100m ior 1km.
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
@@ -31,8 +31,3 @@ pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum")
 names(pop_ras) <- "Population"
 return(pop_ras)
 }
-
-BEN/ben_ppp_2020_constrained.tif
-
-
-https://data.worldpop.org/GIS/Population/Global_2000_2020/2020/DZA/dza_ppp_2020.tif

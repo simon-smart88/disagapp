@@ -4,10 +4,11 @@
 \alias{cov_upload}
 \title{cov_upload}
 \usage{
-cov_upload(covdf)
+cov_upload(path_df)
 }
 \arguments{
-\item{ras_path}{character. Path to file to be loaded}
+\item{path_df}{data.frame. Containing datapath and name columns of the
+file(s) to be uploaded.}
 }
 \value{
 a SpatRaster object

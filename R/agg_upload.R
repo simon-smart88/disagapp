@@ -3,12 +3,12 @@
 #' This function is called by the agg_upload module and loads a
 #'  raster image.
 #'
-#' @param ras_path character. Path to file to be loaded
+#' @param path character. The location of the file to be loaded.
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
- agg_upload <- function(aggdf) {
-  agg <- terra::rast(aggdf$datapath)
+ agg_upload <- function(path) {
+  agg <- terra::rast(path)
   agg
 }
