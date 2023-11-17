@@ -1,5 +1,5 @@
-#' @title Run \emph{SMART} Application
-#' @description This function runs the \emph{SMART} application in the user's
+#' @title Run \emph{shinydisag} Application
+#' @description This function runs the \emph{shinydisag} application in the user's
 #' default web browser.
 #' @param launch.browser Whether or not to launch a new browser window.
 #' @param port The port for the shiny server to listen on. Defaults to a
