@@ -126,12 +126,12 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 ####################### #
 # LEAFLET #
 ####################### #
-#' @title colour_pallete
-#' @description For internal use. Create colour palletes
+#' @title colour_palette
+#' @description For internal use. Create colour palettes
 #' @param palette The colour palette to use.
 #' @keywords internal
 #' @export
-colour_pallete <- function(palette){
+colour_palette <- function(palette){
 pal <- RColorBrewer::brewer.pal(9, palette)
 pal_ramp <- colorRampPalette(pal[1:9])
 return(pal_ramp)
