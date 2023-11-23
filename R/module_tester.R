@@ -1,5 +1,5 @@
-#' @title Run an individual \emph{SMART} module for testing
-#' @description This function runs the selected \emph{SMART} module
+#' @title Run an individual \emph{shinyscholar} module for testing
+#' @description This function runs the selected \emph{shinyscholar} module
 #' @param module The name of the module to run
 #'
 #' @examples

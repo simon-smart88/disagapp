@@ -154,7 +154,7 @@ function(input, output, session) {
   # handler for R Markdown download
   output$dlRMD <- downloadHandler(
     filename = function() {
-      paste0("SMART-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
+      paste0("shinyscholar-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
     },
     content = function(file) {
       md_files <- c()
@@ -246,7 +246,7 @@ function(input, output, session) {
       bib_file <- "Rmd/references.bib"
       temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
       # Package always cited
-      knitcitations::citep(citation("SMART"))
+      knitcitations::citep(citation("shinyscholar"))
       knitcitations::citep(citation("knitcitations"))
       knitcitations::citep(citation("knitr"))
       knitcitations::citep(citation("rmarkdown"))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/module_tester.R
 \name{test_module}
 \alias{test_module}
-\title{Run an individual \emph{SMART} module for testing}
+\title{Run an individual \emph{shinyscholar} module for testing}
 \usage{
 test_module(module)
 }
@@ -10,7 +10,7 @@ test_module(module)
 \item{module}{The name of the module to run}
 }
 \description{
-This function runs the selected \emph{SMART} module
+This function runs the selected \emph{shinyscholar} module
 }
 \examples{
 if(interactive()) {

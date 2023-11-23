@@ -2,10 +2,9 @@ Package: shinydisag
 Version: 1.0.0
 Date: 2023-08-03
 Title: Shiny Modular Academic Reproducible Template
-Description: The 'shiny' application SMART is a modular platform for 
-    creating reproducible applications to academic standards. 'SMART' is 
-    forked from 'wallace' and provides a template for producing applications 
-    that are interactive, reproducible, adaptable and built to high standards.
+Description: The 'shiny' application shinydisag is a modular platform for 
+    creating reproducible applications to academic standards. 'shinydisag' is 
+    forked from 'wallace'
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:

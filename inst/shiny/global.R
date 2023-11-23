@@ -1,5 +1,5 @@
 library(glue)
-library(SMART)
+library(shinyscholar)
 library(shinydisag)
 
 MB <- 1024^2
@@ -20,7 +20,7 @@ COMPONENTS <- c("incid", "cov", "agg", "prep", "fit", "pred", "rep")
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
-# Load all SMART base modules
+# Load all shinyscholar base modules
 base_module_configs <- c(
   "modules/incid_shape.yml",
   "modules/incid_combo.yml",

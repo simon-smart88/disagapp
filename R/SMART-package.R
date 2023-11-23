@@ -1,10 +1,10 @@
-#' @name SMART-package
-#' @aliases SMART
-#' @aliases SMART-package
+#' @name shinyscholar-package
+#' @aliases shinyscholar
+#' @aliases shinyscholar-package
 #' @docType package
-#' @title \emph{SMART}: A modular platform for creating reproducible applications
-#' @description \emph{SMART} is a \code{shiny} app template for creating
-#'   reproducible applications to academic standards. SMART is forked from 'wallace'
+#' @title \emph{shinyscholar}: A modular platform for creating reproducible applications
+#' @description \emph{shinyscholar} is a \code{shiny} app template for creating
+#'   reproducible applications to academic standards. shinyscholar is forked from 'wallace'
 #'   and provides a template for producing applications that are interactive,
 #'   reproducible, adaptable and built to high standards. It was created to ease
 #'   the process of creating complex workflows in a single, streamlined GUI interface.
