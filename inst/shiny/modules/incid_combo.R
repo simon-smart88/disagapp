@@ -39,7 +39,7 @@ incid_combo_module_server <- function(id, common) {
 
     output$incid_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("incid_column"), "Select incidence column", colnames(df()))
+      selectInput(session$ns("response_column"), "Select response column", colnames(df()))
     })
 
   observeEvent(input$run, {
@@ -50,10 +50,11 @@ incid_combo_module_server <- function(id, common) {
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     shape <- incid_combo(df = df(),
                          area_column = input$area_column,
-                         incid_column = input$incid_column,
+                         incid_column = input$response_column,
                          country_code = country_code,
                          admin_level = input$admin,
                          logger = common$logger)
+
     close_loading_modal()
     # LOAD INTO COMMON ####
     common$shape <- shape
@@ -61,7 +62,7 @@ incid_combo_module_server <- function(id, common) {
     # METADATA ####
     common$meta$shape$combo <- TRUE
     common$meta$shape$datapath <- input$spread$name[1]
-    common$meta$shape$incid_column <- input$incid_column
+    common$meta$shape$response <- input$response_column
     common$meta$shape$area_column <- input$area_column
     common$meta$shape$admin_level <- input$admin
     common$meta$shape$country <- country_code
@@ -86,13 +87,13 @@ incid_combo_module_map <- function(map, common) {
     req(common$shape)
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Incidence")
-    incidence_values <- as.numeric(common$shape[[common$meta$shape$incid_column]])
-    pal <- colorBin("YlOrRd", domain = incidence_values, bins = 9,na.color ="#00000000")
+    response <- as.numeric(common$shape[[common$meta$shape$incid_column]])
+    pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
     map %>%
       clearGroup("Incidence") %>%
-      addPolygons(data = common$shape, fillColor = ~pal(incidence_values), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
+      addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = incidence_values, group = "Incidence", title = "Incidence") %>%
+      addLegend(position = "bottomright", pal = pal, values = response, group = "Incidence", title = "Incidence") %>%
       addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
   })
 }
