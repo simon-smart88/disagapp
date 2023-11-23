@@ -6,6 +6,7 @@ incid_shape_module_ui <- function(id) {
               multiple = TRUE,
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
     checkboxInput(ns("example"), "Use example data", TRUE),
+    uiOutput(ns("resp_var_out")),
     actionButton(ns("run"), "Load data")
   )
 }
@@ -13,30 +14,53 @@ incid_shape_module_ui <- function(id) {
 incid_shape_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
+    #not using the usual paradigm in this module due to needing to specify the response variable
+   shape <- reactive({
+
+      # if (input$example == FALSE){
+      #   req(input$shape)
+      #   shpdf <- input$shape
+      # }
+      #
+      # if (input$example == TRUE){
+        print('sadas')
+        shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
+                            name = list.files(system.file("extdata/shapes", package="shinydisag")))
+      # }
+
+      # WARNING ####
+      if (nrow(shpdf) != 4) {
+        common$logger %>% writeLog(type = "error", "Please upload four files")
+        return()
+      }
+
+      # FUNCTION CALL ####
+      shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
+      shape <- incid_shape(shpdf)
+
+      # METADATA ####
+      common$meta$shape$path <- shape_file_path
+
+      return(shape)
+    })
+
+
+
+   output$resp_var_out <- renderUI({
+     req(shape())
+     selectInput(session$ns("resp_var"), "Select response variable", names(shape()))
+   })
+
+
   observeEvent(input$run, {
 
-    if (input$example == FALSE){
-      shpdf <- input$shape
-    }
 
-    if (input$example == TRUE){
-      shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
-                          name = list.files(system.file("extdata/shapes", package="shinydisag")))
-    }
-
-    # WARNING ####
-    if (nrow(shpdf) != 4) {
-      common$logger %>% writeLog(type = "error", "Please upload four files")
-      return()
-    }
-
-    # FUNCTION CALL ####
-    shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-    shape <- incid_shape(shpdf)
     # LOAD INTO COMMON ####
-    common$shape <- shape
-    # METADATA ####
-    common$meta$shape$path <- shape_file_path
+    common$shape <- shape()
+
+    # METADATA
+    common$meta$shape$response <- input$resp_var
+
     # TRIGGER
     gargoyle::trigger("incid_shape")
   })
@@ -55,14 +79,16 @@ incid_shape_module_server <- function(id, common) {
 incid_shape_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("incid_shape"), {
   req(common$shape)
+  req(common$meta$shape$response)
+  response <- common$meta$shape$response
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Incidence")
-  pal <- colorBin("YlOrRd", domain = as.numeric(common$shape$inc), bins = 9,na.color ="#00000000")
+  pal <- colorBin("viridis", domain = as.numeric(common$shape[[response]]), bins= 9 ,na.color ="#00000000")
   map %>%
     clearGroup("Incidence") %>%
-    addPolygons(data = common$shape, fillColor = ~pal(as.numeric(common$shape$inc)), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
+    addPolygons(data = common$shape, fillColor = ~pal(as.numeric(common$shape[[response]])), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = as.numeric(common$shape$inc), group = "Incidence", title = "Incidence") %>%
+    addLegend(position = "bottomright", pal = pal, values = as.numeric(common$shape[[response]]), group = "Incidence", title = "Incidence") %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
   })
   }
