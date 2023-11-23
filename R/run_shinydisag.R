@@ -7,13 +7,13 @@
 #'
 #' @examples
 #' if(interactive()) {
-#' run_smart()
+#' run_shinydisag()
 #' }
 #' @author Jamie Kass <jkass@@gradcenter.cuny.edu>
 #' @author Gonzalo E. Pinilla-Buitrago <gpinillabuitrago@@gradcenter.cuny.edu>
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
-run_smart <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
+run_shinydisag <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
   app_path <- system.file("shiny", package = "shinydisag")
   knitcitations::cleanbib()
   options("citation_format" = "pandoc")
