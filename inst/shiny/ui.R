@@ -1,4 +1,4 @@
-resourcePath <- system.file("shiny", "www", package = "SMART")
+resourcePath <- system.file("shiny", "www", package = "shinydisag")
 shiny::addResourcePath("shiny-disag-res", resourcePath)
 
 tagList(
