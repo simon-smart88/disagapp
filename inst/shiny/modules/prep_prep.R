@@ -27,7 +27,7 @@ prep_prep_module_server <- function(id, common) {
       gargoyle::watch("incid_shape")
       gargoyle::watch("incid_combo")
       req(common$shape)
-      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape))
+      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = common$meta$shape$response)
     })
 
   observeEvent(input$run, {
