@@ -14,7 +14,8 @@ incid_shape_module_ui <- function(id) {
 incid_shape_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
-    #not using the usual paradigm in this module due to needing to specify the response variable
+    #not using the usual paradigm in this module due to needing to specify
+    #the response variable prior to running
    shape <- reactive({
 
       if (input$example == FALSE){
@@ -47,12 +48,23 @@ incid_shape_module_server <- function(id, common) {
 
    output$resp_var_out <- renderUI({
      req(shape())
-     selectInput(session$ns("resp_var"), "Select response variable", names(shape()))
+     selectInput(session$ns("resp_var"), "Select response variable", c('',names(shape())))
    })
 
 
   observeEvent(input$run, {
 
+    # WARNING ####
+    if (input$resp_var == '') {
+      common$logger %>% writeLog(type = "error", "Please select a response variable")
+      return()
+    }
+
+    # commented out for now while example data is in use
+    # if (is.null(input$shape)) {
+    #   common$logger %>% writeLog(type = "error", "Please upload a shapefile")
+    #   return()
+    # }
 
     # LOAD INTO COMMON ####
     common$shape <- shape()
@@ -78,7 +90,6 @@ incid_shape_module_server <- function(id, common) {
 incid_shape_module_map <- function(map, common) {
   observeEvent(gargoyle::watch("incid_shape"), {
   req(common$shape)
-  req(common$meta$shape$response)
   response <- as.numeric(common$shape[[common$meta$shape$response]])
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Incidence")
