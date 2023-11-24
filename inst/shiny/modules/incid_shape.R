@@ -26,6 +26,7 @@ incid_shape_module_server <- function(id, common) {
       if (input$example == TRUE){
         shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
                             name = list.files(system.file("extdata/shapes", package="shinydisag")))
+        updateSelectInput(session, "resp_var", selected = 'inc')
       }
 
       # WARNING ####
@@ -96,7 +97,7 @@ incid_shape_module_map <- function(map, common) {
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
   map %>%
     clearGroup("Incidence") %>%
-    addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
+    addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence", popup = ~as.character(round(response,0))) %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLegend(position = "bottomright", pal = pal, values = response, group = "Incidence", title = "Incidence") %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))

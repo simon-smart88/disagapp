@@ -1,0 +1,5 @@
+component: "incid"
+short_name: "Edit data"
+long_name: "Edit incidence data"
+authors: "Simon E H Smart"
+package: [sf, leaflet]

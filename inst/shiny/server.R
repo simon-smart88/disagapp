@@ -78,9 +78,7 @@ function(input, output, session) {
   output$map <- renderLeaflet(
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
-      addProviderTiles("Esri.WorldTopoMap") %>%
-      addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
-                     markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
+      addProviderTiles("Esri.WorldTopoMap")
   )
 
   # create map proxy to make further changes to existing map

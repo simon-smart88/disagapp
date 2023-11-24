@@ -15,7 +15,8 @@ an sf object
 }
 \description{
 This function is called by the incid_shape module and loads a
- shapefile into an sf object
+ shapefile into an sf object. Inspired by a function written by Paula Moraga
+ here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 }
 \author{
 Simon Smart <simon.smart@cantab.net>
