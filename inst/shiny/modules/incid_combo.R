@@ -4,11 +4,11 @@ incid_combo_module_ui <- function(id) {
     fileInput(inputId = ns("spread"),
               label = "Upload incidence spreadsheet",
               multiple = FALSE,
-              accept = c('.csv','.xlsx')),
+              accept = c(".csv", ".xlsx")),
     uiOutput(ns("area_column_out")),
     uiOutput(ns("incid_column_out")),
     uiOutput(ns("country_out")),
-    selectInput(ns("admin"), "Administrative level", c("ADM1","ADM2")),
+    selectInput(ns("admin"), "Administrative level", c("ADM1", "ADM2")),
     actionButton(ns("run"), "Run module incid_combo")
   )
 }
@@ -88,7 +88,7 @@ incid_combo_module_map <- function(map, common) {
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Incidence")
     response <- as.numeric(common$shape[[common$meta$shape$incid_column]])
-    pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+    pal <- colorBin("viridis", domain = response, bins = 9, na.color = "#00000000")
     map %>%
       clearGroup("Incidence") %>%
       addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence") %>%
