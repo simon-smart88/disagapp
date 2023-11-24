@@ -17,16 +17,15 @@ incid_shape_module_server <- function(id, common) {
     #not using the usual paradigm in this module due to needing to specify the response variable
    shape <- reactive({
 
-      # if (input$example == FALSE){
-      #   req(input$shape)
-      #   shpdf <- input$shape
-      # }
-      #
-      # if (input$example == TRUE){
-        print('sadas')
+      if (input$example == FALSE){
+        req(input$shape)
+        shpdf <- input$shape
+      }
+
+      if (input$example == TRUE){
         shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
                             name = list.files(system.file("extdata/shapes", package="shinydisag")))
-      # }
+      }
 
       # WARNING ####
       if (nrow(shpdf) != 4) {
