@@ -1,7 +1,8 @@
 #' @title incid_shape
 #' @description
 #' This function is called by the incid_shape module and loads a
-#'  shapefile into an sf object
+#'  shapefile into an sf object. Inspired by a function written by Paula Moraga
+#'  here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 #'
 #' @param shpdf dataframe. As produced by shiny::fileInput, containing name and
 #' datapath columns
@@ -10,7 +11,7 @@
 #' @author Paula Moraga
 #' @export
 #'
-# https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
+#
 incid_shape <- function(shpdf) {
   tempdirname <- dirname(shpdf$datapath[1])
   for (i in 1:nrow(shpdf)) {
@@ -22,6 +23,10 @@ incid_shape <- function(shpdf) {
   if (nrow(shpdf) == 4){
     shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
     shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"))
+    crs <- sf::st_crs(shape)
+    if (crs$input != "EPSG:4326"){
+      shape <- sf::st_transform(shape, crs = 4326)
+    }
   }
 
   #else raise log
