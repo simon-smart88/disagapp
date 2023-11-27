@@ -1,6 +1,6 @@
 component: "incid"
 short_name: "Upload spreadsheet"
-long_name: "Upload incidence spreadsheet"
+long_name: "Upload spreadsheet and download boundaries"
 authors: "Simon E H Smart"
 package: [sf, openxlsx]
 

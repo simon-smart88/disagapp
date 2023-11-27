@@ -1,4 +1,4 @@
-incid_combo_module_ui <- function(id) {
+incid_download_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     fileInput(inputId = ns("spread"),
@@ -9,11 +9,11 @@ incid_combo_module_ui <- function(id) {
     uiOutput(ns("incid_column_out")),
     uiOutput(ns("country_out")),
     selectInput(ns("admin"), "Administrative level", c("ADM1", "ADM2")),
-    actionButton(ns("run"), "Run module incid_combo")
+    actionButton(ns("run"), "Run module incid_download")
   )
 }
 
-incid_combo_module_server <- function(id, common) {
+incid_download_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
     output$country_out <- country_out(session, common)
@@ -48,7 +48,7 @@ incid_combo_module_server <- function(id, common) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    shape <- incid_combo(df = df(),
+    shape <- incid_download(df = df(),
                          area_column = input$area_column,
                          incid_column = input$response_column,
                          country_code = country_code,
@@ -60,14 +60,14 @@ incid_combo_module_server <- function(id, common) {
     common$shape <- shape
     common$selected_country <- input$country
     # METADATA ####
-    common$meta$shape$combo <- TRUE
+    common$meta$shape$download <- TRUE
     common$meta$shape$datapath <- input$spread$name[1]
     common$meta$shape$response <- input$response_column
     common$meta$shape$area_column <- input$area_column
     common$meta$shape$admin_level <- input$admin
     common$meta$shape$country <- country_code
     # TRIGGER
-    gargoyle::trigger("incid_combo")
+    gargoyle::trigger("incid_download")
     gargoyle::trigger("country_out")
   })
 
@@ -82,8 +82,8 @@ incid_combo_module_server <- function(id, common) {
 })
 }
 
-incid_combo_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("incid_combo"), {
+incid_download_module_map <- function(map, common) {
+  observeEvent(gargoyle::watch("incid_download"), {
     req(common$shape)
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Incidence")
@@ -98,10 +98,10 @@ incid_combo_module_map <- function(map, common) {
   })
 }
 
-incid_combo_module_rmd <- function(common) {
+incid_download_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    incid_combo_knit = common$meta$shape$combo,
+    incid_download_knit = common$meta$shape$download,
     data_path <- common$meta$shape$datapath,
     incid_column = common$meta$shape$incid_column,
     area_column = common$meta$shape$area_column,

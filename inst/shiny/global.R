@@ -23,7 +23,7 @@ COMPONENT_MODULES <- list()
 # Load all shinyscholar base modules
 base_module_configs <- c(
   "modules/incid_shape.yml",
-  "modules/incid_combo.yml",
+  "modules/incid_download.yml",
   "modules/incid_edit.yml",
   "modules/cov_upload.yml",
   "modules/cov_access.yml",

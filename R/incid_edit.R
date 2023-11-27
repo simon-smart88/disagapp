@@ -1,6 +1,6 @@
 #' @title incid_edit
 #' @description
-#' This function is called by the incid_combo module and merges incidence data
+#' This function is called by the incid_edit module and merges incidence data
 #'  from a spreadsheet with boundary data into an sf object
 #'
 #' @param shape sf. The sf object to be edited

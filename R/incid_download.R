@@ -1,6 +1,6 @@
-#' @title incid_combo
+#' @title incid_download
 #' @description
-#' This function is called by the incid_combo module and merges incidence data
+#' This function is called by the incid_download module and merges incidence data
 #'  from a spreadsheet with boundary data into an sf object
 #'
 #' @param df dataframe. Containing the incidence data and the name of the administrative area
@@ -15,7 +15,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 #'
-incid_combo <- function(df, area_column, incid_column, country_code, admin_level, logger = NULL) {
+incid_download <- function(df, area_column, incid_column, country_code, admin_level, logger = NULL) {
 
   #Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866.
 
