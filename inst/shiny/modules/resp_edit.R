@@ -1,7 +1,7 @@
 resp_edit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside","Inside")),
+    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside", "Inside")),
     actionButton(ns("run"), "Edit shapefile")
   )
 }
@@ -11,7 +11,10 @@ resp_edit_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(common$shape)) {
+      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      return()
+    }
     # FUNCTION CALL ####
     shape <- resp_edit(common$shape, common$poly, input$type, common$logger)
 
@@ -40,7 +43,8 @@ resp_edit_module_server <- function(id, common) {
 resp_edit_module_map <- function(map, common) {
   map %>%
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
-                   markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE)
+                   markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
+                   editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
 
   #observeEvent(gargoyle::watch("resp_edit"), {
   on("resp_edit", {
