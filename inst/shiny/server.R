@@ -63,15 +63,11 @@ function(input, output, session) {
   })
 
   # Help Module
-  observeEvent(input$resp_shapeHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$resp_editHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$resp_downloadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$resp_combineHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$agg_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$fit_fitHelp, updateTabsetPanel(session, "main", "Module Guidance"))
-  observeEvent(input$pred_predHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  lapply(help_components, function(component) {
+    lapply(COMPONENT_MODULES[[component]], function(module) {
+      btn_id <- paste0(module$id, "Help")
+      observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
+      })})
 
   ######################## #
   ### MAPPING LOGIC ####
