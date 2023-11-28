@@ -42,7 +42,8 @@ incid_edit_module_map <- function(map, common) {
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE)
 
-  observeEvent(gargoyle::watch("incid_edit"), {
+  #observeEvent(gargoyle::watch("incid_edit"), {
+  on("incid_edit", {
     print("incid_edit")
     req(common$shape)
     response <- as.numeric(common$shape[[common$meta$shape$response]])
