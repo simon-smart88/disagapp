@@ -48,8 +48,8 @@ tagList(
             help_comp_ui("respHelp"),
             radioButtons(
               "respSel", "Modules Available:",
-              choices = insert_modules_options("resp")#,
-              #selected = character(0)
+              choices = insert_modules_options("resp"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("resp")
@@ -61,8 +61,8 @@ tagList(
             help_comp_ui("covHelp"),
             radioButtons(
               "covSel", "Modules Available:",
-              choices = insert_modules_options("cov")#,
-              #selected = character(0)
+              choices = insert_modules_options("cov"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("cov")
@@ -74,8 +74,8 @@ tagList(
             help_comp_ui("aggHelp"),
             radioButtons(
               "aggSel", "Modules Available:",
-              choices = insert_modules_options("agg")#,
-              #selected = character(0)
+              choices = insert_modules_options("agg"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("agg")
