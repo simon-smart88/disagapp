@@ -15,17 +15,17 @@ source("helpers.R")
 
 # The components that have modules. These names must match the values of the
 # tabs of the components in the UI.
-COMPONENTS <- c("incid", "cov", "agg", "prep", "fit", "pred", "rep")
+COMPONENTS <- c("resp", "cov", "agg", "prep", "fit", "pred", "rep")
 
 # Information about modules that various parts of the app need access to
 COMPONENT_MODULES <- list()
 
 # Load all shinyscholar base modules
 base_module_configs <- c(
-  "modules/incid_shape.yml",
-  "modules/incid_combine.yml",
-  "modules/incid_download.yml",
-  "modules/incid_edit.yml",
+  "modules/resp_shape.yml",
+  "modules/resp_combine.yml",
+  "modules/resp_download.yml",
+  "modules/resp_edit.yml",
   "modules/cov_upload.yml",
   "modules/cov_access.yml",
   "modules/cov_bioclim.yml",

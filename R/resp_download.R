@@ -1,11 +1,11 @@
-#' @title incid_download
+#' @title resp_download
 #' @description
-#' This function is called by the incid_download module and merges incidence data
+#' This function is called by the resp_download module and merges response data
 #'  from a spreadsheet with boundary data into an sf object
 #'
-#' @param df dataframe. Containing the incidence data and the name of the administrative area
+#' @param df dataframe. Containing the response data and the name of the administrative area
 #' @param area_column character. The column name of the dataframe containing the administrative areas
-#' @param incid_column character. The column name of the dataframe containing the incidence data
+#' @param resp_column character. The column name of the dataframe containing the response data
 #' @param country_code character. ISO3 code of the country.
 #' @param admin_level character. The administrative level requested e.g. ADM1 or ADM2
 #' @param logger Stores all notification messages to be displayed in the Log
@@ -15,7 +15,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 #'
-incid_download <- function(df, area_column, incid_column, country_code, admin_level, logger = NULL) {
+resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
   #Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866.
 
@@ -33,22 +33,22 @@ incid_download <- function(df, area_column, incid_column, country_code, admin_le
       dplyr::full_join(df, by = setNames(area_column, "shapeName"))
 
     #look for any NA in merged shapes, raise a warning if any found
-    if (any(c(any(is.na(shape[[incid_column]]))),(any(is.na(shape$shapeISO))))){
+    if (any(c(any(is.na(shape[[resp_column]]))),(any(is.na(shape$shapeISO))))){
       logger %>% writeLog(type = "warning")
       }
 
     #log the individual errors
-    if (any(is.na(shape[[incid_column]]))){
-      missing <- shape$shapeName[is.na(shape[[incid_column]])]
+    if (any(is.na(shape[[resp_column]]))){
+      missing <- shape$shapeName[is.na(shape[[resp_column]])]
       for (m in missing){
-      logger %>% writeLog(glue::glue("Area data for {m} could not be matched with incidence data"))
+      logger %>% writeLog(glue::glue("Area data for {m} could not be matched with response data"))
       }
     }
 
     if (any(is.na(shape$shapeISO))){
       missing <- shape$shapeName[is.na(shape$shapeISO)]
       for (m in missing){
-        logger %>% writeLog(glue::glue("Incidence data for {m} could not be matched with an area"))
+        logger %>% writeLog(glue::glue("Response data for {m} could not be matched with an area"))
       }
     }
     return(shape)

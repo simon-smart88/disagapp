@@ -1,9 +1,9 @@
 ---
-title: "incid"
+title: "resp"
 output: html_document
 ---
 
-### **Component: Incidence Data**
+### **Component: Response Data**
 
 **ORIENTATION**
 

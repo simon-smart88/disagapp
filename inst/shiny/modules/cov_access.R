@@ -17,7 +17,7 @@ cov_access_module_server <- function(id, common) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload incidence data first")
+      common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####

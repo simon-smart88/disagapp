@@ -56,14 +56,14 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("incid", "cov", "agg", "prep", "fit", "pred")
+  help_components <- c("resp", "cov", "agg", "prep", "fit", "pred")
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
   })
 
   # Help Module
-  observeEvent(input$incid_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$resp_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$agg_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))

@@ -1,6 +1,6 @@
-#' @title incid_shape
+#' @title resp_shape
 #' @description
-#' This function is called by the incid_shape module and loads a
+#' This function is called by the resp_shape module and loads a
 #'  shapefile into an sf object. Inspired by a function written by Paula Moraga
 #'  here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 #'
@@ -12,7 +12,7 @@
 #' @export
 #'
 #
-incid_shape <- function(shpdf) {
+resp_shape <- function(shpdf) {
   tempdirname <- dirname(shpdf$datapath[1])
   for (i in 1:nrow(shpdf)) {
     file.rename(

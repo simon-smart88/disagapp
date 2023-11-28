@@ -19,7 +19,7 @@ tagList(
                 style = "margin-top: -15px"),
     windowTitle = "Shiny disag",
     tabPanel("Intro", value = "intro"),
-    tabPanel("Incidence", value = "incid"),
+    tabPanel("Response", value = "resp"),
     tabPanel("Covariates", value = "cov"),
     tabPanel("Aggregation", value = "agg"),
     tabPanel("Prepare", value = "prep"),
@@ -43,16 +43,16 @@ tagList(
           ),
           # INCIDENCE DATA ####
           conditionalPanel(
-            "input.tabs == 'incid'",
-            div("Component: Incidence Data", class = "componentName"),
-            help_comp_ui("incidHelp"),
+            "input.tabs == 'resp'",
+            div("Component: Response Data", class = "componentName"),
+            help_comp_ui("respHelp"),
             radioButtons(
-              "incidSel", "Modules Available:",
-              choices = insert_modules_options("incid")#,
+              "respSel", "Modules Available:",
+              choices = insert_modules_options("resp")#,
               #selected = character(0)
             ),
             tags$hr(),
-            insert_modules_ui("incid")
+            insert_modules_ui("resp")
           ),
           # COVARIATE DATA ####
           conditionalPanel(

@@ -1,4 +1,4 @@
-incid_shape_module_ui <- function(id) {
+resp_shape_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     fileInput(inputId = ns("shape"),
@@ -11,7 +11,7 @@ incid_shape_module_ui <- function(id) {
   )
 }
 
-incid_shape_module_server <- function(id, common) {
+resp_shape_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
     #not using the usual paradigm in this module due to needing to specify
@@ -37,7 +37,7 @@ incid_shape_module_server <- function(id, common) {
 
       # FUNCTION CALL ####
       shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-      shape <- incid_shape(shpdf)
+      shape <- resp_shape(shpdf)
 
       # METADATA ####
       common$meta$shape$path <- shape_file_path
@@ -74,7 +74,7 @@ incid_shape_module_server <- function(id, common) {
     common$meta$shape$response <- input$resp_var
 
     # TRIGGER
-    gargoyle::trigger("incid_shape")
+    gargoyle::trigger("resp_shape")
   })
 
   return(list(
@@ -88,28 +88,28 @@ incid_shape_module_server <- function(id, common) {
 })
 }
 
-incid_shape_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("incid_shape"), {
+resp_shape_module_map <- function(map, common) {
+  observeEvent(gargoyle::watch("resp_shape"), {
   req(common$shape)
   response <- as.numeric(common$shape[[common$meta$shape$response]])
   ex <- as.vector(terra::ext(common$shape))
-  common$add_map_layer("Incidence")
+  common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
   map %>%
-    clearGroup("Incidence") %>%
-    addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Incidence", popup = ~as.character(round(response,0))) %>%
+    clearGroup("Response") %>%
+    addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Response", popup = ~as.character(round(response,0))) %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = response, group = "Incidence", title = "Incidence") %>%
+    addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
   })
   }
 
 
-incid_shape_module_rmd <- function(common) {
+resp_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    incid_shape_knit = !is.null(common$shape),
-    incid_shape_path = common$meta$shape$path
+    resp_shape_knit = !is.null(common$shape),
+    resp_shape_path = common$meta$shape$path
   )
 }
 

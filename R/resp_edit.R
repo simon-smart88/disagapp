@@ -1,6 +1,6 @@
-#' @title incid_edit
+#' @title resp_edit
 #' @description
-#' This function is called by the incid_edit module and merges incidence data
+#' This function is called by the resp_edit module and merges response data
 #'  from a spreadsheet with boundary data into an sf object
 #'
 #' @param shape sf. The sf object to be edited
@@ -14,7 +14,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 #'
-incid_edit <- function(shape, poly, type, logger = NULL) {
+resp_edit <- function(shape, poly, type, logger = NULL) {
 
   crop_poly <- sf::st_polygon(list(poly))
   crop_sf <- sf::st_sf(data.frame("name" = "crop"), geometry = sf::st_sfc(crop_poly))
