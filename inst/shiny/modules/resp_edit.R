@@ -56,7 +56,10 @@ resp_edit_module_map <- function(map, common) {
       addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Response", popup = ~as.character(round(response,0))) %>%
       fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
       addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
-      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+      removeDrawToolbar(clearFeatures = TRUE)
+
+
   })
 
 }
