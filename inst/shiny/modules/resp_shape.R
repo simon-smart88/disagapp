@@ -49,14 +49,14 @@ resp_shape_module_server <- function(id, common) {
 
    output$resp_var_out <- renderUI({
      req(shape())
-     selectInput(session$ns("resp_var"), "Select response variable", c('',names(shape())))
+     selectInput(session$ns("resp_var"), "Select response variable", c("", names(shape())))
    })
 
 
   observeEvent(input$run, {
 
     # WARNING ####
-    if (input$resp_var == '') {
+    if (input$resp_var == "") {
       common$logger %>% writeLog(type = "error", "Please select a response variable")
       return()
     }

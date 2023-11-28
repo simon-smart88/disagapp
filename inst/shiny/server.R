@@ -63,7 +63,10 @@ function(input, output, session) {
   })
 
   # Help Module
-  observeEvent(input$resp_userHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$resp_shapeHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$resp_editHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$resp_downloadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
+  observeEvent(input$resp_combineHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$cov_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$agg_uploadHelp, updateTabsetPanel(session, "main", "Module Guidance"))
   observeEvent(input$prep_prepHelp, updateTabsetPanel(session, "main", "Module Guidance"))

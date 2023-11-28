@@ -9,7 +9,7 @@ resp_download_module_ui <- function(id) {
     uiOutput(ns("resp_column_out")),
     uiOutput(ns("country_out")),
     selectInput(ns("admin"), "Administrative level", c("ADM1", "ADM2")),
-    actionButton(ns("run"), "Run module resp_download")
+    actionButton(ns("run"), "Load data")
   )
 }
 
@@ -34,16 +34,24 @@ resp_download_module_server <- function(id, common) {
 
     output$area_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("area_column"), "Select area column", colnames(df()))
+      selectInput(session$ns("area_column"), "Select area column", c("", colnames(df())))
     })
 
     output$resp_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("response_column"), "Select response column", colnames(df()))
+      selectInput(session$ns("response_column"), "Select response column", c("",colnames(df())))
     })
 
   observeEvent(input$run, {
     # WARNING ####
+    if (input$response_column == "") {
+      common$logger %>% writeLog(type = "error", "Please select the response column")
+      return()
+    }
+    if (input$area_column == "") {
+      common$logger %>% writeLog(type = "error", "Please select the area column")
+      return()
+    }
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
