@@ -27,7 +27,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
   } else {
 
     cont <- httr::content(req)
-    shape <- sf::st_read(cont$gjDownloadURL)
+    shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
 
     shape <- shape %>%
       dplyr::full_join(df, by = setNames(area_column, "shapeName"))

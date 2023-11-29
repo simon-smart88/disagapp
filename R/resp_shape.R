@@ -22,7 +22,7 @@ resp_shape <- function(shpdf) {
   }
   if (nrow(shpdf) == 4){
     shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
-    shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"))
+    shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"), quiet = TRUE)
     crs <- sf::st_crs(shape)
     if (crs$input != "EPSG:4326"){
       shape <- sf::st_transform(shape, crs = 4326)
