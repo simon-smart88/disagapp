@@ -5,7 +5,7 @@
 #'
 #' @param path_df data.frame. Containing datapath and name columns of the
 #' file(s) to be uploaded.
-#' @return a SpatRaster object
+#' @return a list containing SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 

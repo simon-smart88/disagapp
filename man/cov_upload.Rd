@@ -11,7 +11,7 @@ cov_upload(path_df)
 file(s) to be uploaded.}
 }
 \value{
-a SpatRaster object
+a list containing SpatRaster objects
 }
 \description{
 This function is called by the cov_upload module and loads a
