@@ -4,10 +4,9 @@
 #' accessibility using data from the Malaria Atlas Project.
 #'
 #' @param shape sf. sf object containing the area of interest
-#' @param layer character. The layer to be returned - one of: Travel Speed
-#' Friction Surface (2015), Travel Time to Cities (2015), Motorized Friction
-#' Surface (2020), Walking Only Friction Surface (2020), Motorized Travel Time
-#' to Healthcare (2020) or Walking Only Travel Time to Healthcare (2020)
+#' @param layer character. The layer to be returned - one of:
+#' `Travel Time to Cities (2015)`, `Motorized Travel Time to Healthcare (2020)`
+#' or `Walking Only Travel Time to Healthcare (2020)`
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export

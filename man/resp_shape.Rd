@@ -7,19 +7,19 @@
 resp_shape(shpdf)
 }
 \arguments{
-\item{shpdf}{dataframe. As produced by shiny::fileInput, containing name and
-datapath columns}
+\item{shpdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\code{datapath} columns}
 }
 \value{
 an sf object
 }
 \description{
 This function is called by the resp_shape module and loads a
- shapefile into an sf object. Inspired by a function written by Paula Moraga
- here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
+shapefile into an sf object. Inspired by a function written by Paula Moraga
+here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 
 Paula Moraga
 }

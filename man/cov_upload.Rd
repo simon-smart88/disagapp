@@ -7,7 +7,7 @@
 cov_upload(path_df)
 }
 \arguments{
-\item{path_df}{data.frame. Containing datapath and name columns of the
+\item{path_df}{data.frame. Containing \code{datapath} and \code{name} columns of the
 file(s) to be uploaded.}
 }
 \value{
@@ -15,8 +15,8 @@ a list containing SpatRaster objects
 }
 \description{
 This function is called by the cov_upload module and loads a
- raster image.
+raster image.
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

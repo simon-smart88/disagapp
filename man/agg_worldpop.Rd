@@ -9,9 +9,9 @@ agg_worldpop(country_code, method, resolution)
 \arguments{
 \item{country_code}{character. ISO3 code of the country.}
 
-\item{method}{character. The method used to estimate population. Either Constrained or Unconstrained.}
+\item{method}{character. The method used to estimate population. Either \code{Constrained} or \code{Unconstrained}.}
 
-\item{resolution}{character. The resolution of the returned raster. Either 100m ior 1km.}
+\item{resolution}{character. The resolution of the returned raster. Either \verb{100m} or \verb{1km}.}
 }
 \value{
 a SpatRaster object
@@ -21,5 +21,5 @@ This function is called by the agg_worldpop module and downloads data on
 population density for a single country from worldpop
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

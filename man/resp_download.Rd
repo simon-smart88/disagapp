@@ -33,8 +33,8 @@ an sf object
 }
 \description{
 This function is called by the resp_download module and merges response data
- from a spreadsheet with boundary data into an sf object
+from a spreadsheet with boundary data into an sf object
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

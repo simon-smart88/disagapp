@@ -8,7 +8,9 @@
 #'
 #' @param shape sf. sf object containing the area of interest
 #' @param year numeric. The requested year (2015-2019 only)
-#' @param landuses vector. List of the requested land use types
+#' @param landuses vector. List of the requested land use types from the
+#' following options: `Bare`, `BuiltUp`, `Crops`, `Grass`, `MossLichen`,
+#' `PermanentWater`, `SeasonalWater`, `Shrub`, `Snow`, `Tree`
 #' @return a list of SpatRaster objects containing an item for each land use
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export

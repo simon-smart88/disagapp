@@ -3,7 +3,7 @@
 #' This function is called by the cov_upload module and loads a
 #'  raster image.
 #'
-#' @param path_df data.frame. Containing datapath and name columns of the
+#' @param path_df data.frame. Containing `datapath` and `name` columns of the
 #' file(s) to be uploaded.
 #' @return a list containing SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>

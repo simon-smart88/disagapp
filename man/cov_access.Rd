@@ -9,10 +9,9 @@ cov_access(shape, layer)
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
-\item{layer}{character. The layer to be returned - one of: Travel Speed
-Friction Surface (2015), Travel Time to Cities (2015), Motorized Friction
-Surface (2020), Walking Only Friction Surface (2020), Motorized Travel Time
-to Healthcare (2020) or Walking Only Travel Time to Healthcare (2020)}
+\item{layer}{character. The layer to be returned - one of:
+\verb{Travel Time to Cities (2015)}, \verb{Motorized Travel Time to Healthcare (2020)}
+or \verb{Walking Only Travel Time to Healthcare (2020)}}
 }
 \value{
 a SpatRaster object
@@ -22,5 +21,5 @@ This function is called by the cov_access module and downloads data on
 accessibility using data from the Malaria Atlas Project.
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

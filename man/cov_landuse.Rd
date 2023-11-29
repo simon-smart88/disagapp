@@ -11,7 +11,9 @@ cov_landuse(shape, year, landuses)
 
 \item{year}{numeric. The requested year (2015-2019 only)}
 
-\item{landuses}{vector. List of the requested land use types}
+\item{landuses}{vector. List of the requested land use types from the
+following options: \code{Bare}, \code{BuiltUp}, \code{Crops}, \code{Grass}, \code{MossLichen},
+\code{PermanentWater}, \code{SeasonalWater}, \code{Shrub}, \code{Snow}, \code{Tree}}
 }
 \value{
 a list of SpatRaster objects containing an item for each land use
@@ -24,5 +26,5 @@ https://zenodo.org/records/3939038 as documented here:
 https://zenodo.org/records/4723921
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

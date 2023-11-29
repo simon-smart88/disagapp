@@ -19,5 +19,5 @@ max coordinates, coordinate reference system and number of cells.
 Summarises the properties of a list of SpatRasters
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

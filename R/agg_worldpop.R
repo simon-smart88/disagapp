@@ -4,8 +4,8 @@
 #' population density for a single country from worldpop
 #'
 #' @param country_code character. ISO3 code of the country.
-#' @param method character. The method used to estimate population. Either Constrained or Unconstrained.
-#' @param resolution character. The resolution of the returned raster. Either 100m ior 1km.
+#' @param method character. The method used to estimate population. Either `Constrained` or `Unconstrained`.
+#' @param resolution character. The resolution of the returned raster. Either `100m` or `1km`.
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export

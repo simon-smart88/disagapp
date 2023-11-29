@@ -17,5 +17,5 @@ This function is called by the agg_uniform module and creates a
 uniform aggregation raster.
 }
 \author{
-Simon Smart <simon.smart@cantab.net>
+Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

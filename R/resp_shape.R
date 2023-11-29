@@ -4,8 +4,8 @@
 #'  shapefile into an sf object. Inspired by a function written by Paula Moraga
 #'  here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 #'
-#' @param shpdf dataframe. As produced by shiny::fileInput, containing name and
-#' datapath columns
+#' @param shpdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' `datapath` columns
 #' @return an sf object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @author Paula Moraga
