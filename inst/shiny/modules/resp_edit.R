@@ -23,6 +23,13 @@ resp_edit_module_server <- function(id, common) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
+    if (isFALSE(getOption("shiny.testmode"))) {
+      if (is.null(common$poly)) {
+        common$logger %>% writeLog(type = "error", "Please draw a shape on the map first")
+        return()
+      }
+    }
+
     # FUNCTION CALL ####
     shape <- resp_edit(common$shape, common$poly, input$type, common$logger)
 
