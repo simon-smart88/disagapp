@@ -10,6 +10,14 @@ resp_edit_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
+
+    # TEST MODE - required due to the polygon not being able to be tested correctly.
+    if (isTRUE(getOption("shiny.testmode"))) {
+      poly_matrix <- matrix(c(40, 40, 55, 55, 40, -10, -20, -20, -10, -10), ncol = 2)
+      colnames(poly_matrix) <- c("longitude", "latitude")
+      common$poly <- poly_matrix
+    }
+
     # WARNING ####
     if (is.null(common$shape)) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
