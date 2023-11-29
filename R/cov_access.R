@@ -14,10 +14,7 @@
 
 cov_access <- function(shape, layer) {
 
-  datasets <- list(`Travel Speed Friction Surface (2015)` = "Accessibility__201501_Global_Travel_Speed_Friction_Surface",
-                   `Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
-                   `Motorized Friction Surface (2020)` = "Accessibility__202001_Global_Motorized_Friction_Surface",
-                   `Walking Only Friction Surface (2020)` = "Accessibility__202001_Global_Walking_Only_Friction_Surface",
+  datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
                    `Motorized Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Motorized_Travel_Time_to_Healthcare",
                    `Walking Only Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Walking_Only_Travel_Time_To_Healthcare")
 

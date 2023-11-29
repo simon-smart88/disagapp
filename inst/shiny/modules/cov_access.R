@@ -1,10 +1,7 @@
 cov_access_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    selectInput(ns("layer"), "Layer", choices = c("Travel Speed Friction Surface (2015)",
-                                                  "Travel Time to Cities (2015)",
-                                                  "Motorized Friction Surface (2020)",
-                                                  "Walking Only Friction Surface (2020)",
+    selectInput(ns("layer"), "Layer", choices = c("Travel Time to Cities (2015)",
                                                   "Motorized Travel Time to Healthcare (2020)",
                                                   "Walking Only Travel Time to Healthcare (2020)")),
     actionButton(ns("run"), "Download data")
