@@ -37,12 +37,12 @@ resp_combine_module_server <- function(id, common) {
 
     output$df_area_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("df_area_column"), "Select spreadsheet area column", colnames(df()))
+      selectInput(session$ns("df_area_column"), "Select spreadsheet area column", c("", colnames(df())))
     })
 
     output$df_resp_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("df_response_column"), "Select spreadsheet response column", colnames(df()))
+      selectInput(session$ns("df_response_column"), "Select spreadsheet response column", c("", colnames(df())))
     })
 
 
@@ -69,12 +69,24 @@ resp_combine_module_server <- function(id, common) {
 
     output$shape_area_column_out <- renderUI({
       req(shape())
-      selectInput(session$ns("shape_area_column"), "Select shapefile area column", c('',names(shape())))
+      selectInput(session$ns("shape_area_column"), "Select shapefile area column", c("", names(shape())))
     })
 
 
   observeEvent(input$run, {
     # WARNING ####
+    if (input$df_response_column == "") {
+      common$logger %>% writeLog(type = "error", "Please select the spreadsheet response column")
+      return()
+    }
+    if (input$df_area_column == "") {
+      common$logger %>% writeLog(type = "error", "Please select the spreadsheet area column")
+      return()
+    }
+    if (input$shape_area_column == "") {
+      common$logger %>% writeLog(type = "error", "Please select the shapefile area column")
+      return()
+    }
 
     # FUNCTION CALL ####
     shape <- resp_combine(df(), input$df_area_column, input$df_response_column, shape(), input$shape_area_column, common$logger)
