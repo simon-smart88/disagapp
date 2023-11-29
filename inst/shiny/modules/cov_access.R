@@ -21,7 +21,11 @@ cov_access_module_server <- function(id, common) {
     show_loading_modal("Please wait while the data is loaded")
     access <- cov_access(common$shape, input$layer)
     # LOAD INTO COMMON ####
-    common$covs <- append(common$covs, access)
+    if (is.null(common$covs)){
+      common$covs <- list(access)
+    } else {
+      common$covs <- append(common$covs, access)
+    }
     close_loading_modal()
     # METADATA ####
     common$meta$access$used <- TRUE
