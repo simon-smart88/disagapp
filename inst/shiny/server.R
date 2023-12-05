@@ -1,4 +1,4 @@
-source(system.file("shiny/common.R", package = "shinydisag"))
+source(system.file("shiny/common.R", package = "disagapp"))
 
 function(input, output, session) {
 

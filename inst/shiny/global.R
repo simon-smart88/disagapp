@@ -1,6 +1,6 @@
 library(glue)
 library(shinyscholar)
-library(shinydisag)
+library(disagapp)
 
 MB <- 1024^2
 
@@ -21,7 +21,7 @@ COMPONENTS <- c("resp", "cov", "agg", "prep", "fit", "pred", "rep")
 COMPONENT_MODULES <- list()
 
 # Load all base modules
-base_module_configs <- paste0("modules/",list.files(system.file("shiny/modules", package="shinydisag"), pattern=".yml"))
+base_module_configs <- paste0("modules/",list.files(system.file("shiny/modules", package="disagapp"), pattern=".yml"))
 
 # Load user-defined modules
 user_module_configs <- getOption("user_module_configs")

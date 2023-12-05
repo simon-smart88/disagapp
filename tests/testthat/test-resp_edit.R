@@ -1,5 +1,5 @@
-shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
-                    name = list.files(system.file("extdata/shapes", package="shinydisag")))
+shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata/shapes", package="disagapp")))
 
 test_that("Check resp_edit function works as expected", {
   shape <- resp_shape(shpdf)
@@ -14,7 +14,7 @@ test_that("Check resp_edit function works as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_resp_shape", {
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinydisag"), name = "e2e_resp_shape")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_shape")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")

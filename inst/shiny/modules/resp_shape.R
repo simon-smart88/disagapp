@@ -24,8 +24,8 @@ resp_shape_module_server <- function(id, common) {
       }
 
       if (input$example == TRUE){
-        shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="shinydisag"), full.names = TRUE),
-                            name = list.files(system.file("extdata/shapes", package="shinydisag")))
+        shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
+                            name = list.files(system.file("extdata/shapes", package="disagapp")))
         updateSelectInput(session, "resp_var", selected = 'inc')
       }
 

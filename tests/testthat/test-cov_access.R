@@ -1,4 +1,4 @@
-shp <- list.files(system.file("extdata/shapes", package="shinydisag"), pattern = ".shp", full.names = TRUE)
+shp <- list.files(system.file("extdata/shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp, quiet = TRUE)
 shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 
@@ -14,7 +14,7 @@ test_that("{shinytest2} recording: e2e_cov_access", {
   shpdf <- data.frame(datapath = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape)), full.names = TRUE),
                       name = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape))))
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinydisag"), name = "e2e_cov_access")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_access")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")

@@ -35,8 +35,8 @@ agg_upload_module_server <- function(id, common) {
 
 
     if (input$example == TRUE){
-    aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="shinydisag"), full.names = TRUE),
-                        name = list.files(system.file("extdata/aggregation", package="shinydisag")))
+    aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="disagapp"), full.names = TRUE),
+                        name = list.files(system.file("extdata/aggregation", package="disagapp")))
     }
     # FUNCTION CALL ####
 

@@ -12,13 +12,13 @@
 test_module <- function(module){
 
 #load the module functions
-source(system.file(glue::glue("shiny/modules/{module}.R"), package = "shinydisag"))
+source(system.file(glue::glue("shiny/modules/{module}.R"), package = "disagapp"))
 
 #load common
-source(system.file("shiny/common.R", package = "shinydisag"))
+source(system.file("shiny/common.R", package = "disagapp"))
 
 #load js
-resourcePath <- system.file("shiny", "www", package = "shinydisag")
+resourcePath <- system.file("shiny", "www", package = "disagapp")
 shiny::addResourcePath("smartres", resourcePath)
 
 test_ui <- tagList(

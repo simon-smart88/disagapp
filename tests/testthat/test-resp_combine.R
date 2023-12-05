@@ -1,4 +1,4 @@
-shp <- list.files(system.file("extdata/shapes", package="shinydisag"), pattern = ".shp", full.names = TRUE)
+shp <- list.files(system.file("extdata/shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp, quiet = TRUE)
 shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 
@@ -23,7 +23,7 @@ test_that("{shinytest2} recording: e2e_resp_combine", {
   temp_spread <- tempfile(fileext = ".csv")
   write.csv(df, temp_spread)
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "shinydisag"), name = "e2e_resp_combine")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_combine")
 
   app$upload_file("resp_combine-shape" = shpdf$datapath)
   app$upload_file("resp_combine-spread" = temp_spread)

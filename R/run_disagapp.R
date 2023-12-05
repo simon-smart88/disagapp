@@ -1,5 +1,5 @@
-#' @title Run \emph{shinydisag} Application
-#' @description This function runs the \emph{shinydisag} application in the user's
+#' @title Run \emph{disagapp} Application
+#' @description This function runs the \emph{disagapp} application in the user's
 #' default web browser.
 #' @param launch.browser Whether or not to launch a new browser window.
 #' @param port The port for the shiny server to listen on. Defaults to a
@@ -7,14 +7,14 @@
 #'
 #' @examples
 #' if(interactive()) {
-#' run_shinydisag()
+#' run_disagapp()
 #' }
 #' @author Jamie Kass <jkass@@gradcenter.cuny.edu>
 #' @author Gonzalo E. Pinilla-Buitrago <gpinillabuitrago@@gradcenter.cuny.edu>
 #' @author Simon E. H. Smart <simon.smart@@cantab.net>
 #' @export
-run_shinydisag <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
-  app_path <- system.file("shiny", package = "shinydisag")
+run_disagapp <- function(launch.browser = TRUE, port = getOption("shiny.port")) {
+  app_path <- system.file("shiny", package = "disagapp")
   knitcitations::cleanbib()
   options("citation_format" = "pandoc")
   preexisting_objects <- ls(envir = .GlobalEnv)

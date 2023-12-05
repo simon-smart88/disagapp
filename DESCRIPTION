@@ -1,10 +1,9 @@
-Package: shinydisag
+Package: disagapp
 Version: 1.0.0
-Date: 2023-08-03
-Title: Shiny Modular Academic Reproducible Template
-Description: The 'shiny' application shinydisag is a modular platform for 
-    creating reproducible applications to academic standards. 'shinydisag' is 
-    forked from 'wallace'
+Date: 2023-12-05
+Title: Disaggregation regression application
+Description: disagapp is a shiny application for performing disaggregation 
+    regression analyses. 
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
