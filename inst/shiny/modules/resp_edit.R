@@ -61,9 +61,7 @@ resp_edit_module_map <- function(map, common) {
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
 
-  #observeEvent(gargoyle::watch("resp_edit"), {
-  on("resp_edit", {
-    print("resp_edit")
+  gargoyle::on("resp_edit", {
     req(common$shape)
     response <- as.numeric(common$shape[[common$meta$shape$response]])
     ex <- as.vector(terra::ext(common$shape))

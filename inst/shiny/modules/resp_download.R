@@ -91,7 +91,7 @@ resp_download_module_server <- function(id, common) {
 }
 
 resp_download_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("resp_download"), {
+  gargoyle::on("resp_download", {
     req(common$shape)
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Response")

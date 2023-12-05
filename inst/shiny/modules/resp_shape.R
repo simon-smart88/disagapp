@@ -89,7 +89,7 @@ resp_shape_module_server <- function(id, common) {
 }
 
 resp_shape_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("resp_shape"), {
+  gargoyle::on("resp_shape", {
   req(common$shape)
   response <- as.numeric(common$shape[[common$meta$shape$response]])
   ex <- as.vector(terra::ext(common$shape))

@@ -111,7 +111,7 @@ resp_combine_module_server <- function(id, common) {
 }
 
 resp_combine_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("resp_combine"), {
+  gargoyle::on("resp_combine", {
     req(common$shape)
     response <- as.numeric(common$shape[[common$meta$shape$response]])
     ex <- as.vector(terra::ext(common$shape))
