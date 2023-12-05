@@ -5,19 +5,38 @@ output: html_document
 
 #### WORKFLOW
 
-*shinyscholar* (v1.0.0) includes three components, or steps of a possible workflow. Each component includes two or more modules, which are possible analyses for that step.  
+*disagapp* (v1.0.0) includes seven components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step.  
 
 **Components:**  
 
-**1.** *Select Data*  
-- Query data via an API
-- Upload your own data
+**1.** *Response*  
+- Combine spreadsheet and shapefile
+- Upload spreadsheet
+- Upload shapefile
+- Edit data
 
-**2.** *Plot Data*  
-- Histogram
-- Scatter plot
+**2.** *Covariates*  
+- Accessibility data
+- Bioclim data
+- Land use
+- Upload covariates
 
-**3.** *Reproduce*  
+**3.** *Aggregation*  
+- Uniform
+- Upload aggregation
+- Worldpop
+
+**4.** *Prepare*  
+- Summarise rasters
+- Prepare data
+
+**5.** *Fit*
+- Fit model
+
+**6.** *Predict*
+- Make predictions
+
+**7.** *Reproduce*  
 - Download Session Code  
 - Download Package References 
 
