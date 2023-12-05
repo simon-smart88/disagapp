@@ -7,13 +7,13 @@ output: html_document
 
 <img src="logo.png" alt="logo" style="width: 150px; float:right; padding:10px;"/>
 
-Welcome to *disagapp* an application written that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation). 
+Welcome to *disagapp* an application that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation). 
 
 The application is written in `R` with the web app development package `shiny` and was built using the [{shinyscholar}](https://github.com/simon-smart88/shinyscholar) template which was itself forked from {wallace} v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html)), an application for modelling species distributions (Kass et. al 2018; Kass et al. 2022).
 
 ### **Attributes of _disagapp_**
 
-* **accessible**: lowers barriers to conducing disaggregation regression analysis
+* **accessible**: lowers barriers to conducting disaggregation regression analysis
 
 * **open**: the code is free to use and modify (GPL 3.0)
 
