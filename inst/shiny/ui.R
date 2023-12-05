@@ -17,7 +17,7 @@ tagList(
     ),
     title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),
-    windowTitle = "Shiny disag",
+    windowTitle = "Disagapp",
     tabPanel("Intro", value = "intro"),
     tabPanel("Response", value = "resp"),
     tabPanel("Covariates", value = "cov"),
