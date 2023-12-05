@@ -1,10 +1,10 @@
 resourcePath <- system.file("shiny", "www", package = "disagapp")
-shiny::addResourcePath("shiny-disag-res", resourcePath)
+shiny::addResourcePath("disagapp-res", resourcePath)
 
 tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
-    script = file.path("shiny-disag-res", "js", "shinyjs-funcs.js"),
+    script = file.path("disagapp-res", "js", "shinyjs-funcs.js"),
     functions = c("scrollLogger", "disableModule", "enableModule")
   ),
   navbarPage(
@@ -27,7 +27,7 @@ tagList(
     tabPanel("Predict", value = "pred"),
     tabPanel("Reproduce", value = "rep"),
     navbarMenu("Support", icon = icon("life-ring"),
-               HTML('<a href="https://github.com/simon-smart88/shinyscholar/issues" target="_blank">GitHub Issues</a>'),
+               HTML('<a href="https://github.com/simon-smart88/disagapp/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
     tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
   ),
