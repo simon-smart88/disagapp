@@ -17,7 +17,7 @@ fit_fit_module_server <- function(id, common) {
 
     # FUNCTION CALL ####
 
-    show_loading_modal("Please while wait the model is fitted")
+    show_loading_modal("Please wait while the model is fitted")
     fitted <- disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,

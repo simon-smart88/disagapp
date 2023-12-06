@@ -95,7 +95,7 @@ resp_download_module_map <- function(map, common) {
     req(common$shape)
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Response")
-    response <- as.numeric(common$shape[[common$meta$shape$resp_column]])
+    response <- as.numeric(common$shape[[common$meta$shape$response]])
     pal <- colorBin("viridis", domain = response, bins = 9, na.color = "#00000000")
     map %>%
       clearGroup("Response") %>%
