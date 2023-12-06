@@ -5,6 +5,7 @@ agg_worldpop_module_ui <- function(id) {
     uiOutput(ns("country_out")),
     selectInput(ns("method"), "Method", choices = c("Constrained", "Unconstrained")),
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
+    uiOutput(ns("year_out")),
     checkboxInput(ns("log"),
                   label = 'Plot as log values',
                   value = TRUE),
@@ -17,6 +18,15 @@ agg_worldpop_module_server <- function(id, common) {
 
   output$country_out <- country_out(session, common)
 
+  output$year_out <- renderUI({
+    if (input$method == "Unconstrained"){
+      selectInput(session$ns("year"), "Year", choices = c(2000:2020))
+    }
+    if (input$method == "Constrained"){
+      selectInput(session$ns("year"), "Year", choices = c(2020))
+    }
+  })
+
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(input$country)) {
@@ -26,7 +36,7 @@ agg_worldpop_module_server <- function(id, common) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    agg_ras <- agg_worldpop(country_code, input$method, input$resolution)
+    agg_ras <- agg_worldpop(country_code, input$method, input$resolution, input$year, common$logger)
 
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
