@@ -33,7 +33,7 @@ resp_combine_module_server <- function(id, common) {
       common$meta$shape$spread_path <- input$spread$datapath[1]
 
       df
-    })
+    }) %>% bindEvent(input$spread)
 
     output$df_area_column_out <- renderUI({
       req(df())
@@ -65,7 +65,7 @@ resp_combine_module_server <- function(id, common) {
       common$meta$shape$shape_path <- shape_file_path
 
       return(shape)
-    })
+    }) %>% bindEvent(input$shape)
 
     output$shape_area_column_out <- renderUI({
       req(shape())

@@ -16,7 +16,7 @@ resp_shape_module_server <- function(id, common) {
 
     #not using the usual paradigm in this module due to needing to specify
     #the response variable prior to running
-   shape <- reactive({
+    shape <- reactive({
 
       if (input$example == FALSE){
         req(input$shape)
@@ -43,11 +43,11 @@ resp_shape_module_server <- function(id, common) {
       common$meta$shape$path <- shape_file_path
 
       return(shape)
-    })
-
+    }) %>% bindEvent(input$shape)
 
 
    output$resp_var_out <- renderUI({
+     req(input$shape)
      req(shape())
      selectInput(session$ns("resp_var"), "Select response variable", c("", names(shape())))
    })
