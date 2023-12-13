@@ -33,3 +33,4 @@ inst/shiny/install*
 .lintr
 _modules
 _shiny
+.Renviron

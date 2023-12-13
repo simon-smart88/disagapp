@@ -16,6 +16,7 @@ Depends:
     leaflet.extras (>= 1.0.0),
     disaggregation
 Imports:
+    blackmarbler,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     geosphere,

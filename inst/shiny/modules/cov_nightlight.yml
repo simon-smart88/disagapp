@@ -1,0 +1,5 @@
+component: "cov"
+short_name: "Nighttime lights"
+long_name: "Download nighttime light raster"
+authors: "Simon E H Smart"
+package: [blackmarbler]
