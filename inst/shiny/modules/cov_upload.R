@@ -46,9 +46,14 @@ cov_upload_module_server <- function(id, common) {
     }
 
     # METADATA ####
-    common$meta$cov <- list()
-    common$meta$cov$path <- as.vector(covdf$name)
-    common$meta$cov$upload <- TRUE
+    common$meta$cov_upload$used <- TRUE
+    #prevent over-writing if the module has already been used
+    if (is.null(common$meta$cov_upload$path)){
+    common$meta$cov_upload$path <- as.vector(covdf$name)
+    } else {
+    common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
+    }
+
     # TRIGGER
     gargoyle::trigger("cov_upload")
   })
@@ -96,8 +101,8 @@ cov_upload_module_map <- function(map, common) {
 cov_upload_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_upload_knit = common$meta$cov$upload,
-    upload_cov_path = common$meta$cov$path
+    cov_upload_knit = common$meta$cov_upload$used,
+    cov_upload_path = printVecAsis(common$meta$cov$path)
   )
 }
 

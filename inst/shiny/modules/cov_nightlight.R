@@ -28,6 +28,7 @@ cov_nightlight_module_server <- function(id, common) {
     common$logger %>% writeLog("Nighttime light data has been downloaded")
     close_loading_modal()
     # METADATA ####
+    common$meta$night$used <- TRUE
     common$meta$night$year <- input$year
     # TRIGGER
     gargoyle::trigger("cov_nightlight")
@@ -51,9 +52,8 @@ cov_nightlight_module_map <- function(map, common) {
 cov_nightlight_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_nightlight_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    cov_nightlight_knit = common$meta$night$used,
+    cov_nightlight_year = common$meta$night$year
   )
 }
 

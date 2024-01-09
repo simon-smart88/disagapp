@@ -1,9 +1,7 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{agg_worldpop_knit}}, eval = {{agg_worldpop_knit}}, include = {{agg_worldpop_knit}}}
+Download population data from worldpop
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{agg_worldpop_knit}}, include = {{agg_worldpop_knit}}}
+aggregation <- disagapp::agg_worldpop({{agg_worldpop_country}}, {{agg_worldpop_method}}, {{agg_worldpop_resolution}}, {{agg_worldpop_year}})
 ```

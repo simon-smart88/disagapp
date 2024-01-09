@@ -1,9 +1,8 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{cov_landuse_knit}}, eval = {{cov_landuse_knit}}, include = {{cov_landuse_knit}}}
+Download land use data and add to covariates list
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{cov_landuse_knit}}, include = {{cov_landuse_knit}}}
+land_use <- disagapp::cov_landuse(shape, {{cov_landuse_year}}, {{cov_landuse_uses}})
+covariates <- append(covariates, land_use)
 ```

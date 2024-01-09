@@ -1,9 +1,8 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{cov_nightlight_knit}}, eval = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
+Download nighttime light data and add to covariates list
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
+night_light <- disagapp::cov_nightlight(shape, {{cov_nightlight_year}})
+covariates <- append(covariates, night_light)
 ```

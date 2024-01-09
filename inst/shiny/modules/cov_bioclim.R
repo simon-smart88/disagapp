@@ -54,7 +54,7 @@ cov_bioclim_module_server <- function(id, common) {
 
     # METADATA ####
     common$meta$bioclim$used <- TRUE
-    common$meta$bioclim$country <- input$country
+    common$meta$bioclim$country <- country_code
     common$meta$bioclim$variables <- input$variables
 
     # TRIGGER

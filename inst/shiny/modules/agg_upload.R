@@ -74,7 +74,7 @@ agg_upload_module_result <- function(id) {
 }
 
 agg_upload_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("agg_upload"), {
+  gargoyle::on("agg_upload", {
     req(common$agg)
     common$add_map_layer(common$meta$agg$name)
     if (common$meta$agg$log == TRUE){

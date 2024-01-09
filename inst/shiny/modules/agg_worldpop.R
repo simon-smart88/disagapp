@@ -45,8 +45,13 @@ agg_worldpop_module_server <- function(id, common) {
     common$logger %>% writeLog("Worldpop data has been downloaded")
 
     # METADATA ####
-    common$meta$agg$name <- "Population"
-    common$meta$agg$log <- input$log
+    common$meta$worldpop$name <- "Population"
+    common$meta$worldpop$log <- input$log
+    common$meta$worldpop$used <- TRUE
+    common$meta$worldpop$country <- country_code
+    common$meta$worldpop$method <- input$method
+    common$meta$worldpop$resolution <- input$resolution
+    common$meta$worldpop$year <- input$year
 
     # TRIGGER
     gargoyle::trigger("agg_worldpop")
@@ -65,16 +70,16 @@ agg_worldpop_module_server <- function(id, common) {
 }
 
 agg_worldpop_module_map <- function(map, common) {
-    observeEvent(gargoyle::watch("agg_worldpop"), {
+    gargoyle::on("agg_worldpop", {
       req(common$agg)
-      common$add_map_layer(common$meta$agg$name)
-      if (common$meta$agg$log == TRUE){
+      common$add_map_layer(common$meta$worldpop$name)
+      if (common$meta$worldpop$log == TRUE){
         agg_map_raster = log10(common$agg)
-        agg_map_title = paste0(common$meta$agg$name, " (log 10)")
+        agg_map_title = paste0(common$meta$worldpop$name, " (log 10)")
         pal <- colorBin("YlOrRd", domain = log10(terra::values(common$agg)), bins = 9, na.color = "#00000000")
       } else {
         agg_map_raster = common$agg
-        agg_map_title = common$meta$agg$name
+        agg_map_title = common$meta$worldpop$name
       }
       map %>%
         clearGroup(common$meta$agg$name) %>%
@@ -87,9 +92,11 @@ agg_worldpop_module_map <- function(map, common) {
 agg_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_worldpop_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    agg_worldpop_knit = common$meta$worldpop$used,
+    agg_worldpop_country = common$meta$worldpop$country,
+    agg_worldpop_method = common$meta$worldpop$method,
+    agg_worldpop_resolution = common$meta$worldpop$resolution,
+    agg_worldpop_year = common$meta$worldpop$year
   )
 }
 

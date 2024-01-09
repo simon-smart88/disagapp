@@ -1,9 +1,8 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{cov_bioclim_knit}}, eval = {{cov_bioclim_knit}}, include = {{cov_bioclim_knit}}}
+Download bioclim data and add to covariates list
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{cov_bioclim_knit}}, include = {{cov_bioclim_knit}}}
+bioclim <- disagapp::cov_bioclim("{{cov_bioclim_country}}", {{cov_bioclim_variables}})
+covariates <- append(covariates, bioclim)
 ```

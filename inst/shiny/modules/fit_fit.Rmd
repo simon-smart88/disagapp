@@ -1,9 +1,10 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{fit_knit}}, eval = {{fit_knit}}, include = {{fit_knit}}}
+Fit the model
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{fit_knit}}, include = {{fit_knit}}}
+fitted_model <- disaggregation::disag_model(data = prepared_data,
+                                      family = "{{fit_family}}",
+                                      link = "{{fit_link}}",
+                                      iid = "{{fit_iid}}")
 ```

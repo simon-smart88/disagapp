@@ -1,9 +1,14 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{cov_upload_knit}}, eval = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
+Upload covariates from local files and add to the list of covariates - note that you need to specify the directory unless they are in your current working directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
+
+covariate_files <- {{cov_upload_path}}
+covariate_directory <- ''
+covariate_file_paths <- file.path(covariate_directory, files)
+covariate_df <- data.frame(datapath = covariate_file_paths, name = covariate_files)
+uploaded_covariates <- disagapp::cov_upload(covariate__df)
+covariates <- append(covariates, uploaded_covariates)
 ```
+
