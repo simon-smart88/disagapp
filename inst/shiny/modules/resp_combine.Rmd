@@ -1,9 +1,29 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{resp_combine_knit}}, eval = {{resp_combine_knit}}, include = {{resp_combine_knit}}}
+Upload response data from a spreadsheet and polygon data from a shapefile and merge to create an sf object. You need to specify the directories of the files unless they are in your current working directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{resp_combine_knit}}, include = {{resp_combine_knit}}}
+
+response_directory <- ""
+polygon_directory <- ""
+
+#read in the response data
+response_file <- "{{resp_combine_spread_path}}"
+response_file_path <- file.path(response_directory, response_file)
+file_format <- tools::file_ext(response_file_path)
+if (file_format == "csv"){
+  response_df <- read.csv(response_file_path)
+} else if (file_format == "xlsx"){
+  response_df <- openxlsx::read.xlsx(response_file_path)
+}
+
+#read in the polygon data
+polygon_files <- {{resp_combine_shape_path}}
+polygon_file_paths <- file.path(polygon_directory, polygon_files)
+polygon_file_df <- data.frame(datapath = polygon_file_paths, name = polygon_files)
+polygons <- disagapp::resp_shape(polygon_file_df)
+
+#merge
+shape <- disagapp::resp_combine(response_df, "{{resp_combine_spread_area}}", "{{resp_combine_response}}", polygons, "{{resp_combine_shape_area}}")
+
 ```

@@ -1,14 +1,14 @@
 ```{asis, echo = {{cov_upload_knit}}, eval = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
-Upload covariates from local files and add to the list of covariates - note that you need to specify the directory unless they are in your current working directory.
+Upload covariates from local files and add to the list of covariates. You need to specify the directory unless they are in your current working directory.
 ```
 
 ```{r, echo = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
 
+covariate_directory <- ""
 covariate_files <- {{cov_upload_path}}
-covariate_directory <- ''
 covariate_file_paths <- file.path(covariate_directory, files)
-covariate_df <- data.frame(datapath = covariate_file_paths, name = covariate_files)
-uploaded_covariates <- disagapp::cov_upload(covariate__df)
+covariate_file_df <- data.frame(datapath = covariate_file_paths, name = covariate_files)
+uploaded_covariates <- disagapp::cov_upload(covariate_df)
 covariates <- append(covariates, uploaded_covariates)
 ```
 

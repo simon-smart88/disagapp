@@ -5,8 +5,8 @@ resp_combine_module_ui <- function(id) {
               label = "Upload response spreadsheet",
               multiple = FALSE,
               accept = c(".csv", ".xlsx")),
-    uiOutput(ns("df_area_column_out")),
-    uiOutput(ns("df_resp_column_out")),
+    uiOutput(ns("spread_area_column_out")),
+    uiOutput(ns("spread_resp_column_out")),
     fileInput(inputId = ns("shape"),
               label = "Upload all shapefile data",
               multiple = TRUE,
@@ -30,19 +30,19 @@ resp_combine_module_server <- function(id, common) {
         common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
         return()
       }
-      common$meta$shape$spread_path <- input$spread$datapath[1]
+      common$meta$resp_combine$spread_path <- input$spread$datapath[1]
 
       df
     }) %>% bindEvent(input$spread)
 
-    output$df_area_column_out <- renderUI({
+    output$spread_area_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("df_area_column"), "Select spreadsheet area column", c("", colnames(df())))
+      selectInput(session$ns("spread_area_column"), "Select spreadsheet area column", c("", colnames(df())))
     })
 
-    output$df_resp_column_out <- renderUI({
+    output$spread_resp_column_out <- renderUI({
       req(df())
-      selectInput(session$ns("df_response_column"), "Select spreadsheet response column", c("", colnames(df())))
+      selectInput(session$ns("spread_response_column"), "Select spreadsheet response column", c("", colnames(df())))
     })
 
 
@@ -62,7 +62,7 @@ resp_combine_module_server <- function(id, common) {
       shape <- resp_shape(shpdf)
 
       # METADATA ####
-      common$meta$shape$shape_path <- shape_file_path
+      common$meta$resp_combine$shape_path <- shape_file_path
 
       return(shape)
     }) %>% bindEvent(input$shape)
@@ -75,11 +75,11 @@ resp_combine_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-    if (input$df_response_column == "") {
+    if (input$spread_response_column == "") {
       common$logger %>% writeLog(type = "error", "Please select the spreadsheet response column")
       return()
     }
-    if (input$df_area_column == "") {
+    if (input$spread_area_column == "") {
       common$logger %>% writeLog(type = "error", "Please select the spreadsheet area column")
       return()
     }
@@ -89,11 +89,14 @@ resp_combine_module_server <- function(id, common) {
     }
 
     # FUNCTION CALL ####
-    shape <- resp_combine(df(), input$df_area_column, input$df_response_column, shape(), input$shape_area_column, common$logger)
+    shape <- resp_combine(df(), input$spread_area_column, input$spread_response_column, shape(), input$shape_area_column, common$logger)
     # LOAD INTO COMMON ####
     common$shape <- shape
     # METADATA ####
-    common$meta$shape$response <- input$df_response_column
+    common$meta$resp_combine$used <- TRUE
+    common$meta$resp_combine$response <- input$spread_response_column
+    common$meta$resp_combine$spread_area <- input$spread_area_column
+    common$meta$resp_combine$shape_area <- input$shape_area_column
 
     # TRIGGER
     gargoyle::trigger("resp_combine")
@@ -113,7 +116,7 @@ resp_combine_module_server <- function(id, common) {
 resp_combine_module_map <- function(map, common) {
   gargoyle::on("resp_combine", {
     req(common$shape)
-    response <- as.numeric(common$shape[[common$meta$shape$response]])
+    response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
     ex <- as.vector(terra::ext(common$shape))
     common$add_map_layer("Response")
     pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
@@ -129,9 +132,12 @@ resp_combine_module_map <- function(map, common) {
 resp_combine_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_combine_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    resp_combine_knit = common$meta$resp_combine$used,
+    resp_combine_shape_path = printVecAsis(common$meta$resp_combine$shape_path),
+    resp_combine_spread_path = common$meta$resp_combine$spread_path,
+    resp_combine_response = common$meta$resp_combine$response,
+    resp_combine_spread_area = common$meta$resp_combine$spread_area,
+    resp_combine_shape_area = common$meta$resp_combine$shape_area
   )
 }
 
