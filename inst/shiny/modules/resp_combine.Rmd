@@ -5,7 +5,7 @@ Upload response data from a spreadsheet and polygon data from a shapefile and me
 ```{r, echo = {{resp_combine_knit}}, include = {{resp_combine_knit}}}
 
 response_directory <- ""
-polygon_directory <- ""
+shapefile_directory <- ""
 
 #read in the response data
 response_file <- "{{resp_combine_spread_path}}"
@@ -17,13 +17,13 @@ if (file_format == "csv"){
   response_df <- openxlsx::read.xlsx(response_file_path)
 }
 
-#read in the polygon data
-polygon_files <- {{resp_combine_shape_path}}
-polygon_file_paths <- file.path(polygon_directory, polygon_files)
-polygon_file_df <- data.frame(datapath = polygon_file_paths, name = polygon_files)
-polygons <- disagapp::resp_shape(polygon_file_df)
+#read in the shapefile data
+shapefile_files <- {{resp_combine_shape_path}}
+shapefile_file_paths <- file.path(shapefile_directory, shapefile_files)
+shapefile_file_df <- data.frame(datapath = shapefile_file_paths, name = shapefile_files)
+shapefiles <- disagapp::resp_shape(shapefile_file_df)
 
 #merge
-shape <- disagapp::resp_combine(response_df, "{{resp_combine_spread_area}}", "{{resp_combine_response}}", polygons, "{{resp_combine_shape_area}}")
+shape <- disagapp::resp_combine(response_df, "{{resp_combine_spread_area}}", "{{resp_combine_response}}", shapefiles, "{{resp_combine_shape_area}}")
 
 ```

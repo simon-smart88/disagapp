@@ -40,7 +40,8 @@ resp_shape_module_server <- function(id, common) {
       shape <- resp_shape(shpdf)
 
       # METADATA ####
-      common$meta$shape$path <- shape_file_path
+      common$meta$resp_shape$used <- TRUE
+      common$meta$resp_shape$path <- shape_file_path
 
       return(shape)
     }) %>% bindEvent(input$shape)
@@ -71,7 +72,7 @@ resp_shape_module_server <- function(id, common) {
     common$shape <- shape()
 
     # METADATA
-    common$meta$shape$response <- input$resp_var
+    common$meta$resp_shape$response <- input$resp_var
 
     # TRIGGER
     gargoyle::trigger("resp_shape")
@@ -91,7 +92,7 @@ resp_shape_module_server <- function(id, common) {
 resp_shape_module_map <- function(map, common) {
   gargoyle::on("resp_shape", {
   req(common$shape)
-  response <- as.numeric(common$shape[[common$meta$shape$response]])
+  response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
@@ -108,8 +109,9 @@ resp_shape_module_map <- function(map, common) {
 resp_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_shape_knit = !is.null(common$shape),
-    resp_shape_path = common$meta$shape$path
+    resp_shape_knit = common$meta$resp_shape$used,
+    resp_shape_path = common$meta$resp_shape$path,
+    resp_shape_resp = common$meta$resp_shape$response
   )
 }
 

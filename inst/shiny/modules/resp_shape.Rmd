@@ -1,9 +1,23 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{resp_shape_knit}}, eval = {{resp_shape_knit}}, include = {{resp_shape_knit}}}
+Upload the shapefile and create an sf object. You need to specify the directory of the shape files unless they are in your current working directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{resp_shape_knit}}, include = {{resp_shape_knit}}}
+shapefile_directory <- ""
+shapefile_files <- {{resp_combine_shape_path}}
+shapefile_file_paths <- file.path(shapefile_directory, shapefile_files)
+shapefile_file_df <- data.frame(datapath = shapefile_file_paths, name = shapefile_files)
+shape <- disagapp::resp_shape(shapefile_file_df)
+
+#alternative paradigm
+shapefile_directory <- ""
+shapefile_files <- {{resp_combine_shape_path}}
+shapefile_file_path <- file.path(shapefile_directory, shapefile_file)
+shape <- sf::st_read(paste(tempdirname, shape_file_path, sep = "/"), quiet = TRUE)
+crs <- sf::st_crs(shape)
+if (crs$input != "EPSG:4326"){
+  shape <- sf::st_transform(shape, crs = 4326)
+}
+
+{{resp_shape_resp}}
 ```
