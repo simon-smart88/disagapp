@@ -318,16 +318,34 @@ function(input, output, session) {
       common$state[[module_id]] <- modules[[module_id]]$save()
     }
 
-    # wrap and unwrap required due to terra objects being pointers to c++ objects
-    if (is.null(common$ras) == FALSE){
-    common$ras <- terra::wrap(common$ras)
+    # wrap terra objects prior to save
+    if (!is.null(common$covs)){
+      common$covs <- lapply(common$covs, terra::wrap)
+    }
+    if (!is.null(common$agg)){
+      common$agg <- lapply(common$agg, terra::wrap)
+    }
+    if (!is.null(common$pred)){
+    common$pred$field <- terra::wrap(common$pred$field)
+    common$pred$prediction <- terra::wrap(common$pred$prediction)
     }
 
+    #save file
     saveRDS(common, file)
 
-    if (is.null(common$ras) == FALSE){
-    common$ras <- terra::unwrap(common$ras)
+    #unwrap the terra objects
+    if (!is.null(common$covs)){
+      common$covs <- lapply(common$covs, terra::unwrap)
     }
+    if (!is.null(common$agg)){
+      common$agg <- lapply(common$agg, terra::unwrap)
+    }
+    if (!is.null(common$pred)){
+      common$pred$field <- terra::unwrap(common$pred$field)
+      common$pred$prediction <- terra::unwrap(common$pred$prediction)
+    }
+
+
   }
 
   output$save_session <- downloadHandler(
