@@ -18,7 +18,24 @@ COMPONENTS <- c("resp", "cov", "agg", "prep", "fit", "pred", "rep")
 COMPONENT_MODULES <- list()
 
 # Load all base modules
-base_module_configs <- paste0("modules/",list.files(system.file("shiny/modules", package="disagapp"), pattern=".yml"))
+base_module_configs <- c("modules/resp_shape.yml",
+                         "modules/resp_combine.yml",
+                         "modules/resp_download.yml",
+                         "modules/resp_edit.yml",
+                         "modules/cov_access.yml",
+                         "modules/cov_bioclim.yml",
+                         "modules/cov_landuse.yml",
+                         "modules/cov_nightlight.yml",
+                         "modules/cov_upload.yml",
+                         "modules/agg_worldpop.yml",
+                         "modules/agg_upload.yml",
+                         "modules/agg_uniform.yml",
+                         "modules/prep_summary.yml",
+                         "modules/prep_prep.yml",
+                         "modules/fit_fit.yml",
+                         "modules/pred_pred.yml",
+                         "modules/rep_markdown.yml",
+                         "modules/rep_refPackages.yml")
 
 # Load user-defined modules
 user_module_configs <- getOption("user_module_configs")
