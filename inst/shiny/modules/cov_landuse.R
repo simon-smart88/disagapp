@@ -49,8 +49,8 @@ list(uses = input$uses,
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = common$state$uses) 
-updateSelectInput(session, "year", selected = common$state$year)
+updateSelectInput(session, "uses", selected = state$uses) 
+updateSelectInput(session, "year", selected = state$year)
     }
   ))
 })

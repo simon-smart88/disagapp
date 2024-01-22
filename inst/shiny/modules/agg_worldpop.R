@@ -66,10 +66,10 @@ log = input$log,
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = common$state$method) 
-updateSelectInput(session, "resolution", selected = common$state$resolution) 
-updateCheckboxInput(session, "log", value = common$state$log) 
-updateSelectInput(session, "year", selected = common$state$year)
+updateSelectInput(session, "method", selected = state$method) 
+updateSelectInput(session, "resolution", selected = state$resolution) 
+updateCheckboxInput(session, "log", value = state$log) 
+updateSelectInput(session, "year", selected = state$year)
     }
   ))
 })

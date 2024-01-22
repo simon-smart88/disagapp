@@ -48,10 +48,10 @@ family = input$family,
 link = input$link)
     },
     load = function(state) {
-updateCheckboxInput(session, "field", value = common$state$field) 
-updateCheckboxInput(session, "iid", value = common$state$iid) 
-updateRadioButtons(session, "family", selected = common$state$family) 
-updateRadioButtons(session, "link", selected = common$state$link)
+updateCheckboxInput(session, "field", value = state$field) 
+updateCheckboxInput(session, "iid", value = state$iid) 
+updateRadioButtons(session, "family", selected = state$family) 
+updateRadioButtons(session, "link", selected = state$link)
     }
   ))
 })

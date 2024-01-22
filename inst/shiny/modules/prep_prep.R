@@ -79,13 +79,13 @@ id_var = input$id_var,
 resp_var = input$resp_var)
     },
     load = function(state) {
-updateSliderInput(session, "mesh_edge", value = common$state$mesh_edge) 
-updateSliderInput(session, "mesh_cut", value = common$state$mesh_cut) 
-updateSliderInput(session, "mesh_offset", value = common$state$mesh_offset) 
-updateCheckboxInput(session, "na_action", value = common$state$na_action) 
-updateCheckboxInput(session, "mesh_make", value = common$state$mesh_make) 
-updateSelectInput(session, "id_var", selected = common$state$id_var) 
-updateSelectInput(session, "resp_var", selected = common$state$resp_var)
+updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
+updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
+updateSliderInput(session, "mesh_offset", value = state$mesh_offset) 
+updateCheckboxInput(session, "na_action", value = state$na_action) 
+updateCheckboxInput(session, "mesh_make", value = state$mesh_make) 
+updateSelectInput(session, "id_var", selected = state$id_var) 
+updateSelectInput(session, "resp_var", selected = state$resp_var)
     }
   ))
 })

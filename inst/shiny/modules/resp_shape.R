@@ -84,8 +84,8 @@ list(example = input$example,
 resp_var = input$resp_var)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = common$state$example) 
-updateSelectInput(session, "resp_var", selected = common$state$resp_var)
+updateCheckboxInput(session, "example", value = state$example) 
+updateSelectInput(session, "resp_var", selected = state$resp_var)
     }
   ))
 })

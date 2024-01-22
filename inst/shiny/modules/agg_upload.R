@@ -62,9 +62,9 @@ name = input$name,
 log = input$log)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = common$state$example) 
-updateTextInput(session, "name", value = common$state$name) 
-updateCheckboxInput(session, "log", value = common$state$log)
+updateCheckboxInput(session, "example", value = state$example) 
+updateTextInput(session, "name", value = state$name) 
+updateCheckboxInput(session, "log", value = state$log)
     }
   ))
 })

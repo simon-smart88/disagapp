@@ -40,7 +40,7 @@ cov_access_module_server <- function(id, common) {
 list(layer = input$layer)
     },
     load = function(state) {
-updateSelectInput(session, "layer", selected = common$state$layer)
+updateSelectInput(session, "layer", selected = state$layer)
     }
   ))
 })

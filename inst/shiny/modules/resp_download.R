@@ -86,9 +86,9 @@ area_column = input$area_column,
 response_column = input$response_column)
     },
     load = function(state) {
-updateSelectInput(session, "admin", selected = common$state$admin) 
-updateSelectInput(session, "area_column", selected = common$state$area_column) 
-updateSelectInput(session, "response_column", selected = common$state$response_column)
+updateSelectInput(session, "admin", selected = state$admin) 
+updateSelectInput(session, "area_column", selected = state$area_column) 
+updateSelectInput(session, "response_column", selected = state$response_column)
     }
   ))
 })

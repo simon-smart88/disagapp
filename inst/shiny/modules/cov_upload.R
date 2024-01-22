@@ -67,7 +67,7 @@ cov_upload_module_server <- function(id, common) {
 list(example = input$example)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = common$state$example)
+updateCheckboxInput(session, "example", value = state$example)
     }
   ))
 })
