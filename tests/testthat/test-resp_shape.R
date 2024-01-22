@@ -9,6 +9,8 @@ test_that("Check resp_shape function works as expected", {
 
 test_that("{shinytest2} recording: e2e_resp_shape", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_shape")
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")
