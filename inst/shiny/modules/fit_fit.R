@@ -42,10 +42,16 @@ fit_fit_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(fit_fit_field = input$field, 
+fit_fit_iid = input$iid, 
+fit_fit_family = input$family, 
+fit_fit_link = input$link)
     },
     load = function(state) {
-      # Load
+updateCheckboxInput(session, "field", value = common$state$fit_fit_field) 
+updateCheckboxInput(session, "iid", value = common$state$fit_fit_iid) 
+updateRadioButtons(session, "family", selected = common$state$fit_fit_family) 
+updateRadioButtons(session, "link", selected = common$state$fit_fit_link)
     }
   ))
 })

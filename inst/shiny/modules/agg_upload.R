@@ -57,10 +57,14 @@ agg_upload_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(agg_upload_example = input$example, 
+agg_upload_name = input$name, 
+agg_upload_log = input$log)
     },
     load = function(state) {
-      # Load
+updateCheckboxInput(session, "example", value = common$state$agg_upload_example) 
+updateTextInput(session, "name", value = common$state$agg_upload_name) 
+updateCheckboxInput(session, "log", value = common$state$agg_upload_log)
     }
   ))
 })

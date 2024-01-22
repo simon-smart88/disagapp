@@ -60,10 +60,16 @@ agg_worldpop_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(agg_worldpop_method = input$method, 
+agg_worldpop_resolution = input$resolution, 
+agg_worldpop_log = input$log, 
+agg_worldpop_year = input$year)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "method", selected = common$state$agg_worldpop_method) 
+updateSelectInput(session, "resolution", selected = common$state$agg_worldpop_resolution) 
+updateCheckboxInput(session, "log", value = common$state$agg_worldpop_log) 
+updateSelectInput(session, "year", selected = common$state$agg_worldpop_year)
     }
   ))
 })

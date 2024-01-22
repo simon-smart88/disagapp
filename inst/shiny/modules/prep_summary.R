@@ -45,10 +45,10 @@ prep_summary_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(prep_summary_remove = input$remove)
     },
     load = function(state) {
-      # Load
+updateCheckboxInput(session, "remove", value = common$state$prep_summary_remove)
     }
   ))
 })

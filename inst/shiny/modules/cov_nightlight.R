@@ -36,10 +36,10 @@ cov_nightlight_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(cov_nightlight_year = input$year)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "year", selected = common$state$cov_nightlight_year)
     }
   ))
 })

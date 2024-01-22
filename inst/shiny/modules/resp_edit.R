@@ -46,10 +46,10 @@ resp_edit_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(resp_edit_type = input$type)
     },
     load = function(state) {
-      # Load
+updateRadioButtons(session, "type", selected = common$state$resp_edit_type)
     }
   ))
 })

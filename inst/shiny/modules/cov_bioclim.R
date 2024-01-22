@@ -64,10 +64,10 @@ cov_bioclim_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(cov_bioclim_variables = input$variables)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "variables", selected = common$state$cov_bioclim_variables)
     }
   ))
 })
