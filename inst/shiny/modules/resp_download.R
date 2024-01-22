@@ -81,14 +81,14 @@ resp_download_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(resp_download_admin = input$admin, 
-resp_download_area_column = input$area_column, 
-resp_download_response_column = input$response_column)
+list(admin = input$admin, 
+area_column = input$area_column, 
+response_column = input$response_column)
     },
     load = function(state) {
-updateSelectInput(session, "admin", selected = common$state$resp_download_admin) 
-updateSelectInput(session, "area_column", selected = common$state$resp_download_area_column) 
-updateSelectInput(session, "response_column", selected = common$state$resp_download_response_column)
+updateSelectInput(session, "admin", selected = common$state$admin) 
+updateSelectInput(session, "area_column", selected = common$state$area_column) 
+updateSelectInput(session, "response_column", selected = common$state$response_column)
     }
   ))
 })

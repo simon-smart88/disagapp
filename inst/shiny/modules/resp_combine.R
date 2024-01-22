@@ -104,14 +104,14 @@ resp_combine_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(resp_combine_spread_area_column = input$spread_area_column, 
-resp_combine_spread_response_column = input$spread_response_column, 
-resp_combine_shape_area_column = input$shape_area_column)
+list(spread_area_column = input$spread_area_column, 
+spread_response_column = input$spread_response_column, 
+shape_area_column = input$shape_area_column)
     },
     load = function(state) {
-updateSelectInput(session, "spread_area_column", selected = common$state$resp_combine_spread_area_column) 
-updateSelectInput(session, "spread_response_column", selected = common$state$resp_combine_spread_response_column) 
-updateSelectInput(session, "shape_area_column", selected = common$state$resp_combine_shape_area_column)
+updateSelectInput(session, "spread_area_column", selected = common$state$spread_area_column) 
+updateSelectInput(session, "spread_response_column", selected = common$state$spread_response_column) 
+updateSelectInput(session, "shape_area_column", selected = common$state$shape_area_column)
     }
   ))
 })

@@ -80,12 +80,12 @@ resp_shape_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(resp_shape_example = input$example, 
-resp_shape_resp_var = input$resp_var)
+list(example = input$example, 
+resp_var = input$resp_var)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = common$state$resp_shape_example) 
-updateSelectInput(session, "resp_var", selected = common$state$resp_shape_resp_var)
+updateCheckboxInput(session, "example", value = common$state$example) 
+updateSelectInput(session, "resp_var", selected = common$state$resp_var)
     }
   ))
 })

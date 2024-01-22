@@ -37,10 +37,10 @@ cov_access_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(cov_access_layer = input$layer)
+list(layer = input$layer)
     },
     load = function(state) {
-updateSelectInput(session, "layer", selected = common$state$cov_access_layer)
+updateSelectInput(session, "layer", selected = common$state$layer)
     }
   ))
 })

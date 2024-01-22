@@ -42,16 +42,16 @@ fit_fit_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(fit_fit_field = input$field, 
-fit_fit_iid = input$iid, 
-fit_fit_family = input$family, 
-fit_fit_link = input$link)
+list(field = input$field, 
+iid = input$iid, 
+family = input$family, 
+link = input$link)
     },
     load = function(state) {
-updateCheckboxInput(session, "field", value = common$state$fit_fit_field) 
-updateCheckboxInput(session, "iid", value = common$state$fit_fit_iid) 
-updateRadioButtons(session, "family", selected = common$state$fit_fit_family) 
-updateRadioButtons(session, "link", selected = common$state$fit_fit_link)
+updateCheckboxInput(session, "field", value = common$state$field) 
+updateCheckboxInput(session, "iid", value = common$state$iid) 
+updateRadioButtons(session, "family", selected = common$state$family) 
+updateRadioButtons(session, "link", selected = common$state$link)
     }
   ))
 })

@@ -46,10 +46,10 @@ resp_edit_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(resp_edit_type = input$type)
+list(type = input$type)
     },
     load = function(state) {
-updateRadioButtons(session, "type", selected = common$state$resp_edit_type)
+updateRadioButtons(session, "type", selected = common$state$type)
     }
   ))
 })
