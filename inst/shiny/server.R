@@ -384,9 +384,19 @@ function(input, output, session) {
     }
 
     #required due to terra objects being pointers to c++ objects
-    common$ras <- terra::unwrap(common$ras)
+    #unwrap the terra objects
+    if (!is.null(common$covs)){
+      common$covs <- lapply(common$covs, terra::unwrap)
+    }
+    if (!is.null(common$agg)){
+      common$agg <- lapply(common$agg, terra::unwrap)
+    }
+    if (!is.null(common$pred)){
+      common$pred$field <- terra::unwrap(common$pred$field)
+      common$pred$prediction <- terra::unwrap(common$pred$prediction)
+    }
 
-    common$logger %>% writeLog(type="info","The previous session has been loaded successfully")
+    common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
   })
 
   ################################
