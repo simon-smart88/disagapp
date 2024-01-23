@@ -210,6 +210,7 @@ tagList(
                   )),
 
                 verbatimTextOutput("common_covs"),
+                actionButton("debug_button", "debug"),
                 downloadButton("save_session", "Save Session"),
                 br()
               ),

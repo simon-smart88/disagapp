@@ -412,9 +412,11 @@ function(input, output, session) {
   ################################
   ### DEBUGGING ####
   ################################
+
   output$common_covs <- renderPrint({
+    browser()
     print(common$covs)
-    })
+    }) %>% bindEvent(input$debug_button)
 
   ################################
   ### EXPORT TEST VALUES ####
