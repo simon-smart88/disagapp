@@ -104,13 +104,13 @@ resp_combine_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(spread_area_column = input$spread_area_column, 
-spread_response_column = input$spread_response_column, 
+list(spread_area_column = input$spread_area_column,
+spread_response_column = input$spread_response_column,
 shape_area_column = input$shape_area_column)
     },
     load = function(state) {
-updateSelectInput(session, "spread_area_column", selected = state$spread_area_column) 
-updateSelectInput(session, "spread_response_column", selected = state$spread_response_column) 
+updateSelectInput(session, "spread_area_column", selected = state$spread_area_column)
+updateSelectInput(session, "spread_response_column", selected = state$spread_response_column)
 updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
     }
   ))
@@ -119,17 +119,8 @@ updateSelectInput(session, "shape_area_column", selected = state$shape_area_colu
 
 resp_combine_module_map <- function(map, common) {
   gargoyle::on("resp_combine", {
-    req(common$shape)
     response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
-    ex <- as.vector(terra::ext(common$shape))
-    common$add_map_layer("Response")
-    pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
-    map %>%
-      clearGroup("Response") %>%
-      addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Response", popup = ~as.character(round(response,0))) %>%
-      fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
-      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+    shape_map(map, common, reponse)
   })
 }
 

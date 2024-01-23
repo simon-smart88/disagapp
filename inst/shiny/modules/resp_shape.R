@@ -80,11 +80,11 @@ resp_shape_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(example = input$example, 
+list(example = input$example,
 resp_var = input$resp_var)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = state$example) 
+updateCheckboxInput(session, "example", value = state$example)
 updateSelectInput(session, "resp_var", selected = state$resp_var)
     }
   ))
@@ -93,19 +93,10 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 
 resp_shape_module_map <- function(map, common) {
   gargoyle::on("resp_shape", {
-  req(common$shape)
-  response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
-  ex <- as.vector(terra::ext(common$shape))
-  common$add_map_layer("Response")
-  pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
-  map %>%
-    clearGroup("Response") %>%
-    addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Response", popup = ~as.character(round(response,0))) %>%
-    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+    response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
+    shape_map(map, common, response)
   })
-  }
+}
 
 
 resp_shape_module_rmd <- function(common) {

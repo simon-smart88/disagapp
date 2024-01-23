@@ -130,4 +130,16 @@ country_out <- function(session, common){
   })
 }
 
-
+#function for plotting response data
+shape_map <- function(map, common, response){
+req(common$shape)
+ex <- as.vector(terra::ext(common$shape))
+common$add_map_layer("Response")
+pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+map %>%
+  clearGroup("Response") %>%
+  addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) %>%
+  fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+  addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
+  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+}

@@ -60,25 +60,19 @@ resp_edit_module_map <- function(map, common) {
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
-
   gargoyle::on("resp_edit", {
-    req(common$shape)
-    response <- as.numeric(common$shape[[common$meta$shape$response]])
-    ex <- as.vector(terra::ext(common$shape))
-    common$add_map_layer("Response")
-    pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+    #find which meta response isn't NULL, return the first if more than one
+    meta_response <- min(which(c(!is.null(common$meta$resp_shape),
+                                 !is.null(common$meta$resp_combine),
+                                 !is.null(common$meta$resp_download)) == TRUE))
+
+    shape_mod <- c("resp_shape", "resp_combine", "resp_download")[meta_response]
+    response <- common$shape[[common$meta[[shape_mod]]$response]]
+    shape_map(map, common, response)
     map %>%
-      clearGroup("Response") %>%
       clearControls() %>%
-      addPolygons(data = common$shape, fillColor = ~pal(response), color = 'black', fillOpacity = 0.7, weight = 3, group = "Response", popup = ~as.character(round(response,0))) %>%
-      fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-      addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
-      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
       removeDrawToolbar(clearFeatures = TRUE)
-
-
   })
-
 }
 
 resp_edit_module_rmd <- function(common) {

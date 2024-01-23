@@ -396,6 +396,16 @@ function(input, output, session) {
       common$pred$prediction <- terra::unwrap(common$pred$prediction)
     }
 
+    #replot the shape
+    #find which meta response isn't NULL, return the first if more than one
+    meta_response <- min(which(c(!is.null(common$meta$resp_shape),
+                                 !is.null(common$meta$resp_combine),
+                                 !is.null(common$meta$resp_download)) == TRUE))
+
+    shape_mod <- c("resp_shape", "resp_combine", "resp_download")[meta_response]
+    response <- common$shape[[common$meta[[shape_mod]]$response]]
+    shape_map(map, common, response)
+
     common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
   })
 
