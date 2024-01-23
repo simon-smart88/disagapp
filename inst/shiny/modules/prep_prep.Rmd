@@ -1,9 +1,18 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{prep_prep_knit}}, eval = {{prep_prep_knit}}, include = {{prep_prep_knit}}}
+Prepare the data for fitting the model.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{prep_prep_knit}}, include = {{prep_prep_knit}}}
+
+prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
+                                     covariate_rasters = terra::rast(common$covs),
+                                     aggregation_raster = aggregation,
+                                     id_var = "{{prep_id_var}}",
+                                     response_var = "{{prep_resp_var}}",
+                                     mesh.args = list(max.edge = "{{prep_mesh_edge}}",
+                                                      cut = {{prep_mesh_cut}},
+                                                      offset = "{{prep_mesh_offset}}"),
+                                     na.action = {{prep_na_action}},
+                                     makeMesh = {{prep_mesh_make}})
+
 ```

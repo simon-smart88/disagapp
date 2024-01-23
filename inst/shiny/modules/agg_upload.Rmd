@@ -1,9 +1,14 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{agg_upload_knit}}, eval = {{agg_upload_knit}}, include = {{agg_upload_knit}}}
+Upload an aggregation raster. You need to specify the directory unless they are in your current working directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{agg_upload_knit}}, include = {{agg_upload_knit}}}
+
+aggregation_directory <- ""
+aggregation_files <- "{{agg_upload_path}}"
+aggregation_file_paths <- file.path(aggregation_directory, files)
+aggregation_file_df <- data.frame(datapath = aggregation_file_paths, name = aggregation_files)
+aggregation <- disagapp::agg_upload(aggregation_file_df )
+names(aggregation) <- "{{agg_upload_name}}"
+    
 ```

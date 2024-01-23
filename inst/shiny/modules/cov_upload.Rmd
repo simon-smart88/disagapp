@@ -5,8 +5,8 @@ Upload covariates from local files and add to the list of covariates. You need t
 ```{r, echo = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
 
 covariate_directory <- ""
-covariate_files <- {{cov_upload_path}}
-covariate_file_paths <- file.path(covariate_directory, files)
+covariate_files <- "{{cov_upload_path}}"
+covariate_file_paths <- file.path(covariate_directory, covariate_files)
 covariate_file_df <- data.frame(datapath = covariate_file_paths, name = covariate_files)
 uploaded_covariates <- disagapp::cov_upload(covariate_df)
 covariates <- append(covariates, uploaded_covariates)

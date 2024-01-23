@@ -3,5 +3,7 @@ Edit the response data
 ```
 
 ```{r, echo = {{resp_edit_knit}}, include = {{resp_edit_knit}}}
-shape <- resp_edit(common$shape, common$poly, )
+polygon <- matrix({{resp_edit_poly}}, ncol = 2, byrow = FALSE)
+edit_type <- "{{resp_edit_type}}"
+shape <- disagapp::resp_edit(shape, polygon, edit_type)
 ```

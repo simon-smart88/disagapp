@@ -33,7 +33,7 @@ prep_summary_module_server <- function(id, common) {
       # LOAD INTO COMMON ####
 
       # METADATA ####
-
+      common$meta$prep_summary$used <- TRUE
       # TRIGGER
       gargoyle::trigger("prep_summary")
     })
@@ -65,9 +65,7 @@ prep_summary_module_result <- function(id) {
 prep_summary_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    prep_summary_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    prep_summary_knit = common$meta$prep_summary$used
   )
 }
 

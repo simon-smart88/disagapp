@@ -1,9 +1,25 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{resp_download_knit}}, eval = {{resp_download_knit}}, include = {{resp_download_knit}}}
+Download boundary data and combine with the uploaded response data. You need to specify the directory unless the spreadsheet is in your current working directory.
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{resp_download_knit}}, include = {{resp_download_knit}}}
+response_directory <- ""
+
+#read in the response data
+response_file <- "{{data_path}}"
+response_file_path <- file.path(response_directory, response_file)
+file_format <- tools::file_ext(response_file_path)
+if (file_format == "csv"){
+  response_df <- read.csv(response_file_path)
+} else if (file_format == "xlsx"){
+  response_df <- openxlsx::read.xlsx(response_file_path)
+}
+
+#download the boundary data and merge with the response data
+shape <- disagapp::resp_download(df = reponse_df,
+                     area_column = "{{area_column}}",
+                     resp_column = "{{resp_column}}",
+                     country_code = "{{country_code}}",
+                     admin_level = "{{admin_level}}")
+
 ```

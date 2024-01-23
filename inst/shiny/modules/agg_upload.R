@@ -46,10 +46,10 @@ agg_upload_module_server <- function(id, common) {
     common$agg <- agg_raster
 
     # METADATA ####
-    common$meta$agg$path <- aggdf$name
-    common$meta$agg$name <- input$name
-    common$meta$agg$log <- input$log
-    common$meta$agg$upload <- TRUE
+    common$meta$agg_upload$path <- aggdf$name
+    common$meta$agg_upload$name <- input$name
+    common$meta$agg_upload$log <- input$log
+    common$meta$agg_upload$used <- TRUE
     # TRIGGER
     gargoyle::trigger("agg_upload")
   })
@@ -57,13 +57,13 @@ agg_upload_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(example = input$example, 
-name = input$name, 
+list(example = input$example,
+name = input$name,
 log = input$log)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = state$example) 
-updateTextInput(session, "name", value = state$name) 
+updateCheckboxInput(session, "example", value = state$example)
+updateTextInput(session, "name", value = state$name)
 updateCheckboxInput(session, "log", value = state$log)
     }
   ))
@@ -100,9 +100,9 @@ agg_upload_module_map <- function(map, common) {
 agg_upload_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_upload_knit = common$meta$agg$upload,
-    upload_agg_path = common$meta$agg$path,
-    upload_agg_name = common$meta$agg$name
+    agg_upload_knit = common$meta$agg_upload$used,
+    agg_upload_path = common$meta$agg_upload$path,
+    agg_upload_name = common$meta$agg_upload$name
   )
 }
 
