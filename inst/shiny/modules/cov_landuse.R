@@ -45,11 +45,11 @@ cov_landuse_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(uses = input$uses, 
+list(uses = input$uses,
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = state$uses) 
+updateSelectInput(session, "uses", selected = state$uses)
 updateSelectInput(session, "year", selected = state$year)
     }
   ))
@@ -63,7 +63,7 @@ cov_landuse_module_map <- function(map, common) {
 cov_landuse_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_landuse_knit = common$meta$landuse$used,
+    cov_landuse_knit = !is.null(common$meta$landuse$used),
     cov_landuse_uses = printVecAsis(common$meta$landuse$uses),
     cov_landuse_year = common$meta$landuse$year
   )

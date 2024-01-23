@@ -65,7 +65,7 @@ prep_summary_module_result <- function(id) {
 prep_summary_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    prep_summary_knit = common$meta$prep_summary$used
+    prep_summary_knit = !is.null(common$meta$prep_summary$used)
   )
 }
 

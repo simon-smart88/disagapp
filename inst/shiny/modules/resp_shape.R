@@ -102,7 +102,7 @@ resp_shape_module_map <- function(map, common) {
 resp_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_shape_knit = common$meta$resp_shape$used,
+    resp_shape_knit = !is.null(common$meta$resp_shape$used),
     resp_shape_path = common$meta$resp_shape$path,
     resp_shape_resp = common$meta$resp_shape$response
   )

@@ -100,7 +100,7 @@ agg_upload_module_map <- function(map, common) {
 agg_upload_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_upload_knit = common$meta$agg_upload$used,
+    agg_upload_knit = !is.null(common$meta$agg_upload$used),
     agg_upload_path = common$meta$agg_upload$path,
     agg_upload_name = common$meta$agg_upload$name
   )

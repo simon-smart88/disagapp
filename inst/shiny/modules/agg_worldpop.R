@@ -60,15 +60,15 @@ agg_worldpop_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(method = input$method, 
-resolution = input$resolution, 
-log = input$log, 
+list(method = input$method,
+resolution = input$resolution,
+log = input$log,
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method) 
-updateSelectInput(session, "resolution", selected = state$resolution) 
-updateCheckboxInput(session, "log", value = state$log) 
+updateSelectInput(session, "method", selected = state$method)
+updateSelectInput(session, "resolution", selected = state$resolution)
+updateCheckboxInput(session, "log", value = state$log)
 updateSelectInput(session, "year", selected = state$year)
     }
   ))
@@ -98,7 +98,7 @@ agg_worldpop_module_map <- function(map, common) {
 agg_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_worldpop_knit = common$meta$worldpop$used,
+    agg_worldpop_knit = !is.null(common$meta$worldpop$used),
     agg_worldpop_country = common$meta$worldpop$country,
     agg_worldpop_method = common$meta$worldpop$method,
     agg_worldpop_resolution = common$meta$worldpop$resolution,

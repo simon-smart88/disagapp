@@ -34,7 +34,7 @@ agg_uniform_module_server <- function(id, common) {
 agg_uniform_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_uniform_knit = common$meta$uniform$used
+    agg_uniform_knit = !is.null(common$meta$uniform$used)
   )
 }
 

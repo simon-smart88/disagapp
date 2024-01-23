@@ -80,7 +80,7 @@ cov_bioclim_module_map <- function(map, common) {
 cov_bioclim_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_bioclim_knit = common$meta$bioclim$used,
+    cov_bioclim_knit = !is.null(common$meta$bioclim$used),
     cov_bioclim_country = common$meta$bioclim$country,
     cov_bioclim_variables = printVecAsis(common$meta$bioclim$variables)
   )

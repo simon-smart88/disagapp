@@ -74,7 +74,7 @@ pred_pred_module_map <- function(map, common) {
 pred_pred_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    pred_pred_knit = common$meta$pred$used
+    pred_pred_knit = !is.null(common$meta$pred$used)
   )
 }
 

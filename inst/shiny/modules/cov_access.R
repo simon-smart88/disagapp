@@ -53,7 +53,7 @@ cov_access_module_map <- function(map, common) {
 cov_access_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_access_knit = common$meta$access$used,
+    cov_access_knit = !is.null(common$meta$access$used),
     access_layer = common$meta$access$layer
   )
 }

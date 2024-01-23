@@ -78,7 +78,7 @@ resp_edit_module_map <- function(map, common) {
 resp_edit_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_edit_knit = common$meta$edit_shape$used,
+    resp_edit_knit = !is.null(common$meta$edit_shape$used),
     resp_edit_type = common$meta$edit_shape$type,
     resp_edit_poly = printVecAsis(common$meta$edit_shape$poly)
   )

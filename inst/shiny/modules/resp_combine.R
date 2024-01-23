@@ -127,12 +127,13 @@ resp_combine_module_map <- function(map, common) {
 resp_combine_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_combine_knit = common$meta$resp_combine$used,
+    resp_combine_knit = !is.null(common$meta$resp_combine$used),
     resp_combine_shape_path = printVecAsis(common$meta$resp_combine$shape_path),
     resp_combine_spread_path = common$meta$resp_combine$spread_path,
     resp_combine_response = common$meta$resp_combine$response,
     resp_combine_spread_area = common$meta$resp_combine$spread_area,
     resp_combine_shape_area = common$meta$resp_combine$shape_area
   )
+
 }
 

@@ -104,7 +104,7 @@ resp_download_module_map <- function(map, common) {
 resp_download_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_download_knit = common$meta$resp_download$used,
+    resp_download_knit = !is.null(common$meta$resp_download$used),
     data_path <- common$meta$resp_download$datapath,
     resp_column = common$meta$resp_download$resp_column,
     area_column = common$meta$resp_download$area_column,
