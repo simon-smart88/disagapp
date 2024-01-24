@@ -24,6 +24,7 @@ disagapp uses the following R packages that must be installed and loaded before 
 ```{r}
 library(terra)
 library(leaflet)
+library(disaggregation)
 library(disagapp)
 
 #create empty list to store covariate data

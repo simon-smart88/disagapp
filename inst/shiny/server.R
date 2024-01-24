@@ -151,7 +151,7 @@ function(input, output, session) {
   # handler for R Markdown download
   output$dlRMD <- downloadHandler(
     filename = function() {
-      paste0("shinyscholar-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
+      paste0("disagapp-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
     },
     content = function(file) {
       md_files <- c()
@@ -162,7 +162,6 @@ function(input, output, session) {
                         clean = TRUE,
                         encoding = "UTF-8")
       md_files <- c(md_files, md_intro_file)
-
 
       module_rmds <- NULL
       for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("rep")])) {

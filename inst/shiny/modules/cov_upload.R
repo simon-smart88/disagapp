@@ -102,7 +102,7 @@ cov_upload_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_upload_knit = !is.null(common$meta$cov_upload$used),
-    cov_upload_path = printVecAsis(common$meta$cov$path)
+    cov_upload_path = printVecAsis(common$meta$cov_upload$path)
   )
 }
 

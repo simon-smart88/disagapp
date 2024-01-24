@@ -1,18 +1,18 @@
-```{asis, echo = {{prep_prep_knit}}, eval = {{prep_prep_knit}}, include = {{prep_prep_knit}}}
+```{asis, echo = {{prep_knit}}, eval = {{prep_knit}}, include = {{prep_knit}}}
 Prepare the data for fitting the model.
 ```
 
-```{r, echo = {{prep_prep_knit}}, include = {{prep_prep_knit}}}
+```{r, echo = {{prep_knit}}, include = {{prep_knit}}}
 
 prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
-                                     covariate_rasters = terra::rast(common$covs),
+                                     covariate_rasters = terra::rast(covariates),
                                      aggregation_raster = aggregation,
                                      id_var = "{{prep_id_var}}",
                                      response_var = "{{prep_resp_var}}",
-                                     mesh.args = list(max.edge = "{{prep_mesh_edge}}",
+                                     mesh.args = list(max.edge = {{prep_mesh_edge}},
                                                       cut = {{prep_mesh_cut}},
-                                                      offset = "{{prep_mesh_offset}}"),
+                                                      offset = {{prep_mesh_offset}}),
                                      na.action = {{prep_na_action}},
-                                     makeMesh = {{prep_mesh_make}})
+                                     makeMesh = {{prep_make_mesh}})
 
 ```

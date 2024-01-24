@@ -1,7 +1,6 @@
 ```{asis, echo = {{prep_summary_knit}}, eval = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
-# Remember to change prep_summary to the name of your module 
-# (e.g. prep_summary_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+
+
 ```
 
 ```{r, echo = {{prep_summary_knit}}, include = {{prep_summary_knit}}}

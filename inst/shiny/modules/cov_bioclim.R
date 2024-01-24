@@ -53,9 +53,9 @@ cov_bioclim_module_server <- function(id, common) {
     common$logger %>% writeLog("Bioclim data has been downloaded")
 
     # METADATA ####
-    common$meta$bioclim$used <- TRUE
-    common$meta$bioclim$country <- country_code
-    common$meta$bioclim$variables <- input$variables
+    common$meta$cov_bioclim$used <- TRUE
+    common$meta$cov_bioclim$country <- country_code
+    common$meta$cov_bioclim$variables <- input$variables
 
     # TRIGGER
     gargoyle::trigger("cov_bioclim")
@@ -80,9 +80,9 @@ cov_bioclim_module_map <- function(map, common) {
 cov_bioclim_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_bioclim_knit = !is.null(common$meta$bioclim$used),
-    cov_bioclim_country = common$meta$bioclim$country,
-    cov_bioclim_variables = printVecAsis(common$meta$bioclim$variables)
+    cov_bioclim_knit = !is.null(common$meta$cov_bioclim$used),
+    cov_bioclim_country = common$meta$cov_bioclim$country,
+    cov_bioclim_variables = printVecAsis(common$meta$cov_bioclim$variables)
   )
 }
 

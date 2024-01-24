@@ -6,5 +6,5 @@ Fit the model
 fitted_model <- disaggregation::disag_model(data = prepared_data,
                                       family = "{{fit_family}}",
                                       link = "{{fit_link}}",
-                                      iid = "{{fit_iid}}")
+                                      iid = {{fit_iid}})
 ```

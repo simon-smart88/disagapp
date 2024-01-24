@@ -36,12 +36,13 @@ resp_shape_module_server <- function(id, common) {
       }
 
       # FUNCTION CALL ####
-      shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
+      #keeping this for now, but only needed if the Rmd uses sf
+      #shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
       shape <- resp_shape(shpdf)
 
       # METADATA ####
       common$meta$resp_shape$used <- TRUE
-      common$meta$resp_shape$path <- shape_file_path
+      common$meta$resp_shape$path <- shpdf$name
 
       return(shape)
     }) %>% bindEvent(input$shape)
@@ -103,7 +104,7 @@ resp_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     resp_shape_knit = !is.null(common$meta$resp_shape$used),
-    resp_shape_path = common$meta$resp_shape$path,
+    resp_shape_path = printVecAsis(common$meta$resp_shape$path),
     resp_shape_resp = common$meta$resp_shape$response
   )
 }

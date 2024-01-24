@@ -1,8 +1,8 @@
-```{asis, echo = {{pred_pred_knit}}, eval = {{pred_pred_knit}}, include = {{pred_pred_knit}}}
+```{asis, echo = {{pred_knit}}, eval = {{pred_knit}}, include = {{pred_knit}}}
 Generate predictions from the model
 ```
 
-```{r, echo = {{pred_pred_knit}}, include = {{pred_pred_knit}}}
+```{r, echo = {{pred_knit}}, include = {{pred_knit}}}
 prediction <- disaggregation::predict_model(fitted_model)
 
 plot(prediction$prediction)

@@ -29,8 +29,8 @@ cov_access_module_server <- function(id, common) {
     common$logger %>% writeLog("Accessibility data has been downloaded")
     close_loading_modal()
     # METADATA ####
-    common$meta$access$used <- TRUE
-    common$meta$access$layer <- input$layer
+    common$meta$cov_access$used <- TRUE
+    common$meta$cov_access$layer <- input$layer
     # TRIGGER
     gargoyle::trigger("cov_access")
   })
@@ -53,8 +53,8 @@ cov_access_module_map <- function(map, common) {
 cov_access_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_access_knit = !is.null(common$meta$access$used),
-    access_layer = common$meta$access$layer
+    cov_access_knit = !is.null(common$meta$cov_access$used),
+    access_layer = common$meta$cov_access$layer
   )
 }
 

@@ -36,9 +36,9 @@ cov_landuse_module_server <- function(id, common) {
     close_loading_modal()
     common$logger %>% writeLog("Land use data has been downloaded")
     # METADATA ####
-    common$meta$landuse$used <- TRUE
-    common$meta$landuse$uses <- input$uses
-    common$meta$landuse$year <- input$year
+    common$meta$cov_landuse$used <- TRUE
+    common$meta$cov_landuse$uses <- input$uses
+    common$meta$cov_landuse$year <- input$year
     # TRIGGER
     gargoyle::trigger("cov_landuse")
   })
@@ -63,9 +63,9 @@ cov_landuse_module_map <- function(map, common) {
 cov_landuse_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_landuse_knit = !is.null(common$meta$landuse$used),
-    cov_landuse_uses = printVecAsis(common$meta$landuse$uses),
-    cov_landuse_year = common$meta$landuse$year
+    cov_landuse_knit = !is.null(common$meta$cov_landuse$used),
+    cov_landuse_uses = printVecAsis(common$meta$cov_landuse$uses),
+    cov_landuse_year = common$meta$cov_landuse$year
   )
 }
 

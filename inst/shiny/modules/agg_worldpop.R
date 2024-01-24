@@ -45,13 +45,13 @@ agg_worldpop_module_server <- function(id, common) {
     common$logger %>% writeLog("Worldpop data has been downloaded")
 
     # METADATA ####
-    common$meta$worldpop$name <- "Population"
-    common$meta$worldpop$log <- input$log
-    common$meta$worldpop$used <- TRUE
-    common$meta$worldpop$country <- country_code
-    common$meta$worldpop$method <- input$method
-    common$meta$worldpop$resolution <- input$resolution
-    common$meta$worldpop$year <- input$year
+    common$meta$agg_worldpop$name <- "Population"
+    common$meta$agg_worldpop$log <- input$log
+    common$meta$agg_worldpop$used <- TRUE
+    common$meta$agg_worldpop$country <- country_code
+    common$meta$agg_worldpop$method <- input$method
+    common$meta$agg_worldpop$resolution <- input$resolution
+    common$meta$agg_worldpop$year <- input$year
 
     # TRIGGER
     gargoyle::trigger("agg_worldpop")
@@ -98,11 +98,11 @@ agg_worldpop_module_map <- function(map, common) {
 agg_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_worldpop_knit = !is.null(common$meta$worldpop$used),
-    agg_worldpop_country = common$meta$worldpop$country,
-    agg_worldpop_method = common$meta$worldpop$method,
-    agg_worldpop_resolution = common$meta$worldpop$resolution,
-    agg_worldpop_year = common$meta$worldpop$year
+    agg_worldpop_knit = !is.null(common$meta$agg_worldpop$used),
+    agg_worldpop_country = common$meta$agg_worldpop$country,
+    agg_worldpop_method = common$meta$agg_worldpop$method,
+    agg_worldpop_resolution = common$meta$agg_worldpop$resolution,
+    agg_worldpop_year = common$meta$agg_worldpop$year
   )
 }
 
