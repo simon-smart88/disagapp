@@ -18,10 +18,10 @@ fit_fit_module_server <- function(id, common) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the model is fitted")
-    fitted <- disaggregation::disag_model(data = common$prep,
+    fitted <- suppressMessages(disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,
-                                          iid = input$iid)
+                                          iid = input$iid))
     close_loading_modal()
     common$logger %>% writeLog('Model fitting has completed')
     # LOAD INTO COMMON ####
@@ -42,15 +42,15 @@ fit_fit_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(field = input$field, 
-iid = input$iid, 
-family = input$family, 
+list(field = input$field,
+iid = input$iid,
+family = input$family,
 link = input$link)
     },
     load = function(state) {
-updateCheckboxInput(session, "field", value = state$field) 
-updateCheckboxInput(session, "iid", value = state$iid) 
-updateRadioButtons(session, "family", selected = state$family) 
+updateCheckboxInput(session, "field", value = state$field)
+updateCheckboxInput(session, "iid", value = state$iid)
+updateRadioButtons(session, "family", selected = state$family)
 updateRadioButtons(session, "link", selected = state$link)
     }
   ))
