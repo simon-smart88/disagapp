@@ -6,7 +6,7 @@ Upload an aggregation raster. You need to specify the directory unless they are 
 
 aggregation_directory <- ""
 aggregation_files <- "{{agg_upload_path}}"
-aggregation_file_path <- file.path(aggregation_directory, files)
+aggregation_file_path <- file.path(aggregation_directory, aggregation_files)
 aggregation <- disagapp::agg_upload(aggregation_file_path)
 names(aggregation) <- "{{agg_upload_name}}"
     
