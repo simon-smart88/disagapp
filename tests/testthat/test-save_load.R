@@ -80,9 +80,8 @@ test_that("{shinytest2} recording: e2e_settings_load", {
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file(load_session = save_path)
   app$click("goLoad_session")
-  # input_values <- app$expect_values(input = TRUE)
 
-  expect_equal(app$get_value(input = "resp_shape-example"), FALSE)
+    expect_equal(app$get_value(input = "resp_shape-example"), FALSE)
   expect_equal(app$get_value(input = "cov_access-layer"), "Motorized Travel Time to Healthcare (2020)")
   expect_equal(app$get_value(input = "cov_landuse-uses"), c("Crops", "PermanentWater", "SeasonalWater"))
   expect_equal(app$get_value(input = "cov_landuse-year"), "2017")

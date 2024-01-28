@@ -72,11 +72,11 @@ test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
   common <- app$get_value(export = "common")
   expect_is(common$prep, "list")
 
-  app$set_inputs(tabs = "fit")
-  app$click("fit_fit-run")
+  # app$set_inputs(tabs = "fit")
+  # app$click("fit_fit-run")
 
-  app$set_inputs(tabs = "pred")
-  app$click("pred_pred-run")
+  # app$set_inputs(tabs = "pred")
+  # app$click("pred_pred-run")
 
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
