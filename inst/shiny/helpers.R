@@ -143,3 +143,31 @@ map %>%
   addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
   addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
 }
+
+#function for wrapping terra rasters
+wrap_terra <- function(object){
+  if (!is.null(object)){
+    if (typeof(object)[1] == "list"){
+      object <- lapply(object, terra::wrap)
+    }
+    if (class(object)[1] == "SpatRaster"){
+      object <- terra::wrap(object)
+    }
+    return(object)
+  }
+}
+
+#function for unwrapping terra rasters
+unwrap_terra <- function(object){
+  if (!is.null(object)){
+    if (class(object)[1] == "list"){
+      object <- lapply(object, terra::unwrap)
+    }
+    if (class(object)[1] == "PackedSpatRaster"){
+      object <- terra::unwrap(object)
+    }
+    return(object)
+  }
+}
+
+

@@ -318,32 +318,23 @@ function(input, output, session) {
     }
 
     # wrap terra objects prior to save
-    if (!is.null(common$covs)){
-      common$covs <- lapply(common$covs, terra::wrap)
-    }
-    if (!is.null(common$agg)){
-      common$agg <- lapply(common$agg, terra::wrap)
-    }
-    if (!is.null(common$pred)){
-    common$pred$field <- terra::wrap(common$pred$field)
-    common$pred$prediction <- terra::wrap(common$pred$prediction)
-    }
+    common$covs <- wrap_terra(common$covs)
+    common$covs_prep <- wrap_terra(common$covs_prep)
+    common$agg <- wrap_terra(common$agg)
+    common$agg_prep <- wrap_terra(common$agg_prep)
+    common$pred$field <- wrap_terra(common$pred$field)
+    common$pred$prediction <- wrap_terra(common$pred$prediction)
 
     #save file
     saveRDS(common, file)
 
     #unwrap the terra objects
-    if (!is.null(common$covs)){
-      common$covs <- lapply(common$covs, terra::unwrap)
-    }
-    if (!is.null(common$agg)){
-      common$agg <- lapply(common$agg, terra::unwrap)
-    }
-    if (!is.null(common$pred)){
-      common$pred$field <- terra::unwrap(common$pred$field)
-      common$pred$prediction <- terra::unwrap(common$pred$prediction)
-    }
-
+    common$covs <- unwrap_terra(common$covs)
+    common$covs_prep <- unwrap_terra(common$covs_prep)
+    common$agg <- unwrap_terra(common$agg)
+    common$agg_prep <- unwrap_terra(common$agg_prep)
+    common$pred$field <- unwrap_terra(common$pred$field)
+    common$pred$prediction <- unwrap_terra(common$pred$prediction)
 
   }
 
@@ -384,16 +375,12 @@ function(input, output, session) {
 
     #required due to terra objects being pointers to c++ objects
     #unwrap the terra objects
-    if (!is.null(common$covs)){
-      common$covs <- lapply(common$covs, terra::unwrap)
-    }
-    if (!is.null(common$agg)){
-      common$agg <- lapply(common$agg, terra::unwrap)
-    }
-    if (!is.null(common$pred)){
-      common$pred$field <- terra::unwrap(common$pred$field)
-      common$pred$prediction <- terra::unwrap(common$pred$prediction)
-    }
+    common$covs <- unwrap_terra(common$covs)
+    common$covs_prep <- unwrap_terra(common$covs_prep)
+    common$agg <- unwrap_terra(common$agg)
+    common$agg_prep <- unwrap_terra(common$agg_prep)
+    common$pred$field <- unwrap_terra(common$pred$field)
+    common$pred$prediction <- unwrap_terra(common$pred$prediction)
 
     #replot the shape
     #find which meta response isn't NULL, return the first if more than one
