@@ -38,12 +38,15 @@ prep_prep_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(common$covs_prep)) {
+      common$logger %>% writeLog(type = "error", "Please prepare the covariates")
+      return()
+    }
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
     prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
-                                         covariate_rasters = terra::rast(common$covs),
+                                         covariate_rasters = common$covs_prep,
                                          aggregation_raster = common$agg,
                                          id_var = as.character(input$id_var),
                                          response_var = as.character(input$resp_var),
@@ -51,7 +54,7 @@ prep_prep_module_server <- function(id, common) {
                                                           cut = input$mesh_cut,
                                                           offset = input$mesh_offset),
                                          na.action = input$na_action,
-                                         makeMesh=input$mesh_make)
+                                         makeMesh = input$mesh_make)
     close_loading_modal()
     common$logger %>% writeLog("Data preparation is completed")
     # LOAD INTO COMMON ####

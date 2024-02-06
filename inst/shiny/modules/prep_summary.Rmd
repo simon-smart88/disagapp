@@ -1,8 +1,25 @@
 ```{asis, echo = {{prep_summary_knit}}, eval = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
-
-
+Prepare the covariates and aggregation raster so that their extent and resolution match enabling them to be stacked into a single SpatRaster
 ```
 
 ```{r, echo = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
+
+#temporarily add the aggregation raster to the covariates list
+covariates$aggregation <- aggregation
+
+#prepare the summary
+covariate_summary <- prep_summary(covariates, remove = FALSE)
+
+#show the table
+DT::datatable(covariate_summary)
+```
+
+```{r, echo = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
+covariates_prepared <- lapply(covariates, terra::resample, covariates[["{{prep_summary_resample_target}}"]])
+
+#store and then remove the prepared aggregation raster
+aggregation_prepared <- covariates_prepared$aggregation
+covariates <- covariates[covariates != "aggregation"]
+covariates_prepared <- covariates_prepared [covariates_prepared != "aggregation"]
 
 ```
