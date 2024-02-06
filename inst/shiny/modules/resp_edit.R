@@ -62,12 +62,10 @@ resp_edit_module_map <- function(map, common) {
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
   gargoyle::on("resp_edit", {
     #find which meta response isn't NULL, return the first if more than one
-    meta_response <- min(which(c(!is.null(common$meta$resp_shape),
-                                 !is.null(common$meta$resp_combine),
-                                 !is.null(common$meta$resp_download)) == TRUE))
-
-    shape_mod <- c("resp_shape", "resp_combine", "resp_download")[meta_response]
-    response <- common$shape[[common$meta[[shape_mod]]$response]]
+    response_variable <- c(common$meta$resp_shape$response,
+                           common$meta$resp_combine$response,
+                           common$meta$resp_download$response)[1]
+    response <- common$shape[[response_variable]]
     shape_map(map, common, response)
     map %>%
       clearControls() %>%

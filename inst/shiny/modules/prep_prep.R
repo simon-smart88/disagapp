@@ -25,11 +25,15 @@ prep_prep_module_server <- function(id, common) {
     })
 
     output$resp_var_out <- renderUI({
+      #would this be better as an updateSelectInput?
       gargoyle::watch("resp_shape")
       gargoyle::watch("resp_download")
       gargoyle::watch("resp_combine")
       req(common$shape)
-      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = common$meta$shape$response)
+      selected_response <- c(common$meta$resp_shape$response,
+                             common$meta$resp_combine$response,
+                             common$meta$resp_download$response)[1]
+      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
     })
 
   observeEvent(input$run, {
@@ -37,7 +41,7 @@ prep_prep_module_server <- function(id, common) {
 
     # FUNCTION CALL ####
 
-    show_loading_modal('Please wait while the data is prepared')
+    show_loading_modal("Please wait while the data is prepared")
     prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
                                          covariate_rasters = terra::rast(common$covs),
                                          aggregation_raster = common$agg,
@@ -49,7 +53,7 @@ prep_prep_module_server <- function(id, common) {
                                          na.action = input$na_action,
                                          makeMesh=input$mesh_make)
     close_loading_modal()
-    common$logger %>% writeLog('Data preparation is completed')
+    common$logger %>% writeLog("Data preparation is completed")
     # LOAD INTO COMMON ####
     common$prep <- prep
     # METADATA ####
@@ -70,21 +74,21 @@ prep_prep_module_server <- function(id, common) {
 
   return(list(
     save = function() {
-list(mesh_edge = input$mesh_edge, 
-mesh_cut = input$mesh_cut, 
-mesh_offset = input$mesh_offset, 
-na_action = input$na_action, 
-mesh_make = input$mesh_make, 
-id_var = input$id_var, 
+list(mesh_edge = input$mesh_edge,
+mesh_cut = input$mesh_cut,
+mesh_offset = input$mesh_offset,
+na_action = input$na_action,
+mesh_make = input$mesh_make,
+id_var = input$id_var,
 resp_var = input$resp_var)
     },
     load = function(state) {
-updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
-updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
-updateSliderInput(session, "mesh_offset", value = state$mesh_offset) 
-updateCheckboxInput(session, "na_action", value = state$na_action) 
-updateCheckboxInput(session, "mesh_make", value = state$mesh_make) 
-updateSelectInput(session, "id_var", selected = state$id_var) 
+updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
+updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
+updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
+updateCheckboxInput(session, "na_action", value = state$na_action)
+updateCheckboxInput(session, "mesh_make", value = state$mesh_make)
+updateSelectInput(session, "id_var", selected = state$id_var)
 updateSelectInput(session, "resp_var", selected = state$resp_var)
     }
   ))
