@@ -41,6 +41,6 @@ cov_bioclim <- function(country_code, variables, logger = NULL) {
   bioclim_ras <- terra::rast(glue::glue("https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{country_code}_wc2.1_30s_bio.tif"))
   names(bioclim_ras) <- layers
   bioclim_ras <- as.list(bioclim_ras[[variables]])
-
+  names(bioclim_ras) <- variables
   return(bioclim_ras)
 }

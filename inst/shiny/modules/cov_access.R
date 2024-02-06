@@ -26,6 +26,7 @@ cov_access_module_server <- function(id, common) {
     } else {
       common$covs <- append(common$covs, access)
     }
+    names(common$covs)[length(common$covs)] <- input$layer
     common$logger %>% writeLog("Accessibility data has been downloaded")
     close_loading_modal()
     # METADATA ####

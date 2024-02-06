@@ -23,7 +23,7 @@ cov_nightlight_module_server <- function(id, common) {
     if (is.null(common$covs)){
       common$covs <- list(light)
     } else {
-      common$covs <- append(common$covs, light)
+      common$covs$Nighttime_light <- light
     }
     common$logger %>% writeLog("Nighttime light data has been downloaded")
     close_loading_modal()
