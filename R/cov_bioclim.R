@@ -6,11 +6,12 @@
 #'
 #' @param country_code character. ISO3 code of the country.
 #' @param variables vector. List of the bioclimatic variables to be returned
+#' @param shape sf. sf object containing the area of interest
 #' @return a list of SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_bioclim <- function(country_code, variables, logger = NULL) {
+cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
 
   layers  <-  c("Mean temperature",
                 "Mean diurnal range",
@@ -39,6 +40,7 @@ cov_bioclim <- function(country_code, variables, logger = NULL) {
   }}
 
   bioclim_ras <- terra::rast(glue::glue("https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{country_code}_wc2.1_30s_bio.tif"))
+  bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
   names(bioclim_ras) <- layers
   bioclim_ras <- as.list(bioclim_ras[[variables]])
   names(bioclim_ras) <- variables

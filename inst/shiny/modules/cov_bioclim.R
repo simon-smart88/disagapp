@@ -44,7 +44,7 @@ cov_bioclim_module_server <- function(id, common) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    bioclim <- cov_bioclim(country_code, input$variables)
+    bioclim <- cov_bioclim(country_code, input$variables, common$shape)
 
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, bioclim)

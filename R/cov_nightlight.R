@@ -35,6 +35,8 @@ ras <- blackmarbler::bm_raster(roi_sf = shape,
 
 ras <- terra::rast(ras)
 names(ras) <- "Nighttime light"
+ras <- terra::crop(ras, shape, mask = TRUE )
+
 
 return(ras)
 }
