@@ -3,8 +3,9 @@ common_class <- R6::R6Class(
   public = list(
     shape = NULL,
     agg = NULL,
+    agg_prep = NULL,
     covs = NULL,
-    cov_sum = NULL,
+    covs_prep = NULL,
     prep = NULL,
     fit = NULL,
     pred = NULL,
