@@ -34,3 +34,5 @@ inst/shiny/install*
 _modules
 _shiny
 .Renviron
+lie.csv
+lie_data.rds
