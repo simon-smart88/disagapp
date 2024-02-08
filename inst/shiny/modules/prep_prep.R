@@ -47,7 +47,7 @@ prep_prep_module_server <- function(id, common) {
     show_loading_modal("Please wait while the data is prepared")
     prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
                                          covariate_rasters = common$covs_prep,
-                                         aggregation_raster = common$agg,
+                                         aggregation_raster = common$agg_prep,
                                          id_var = as.character(input$id_var),
                                          response_var = as.character(input$resp_var),
                                          mesh.args = list(max.edge = input$mesh_edge,

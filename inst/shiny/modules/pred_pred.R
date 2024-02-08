@@ -18,8 +18,8 @@ pred_pred_module_server <- function(id, common) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the model predictions are generated")
     prediction <- disaggregation::predict_model(common$fit)
-    prediction$field <- terra::mask(prediction$field, common$agg)
-    terra::crs(prediction$field) <- terra::crs(common$covs[[1]])
+    terra::crs(prediction$field) <- terra::crs(common$prep$covariate_rasters[[1]])
+    prediction$field <- terra::mask(prediction$field, common$prep$covariate_rasters[[1]])
     close_loading_modal()
     common$logger %>% writeLog('Model predictions are available')
     # LOAD INTO COMMON ####

@@ -29,7 +29,7 @@ prep_summary_module_server <- function(id, common) {
     #temporarily add aggregation raster to covs and remove again after the call
     common$covs$Aggregation <- common$agg
     summary_tables$covs <- prep_summary(common$covs, remove = input$remove)
-    common$covs <- common$covs[common$covs != "Aggregation"]
+    common$covs$Aggregation <- NULL
 
     # LOAD INTO COMMON ####
 
@@ -49,9 +49,9 @@ prep_summary_module_server <- function(id, common) {
       common$covs$Aggregation <- common$agg
       common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$original_covs_rows_selected]])
       summary_tables$covs_prep <- prep_summary(common$covs_prep, remove = input$remove)
-      common$covs <- common$covs[common$covs != "Aggregation"]
+      common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
-      common$covs_prep <- common$covs_prep[common$covs_prep != "Aggregation"]
+      common$covs_prep$Aggregation <- NULL
       # stack the rasters
       common$covs_prep <- terra::rast(common$covs_prep)
       # LOAD INTO COMMON ####
