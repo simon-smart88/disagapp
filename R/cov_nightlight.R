@@ -27,6 +27,13 @@ cov_nightlight <- function(shape, year, logger = NULL) {
     return()
   }
 
+  if (Sys.getenv("NASA_bearer") == ""){
+    logger %>% writeLog(type = "error", "A NASA API key is required to download nighttime light data.
+                        See https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token
+                        for how to obtain one and then set it as an environmental variable called 'NASA_bearer'")
+    return()
+  }
+
 ras <- blackmarbler::bm_raster(roi_sf = shape,
                         product_id = "VNP46A4",
                         date = year,
