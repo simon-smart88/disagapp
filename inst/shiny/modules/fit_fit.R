@@ -3,8 +3,8 @@ fit_fit_module_ui <- function(id) {
   tagList(
     radioButtons(ns("family"), "Model family", c("gaussian", "poisson", "binomial"), selected = "poisson"),
     radioButtons(ns("link"), "Model link", c("logit", "log", "identity"), selected = "log"),
-    checkboxInput(ns("field"), "Use field", value=TRUE),
-    checkboxInput(ns("iid"), "iid", value=TRUE),
+    checkboxInput(ns("field"), "Use field", value = TRUE),
+    checkboxInput(ns("iid"), "iid", value = TRUE),
     actionButton(ns("run"), "Fit model")
   )
 }
@@ -14,7 +14,10 @@ fit_fit_module_server <- function(id, common) {
 
   observeEvent(input$run, {
     # WARNING ####
-
+    if (is.null(common$prep)) {
+      common$logger %>% writeLog(type = "error", "Please prepare the data first")
+      return()
+    }
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the model is fitted")
