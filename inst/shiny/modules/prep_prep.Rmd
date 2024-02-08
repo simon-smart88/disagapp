@@ -5,8 +5,8 @@ Prepare the data for fitting the model.
 ```{r, echo = {{prep_knit}}, include = {{prep_knit}}}
 
 prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
-                                     covariate_rasters = terra::rast(covariates),
-                                     aggregation_raster = aggregation,
+                                     covariate_rasters = covariates_prepared,
+                                     aggregation_raster = aggregation_prepared,
                                      id_var = "{{prep_id_var}}",
                                      response_var = "{{prep_resp_var}}",
                                      mesh.args = list(max.edge = {{prep_mesh_edge}},

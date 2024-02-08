@@ -70,6 +70,7 @@ prep_summary_module_server <- function(id, common) {
         return()
       }
       common$covs_prep <- terra::scale(common$covs_prep, scale = TRUE, center = TRUE)
+      common$meta$prep_summary$rescale <- TRUE
     })
 
   output$original_covs <- DT::renderDataTable({
@@ -108,7 +109,8 @@ prep_summary_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     prep_summary_knit = !is.null(common$meta$prep_summary$used),
-    prep_summary_resample_target = common$meta$prep_summary$resample_target
+    prep_summary_resample_target = common$meta$prep_summary$resample_target,
+    prep_summary_rescale = common$meta$prep_summary$rescale
   )
 }
 

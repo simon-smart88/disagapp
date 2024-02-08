@@ -1,5 +1,5 @@
 ```{asis, echo = {{prep_summary_knit}}, eval = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
-Prepare the covariates and aggregation raster so that their extent and resolution match enabling them to be stacked into a single SpatRaster
+Prepare the covariates and aggregation raster so that their extent and resolution match, enabling them to be stacked into a single SpatRaster
 ```
 
 ```{r, echo = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
@@ -19,7 +19,14 @@ covariates_prepared <- lapply(covariates, terra::resample, covariates[["{{prep_s
 
 #store and then remove the prepared aggregation raster
 aggregation_prepared <- covariates_prepared$aggregation
-covariates <- covariates[covariates != "aggregation"]
-covariates_prepared <- covariates_prepared [covariates_prepared != "aggregation"]
+covariates$aggregation <- NULL
+covariates_prepared$aggregation <- NULL
 
+#convert the list of SpatRasters into a multi-layered SpatRaster
+covariates_prepared <- terra::rast(covariates_prepared)
+```
+
+```{r, echo = {{prep_summary_rescale}}, include = {{prep_summary_rescale}}}
+#rescale the covariates
+covariates_prepared <- terra::scale(covariates_prepared, scale = TRUE, center = TRUE)
 ```
