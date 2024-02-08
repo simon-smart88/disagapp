@@ -77,22 +77,8 @@ updateSelectInput(session, "year", selected = state$year)
 
 agg_worldpop_module_map <- function(map, common) {
     gargoyle::on("agg_worldpop", {
-      req(common$agg)
-      common$add_map_layer(common$meta$agg_worldpop$name)
-      if (common$meta$agg_worldpop$log == TRUE){
-        agg_map_raster = log10(common$agg)
-        agg_map_title = paste0(common$meta$agg_worldpop$name, " (log 10)")
-        pal <- colorBin("YlOrRd", domain = log10(terra::values(common$agg)), bins = 9, na.color = "#00000000")
-      } else {
-        agg_map_raster = common$agg
-        agg_map_title = common$meta$agg_worldpop$name
-      }
-      map %>%
-        clearGroup(common$meta$agg_worldpop$name) %>%
-        addRasterImage(raster::raster(agg_map_raster), group = common$meta$agg_worldpop$name, colors = pal) %>%
-        addLegend(position = "bottomleft", pal = pal, values = values(agg_map_raster), group = common$meta$agg_worldpop$name, title = agg_map_title) %>%
-        addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
-    })
+      covariate_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
+      })
 }
 
 agg_worldpop_module_rmd <- function(common) {

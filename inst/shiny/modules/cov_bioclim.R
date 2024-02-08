@@ -74,7 +74,11 @@ updateSelectInput(session, "variables", selected = state$variables)
 }
 
 cov_bioclim_module_map <- function(map, common) {
-  # Map logic
+  gargoyle::on("cov_bioclim", {
+  for (variable in common$meta$cov_bioclim$variables){
+    covariate_map(map, common, common$covs[[variable]], variable)
+  }
+  })
 }
 
 cov_bioclim_module_rmd <- function(common) {

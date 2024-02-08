@@ -144,6 +144,25 @@ map %>%
   addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
 }
 
+#function for plotting covariate data
+covariate_map <- function(map, common, raster, name, log = FALSE){
+common$add_map_layer(name)
+if (log == TRUE){
+  raster = log10(raster)
+  title = paste0(name, " (log 10)")
+}
+
+pal <- colorBin("YlOrRd", domain = terra::values(raster), bins = 9, na.color = "#00000000")
+
+map %>%
+  removeLayersControl() %>%
+  clearGroup(name) %>%
+  addRasterImage(raster, group = name, colors = pal) %>%
+  addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
+  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+  hideGroup(common$map_layers[!common$map_layers == name])
+}
+
 #function for wrapping terra rasters
 wrap_terra <- function(object){
   if (!is.null(object)){

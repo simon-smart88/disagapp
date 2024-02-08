@@ -2,7 +2,7 @@ cov_nightlight_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    selectInput(ns("year"), "Year", choices = c(2012:2022)),
+    selectInput(ns("year"), "Year", choices = c(2022:2012)),
     actionButton(ns("run"), "Download data")
   )
 }
@@ -23,7 +23,7 @@ cov_nightlight_module_server <- function(id, common) {
     if (is.null(common$covs)){
       common$covs <- list(light)
     } else {
-      common$covs$Nighttime_light <- light
+      common$covs$`Nighttime light` <- light
     }
     common$logger %>% writeLog("Nighttime light data has been downloaded")
     close_loading_modal()
@@ -46,7 +46,9 @@ updateSelectInput(session, "year", selected = state$year)
 }
 
 cov_nightlight_module_map <- function(map, common) {
-  # Map logic
+  gargoyle::on("cov_nightlight", {
+    covariate_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
+  })
 }
 
 cov_nightlight_module_rmd <- function(common) {

@@ -36,7 +36,6 @@ cov_upload_module_server <- function(id, common) {
 
     cov_list <- cov_upload(covdf)
     common$logger %>% writeLog("Covariates uploaded")
-    #common$covs <- cov_list
     # LOAD INTO COMMON ####
     # append if covariates already exist
     if (is.null(common$covs)){
@@ -81,20 +80,10 @@ cov_upload_module_result <- function(id) {
 }
 
 cov_upload_module_map <- function(map, common) {
-  observeEvent(gargoyle::watch("cov_upload"), {
-    req(common$covs)
-    common$add_map_layer(names(common$covs))
-    for (s in 1:length(names(common$covs))){
-    #for (s in 1:4){
-      #pal <- colorBin("YlOrRd", domain = terra::values(common$covs[[s]]), bins = 9, na.color = "#00000000")
-      map %>%
-        #clearGroup(names(common$covs)[s]) %>%
-        addRasterImage(raster::raster(common$covs[[s]]))#, group = names(common$covs)[s], colors = pal) %>%
-        #addLegend(position="bottomleft", pal = pal, values = terra::values(common$covs[[s]]), group = names(common$covs)[s], title = names(common$covs)[s])
+  gargoyle::on("cov_upload", {
+    for (variable in common$meta$cov_bioclim$variables){
+      covariate_map(map, common, common$covs[[variable]], variable)
     }
-    # map %>%
-    #   addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    #   hideGroup(common$map_layers[2:(length(common$map_layers)-1)])
   })
 }
 

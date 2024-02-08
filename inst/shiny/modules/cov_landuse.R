@@ -57,7 +57,12 @@ updateSelectInput(session, "year", selected = state$year)
 }
 
 cov_landuse_module_map <- function(map, common) {
-  # Map logic
+  gargoyle::on("cov_landuse", {
+    for (use in common$meta$cov_landuse$uses){
+      land_use <- paste0(use,"_land_use")
+      covariate_map(map, common, common$covs[[land_use]], land_use)
+    }
+  })
 }
 
 cov_landuse_module_rmd <- function(common) {

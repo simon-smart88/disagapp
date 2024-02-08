@@ -8,7 +8,7 @@ agg_upload_module_ui <- function(id) {
     checkboxInput(ns("example"), "Use example data", TRUE),
     textInput(ns("name"),
               label = "Aggregation name",
-              value = "Population density"),
+              value = "Population"),
     checkboxInput(ns("log"),
                   label = 'Plot as log values',
                   value = TRUE),
@@ -79,21 +79,7 @@ agg_upload_module_result <- function(id) {
 
 agg_upload_module_map <- function(map, common) {
   gargoyle::on("agg_upload", {
-    req(common$agg)
-    common$add_map_layer(common$meta$agg$name)
-    if (common$meta$agg$log == TRUE){
-      agg_map_raster = log10(common$agg)
-      agg_map_title = paste0(common$meta$agg$name, " (log 10)")
-      pal <- colorBin("YlOrRd", domain = log10(terra::values(common$agg)), bins = 9, na.color = "#00000000")
-      } else {
-      agg_map_raster = common$agg
-      agg_map_title = common$meta$agg$name
-      }
-    map %>%
-      clearGroup(common$meta$agg$name) %>%
-      addRasterImage(raster::raster(agg_map_raster), group = common$meta$agg$name, colors = pal) %>%
-      addLegend(position = "bottomleft", pal = pal, values = values(agg_map_raster), group = common$meta$agg$name, title = agg_map_title) %>%
-      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+    covariate_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_worldpop$log)
   })
 }
 
