@@ -17,6 +17,7 @@ Depends:
     disaggregation
 Imports:
     blackmarbler,
+    corrplot,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     geosphere,

@@ -1,0 +1,110 @@
+prep_correlation_module_ui <- function(id) {
+  ns <- shiny::NS(id)
+  tagList(
+    # UI
+    selectInput(ns("method"), "Correlation matrix method",
+                choices = c("Circle" = "circle",
+                            "Square" = "square",
+                            "Ellipse" = "ellipse",
+                            "Number" = "number",
+                            "Pie" = "pie",
+                            "Shade" = "shade",
+                            "Color" = "color")),
+    selectInput(ns("type"), "Correlation matrix type",
+                choices = c("Lower" = "lower",
+                            "Upper" = "upper",
+                            "Full" = "full")),
+    checkboxInput(ns("self"), "Include self-correlations?", value = FALSE),
+    actionButton(ns("run"), "Plot correlation matrix"),
+    uiOutput(ns("cov_layers_out")),
+    actionButton(ns("remove"), "Remove selected covariate")
+  )
+}
+
+prep_correlation_module_server <- function(id, common, parent_session) {
+  moduleServer(id, function(input, output, session) {
+
+  output$cov_layers_out <- renderUI({
+    gargoyle::watch("prep_summary")
+    req(common$covs_prep)
+    selectInput(session$ns("cov_layers"), "Covariate layers to remove", choices = c("", names(common$covs_prep)), multiple = TRUE)})
+
+  observeEvent(input$run, {
+    # WARNING ####
+    if (is.null(common$covs_prep)) {
+      common$logger %>% writeLog(type = "error", "Please resample the rasters first")
+      return()
+    }
+    # FUNCTION CALL ####
+    corr_matrix <- prep_correlation(common$covs_prep, common$logger)
+    # LOAD INTO COMMON ####
+    common$covs_matrix <- corr_matrix
+    # METADATA ####
+    common$meta$prep_correlation$used <- TRUE
+    common$meta$prep_correlation$method <- input$method
+    common$meta$prep_correlation$type <- input$type
+    common$meta$prep_correlation$self <- input$self
+    # TRIGGER
+    gargoyle::trigger("prep_correlation")
+  })
+
+  output$corr_plot <- renderPlot({
+    gargoyle::watch("prep_correlation")
+    req(common$covs_matrix)
+    corrplot::corrplot(common$covs_matrix,
+                       method = common$meta$prep_correlation$method,
+                       type = common$meta$prep_correlation$type,
+                       diag = common$meta$prep_correlation$self)
+  })
+
+  gargoyle::on("prep_correlation", updateTabsetPanel(parent_session, "main", selected = "Results"))
+
+  observeEvent(input$remove,{
+    # WARNING ####
+    if (input$cov_layers == "") {
+      common$logger %>% writeLog(type = "error", "Please select a covariate to remove")
+      return()
+    }
+    # UPDATE COMMON ####
+    for (covariate in input$cov_layers){
+    common$covs_prep[[covariate]] <- NULL
+    }
+    # METADATA ####
+    common$meta$prep_correlation$removed <- TRUE
+    common$meta$prep_correlation$removed_layers <- input$cov_layers
+  })
+
+  return(list(
+    save = function() {
+list(method = input$method,
+type = input$type,
+self = input$self,
+cov_layers = input$cov_layers)
+    },
+    load = function(state) {
+updateSelectInput(session, "method", selected = state$method)
+updateSelectInput(session, "type", selected = state$type)
+updateCheckboxInput(session, "self", value = state$self)
+updateSelectInput(session, "cov_layers", selected = state$cov_layers)
+    }
+  ))
+})
+}
+
+prep_correlation_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("corr_plot"))
+}
+
+prep_correlation_module_rmd <- function(common) {
+  # Variables used in the module's Rmd code
+  list(
+    prep_correlation_knit = !is.null(common$meta$prep_correlation$used),
+    prep_correlation_method = common$meta$prep_correlation$method,
+    prep_correlation_type = common$meta$prep_correlation$type,
+    prep_correlation_self = common$meta$prep_correlation$self,
+    prep_correlation_removed = !is.null(common$meta$prep_correlation$removed),
+    prep_correlation_removed_layers = printVecAsis(common$meta$prep_correlation$removed_layers)
+  )
+}
+

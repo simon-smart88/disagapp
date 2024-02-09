@@ -6,6 +6,7 @@ common_class <- R6::R6Class(
     agg_prep = NULL,
     covs = NULL,
     covs_prep = NULL,
+    covs_matrix = NULL,
     prep = NULL,
     fit = NULL,
     pred = NULL,

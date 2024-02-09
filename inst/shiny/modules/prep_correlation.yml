@@ -1,0 +1,5 @@
+component: "prep"
+short_name: "Covariate correlations"
+long_name: "Plot correlations between covariates"
+authors: "Simon E H Smart"
+package: [terra, corrplot]

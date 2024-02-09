@@ -1,0 +1,25 @@
+```{asis, echo = {{prep_correlation_knit}}, eval = {{prep_correlation_knit}}, include = {{prep_correlation_knit}}}
+Plot a correlation matrix of the prepared covariates
+```
+
+```{r, echo = {{prep_correlation_knit}}, include = {{prep_correlation_knit}}}
+correlation_matrix <- disagapp::prep_correlation(covariates_prepared)
+
+corrplot::corrplot(correlation_matrix, 
+                   method = "{{prep_correlation_method}}",
+                   type = "{{prep_correlation_type}}",
+                   diag = "{{prep_correlation_self}}")
+
+```
+
+```{asis, echo = {{prep_correlation_removed}}, eval = {{prep_correlation_removed}}, include = {{prep_correlation_removed}}}
+Remove covariates if they are highly correlated
+```
+
+```{r, echo = {{prep_correlation_removed}}, include = {{prep_correlation_removed}}}
+
+covariates_to_remove <- {{prep_correlation_removed_layers}}
+
+covariates_prepared
+  
+```

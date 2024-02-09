@@ -287,7 +287,12 @@ function(input, output, session) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
       # Initialize event triggers for each module
       gargoyle::init(module$id)
+      if (module$id != "prep_correlation"){
       return <- do.call(get(module$server_function), args = list(id = module$id, common = common))
+      } else {
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+      }
+
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&
           "load" %in% names(return) && is.function(return$load)) {
