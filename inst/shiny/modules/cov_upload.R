@@ -81,7 +81,7 @@ cov_upload_module_result <- function(id) {
 
 cov_upload_module_map <- function(map, common) {
   gargoyle::on("cov_upload", {
-    for (variable in common$meta$cov_bioclim$variables){
+    for (variable in common$meta$cov_upload$path){
       covariate_map(map, common, common$covs[[variable]], variable)
     }
   })

@@ -79,7 +79,7 @@ agg_upload_module_result <- function(id) {
 
 agg_upload_module_map <- function(map, common) {
   gargoyle::on("agg_upload", {
-    covariate_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_worldpop$log)
+    covariate_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_upload$log)
   })
 }
 
