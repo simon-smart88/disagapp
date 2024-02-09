@@ -10,7 +10,7 @@ prep_summary_module_ui <- function(id) {
   )
 }
 
-prep_summary_module_server <- function(id, common) {
+prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   summary_tables <- reactiveValues()

@@ -17,7 +17,7 @@ agg_upload_module_ui <- function(id) {
 }
 
 
-agg_upload_module_server <- function(id, common) {
+agg_upload_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

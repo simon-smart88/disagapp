@@ -8,7 +8,7 @@ cov_access_module_ui <- function(id) {
   )
 }
 
-cov_access_module_server <- function(id, common) {
+cov_access_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

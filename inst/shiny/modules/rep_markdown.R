@@ -9,5 +9,5 @@ rep_markdown_module_ui <- function(id) {
   )
 }
 
-rep_markdown_module_server <- function(id, common) {
+rep_markdown_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {} )}

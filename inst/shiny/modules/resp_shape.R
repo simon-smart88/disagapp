@@ -11,7 +11,7 @@ resp_shape_module_ui <- function(id) {
   )
 }
 
-resp_shape_module_server <- function(id, common) {
+resp_shape_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     #not using the usual paradigm in this module due to needing to specify

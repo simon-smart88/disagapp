@@ -16,7 +16,7 @@ resp_combine_module_ui <- function(id) {
   )
 }
 
-resp_combine_module_server <- function(id, common) {
+resp_combine_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     df <- reactive({

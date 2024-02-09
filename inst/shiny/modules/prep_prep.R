@@ -13,7 +13,7 @@ prep_prep_module_ui <- function(id) {
   )
 }
 
-prep_prep_module_server <- function(id, common) {
+prep_prep_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     output$id_var_out <- renderUI({
