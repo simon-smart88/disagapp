@@ -21,12 +21,7 @@ cov_access_module_server <- function(id, common, parent_session) {
     show_loading_modal("Please wait while the data is loaded")
     access <- cov_access(common$shape, input$layer)
     # LOAD INTO COMMON ####
-    if (is.null(common$covs)){
-      common$covs <- list(access)
-    } else {
-      common$covs <- append(common$covs, access)
-    }
-    names(common$covs)[length(common$covs)] <- input$layer
+    common$covs[[input_layer]] <- access
     common$logger %>% writeLog("Accessibility data has been downloaded")
     close_loading_modal()
     # METADATA ####

@@ -4,5 +4,5 @@ Load accessibility data and add to covariates list
 
 ```{r, echo = {{cov_access_knit}}, include = {{cov_access_knit}}}
 access <- disagapp::cov_access(shape, "{{access_layer}}")
-covariates <- append(covariates, access)
+covariates[["{{access_layer}}"]] <- access
 ```

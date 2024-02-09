@@ -4,5 +4,5 @@ Download nighttime light data and add to covariates list
 
 ```{r, echo = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
 night_light <- disagapp::cov_nightlight(shape, {{cov_nightlight_year}})
-covariates <- append(covariates, night_light)
+covariates[["Nighttime light"]] <- night_light
 ```

@@ -28,11 +28,7 @@ cov_landuse_module_server <- function(id, common, parent_session) {
     show_loading_modal("Please wait while the data is loaded")
     land_use <- cov_landuse(common$shape, input$year, input$uses)
     # LOAD INTO COMMON ####
-    if (is.null(common$covs)){
-      common$covs <- land_use
-    } else {
-      common$covs <- append(common$covs, land_use)
-    }
+    common$covs <- append(common$covs, land_use)
     close_loading_modal()
     common$logger %>% writeLog("Land use data has been downloaded")
     # METADATA ####
