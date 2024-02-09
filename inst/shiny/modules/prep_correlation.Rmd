@@ -18,8 +18,10 @@ Remove covariates if they are highly correlated
 
 ```{r, echo = {{prep_correlation_removed}}, include = {{prep_correlation_removed}}}
 
-covariates_to_remove <- {{prep_correlation_removed_layers}}
+covariates_to_remove <- c({{prep_correlation_removed_layers}})
 
-covariates_prepared
+for (covariate in covariates_to_remove){
+covariates_prepared[[covariate]] <- NULL  
+}
   
 ```

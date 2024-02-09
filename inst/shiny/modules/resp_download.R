@@ -106,7 +106,7 @@ resp_download_module_rmd <- function(common) {
   list(
     resp_download_knit = !is.null(common$meta$resp_download$used),
     data_path = common$meta$resp_download$datapath,
-    resp_column = common$meta$resp_download$resp_column,
+    resp_column = common$meta$resp_download$response,
     area_column = common$meta$resp_download$area_column,
     admin_level = common$meta$resp_download$admin_level,
     country_code = common$meta$resp_download$country

@@ -16,7 +16,7 @@ if (file_format == "csv"){
 }
 
 #download the boundary data and merge with the response data
-shape <- disagapp::resp_download(df = reponse_df,
+shape <- disagapp::resp_download(df = response_df,
                      area_column = "{{area_column}}",
                      resp_column = "{{resp_column}}",
                      country_code = "{{country_code}}",
