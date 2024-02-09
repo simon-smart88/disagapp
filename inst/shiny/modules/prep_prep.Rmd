@@ -1,5 +1,5 @@
 ```{asis, echo = {{prep_knit}}, eval = {{prep_knit}}, include = {{prep_knit}}}
-Prepare the data for fitting the model.
+Prepare the data for fitting the model and plot a summary.
 ```
 
 ```{r, echo = {{prep_knit}}, include = {{prep_knit}}}
@@ -15,4 +15,5 @@ prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
                                      na.action = {{prep_na_action}},
                                      makeMesh = {{prep_make_mesh}})
 
+plot(prepared_data)
 ```
