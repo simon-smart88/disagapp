@@ -4,12 +4,14 @@
 \alias{cov_bioclim}
 \title{cov_bioclim}
 \usage{
-cov_bioclim(country_code, variables)
+cov_bioclim(country_code, variables, shape, logger = NULL)
 }
 \arguments{
 \item{country_code}{character. ISO3 code of the country.}
 
 \item{variables}{vector. List of the bioclimatic variables to be returned}
+
+\item{shape}{sf. sf object containing the area of interest}
 }
 \value{
 a list of SpatRaster objects
