@@ -112,6 +112,7 @@ show_loading_modal <- function(message){
     text = message
   )
 }
+
 #' @title close_loading_modal
 #' @description For internal use. Close the modal once loading is complete
 #' @param session The session object passed to function given to shinyServer.
@@ -121,4 +122,107 @@ show_loading_modal <- function(message){
 close_loading_modal <- function (session = getDefaultReactiveDomain())
 {
   session$sendModal("remove", NULL)
+}
+
+#' @title country_out
+#' @description For internal use. Produce a drop down list of countries and update all inputs once one country has been selected.
+#' @param session The session object passed to function given to shinyServer.
+#' @param common The common data structure
+#' @keywords internal
+#' @export
+country_out <- function(session, common){
+  gargoyle::init("country_out")
+  renderUI({
+    gargoyle::watch("country_out")
+    if (is.null(common$selected_country)){
+      selectInput(session$ns("country"), "Select country", c('',common$countries$NAME))
+    } else {
+      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = common$selected_country)
+    }
+  })
+}
+
+#' @title shape_map
+#' @description For internal use. Plot response data on the leaflet map
+#' @param map The leafletProxy object to add the shape to
+#' @param common The common data structure
+#' @param response The values of response data to plot
+#' @keywords internal
+#' @export
+shape_map <- function(map, common, response){
+  req(common$shape)
+  ex <- as.vector(terra::ext(common$shape))
+  common$add_map_layer("Response")
+  pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+  map %>%
+    clearGroup("Response") %>%
+    addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) %>%
+    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
+    addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+}
+
+#' @title covariate_map
+#' @description For internal use. Plot covariate data on the leaflet map
+#' @param map The leafletProxy object to add the shape to
+#' @param common The common data structure
+#' @param raster The SpatRaster to plot
+#' @param name The name of the covariate
+#' @param log Whether to plot the raster using a log scale
+#' @keywords internal
+#' @export
+covariate_map <- function(map, common, raster, name, log = FALSE){
+  common$add_map_layer(name)
+  if (log == TRUE){
+    raster = log10(raster)
+    title = paste0(name, " (log 10)")
+  }
+
+  pal <- colorBin("YlOrRd", domain = terra::values(raster), bins = 9, na.color = "#00000000")
+
+  map %>%
+    removeLayersControl() %>%
+    clearGroup(name) %>%
+    addRasterImage(raster, group = name, colors = pal) %>%
+    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+    hideGroup(common$map_layers[!common$map_layers == name])
+}
+
+#' @title wrap_terra
+#' @description For internal use. Flexible function for wrapping SpatRasters or
+#' lists of SpatRasters but only when they exist.
+#' @param object The SpatRaster or the list of SpatRasters to pack
+#' @keywords internal
+#' @export
+wrap_terra <- function(object){
+  if (!is.null(object)){
+    if (typeof(object)[1] == "list"){
+      if (typeof(object[[1]])[1] == "SpatRaster"){
+        object <- lapply(object, terra::wrap)
+    }}
+    if (class(object)[1] == "SpatRaster"){
+      object <- terra::wrap(object)
+    }
+    return(object)
+  }
+}
+
+#' @title unwrap_terra
+#' @description For internal use. Flexible function for unwrapping SpatRasters or
+#' lists of SpatRasters but only when they exist.
+#' @param object The SpatRaster or the list of SpatRasters to pack
+#' @keywords internal
+#' @export
+unwrap_terra <- function(object){
+  if (!is.null(object)){
+    if (class(object)[1] == "list"){
+      if (typeof(object[[1]])[1] == "PackedSpatRaster"){
+        object <- lapply(object, terra::unwrap)
+    }}
+    if (class(object)[1] == "PackedSpatRaster"){
+      object <- terra::unwrap(object)
+    }
+    return(object)
+  }
 }
