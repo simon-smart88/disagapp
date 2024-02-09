@@ -110,7 +110,7 @@ prep_summary_module_rmd <- function(common) {
   list(
     prep_summary_knit = !is.null(common$meta$prep_summary$used),
     prep_summary_resample_target = common$meta$prep_summary$resample_target,
-    prep_summary_rescale = common$meta$prep_summary$rescale
+    prep_summary_rescale = !is.null(common$meta$prep_summary$rescale)
   )
 }
 
