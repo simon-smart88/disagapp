@@ -37,12 +37,7 @@ cov_upload_module_server <- function(id, common, parent_session) {
     cov_list <- cov_upload(covdf)
     common$logger %>% writeLog("Covariates uploaded")
     # LOAD INTO COMMON ####
-    # append if covariates already exist
-    if (is.null(common$covs)){
-    common$covs <- cov_list
-    } else {
     common$covs <- append(common$covs, cov_list)
-    }
 
     # METADATA ####
     common$meta$cov_upload$used <- TRUE
