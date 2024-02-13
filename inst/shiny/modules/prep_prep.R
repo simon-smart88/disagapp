@@ -4,8 +4,8 @@ prep_prep_module_ui <- function(id) {
     # UI
     uiOutput(ns("id_var_out")),
     uiOutput(ns("resp_var_out")),
-    sliderInput(ns("mesh_edge"),"Max edge", min = 0, max = 10, value = c(0.7, 8), step = 0.1),
-    sliderInput(ns("mesh_cut"),"Cut", min = 0, max = 1, value = 0.05, step = 0.01),
+    sliderInput(ns("mesh_edge"), "Max edge", min = 0, max = 10, value = c(0.7, 8), step = 0.1),
+    sliderInput(ns("mesh_cut"), "Cut", min = 0, max = 1, value = 0.05, step = 0.01),
     sliderInput(ns("mesh_offset"), "Offset", min = 0, max = 10, value = c(1, 2), step = 0.1),
     checkboxInput(ns("na_action"), "Handle NAs?", value = TRUE),
     checkboxInput(ns("mesh_make"), "Make mesh?", value = TRUE),
@@ -35,6 +35,21 @@ prep_prep_module_server <- function(id, common, parent_session) {
                              common$meta$resp_download$response)[1]
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
     })
+
+    #update default mesh arguments
+    observe({
+      gargoyle::watch("resp_shape")
+      gargoyle::watch("resp_download")
+      gargoyle::watch("resp_combine")
+      req(common$shape)
+
+      limits <- sf::st_bbox(common$shape)
+      hypotenuse <- sqrt((limits$xmax - limits$xmin)^2 + (limits$ymax - limits$ymin)^2)
+      maxedge <- as.numeric(hypotenuse/10)
+      updateSliderInput(session, "mesh_edge", value = c(maxedge, maxedge * 2))
+      updateSliderInput(session, "mesh_offset", value = c(maxedge, maxedge))
+    })
+
 
   observeEvent(input$run, {
     # WARNING ####
