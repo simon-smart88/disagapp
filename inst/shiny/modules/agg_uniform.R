@@ -10,7 +10,7 @@ agg_uniform_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
-    if (is.null(common$covs)) {
+    if (length(common$covs) == 0) {
       common$logger %>% writeLog(type = "error", "Please load covariate data first")
       return()
     }

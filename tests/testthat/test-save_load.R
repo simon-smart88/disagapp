@@ -10,7 +10,7 @@ test_that("{shinytest2} recording: e2e_empty_save", {
   app$set_inputs(main = "Save")
   save_file <- app$get_download("save_session", filename = save_path)
   common <- readRDS(save_file)
-  expect_true(is.null(common$covs))
+  expect_length(common$covs, 0)
 })
 
 test_that("{shinytest2} recording: e2e_empty_load", {
@@ -20,7 +20,7 @@ test_that("{shinytest2} recording: e2e_empty_load", {
   app$upload_file(load_session = save_path)
   app$click("goLoad_session")
   common <- app$get_value(export = "common")
-  expect_true(is.null(common$covs))
+  expect_length(common$covs, 0)
 })
 
 test_that("{shinytest2} recording: e2e_shape_save", {
