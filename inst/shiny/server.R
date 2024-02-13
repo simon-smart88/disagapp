@@ -122,13 +122,6 @@ function(input, output, session) {
   })
 
   ########################################### #
-  ### PLOT OBSERVERS ####
-  ########################################### #
-
-  #switch to the results tab so that the plot is shown when run
-  #observeEvent(gargoyle::watch("plot_hist"), updateTabsetPanel(session, "main", selected = "Results"), ignoreInit = TRUE)
-
-  ########################################### #
   ### DOWNLOAD PLOTS ####
   ########################################### #
 

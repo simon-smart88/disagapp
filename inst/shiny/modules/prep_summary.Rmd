@@ -26,7 +26,7 @@ covariates_prepared$aggregation <- NULL
 covariates_prepared <- terra::rast(covariates_prepared)
 ```
 
-```{r, echo = {{prep_summary_rescale}}, include = {{prep_summary_rescale}}}
-#rescale the covariates
+```{r, echo = {{prep_summary_scale}}, include = {{prep_summary_scale}}}
+#Scale the covariates
 covariates_prepared <- terra::scale(covariates_prepared, scale = TRUE, center = TRUE)
 ```

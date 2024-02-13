@@ -46,6 +46,7 @@ prep_correlation_module_server <- function(id, common, parent_session) {
     common$meta$prep_correlation$self <- input$self
     # TRIGGER
     gargoyle::trigger("prep_correlation")
+    updateTabsetPanel(parent_session, "main", selected = "Results")
   })
 
   output$corr_plot <- renderPlot({
@@ -57,7 +58,6 @@ prep_correlation_module_server <- function(id, common, parent_session) {
                        diag = common$meta$prep_correlation$self)
   })
 
-  gargoyle::on("prep_correlation", updateTabsetPanel(parent_session, "main", selected = "Results"))
 
   observeEvent(input$remove,{
     # WARNING ####
