@@ -8,6 +8,8 @@
 #'
 #' @param shape sf. sf object containing the area of interest
 #' @param year numeric. Year for which to download the data. Limited to 2012-2022
+#' @param bearer character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
+#' for details of how to obtain one.
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL
@@ -15,7 +17,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_nightlight <- function(shape, year, logger = NULL) {
+cov_nightlight <- function(shape, year, bearer, logger = NULL) {
 
   if (!("sf" %in% class(shape))){
     logger %>% writeLog(type = "error", "Shape must be an sf object")
@@ -27,23 +29,20 @@ cov_nightlight <- function(shape, year, logger = NULL) {
     return()
   }
 
-  if (Sys.getenv("NASA_bearer") == ""){
-    logger %>% writeLog(type = "error", "A NASA API key is required to download nighttime light data.
-                        See https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token
-                        for how to obtain one and then set it as an environmental variable called 'NASA_bearer'")
+  if (nchar(bearer) < 200){
+    logger %>% writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
     return()
   }
 
 ras <- blackmarbler::bm_raster(roi_sf = shape,
                         product_id = "VNP46A4",
                         date = year,
-                        bearer = Sys.getenv("NASA_bearer"),
+                        bearer = bearer,
                         quiet = TRUE)
 
 ras <- terra::rast(ras)
 names(ras) <- "Nighttime light"
 ras <- terra::crop(ras, shape, mask = TRUE )
-
 
 return(ras)
 }

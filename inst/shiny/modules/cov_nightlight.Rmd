@@ -1,8 +1,16 @@
 ```{asis, echo = {{cov_nightlight_knit}}, eval = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
-Download nighttime light data and add to covariates list
+Download nighttime light data and add to covariates list. This module requires a NASA bearer token - see [here](See https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token) for instructions on how to obtain one.
 ```
 
 ```{r, echo = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
-night_light <- disagapp::cov_nightlight(shape, {{cov_nightlight_year}})
+
+#look to see if an environmental variable containing the NASA bearer token is set 
+if (Sys.getenv("NASA_bearer") != ""){
+  bearer = Sys.getenv("NASA_bearer")
+} else {
+  bearer = "{{cov_nightlight_bearer}}"
+}
+
+night_light <- disagapp::cov_nightlight(shape, {{cov_nightlight_year}}, bearer)
 covariates[["Nighttime light"]] <- night_light
 ```
