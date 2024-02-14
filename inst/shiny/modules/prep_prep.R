@@ -84,10 +84,13 @@ prep_prep_module_server <- function(id, common, parent_session) {
     common$meta$prep$make_mesh <- input$mesh_make
     # TRIGGER
     gargoyle::trigger("prep_prep")
+    updateTabsetPanel(parent_session, "main", selected = "Results")
   })
 
-  output$result <- renderText({
-    # Result
+  output$result <- renderPlot({
+    gargoyle::watch("prep_prep")
+    req(common$prep)
+    plot(common$prep)
   })
 
   return(list(
@@ -115,13 +118,27 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 
 prep_prep_module_result <- function(id) {
   ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
+  plotOutput(ns("result"))
 }
 
 prep_prep_module_map <- function(map, common) {
-  # Map logic
+
+  gargoyle::on("prep_prep", {
+    #convert the inla mesh to a format which leaflet can handle
+    sf_mesh <- common$prep$mesh |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
+    bbox <- sf::st_bbox(sf_mesh)
+
+    common$add_map_layer("Mesh")
+
+    map %>%
+      removeLayersControl() %>%
+      clearGroup("Mesh") %>%
+      addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") %>%
+      fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
+      addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+      hideGroup(common$map_layers[!common$map_layers == "Mesh"])
+  })
+
 }
 
 prep_prep_module_rmd <- function(common) {
