@@ -178,7 +178,7 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
     title = paste0(name, " (log 10)")
   }
 
-  pal <- colorBin("YlOrRd", domain = terra::values(raster), bins = 9, na.color = "#00000000")
+  pal <- colorBin("plasma", domain = terra::values(raster), bins = 9, na.color = "#00000000")
 
   map %>%
     removeLayersControl() %>%
