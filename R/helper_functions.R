@@ -155,11 +155,13 @@ shape_map <- function(map, common, response){
   common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
   map %>%
+    removeLayersControl() %>%
     clearGroup("Response") %>%
     addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response") %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+    hideGroup(common$map_layers[!common$map_layers == "Response"])
 }
 
 #' @title covariate_map
@@ -197,8 +199,8 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
 #' @export
 wrap_terra <- function(object){
   if (!is.null(object)){
-    if (typeof(object)[1] == "list"){
-      if (typeof(object[[1]])[1] == "SpatRaster"){
+    if (class(object)[1] == "list"){
+      if (class(object[[1]])[1] == "SpatRaster"){
         object <- lapply(object, terra::wrap)
     }}
     if (class(object)[1] == "SpatRaster"){
@@ -217,7 +219,7 @@ wrap_terra <- function(object){
 unwrap_terra <- function(object){
   if (!is.null(object)){
     if (class(object)[1] == "list"){
-      if (typeof(object[[1]])[1] == "PackedSpatRaster"){
+      if (class(object[[1]])[1] == "PackedSpatRaster"){
         object <- lapply(object, terra::unwrap)
     }}
     if (class(object)[1] == "PackedSpatRaster"){
