@@ -95,10 +95,8 @@ updateSelectInput(session, "response_column", selected = state$response_column)
 }
 
 resp_download_module_map <- function(map, common) {
-  gargoyle::on("resp_download", {
-    response <- as.numeric(common$shape[[common$meta$resp_download$response]])
-    shape_map(map, common, response)
-  })
+  response <- as.numeric(common$shape[[common$meta$resp_download$response]])
+  shape_map(map, common, response)
 }
 
 resp_download_module_rmd <- function(common) {

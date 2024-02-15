@@ -93,10 +93,8 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 }
 
 resp_shape_module_map <- function(map, common) {
-  gargoyle::on("resp_shape", {
-    response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
-    shape_map(map, common, response)
-  })
+  response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
+  shape_map(map, common, response)
 }
 
 

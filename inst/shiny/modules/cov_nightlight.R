@@ -63,9 +63,7 @@ updateSelectInput(session, "year", selected = state$year)
 }
 
 cov_nightlight_module_map <- function(map, common) {
-  gargoyle::on("cov_nightlight", {
-    covariate_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
-  })
+  covariate_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
 }
 
 cov_nightlight_module_rmd <- function(common) {

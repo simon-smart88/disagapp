@@ -118,10 +118,8 @@ updateSelectInput(session, "shape_area_column", selected = state$shape_area_colu
 }
 
 resp_combine_module_map <- function(map, common) {
-  gargoyle::on("resp_combine", {
-    response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
-    shape_map(map, common, reponse)
-  })
+  response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
+  shape_map(map, common, reponse)
 }
 
 resp_combine_module_rmd <- function(common) {

@@ -30,9 +30,9 @@ fit_fit_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$fit <- fitted
     # METADATA ####
-    common$meta$fit$family <- input$family
-    common$meta$fit$link <- input$link
-    common$meta$fit$iid <- input$iid
+    common$meta$fit_fit$family <- input$family
+    common$meta$fit_fit$link <- input$link
+    common$meta$fit_fit$iid <- input$iid
     # TRIGGER
     gargoyle::trigger("fit_fit")
   })
@@ -70,9 +70,9 @@ fit_fit_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     fit_knit = !is.null(common$fit),
-    fit_family = common$meta$fit$family,
-    fit_link = common$meta$fit$link,
-    fit_iid = common$meta$fit$iid
+    fit_family = common$meta$fit_fit$family,
+    fit_link = common$meta$fit_fit$link,
+    fit_iid = common$meta$fit_fit$iid
   )
 }
 

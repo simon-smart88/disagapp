@@ -60,7 +60,6 @@ resp_edit_module_map <- function(map, common) {
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
-  gargoyle::on("resp_edit", {
     #find which meta response isn't NULL, return the first if more than one
     response_variable <- c(common$meta$resp_shape$response,
                            common$meta$resp_combine$response,
@@ -70,7 +69,6 @@ resp_edit_module_map <- function(map, common) {
     map %>%
       clearControls() %>%
       removeDrawToolbar(clearFeatures = TRUE)
-  })
 }
 
 resp_edit_module_rmd <- function(common) {

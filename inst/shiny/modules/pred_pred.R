@@ -25,7 +25,7 @@ pred_pred_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$pred <- prediction
     # METADATA ####
-    common$meta$pred$used <- TRUE
+    common$meta$pred_pred$used <- TRUE
     # TRIGGER
     gargoyle::trigger("pred_pred")
   })
@@ -53,28 +53,15 @@ pred_pred_module_server <- function(id, common, parent_session) {
 # }
 
 pred_pred_module_map <- function(map, common) {
-  gargoyle::on("pred_pred",{
-  req(common$pred)
-  common$add_map_layer(c("Field", "Prediction"))
-
-  ex <- as.vector(terra::ext(common$shape))
-  pal1 <- colorBin("YlOrRd", domain = terra::values(common$pred$field), bins = 9, na.color = "#00000000")
-  pal2 <- colorBin("YlOrRd", domain = terra::values(common$pred$prediction), bins = 9, na.color = "#00000000")
-  map %>%
-    addRasterImage(raster::raster(common$pred$field), group = "Field", colors = pal1) %>%
-    addLegend(position = "bottomleft", pal = pal1, values = terra::values(common$pred$field), group = "Field", title = "Field") %>%
-    addRasterImage(raster::raster(common$pred$prediction), group = "Prediction", colors = pal2) %>%
-    addLegend(position = "bottomright", pal = pal2, values = terra::values(common$pred$prediction), group = "Prediction", title = "Prediction") %>%
-    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    hideGroup(common$map_layers[2:(length(common$map_layers)-2)]) #hide all but first and last two layers
-  })
+  for (variable in c("Field", "Prediction")){
+    covariate_map(map, common, common$pred[[tolower(variable)]], variable)
+  }
 }
 
 pred_pred_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    pred_knit = !is.null(common$meta$pred$used)
+    pred_knit = !is.null(common$meta$pred_pred$used)
   )
 }
 

@@ -76,9 +76,7 @@ updateSelectInput(session, "year", selected = state$year)
 }
 
 agg_worldpop_module_map <- function(map, common) {
-    gargoyle::on("agg_worldpop", {
-      covariate_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
-      })
+  covariate_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
 }
 
 agg_worldpop_module_rmd <- function(common) {

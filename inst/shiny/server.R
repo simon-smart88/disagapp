@@ -69,6 +69,33 @@ function(input, output, session) {
       observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
       })})
 
+  ################################
+  ### COMMON LIST FUNCTIONALITY ####
+  ################################
+
+  common <- common_class$new()
+  common$logger <- reactiveVal(initLogMsg())
+
+  ####################
+  ### INITIALISATION ####
+  ###################
+
+  gargoyle::init("intro")
+  # Initialize all modules
+  modules <- list()
+  lapply(names(COMPONENT_MODULES), function(component) {
+    lapply(COMPONENT_MODULES[[component]], function(module) {
+      # Initialize event triggers for each module
+      gargoyle::init(module$id)
+      return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+      if (is.list(return) &&
+          "save" %in% names(return) && is.function(return$save) &&
+          "load" %in% names(return) && is.function(return$load)) {
+        modules[[module$id]] <<- return
+      }
+    })
+  })
+
   ######################## #
   ### MAPPING LOGIC ####
   ######################## #
@@ -91,10 +118,13 @@ function(input, output, session) {
   # Call the module-specific map function for the current module
   observe({
     req(module())
-    map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
-    if (!is.null(map_fx)) {
-      do.call(map_fx, list(map, common = common))
-    }
+    current_mod <- module()
+    gargoyle::on(current_mod, {
+      map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
+      if (!is.null(map_fx)) {
+        do.call(map_fx, list(map, common = common))
+      }
+    })
   })
 
   # Capture coordinates of polygons
@@ -263,31 +293,7 @@ function(input, output, session) {
                         encoding = "UTF-8")
     })
 
-  ################################
-  ### COMMON LIST FUNCTIONALITY ####
-  ################################
 
-  common <- common_class$new()
-  common$logger <- reactiveVal(initLogMsg())
-
-  ####################
-  ### INITIALISATION ####
-  ###################
-
-  # Initialize all modules
-  modules <- list()
-  lapply(names(COMPONENT_MODULES), function(component) {
-    lapply(COMPONENT_MODULES[[component]], function(module) {
-      # Initialize event triggers for each module
-      gargoyle::init(module$id)
-      return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
-      if (is.list(return) &&
-          "save" %in% names(return) && is.function(return$save) &&
-          "load" %in% names(return) && is.function(return$load)) {
-        modules[[module$id]] <<- return
-      }
-    })
-  })
 
   ################################
   ### SAVE / LOAD FUNCTIONALITY ####
@@ -350,7 +356,7 @@ function(input, output, session) {
     temp <- load_session(input$load_session$datapath)
     temp_names <- names(temp)
     #exclude the non-public and function objects
-    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger")]
+    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers")]
     for (name in temp_names){
       common[[name]] <- temp[[name]]
     }
@@ -375,13 +381,14 @@ function(input, output, session) {
     common$pred$field <- unwrap_terra(common$pred$field)
     common$pred$prediction <- unwrap_terra(common$pred$prediction)
 
-    #replot the shape
-    #find which meta response isn't NULL, return the first if more than one
-    response_variable <- c(common$meta$resp_shape$response,
-                           common$meta$resp_combine$response,
-                           common$meta$resp_download$response)[1]
-    response <- common$shape[[response_variable]]
-    shape_map(map, common, response)
+    #call mapping functions for used modules
+    for (used_module in names(common$meta)){
+      component <- strsplit(used_module, "_")[[1]][1]
+      map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
+      if (!is.null(map_fx)) {
+        do.call(map_fx, list(map, common = common))
+      }
+    }
 
     common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
   })

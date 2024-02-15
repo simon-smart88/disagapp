@@ -75,13 +75,13 @@ prep_prep_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$prep <- prep
     # METADATA ####
-    common$meta$prep$id_var <- as.character(input$id_var)
-    common$meta$prep$resp_var <- as.character(input$resp_var)
-    common$meta$prep$mesh_edge <- input$mesh_edge
-    common$meta$prep$mesh_cut <- input$mesh_cut
-    common$meta$prep$mesh_offset <- input$mesh_offset
-    common$meta$prep$na_action <- input$na_action
-    common$meta$prep$make_mesh <- input$mesh_make
+    common$meta$prep_prep$id_var <- as.character(input$id_var)
+    common$meta$prep_prep$resp_var <- as.character(input$resp_var)
+    common$meta$prep_prep$mesh_edge <- input$mesh_edge
+    common$meta$prep_prep$mesh_cut <- input$mesh_cut
+    common$meta$prep_prep$mesh_offset <- input$mesh_offset
+    common$meta$prep_prep$na_action <- input$na_action
+    common$meta$prep_prep$make_mesh <- input$mesh_make
     # TRIGGER
     gargoyle::trigger("prep_prep")
     updateTabsetPanel(parent_session, "main", selected = "Results")
@@ -123,7 +123,6 @@ prep_prep_module_result <- function(id) {
 
 prep_prep_module_map <- function(map, common) {
 
-  gargoyle::on("prep_prep", {
     #convert the inla mesh to a format which leaflet can handle
     sf_mesh <- common$prep$mesh |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
     bbox <- sf::st_bbox(sf_mesh)
@@ -137,7 +136,6 @@ prep_prep_module_map <- function(map, common) {
       fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
       addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
       hideGroup(common$map_layers[!common$map_layers == "Mesh"])
-  })
 
 }
 
@@ -145,13 +143,13 @@ prep_prep_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     prep_knit = !is.null(common$prep),
-    prep_id_var = common$meta$prep$id_var,
-    prep_resp_var = common$meta$prep$resp_var,
-    prep_mesh_edge = printVecAsis(common$meta$prep$mesh_edge),
-    prep_mesh_cut = common$meta$prep$mesh_cut,
-    prep_mesh_offset = printVecAsis(common$meta$prep$mesh_offset),
-    prep_na_action = common$meta$prep$na_action,
-    prep_make_mesh = common$meta$prep$make_mesh
+    prep_id_var = common$meta$prep_prep$id_var,
+    prep_resp_var = common$meta$prep_prep$resp_var,
+    prep_mesh_edge = printVecAsis(common$meta$prep_prep$mesh_edge),
+    prep_mesh_cut = common$meta$prep_prep$mesh_cut,
+    prep_mesh_offset = printVecAsis(common$meta$prep_prep$mesh_offset),
+    prep_na_action = common$meta$prep_prep$na_action,
+    prep_make_mesh = common$meta$prep_prep$make_mesh
   )
 }
 
