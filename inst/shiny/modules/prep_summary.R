@@ -4,7 +4,7 @@ prep_summary_module_ui <- function(id) {
     # UI
     actionButton(ns("run"), "Prepare covariate summary"),
     checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
-    radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
+    shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
     actionButton(ns("resample"), "Resample covariates"),
     br(),br(),
     actionButton(ns("scale"), "Scale covariates"),
@@ -65,7 +65,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       # TRIGGER
       gargoyle::trigger("prep_summary")
       updateTabsetPanel(parent_session, "main", selected = "Results")
-      updateRadioGroupButtons(session, "table", selected = "Resampled")
+      shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
     })
 
     observeEvent(input$scale, {
