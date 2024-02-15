@@ -128,6 +128,7 @@ function(input, output, session) {
   })
 
   # Capture coordinates of polygons
+  gargoyle::init("change_poly")
   observe({
     coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
     xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
@@ -138,7 +139,20 @@ function(input, output, session) {
     gargoyle::trigger("change_poly")
   }) %>% bindEvent(input$map_draw_new_feature)
 
-  gargoyle::init("change_poly")
+  # Add the draw toolbar when using the resp_edit module
+  observe({
+    req(module())
+    if (module() == "resp_edit"){
+      map %>%
+        addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+                       markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
+                       editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
+    }
+    if (module() != "resp_edit"){
+      map %>%
+        removeDrawToolbar(clearFeatures = TRUE)
+    }
+  })
 
   ######################## #
   ### BUTTONS LOGIC ####

@@ -57,18 +57,18 @@ updateRadioButtons(session, "type", selected = state$type)
 
 resp_edit_module_map <- function(map, common) {
   map %>%
+    removeControl("Response") %>%
+    removeDrawToolbar(clearFeatures = TRUE)
+  #find which meta response isn't NULL, return the first if more than one
+  response_variable <- c(common$meta$resp_shape$response,
+                         common$meta$resp_combine$response,
+                         common$meta$resp_download$response)[1]
+  response <- common$shape[[response_variable]]
+  shape_map(map, common, response)
+  map %>%
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
-    #find which meta response isn't NULL, return the first if more than one
-    response_variable <- c(common$meta$resp_shape$response,
-                           common$meta$resp_combine$response,
-                           common$meta$resp_download$response)[1]
-    response <- common$shape[[response_variable]]
-    shape_map(map, common, response)
-    map %>%
-      clearControls() %>%
-      removeDrawToolbar(clearFeatures = TRUE)
 }
 
 resp_edit_module_rmd <- function(common) {
