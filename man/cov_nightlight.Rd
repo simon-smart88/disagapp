@@ -4,12 +4,15 @@
 \alias{cov_nightlight}
 \title{cov_nightlight}
 \usage{
-cov_nightlight(shape, year, logger = NULL)
+cov_nightlight(shape, year, bearer, logger = NULL)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
 \item{year}{numeric. Year for which to download the data. Limited to 2012-2022}
+
+\item{bearer}{character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
+for details of how to obtain one.}
 
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
