@@ -21,14 +21,14 @@ fit_fit_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the model is fitted")
-    fitted <- suppressMessages(disaggregation::disag_model(data = common$prep,
+    common$fit <- suppressMessages(disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,
                                           iid = input$iid))
     close_loading_modal()
     common$logger %>% writeLog('Model fitting has completed')
     # LOAD INTO COMMON ####
-    common$fit <- fitted
+
     # METADATA ####
     common$meta$fit_fit$family <- input$family
     common$meta$fit_fit$link <- input$link

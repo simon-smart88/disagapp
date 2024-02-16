@@ -60,7 +60,7 @@ prep_prep_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
-    prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+    common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
                                          covariate_rasters = common$covs_prep,
                                          aggregation_raster = common$agg_prep,
                                          id_var = as.character(input$id_var),
@@ -73,7 +73,9 @@ prep_prep_module_server <- function(id, common, parent_session) {
     close_loading_modal()
     common$logger %>% writeLog("Data preparation is completed")
     # LOAD INTO COMMON ####
-    common$prep <- prep
+    #these are now in common$prep so can be set back to NULL
+    common$covs_prep <- NULL
+    common$agg_prep <- NULL
     # METADATA ####
     common$meta$prep_prep$id_var <- as.character(input$id_var)
     common$meta$prep_prep$resp_var <- as.character(input$resp_var)

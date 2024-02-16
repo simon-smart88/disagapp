@@ -25,8 +25,7 @@ prep_correlation_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   output$cov_layers_out <- renderUI({
-    gargoyle::watch("prep_summary")
-    req(common$covs_prep)
+    gargoyle::watch("prep_correlation")
     selectInput(session$ns("cov_layers"), "Covariate layers to remove", choices = c("", names(common$covs_prep)), multiple = TRUE)})
 
   observeEvent(input$run, {
