@@ -7,6 +7,7 @@ common_class <- R6::R6Class(
     covs = list(),
     covs_prep = NULL,
     covs_matrix = NULL,
+    covs_summary = NULL,
     prep = NULL,
     fit = NULL,
     pred = NULL,

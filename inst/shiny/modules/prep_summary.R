@@ -14,7 +14,6 @@ prep_summary_module_ui <- function(id) {
 prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
-  summary_tables <- reactiveValues()
 
   observeEvent(input$run, {
     # WARNING ####
@@ -29,7 +28,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     #temporarily add aggregation raster to covs and remove again after the call
     common$covs$Aggregation <- common$agg
-    summary_tables$covs <- prep_summary(common$covs, remove = input$remove)
+    common$covs_summary$original <- prep_summary(common$covs, remove = input$remove)
     common$covs$Aggregation <- NULL
 
     # LOAD INTO COMMON ####
@@ -50,7 +49,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       # FUNCTION CALL ####
       common$covs$Aggregation <- common$agg
       common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$cov_table_rows_selected]])
-      summary_tables$covs_prep <- prep_summary(common$covs_prep, remove = input$remove)
+      common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
       common$covs_prep$Aggregation <- NULL
@@ -61,7 +60,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
       # METADATA ####
       common$meta$prep_summary$used <- TRUE
-      common$meta$prep_summary$resample_target <- rownames(summary_tables$covs_prep)[[input$cov_table_rows_selected]]
+      common$meta$prep_summary$resample_target <- rownames(common$covs_summary$resampled)[[input$cov_table_rows_selected]]
       # TRIGGER
       gargoyle::trigger("prep_summary")
       updateTabsetPanel(parent_session, "main", selected = "Results")
@@ -82,13 +81,13 @@ prep_summary_module_server <- function(id, common, parent_session) {
     output$cov_table <- DT::renderDataTable({
     gargoyle::watch("prep_summary")
     if (input$table == "Original"){
-      req(summary_tables$covs)
-    out <- DT::datatable(summary_tables$covs, selection = "single")
+      req(common$covs_summary$original)
+      out <- DT::datatable(common$covs_summary$original, selection = "single")
     }
 
     if (input$table == "Resampled"){
-    req(summary_tables$covs_prep)
-    out <- DT::datatable(summary_tables$covs_prep, selection = "none")
+      req(common$covs_summary$resampled)
+      out <- DT::datatable(common$covs_summary$resampled, selection = "none")
     }
     out
   })
