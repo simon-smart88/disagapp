@@ -1,6 +1,8 @@
 resourcePath <- system.file("shiny", "www", package = "disagapp")
 shiny::addResourcePath("disagapp-res", resourcePath)
 
+easy_print <- "https://rawgit.com/rowanwins/leaflet-easyPrint/gh-pages/dist/bundle.js"
+
 tagList(
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
@@ -13,7 +15,8 @@ tagList(
     id = "tabs",
     collapsible = TRUE,
     header = tagList(
-      tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"))
+      tags$head(tags$link(href = "css/styles.css", rel = "stylesheet"),
+                tags$script(src = easy_print))
     ),
     title = img(src = "logo.png", height = "50", width = "50",
                 style = "margin-top: -15px"),

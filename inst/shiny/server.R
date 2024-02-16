@@ -104,7 +104,17 @@ function(input, output, session) {
   output$map <- renderLeaflet(
     leaflet() %>%
       setView(0, 0, zoom = 2) %>%
-      addProviderTiles("Esri.WorldTopoMap")
+      addProviderTiles("Esri.WorldTopoMap") %>%
+      htmlwidgets::onRender(
+        "function(el, x) {
+            L.easyPrint({
+              sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+              filename: 'mymap',
+              exportOnly: true,
+              hideControlContainer: true
+            }).addTo(this);
+            }"
+      )
   )
 
   # create map proxy to make further changes to existing map
@@ -321,6 +331,8 @@ function(input, output, session) {
   # Save the current session to a file
   save_session <- function(file) {
 
+    show_loading_modal("Please wait the session is saved")
+
     common$state$main <- list(
       selected_module = sapply(COMPONENTS, function(x) input[[glue("{x}Sel")]], simplify = FALSE)
     )
@@ -335,8 +347,11 @@ function(input, output, session) {
     common$covs_prep <- wrap_terra(common$covs_prep)
     common$agg <- wrap_terra(common$agg)
     common$agg_prep <- wrap_terra(common$agg_prep)
+    common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
     common$pred$field <- wrap_terra(common$pred$field)
     common$pred$prediction <- wrap_terra(common$pred$prediction)
+    common$pred$covariates <- wrap_terra(common$pred$covariates)
+    common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
 
     #save file
     saveRDS(common, file)
@@ -346,9 +361,12 @@ function(input, output, session) {
     common$covs_prep <- unwrap_terra(common$covs_prep)
     common$agg <- unwrap_terra(common$agg)
     common$agg_prep <- unwrap_terra(common$agg_prep)
+    common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
     common$pred$field <- unwrap_terra(common$pred$field)
     common$pred$prediction <- unwrap_terra(common$pred$prediction)
-
+    common$pred$covariates <- unwrap_terra(common$pred$covariates)
+    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+    close_loading_modal()
   }
 
   output$save_session <- downloadHandler(
@@ -367,6 +385,7 @@ function(input, output, session) {
     }
 
   observeEvent(input$goLoad_session, {
+    show_loading_modal("Please wait the session is restored")
     temp <- load_session(input$load_session$datapath)
     temp_names <- names(temp)
     #exclude the non-public and function objects
@@ -392,18 +411,21 @@ function(input, output, session) {
     common$covs_prep <- unwrap_terra(common$covs_prep)
     common$agg <- unwrap_terra(common$agg)
     common$agg_prep <- unwrap_terra(common$agg_prep)
+    common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
     common$pred$field <- unwrap_terra(common$pred$field)
     common$pred$prediction <- unwrap_terra(common$pred$prediction)
+    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
 
-    #call mapping functions for used modules
+    #restore map and results for used modules
     for (used_module in names(common$meta)){
+      gargoyle::trigger(used_module) # to replot results
       component <- strsplit(used_module, "_")[[1]][1]
       map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
       if (!is.null(map_fx)) {
         do.call(map_fx, list(map, common = common))
       }
     }
-
+    close_loading_modal()
     common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
   })
 
