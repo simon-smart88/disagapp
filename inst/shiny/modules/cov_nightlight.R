@@ -17,11 +17,13 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     textInput(session$ns("bearer"), "NASA bearer token")}
   })
 
+  observe({
   if (Sys.getenv("NASA_bearer") != ""){
     bearer = Sys.getenv("NASA_bearer")
   } else {
     bearer = input$bearer
   }
+  })
 
   observeEvent(input$run, {
     # WARNING ####
