@@ -1,0 +1,9 @@
+```{asis, echo = {{prep_mesh_knit}}, eval = {{prep_mesh_knit}}, include = {{prep_mesh_knit}}}
+Build the spatial mesh
+```
+
+```{r, echo = {{prep_mesh_knit}}, include = {{prep_mesh_knit}}}
+mesh <- disaggregation::build_mesh(shape, mesh.args = list(max.edge = {{prep_mesh_edge}}, 
+                                                      cut = {{prep_mesh_cut}},
+                                                      offset = {{prep_mesh_offset}}))
+```

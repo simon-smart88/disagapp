@@ -9,11 +9,10 @@ prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
                                      aggregation_raster = aggregation_prepared,
                                      id_var = "{{prep_id_var}}",
                                      response_var = "{{prep_resp_var}}",
-                                     mesh.args = list(max.edge = {{prep_mesh_edge}},
-                                                      cut = {{prep_mesh_cut}},
-                                                      offset = {{prep_mesh_offset}}),
                                      na.action = {{prep_na_action}},
-                                     makeMesh = {{prep_make_mesh}})
+                                     makeMesh = FALSE)
+
+prepared_data$mesh <- mesh
 
 plot(prepared_data)
 ```

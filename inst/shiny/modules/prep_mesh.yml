@@ -1,0 +1,5 @@
+component: "prep"
+short_name: "Prepare mesh"
+long_name: "Generate an INLA mesh"
+authors: "Simon E H Smart"
+package: [fmesher]
