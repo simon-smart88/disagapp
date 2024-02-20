@@ -294,7 +294,7 @@ function(input, output, session) {
       knitcitations::citep(citation("knitr"))
       knitcitations::citep(citation("rmarkdown"))
       knitcitations::citep(citation("terra"))
-      knitcitations::citep(citation("raster"))
+      knitcitations::citep(citation("disaggregation"))
       # Write BIBTEX file
       knitcitations::write.bibtex(file = temp_bib_file)
       # Replace NOTE fields with VERSION when R package

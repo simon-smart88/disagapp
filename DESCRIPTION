@@ -30,7 +30,6 @@ Imports:
     magrittr,
     malariaAtlas,
     openxlsx,
-    raster,
     RColorBrewer,
     rlang,
     rmarkdown,
