@@ -119,7 +119,7 @@ updateSelectInput(session, "shape_area_column", selected = state$shape_area_colu
 
 resp_combine_module_map <- function(map, common) {
   response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
-  shape_map(map, common, reponse)
+  shape_map(map, common, response)
 }
 
 resp_combine_module_rmd <- function(common) {
