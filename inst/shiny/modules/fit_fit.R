@@ -24,6 +24,7 @@ fit_fit_module_server <- function(id, common, parent_session) {
     common$fit <- suppressMessages(disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,
+                                          field = input$field,
                                           iid = input$iid))
     close_loading_modal()
     common$logger %>% writeLog('Model fitting has completed')
