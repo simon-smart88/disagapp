@@ -107,7 +107,7 @@ prep_prep_module_rmd <- function(common) {
     prep_knit = !is.null(common$prep),
     prep_id_var = common$meta$prep_prep$id_var,
     prep_resp_var = common$meta$prep_prep$resp_var,
-    prep_na_action = common$meta$prep_prep$na_action,
+    prep_na_action = common$meta$prep_prep$na_action
   )
 }
 
