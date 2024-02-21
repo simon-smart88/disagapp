@@ -90,7 +90,7 @@ prep_mesh_module_rmd <- function(common) {
     prep_mesh_knit = !is.null(common$meta$prep_mesh$used),
     prep_mesh_edge = printVecAsis(common$meta$prep_mesh$mesh_edge),
     prep_mesh_cut = common$meta$prep_mesh$mesh_cut,
-    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset),
+    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset)
   )
 }
 
