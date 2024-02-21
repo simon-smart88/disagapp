@@ -17,12 +17,13 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     textInput(session$ns("bearer"), "NASA bearer token")}
   })
 
-  observe({
+  bearer <- reactive({
   if (Sys.getenv("NASA_bearer") != ""){
     bearer = Sys.getenv("NASA_bearer")
   } else {
     bearer = input$bearer
   }
+  bearer
   })
 
   observeEvent(input$run, {
@@ -31,7 +32,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
-    if (bearer == ""){
+    if (bearer() == ""){
       logger %>% writeLog(type = "error", "A NASA bearer token is required to download nighttime light data.
                         See https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token
                         for how to obtain one and then enter it in the box or set it as an environmental
@@ -40,7 +41,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    light <- cov_nightlight(common$shape, input$year, bearer)
+    light <- cov_nightlight(common$shape, input$year, bearer())
     # LOAD INTO COMMON ####
     common$covs[["Nighttime light"]] <- light
     common$logger %>% writeLog("Nighttime light data has been downloaded")
