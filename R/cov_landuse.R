@@ -50,7 +50,9 @@ cov_landuse <- function(shape, year, landuses) {
       }
     }
     tile_name <- paste0(l,"_land_use")
-    raster_tiles <- terra::crop(raster_tiles, shape, mask = TRUE)
+    raster_tiles <- terra::crop(raster_tiles, shape)
+    raster_tiles <- terra::mask(raster_tiles, shape)
+    raster_tiles <- terra::aggregate(raster_tiles, fact = 10, fun = "mean")
     raster_layers[[tile_name]] <- raster_tiles
     names(raster_layers[[tile_name]]) <- tile_name
   }
