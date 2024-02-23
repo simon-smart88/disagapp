@@ -6,6 +6,8 @@ prep_summary_module_ui <- function(id) {
     checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
     actionButton(ns("resample"), "Resample covariates"),
+    numericInput(ns("resolution_factor"), "Decrease resolution factor", value = 1, min = 1, max = 10, step = 1),
+    actionButton(ns("decrease_resolution"), "Decrease resolution"),
     br(),br(),
     actionButton(ns("scale"), "Scale covariates"),
   )
@@ -67,6 +69,24 @@ prep_summary_module_server <- function(id, common, parent_session) {
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
     })
 
+    observeEvent(input$decrease_resolution, {
+      # WARNING ####
+      if (is.null(common$covs_prep)) {
+        common$logger %>% writeLog(type = "error", "Please resample the rasters first")
+        return()
+      }
+
+      common$covs_prep <- terra::aggregate(common$covs_prep, fact = input$resolution_factor, fun = "mean")
+      common$agg_prep <- terra::aggregate(common$agg_prep, fact = input$resolution_factor, fun = "sum")
+      common$logger %>% writeLog("Covariates have been scaled")
+      common$meta$prep_summary$decrease_resolution <- TRUE
+      common$meta$prep_summary$resolution_factor <- input$resolution_factor
+      common$covs$Aggregation <- common$agg_prep
+      common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = FALSE)
+      common$covs$Aggregation <- NULL
+      gargoyle::trigger("prep_summary")
+    })
+
     observeEvent(input$scale, {
       # WARNING ####
       if (is.null(common$covs_prep)) {
@@ -89,7 +109,19 @@ prep_summary_module_server <- function(id, common, parent_session) {
       req(common$covs_summary$resampled)
       out <- DT::datatable(common$covs_summary$resampled, selection = "none")
     }
+
     out
+  })
+
+  output$hist <- renderPlot({
+    gargoyle::watch("prep_summary")
+    req(common$covs_prep)
+    pixels_per_poly <- terra::extract(common$covs_prep, common$shape) %>%
+      dplyr::group_by(ID) %>%
+      dplyr::summarise(n_pixels = dplyr::n())
+
+    graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Pixels per polygon")
+    legend("topright",  bty='n', legend = glue::glue("Mean = {round(mean(pixels_per_poly$n_pixels),2)}"))
   })
 
   return(list(
@@ -106,7 +138,8 @@ updateCheckboxInput(session, "remove", value = state$remove)
 prep_summary_module_result <- function(id) {
   ns <- NS(id)
   tagList(
-  DT::dataTableOutput(ns("cov_table"))
+  DT::dataTableOutput(ns("cov_table")),
+  plotOutput(ns("hist"))
   )
 }
 
