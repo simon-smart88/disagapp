@@ -2,6 +2,8 @@
 .DS_Store
 # HTML files
 .html
+# bib files
+.bib
 # History files
 .Rhistory
 .Rapp.history
@@ -12,9 +14,6 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-# worldclim files
-cmip5
-**/wc10
 # r proj files
 .Rproj.user
 .RData
