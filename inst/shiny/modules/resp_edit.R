@@ -55,6 +55,7 @@ updateRadioButtons(session, "type", selected = state$type)
 })
 }
 
+#note that the addition/removal of the toolbar is handled inside the core_mapping server
 resp_edit_module_map <- function(map, common) {
   map %>%
     removeControl("Response") %>%
