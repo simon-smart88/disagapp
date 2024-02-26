@@ -3,10 +3,8 @@ library(disagapp)
 options(shiny.fullstacktrace = TRUE)
 
 MB <- 1024^2
-
 UPLOAD_SIZE_MB <- 5000
 options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
-SAVE_SESSION_SIZE_MB_WARNING <- 100
 
 source("helpers.R")
 
@@ -133,4 +131,13 @@ for (module_config_file in all_module_configs) {
 
 }
 
+#load core modules
+core_modules <- paste0("modules/",list.files(system.file("shiny/modules", package="disagapp"), pattern="core_*"))
+for (module in core_modules){
+  source(module, local = TRUE)
+}
+
+#load common object
+source(system.file("shiny/common.R", package = "disagapp"))
+common <- common_class$new()
 

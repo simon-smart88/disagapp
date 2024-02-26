@@ -1,9 +1,7 @@
-source(system.file("shiny/common.R", package = "disagapp"))
-
 function(input, output, session) {
 
   ########################## #
-  # REACTIVE VALUES LISTS ####
+  # LOGGER ####
   ########################## #
 
   # Variable to keep track of current log message
@@ -15,11 +13,17 @@ function(input, output, session) {
     logInit
   }
 
+  common$logger <- reactiveVal(initLogMsg())
+
   # Write out logs to the log Window
   observeEvent(common$logger(), {
     shinyjs::html(id = "logHeader", html = common$logger(), add = FALSE)
     shinyjs::js$scrollLogger()
   })
+
+  ########################## #
+  # REACTIVE VALUES LISTS ####
+  ########################## #
 
   # tab and module-level reactives
   component <- reactive({
@@ -56,7 +60,7 @@ function(input, output, session) {
   })
 
   # Help Component
-  help_components <- c("resp", "cov", "agg", "prep", "fit", "pred")
+  help_components <- COMPONENTS[!COMPONENTS == "rep"]
   lapply(help_components, function(component) {
     btn_id <- paste0(component, "Help")
     observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Component Guidance"))
@@ -69,13 +73,6 @@ function(input, output, session) {
       observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
       })})
 
-  ################################
-  ### COMMON LIST FUNCTIONALITY ####
-  ################################
-
-  common <- common_class$new()
-  common$logger <- reactiveVal(initLogMsg())
-
   ####################
   ### INITIALISATION ####
   ###################
@@ -87,7 +84,11 @@ function(input, output, session) {
     lapply(COMPONENT_MODULES[[component]], function(module) {
       # Initialize event triggers for each module
       gargoyle::init(module$id)
-      return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+      if (module$id == "rep_markdown"){
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
+      } else {
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+      }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&
           "load" %in% names(return) && is.function(return$load)) {
@@ -100,30 +101,7 @@ function(input, output, session) {
   ### MAPPING LOGIC ####
   ######################## #
 
-  # create map
-  output$map <- renderLeaflet(
-    leaflet() %>%
-      setView(0, 0, zoom = 2) %>%
-      addProviderTiles("Esri.WorldTopoMap") %>%
-      htmlwidgets::onRender(
-        "function(el, x) {
-            L.easyPrint({
-              sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
-              filename: 'mymap',
-              exportOnly: true,
-              hideControlContainer: true
-            }).addTo(this);
-            }"
-      )
-  )
-
-  # create map proxy to make further changes to existing map
-  map <- leafletProxy("map")
-
-  # change provider tile option
-  observe({
-    map %>% addProviderTiles(input$bmap)
-  })
+  map <- core_mapping_module_server("core_mapping", common)
 
   # Call the module-specific map function for the current module
   observe({
@@ -137,17 +115,6 @@ function(input, output, session) {
     })
   })
 
-  # Capture coordinates of polygons
-  gargoyle::init("change_poly")
-  observe({
-    coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
-    xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
-    colnames(xy) <- c("longitude", "latitude")
-    #convert any longitudes drawn outside of the original map
-    xy[,1] <- ((xy[,1] + 180) %% 360) - 180
-    common$poly <- xy
-    gargoyle::trigger("change_poly")
-  }) %>% bindEvent(input$map_draw_new_feature)
 
   # Add the draw toolbar when using the resp_edit module
   observe({
@@ -164,270 +131,12 @@ function(input, output, session) {
     }
   })
 
-  ######################## #
-  ### BUTTONS LOGIC ####
-  ######################## #
-
-  # Enable/disable buttons
-  observe({
-    shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
-    req(common$ras)
-    #shinyjs::toggleState("dl_table", !is.null(common$ras))
-  })
-
-  ########################################### #
-  ### DOWNLOAD PLOTS ####
-  ########################################### #
-
-
-  ########################################### #
-  ### RMARKDOWN FUNCTIONALITY ####
-  ########################################### #
-
-  filetype_to_ext <- function(type = c("Rmd", "PDF", "HTML", "Word")) {
-    type <- match.arg(type)
-    switch(
-      type,
-      Rmd = ".Rmd",
-      PDF = ".pdf",
-      HTML = ".html",
-      Word = ".docx"
-    )
-  }
-
-  # handler for R Markdown download
-  output$dlRMD <- downloadHandler(
-    filename = function() {
-      paste0("disagapp-session-", Sys.Date(), filetype_to_ext(input$rmdFileType))
-    },
-    content = function(file) {
-      md_files <- c()
-      md_intro_file <- tempfile(pattern = "intro_", fileext = ".md")
-      rmarkdown::render("Rmd/userReport_intro.Rmd",
-                        output_format = rmarkdown::github_document(html_preview = FALSE),
-                        output_file = md_intro_file,
-                        clean = TRUE,
-                        encoding = "UTF-8")
-      md_files <- c(md_files, md_intro_file)
-
-      module_rmds <- NULL
-      for (component in names(COMPONENT_MODULES[names(COMPONENT_MODULES) != c("rep")])) {
-        for (module in COMPONENT_MODULES[[component]]) {
-          rmd_file <- module$rmd_file
-          rmd_function <- module$rmd_function
-          if (is.null(rmd_file)) next
-
-          if (is.null(rmd_function)) {
-            rmd_vars <- list()
-          } else {
-            rmd_vars <- do.call(rmd_function, list(common))
-          }
-          knit_params <- c(
-            file = rmd_file,
-            rmd_vars
-          )
-          module_rmd <- do.call(knitr::knit_expand, knit_params)
-
-          module_rmd_file <- tempfile(pattern = paste0(module$id, "_"),
-                                      fileext = ".Rmd")
-          writeLines(module_rmd, module_rmd_file)
-          module_rmds <- c(module_rmds, module_rmd_file)
-        }
-      }
-
-      module_md_file <- tempfile(pattern = paste0(module$id, "_"),
-                                  fileext = ".md")
-      rmarkdown::render(input = "Rmd/userReport_module.Rmd",
-                        params = list(child_rmds = module_rmds),
-                        output_format = rmarkdown::github_document(html_preview = FALSE),
-                        output_file = module_md_file,
-                        clean = TRUE,
-                        encoding = "UTF-8")
-      md_files <- c(md_files, module_md_file)
-
-      combined_md <-
-        md_files %>%
-        lapply(readLines) %>%
-        lapply(paste, collapse = "\n") %>%
-        paste(collapse = "\n\n")
-
-      result_file <- tempfile(pattern = "result_", fileext = filetype_to_ext(input$rmdFileType))
-      if (input$rmdFileType == "Rmd") {
-        combined_rmd <- gsub("``` r", "```{r}", combined_md)
-        writeLines(combined_rmd, result_file, useBytes = TRUE)
-      } else {
-        combined_md_file <- tempfile(pattern = "combined_", fileext = ".md")
-        writeLines(combined_md, combined_md_file)
-        rmarkdown::render(
-          input = combined_md_file,
-          output_format =
-            switch(
-              input$rmdFileType,
-              "PDF" = rmarkdown::pdf_document(),
-              "HTML" = rmarkdown::html_document(),
-              "Word" = rmarkdown::word_document()
-            ),
-          output_file = result_file,
-          clean = TRUE,
-          encoding = "UTF-8"
-        )
-      }
-
-      file.rename(result_file, file)
-    }
-  )
-
-  ################################
-  ### REFERENCE FUNCTIONALITY ####
-  ################################
-
-  output$dlrefPackages <- downloadHandler(
-    filename = function() {paste0("ref-packages-", Sys.Date(),
-                                  filetype_to_ext(input$refFileType))},
-    content = function(file) {
-      # Create BIB file
-      bib_file <- "Rmd/references.bib"
-      temp_bib_file <- tempfile(pattern = "ref_", fileext = ".bib")
-      # Package always cited
-      knitcitations::citep(citation("shinyscholar"))
-      knitcitations::citep(citation("knitcitations"))
-      knitcitations::citep(citation("knitr"))
-      knitcitations::citep(citation("rmarkdown"))
-      knitcitations::citep(citation("terra"))
-      knitcitations::citep(citation("disaggregation"))
-      # Write BIBTEX file
-      knitcitations::write.bibtex(file = temp_bib_file)
-      # Replace NOTE fields with VERSION when R package
-      bib_ref <- readLines(temp_bib_file)
-      bib_ref  <- gsub(pattern = "note = \\{R package version", replace = "version = \\{R package", x = bib_ref)
-      writeLines(bib_ref, con = temp_bib_file)
-      file.rename(temp_bib_file, bib_file)
-      # Render reference file
-      md_ref_file <- tempfile(pattern = "ref_", fileext = ".md")
-      rmarkdown::render("Rmd/references.Rmd",
-                        output_format =
-                          switch(
-                            input$refFileType,
-                            "PDF" = rmarkdown::pdf_document(),
-                            "HTML" = rmarkdown::html_document(),
-                            "Word" = rmarkdown::word_document()
-                          ),
-                        output_file = file,
-                        clean = TRUE,
-                        encoding = "UTF-8")
-    })
-
-
-
   ################################
   ### SAVE / LOAD FUNCTIONALITY ####
   ################################
 
-  observe({
-    common_size <- as.numeric(utils::object.size(common))
-    shinyjs::toggle("save_warning", condition = (common_size >= SAVE_SESSION_SIZE_MB_WARNING * MB))
-  })
-
-  # Save the current session to a file
-  save_session <- function(file) {
-
-    show_loading_modal("Please wait the session is saved")
-
-    common$state$main <- list(
-      selected_module = sapply(COMPONENTS, function(x) input[[glue("{x}Sel")]], simplify = FALSE)
-    )
-
-    # Ask each module to save whatever data it wants
-    for (module_id in names(modules)) {
-      common$state[[module_id]] <- modules[[module_id]]$save()
-    }
-
-    # wrap terra objects prior to save
-    common$covs <- wrap_terra(common$covs)
-    common$covs_prep <- wrap_terra(common$covs_prep)
-    common$agg <- wrap_terra(common$agg)
-    common$agg_prep <- wrap_terra(common$agg_prep)
-    common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
-    common$pred$field <- wrap_terra(common$pred$field)
-    common$pred$prediction <- wrap_terra(common$pred$prediction)
-    common$pred$covariates <- wrap_terra(common$pred$covariates)
-    common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
-
-    #save file
-    saveRDS(common, file)
-
-    #unwrap the terra objects
-    common$covs <- unwrap_terra(common$covs)
-    common$covs_prep <- unwrap_terra(common$covs_prep)
-    common$agg <- unwrap_terra(common$agg)
-    common$agg_prep <- unwrap_terra(common$agg_prep)
-    common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
-    common$pred$field <- unwrap_terra(common$pred$field)
-    common$pred$prediction <- unwrap_terra(common$pred$prediction)
-    common$pred$covariates <- unwrap_terra(common$pred$covariates)
-    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
-    close_loading_modal()
-  }
-
-  output$save_session <- downloadHandler(
-    filename = function() {
-      paste0("shiny_disag-session-", Sys.Date(), ".rds")
-    },
-    content = function(file) {
-      save_session(file)
-    }
-  )
-
-  load_session <- function(file) {
-    temp <- readRDS(file)
-    temp
-
-    }
-
-  observeEvent(input$goLoad_session, {
-    show_loading_modal("Please wait the session is restored")
-    temp <- load_session(input$load_session$datapath)
-    temp_names <- names(temp)
-    #exclude the non-public and function objects
-    temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers")]
-    for (name in temp_names){
-      common[[name]] <- temp[[name]]
-    }
-
-    # Ask each module to load its own data
-    for (module_id in names(common$state)) {
-      if (module_id != "main"){
-      modules[[module_id]]$load(common$state[[module_id]])
-    }}
-
-    for (component in names(common$state$main$selected_module)) {
-      value <- common$state$main$selected_module[[component]]
-      updateRadioButtons(session, glue("{component}Sel"), selected = value)
-    }
-
-    #required due to terra objects being pointers to c++ objects
-    #unwrap the terra objects
-    common$covs <- unwrap_terra(common$covs)
-    common$covs_prep <- unwrap_terra(common$covs_prep)
-    common$agg <- unwrap_terra(common$agg)
-    common$agg_prep <- unwrap_terra(common$agg_prep)
-    common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
-    common$pred$field <- unwrap_terra(common$pred$field)
-    common$pred$prediction <- unwrap_terra(common$pred$prediction)
-    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
-
-    #restore map and results for used modules
-    for (used_module in names(common$meta)){
-      gargoyle::trigger(used_module) # to replot results
-      component <- strsplit(used_module, "_")[[1]][1]
-      map_fx <- COMPONENT_MODULES[[component]][[used_module]]$map_function
-      if (!is.null(map_fx)) {
-        do.call(map_fx, list(map, common = common))
-      }
-    }
-    close_loading_modal()
-    common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
-  })
+  core_save_module_server("core_save", common, modules, COMPONENTS, input)
+  core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
   ################################
   ### DEBUGGING ####

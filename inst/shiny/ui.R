@@ -42,6 +42,7 @@ tagList(
         wellPanel(
           conditionalPanel(
             "input.tabs == 'intro'",
+            #actionButton("debug_button", "debug"),
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
           # INCIDENCE DATA ####
@@ -160,24 +161,8 @@ tagList(
             id = "main",
             tabPanel(
               "Map",
-              leaflet::leafletOutput("map", height = 700),
-              absolutePanel(
-                top = 160, right = 20, width = 150, draggable = TRUE,
-                selectInput("bmap", "",
-                            choices = c("ESRI Topo" = "Esri.WorldTopoMap",
-                                        "Stamen Terrain" = "Stamen.Terrain",
-                                        "Open Topo" = "OpenTopoMap",
-                                        "ESRI Imagery" = "Esri.WorldImagery",
-                                        "ESRI Nat Geo" = "Esri.NatGeoWorldMap"),
-                            selected = "Esri.WorldTopoMap"
-                )
-              )
+              core_mapping_module_ui("core_mapping")
             ),
-            # tabPanel(
-            #   "Table", br(),
-            #   DT::dataTableOutput("table"),
-            #   downloadButton("dl_table", "CSV file")
-            # ),
             tabPanel(
               "Results",
               lapply(COMPONENTS, function(component) {
@@ -197,41 +182,7 @@ tagList(
             ),
             tabPanel(
               "Save", icon = icon("floppy-disk", class = "save_icon"),
-              br(),
-              h5(em("Note: To save your session code or metadata, use the Reproduce component")),
-              wellPanel(
-                h4(strong("Save Session")),
-                p(paste0("By saving your session into an RDS file, you can resume ",
-                       "working on it at a later time or you can share the file",
-                       " with a collaborator.")),
-                shinyjs::hidden(p(
-                  id = "save_warning",
-                  icon("triangle-exclamation"),
-                  paste0("The current session data is large, which means the ",
-                         "downloaded file may be large and the download might",
-                         " take a long time.")
-                  )),
-
-                verbatimTextOutput("common_covs"),
-                actionButton("debug_button", "debug"),
-                downloadButton("save_session", "Save Session"),
-                br()
-              ),
-              wellPanel(
-                h4(strong("Download Data")),
-                p(paste0("Download data/results from analyses from currently selected module")),
-                ## save module data BEGIN ##
-                # save histogram #
-                # conditionalPanel(
-                #   "input.plotSel == 'plot_hist'",
-                #   br(),
-                #   fluidRow(
-                #     column(3, h5("Download histogram")),
-                #     column(2, downloadButton('dl_hist', "PNG file"))
-                #   )
-                # )
-
-              )
+              core_save_module_ui("core_save")
             )
           )
         ),
@@ -275,10 +226,7 @@ tagList(
             ),
             tabPanel(
               "Load Prior Session",
-              h4("Load session"),
-              includeMarkdown("Rmd/text_loadsesh.Rmd"),
-              fileInput("load_session", "", accept = ".rds"),
-              actionButton("goLoad_session", "Load RDS")
+            core_load_module_ui("core_load")
             )
           )
         )
