@@ -16,8 +16,9 @@ core_mapping_module_ui <- function(id) {
   )
 }
 
-core_mapping_module_server <- function(id, common, parent_session) {
+core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
+
     # create map
     output$map <- renderLeaflet(
       leaflet() %>%
@@ -36,6 +37,7 @@ core_mapping_module_server <- function(id, common, parent_session) {
     })
 
     # Capture coordinates of polygons
+    gargoyle::init("change_poly")
     observe({
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
       xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
@@ -46,7 +48,43 @@ core_mapping_module_server <- function(id, common, parent_session) {
       gargoyle::trigger("change_poly")
     }) %>% bindEvent(input$map_draw_new_feature)
 
-    gargoyle::init("change_poly")
+
+
+    component <- reactive({
+      main_input$tabs
+    })
+
+    module <- reactive({
+      if (component() == "intro") "intro"
+      else main_input[[glue("{component()}Sel")]]
+    })
+
+    observe({
+      req(module())
+      current_mod <- module()
+      gargoyle::on(current_mod, {
+        map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
+        if (!is.null(map_fx)) {
+          do.call(map_fx, list(map, common = common))
+        }
+      })
+    })
+
+    # Add the draw toolbar when using the resp_edit module
+    observe({
+      req(module())
+      if (module() == "resp_edit"){
+        map %>%
+          addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+                         markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
+                         editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
+      }
+      if (module() != "resp_edit"){
+        map %>%
+          removeDrawToolbar(clearFeatures = TRUE)
+      }
+    })
+
 
     return(map)
 })

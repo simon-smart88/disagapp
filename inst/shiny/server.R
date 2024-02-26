@@ -101,35 +101,7 @@ function(input, output, session) {
   ### MAPPING LOGIC ####
   ######################## #
 
-  map <- core_mapping_module_server("core_mapping", common)
-
-  # Call the module-specific map function for the current module
-  observe({
-    req(module())
-    current_mod <- module()
-    gargoyle::on(current_mod, {
-      map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
-      if (!is.null(map_fx)) {
-        do.call(map_fx, list(map, common = common))
-      }
-    })
-  })
-
-
-  # Add the draw toolbar when using the resp_edit module
-  observe({
-    req(module())
-    if (module() == "resp_edit"){
-      map %>%
-        addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
-                       markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
-                       editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
-    }
-    if (module() != "resp_edit"){
-      map %>%
-        removeDrawToolbar(clearFeatures = TRUE)
-    }
-  })
+  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
   ################################
   ### SAVE / LOAD FUNCTIONALITY ####
