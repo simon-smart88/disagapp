@@ -16,18 +16,22 @@ output: html_document
 - Edit data
 
 **2.** *Covariates*  
-- Accessibility data
-- Bioclim data
+- Accessibility 
+- Climate
 - Land use
+- Nighttime lights
 - Upload covariates
 
 **3.** *Aggregation*  
-- Uniform
+- Population density
 - Upload aggregation
-- Worldpop
+- Uniform
 
 **4.** *Prepare*  
-- Summarise rasters
+- Generate mesh
+- Summarise and resample covariates
+- Covariate correlations
+- Reduce covariate resolution
 - Prepare data
 
 **5.** *Fit*
