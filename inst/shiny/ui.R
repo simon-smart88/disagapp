@@ -42,7 +42,7 @@ tagList(
         wellPanel(
           conditionalPanel(
             "input.tabs == 'intro'",
-            #actionButton("debug_button", "debug"),
+            actionButton("debug_button", "debug"),
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
           # INCIDENCE DATA ####

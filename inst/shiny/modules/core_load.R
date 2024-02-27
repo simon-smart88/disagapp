@@ -40,8 +40,10 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       #unwrap the terra objects
       common$covs <- unwrap_terra(common$covs)
       common$covs_prep <- unwrap_terra(common$covs_prep)
+      common$covs_prep_lores <- unwrap_terra(common$covs_prep_lores)
       common$agg <- unwrap_terra(common$agg)
       common$agg_prep <- unwrap_terra(common$agg_prep)
+      common$agg_prep_lores <- unwrap_terra(common$agg_prep_lores)
       common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
       common$pred$field <- unwrap_terra(common$pred$field)
       common$pred$prediction <- unwrap_terra(common$pred$prediction)

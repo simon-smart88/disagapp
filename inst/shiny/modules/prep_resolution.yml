@@ -1,0 +1,5 @@
+component: "prep"
+short_name: "Reduce resolution"
+long_name: "Reduce covariate resolution"
+authors: "Simon E H Smart"
+package: [terra]
