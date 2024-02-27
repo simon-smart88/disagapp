@@ -1,0 +1,5 @@
+component: "resp"
+short_name: "Simplify shapefile"
+long_name: "Simplify shapefile geometry"
+authors: "Simon E H Smart"
+package: [sf]

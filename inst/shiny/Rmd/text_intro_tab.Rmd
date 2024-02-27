@@ -14,6 +14,7 @@ output: html_document
 - Upload spreadsheet
 - Upload shapefile
 - Edit data
+- Simplify polygons
 
 **2.** *Covariates*  
 - Accessibility 

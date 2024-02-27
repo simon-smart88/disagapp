@@ -1,0 +1,7 @@
+```{asis, echo = {{resp_simplify_knit}}, eval = {{resp_simplify_knit}}, include = {{resp_simplify_knit}}}
+Simplify the geometry of polygons in the shape object
+```
+
+```{r, echo = {{resp_simplify_knit}}, include = {{resp_simplify_knit}}}
+shape <- disagapp::resp_simplify(shape, {{resp_simplify_distance}})
+```

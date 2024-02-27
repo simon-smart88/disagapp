@@ -19,3 +19,6 @@ When your response data is in a spreadsheet (.csv or .xlsx) and your boundary da
 
 #### Edit data
 Once you have uploaded response data using the previous modules, this allows you to edit the data to remove areas which you do not wish to include in the analysis. 
+
+#### Simplify polygons
+Boundaries are often unnecessarily precise compared to what is required for the analysis and this module can be used to simplify the geometry resulting in a smaller file size.
