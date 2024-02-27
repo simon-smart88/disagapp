@@ -20,20 +20,29 @@ prep_summary <- function(covs, remove = FALSE){
   cov_ext <- as.data.frame(t(as.data.frame(cov_ext)))
 
   cov_origin <- lapply(covs, terra::origin)
-  x_origin <- unlist(cov_origin)[seq(1, length(covs)*2, 2)]
-  y_origin <- unlist(cov_origin)[seq(2, length(covs)*2, 2)]
+  x_origin <- format(unlist(cov_origin)[seq(1, length(covs)*2, 2)], scientific = TRUE)
+  y_origin <- format(unlist(cov_origin)[seq(2, length(covs)*2, 2)], scientific = TRUE)
 
   cov_crs <- unlist(lapply(covs, terra::crs, proj = TRUE))
+  crs_proj <- sub("^.*\\bproj=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
+  crs_datum <- sub("^.*\\bdatum=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
 
   cov_ncell <- lapply(covs, terra::ncell)
 
-  cov_df <- data.frame(x_resolution = x_res,
-                       y_resolution = y_res,
+  cov_df <- data.frame(x_res, y_res,
                        x_origin, y_origin,
-                       crs = cov_crs,
+                       crs_proj, crs_datum,
                        number_of_cells = unlist(cov_ncell))
   row.names(cov_df) <- names(covs)
   cov_df <- cbind(cov_df, cov_ext)
+
+  colnames(cov_df) <- c("X resolution", "Y resolution",
+                        "X origin", "Y origin",
+                        "CRS projection", "CRS datum",
+                        "Number of pixels",
+                        "X minimum", "X maximum",
+                        "Y minimum", "Y maximum"
+                        )
 
   if (remove == TRUE){
     # remove columns with the same values

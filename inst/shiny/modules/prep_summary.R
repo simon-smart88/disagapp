@@ -98,16 +98,21 @@ prep_summary_module_server <- function(id, common, parent_session) {
       common$meta$prep_summary$scale <- TRUE
     })
 
+
     output$cov_table <- DT::renderDataTable({
     gargoyle::watch("prep_summary")
     if (input$table == "Original"){
       req(common$covs_summary$original)
-      out <- DT::datatable(common$covs_summary$original, selection = "single")
+      out <- DT::datatable(common$covs_summary$original, selection = "single",
+                           options = list(columnDefs = list(list(className = 'dt-center', targets = 0:11)))) %>%
+        DT::formatSignif(c(1:4, 8:11), 3)
     }
 
     if (input$table == "Resampled"){
       req(common$covs_summary$resampled)
-      out <- DT::datatable(common$covs_summary$resampled, selection = "none")
+      out <- DT::datatable(common$covs_summary$resampled, selection = "none",
+                           options = list(columnDefs = list(list(className = 'dt-center', targets = 0:11)))) %>%
+        DT::formatSignif(c(1:4, 8:11), 3)
     }
 
     out
