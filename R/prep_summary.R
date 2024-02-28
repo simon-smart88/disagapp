@@ -48,5 +48,5 @@ prep_summary <- function(covs, remove = FALSE){
     # remove columns with the same values
     cov_df <- cov_df[vapply(cov_df, function(x) length(unique(x)) > 1, logical(1L))]
   }
-  return(cov_df)
+  return(t(cov_df))
 }

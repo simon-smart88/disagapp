@@ -47,7 +47,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       }
       # FUNCTION CALL ####
       common$covs$Aggregation <- common$agg
-      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$cov_table_rows_selected]])
+      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$cov_table_columns_selected]])
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
@@ -59,7 +59,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
       # METADATA ####
       common$meta$prep_summary$used <- TRUE
-      common$meta$prep_summary$resample_target <- rownames(common$covs_summary$resampled)[[input$cov_table_rows_selected]]
+      common$meta$prep_summary$resample_target <- colnames(common$covs_summary$resampled)[[input$cov_table_columns_selected]]
       # TRIGGER
       gargoyle::trigger("prep_summary")
       updateTabsetPanel(parent_session, "main", selected = "Results")
@@ -77,25 +77,26 @@ prep_summary_module_server <- function(id, common, parent_session) {
       common$meta$prep_summary$scale <- TRUE
     })
 
-
     output$cov_table <- DT::renderDataTable({
     gargoyle::watch("prep_summary")
     if (input$table == "Original"){
       req(common$covs_summary$original)
-      out <- DT::datatable(common$covs_summary$original, selection = "single",
-                           options = list(columnDefs = list(list(className = 'dt-center', targets = 0:11)))) %>%
-        DT::formatSignif(c(1:4, 8:11), 3)
+      out <- DT::datatable(common$covs_summary$original, selection = list(mode = "single", target = "column"), autoHideNavigation = TRUE,
+                           options = list(pageLength = 11,
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:length(common$covs))))) %>%
+        DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
     if (input$table == "Resampled"){
       req(common$covs_summary$resampled)
-      out <- DT::datatable(common$covs_summary$resampled, selection = "none",
-                           options = list(columnDefs = list(list(className = 'dt-center', targets = 0:11)))) %>%
-        DT::formatSignif(c(1:4, 8:11), 3)
+      out <- DT::datatable(common$covs_summary$resampled, selection = "none", autoHideNavigation = TRUE,
+                           options = list(pageLength = 11,
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:length(common$covs))))) %>%
+        DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
     out
-  })
+  }, server = FALSE)
 
   return(list(
     save = function() {
