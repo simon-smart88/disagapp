@@ -13,7 +13,6 @@ prep_summary_module_ui <- function(id) {
 prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
-
   observeEvent(input$run, {
     # WARNING ####
     if (length(common$covs) == 0) {
@@ -41,8 +40,8 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
     observeEvent(input$resample, {
       # WARNING ####
-      if (is.null(input$cov_table_rows_selected)) {
-        common$logger %>% writeLog(type = "error", "Please select a row from the table")
+      if (is.null(input$cov_table_columns_selected)) {
+        common$logger %>% writeLog(type = "error", "Please select a column from the table")
         return()
       }
       # FUNCTION CALL ####
