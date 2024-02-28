@@ -4,7 +4,8 @@ prep_prep_module_ui <- function(id) {
     # UI
     uiOutput(ns("id_var_out")),
     uiOutput(ns("resp_var_out")),
-    checkboxInput(ns("na_action"), "Handle NAs?", value = TRUE),
+    uiOutput(ns("cov_res_out")),
+    checkboxInput(ns("na_action"), "Handle missing data?", value = TRUE),
     actionButton(ns("run"), "Prepare data")
   )
 }
@@ -32,8 +33,11 @@ prep_prep_module_server <- function(id, common, parent_session) {
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
     })
 
-
-
+    output$cov_res_out <- renderUI({
+      gargoyle::watch("prep_resolution")
+      req(common$covs_prep_lores)
+      selectInput(session$ns("cov_res"), "Select covariate resolution", c("Low resolution", "High resolution"))
+    })
 
   observeEvent(input$run, {
     # WARNING ####
@@ -52,13 +56,27 @@ prep_prep_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
-    common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+
+    if (is.null(input$cov_res) | input$cov_res == "High resolution"){
+     common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
                                          covariate_rasters = common$covs_prep,
                                          aggregation_raster = common$agg_prep,
                                          id_var = as.character(input$id_var),
                                          response_var = as.character(input$resp_var),
                                          na.action = input$na_action,
                                          makeMesh = FALSE)
+    }
+
+    if (input$cov_res == "Low resolution"){
+      common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+                                                  covariate_rasters = common$covs_prep_lores,
+                                                  aggregation_raster = common$agg_prep_lores,
+                                                  id_var = as.character(input$id_var),
+                                                  response_var = as.character(input$resp_var),
+                                                  na.action = input$na_action,
+                                                  makeMesh = FALSE)
+    }
+
     common$prep$mesh <- common$mesh
     close_loading_modal()
     common$logger %>% writeLog("Data preparation is completed")
