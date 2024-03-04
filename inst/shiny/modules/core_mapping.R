@@ -42,8 +42,6 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
       xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
       colnames(xy) <- c("longitude", "latitude")
-      #convert any longitudes drawn outside of the original map
-      xy[,1] <- ((xy[,1] + 180) %% 360) - 180
       common$poly <- xy
       gargoyle::trigger("change_poly")
     }) %>% bindEvent(input$map_draw_new_feature)
