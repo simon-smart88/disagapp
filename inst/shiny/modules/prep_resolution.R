@@ -37,7 +37,7 @@ prep_resolution_module_server <- function(id, common, parent_session) {
       gargoyle::watch("prep_resolution_current")
       req(original_resolution$width)
 
-      factors <- (2:20)^2
+      factors <- (2:20)
       choices <- round(original_resolution$width*factors,0)
       selectInput(session$ns("resolution"), "New pixel width (m)", choices = choices)
     })
@@ -81,7 +81,7 @@ prep_resolution_module_server <- function(id, common, parent_session) {
         return()
       }
 
-      factor <- sqrt(as.integer(as.numeric(input$resolution) / original_resolution$width))
+      factor <- as.integer(as.numeric(input$resolution) / original_resolution$width)
 
       # FUNCTION CALL ####
       common$covs_prep_lores <- terra::aggregate(common$covs_prep, fact = factor, fun = "mean")
