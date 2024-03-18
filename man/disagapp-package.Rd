@@ -16,3 +16,14 @@ be downloaded to share with others or use as supplementary information
 for scientific papers and reports. The application is run via the
 function \code{\link{run_disagapp}}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{}
+}
+
+}
+\author{
+\strong{Maintainer}: Simon E. H. Smart \email{simon.smart@cantab.net}
+
+}
