@@ -158,6 +158,7 @@ shape_map <- function(map, common, response){
     clearControls() %>%
     removeLayersControl() %>%
     clearGroup("Response") %>%
+    removeControl("Response") %>%
     addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) %>%
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response", layerId = "Response") %>%
@@ -186,6 +187,7 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
   map %>%
     removeLayersControl() %>%
     clearGroup(name) %>%
+    removeControl(name) %>%
     addRasterImage(raster, group = name, colors = pal) %>%
     addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%

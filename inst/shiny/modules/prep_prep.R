@@ -4,7 +4,8 @@ prep_prep_module_ui <- function(id) {
     # UI
     uiOutput(ns("id_var_out")),
     uiOutput(ns("resp_var_out")),
-    checkboxInput(ns("na_action"), "Handle NAs?", value = TRUE),
+    uiOutput(ns("resolution_out")),
+    checkboxInput(ns("na_action"), "Handle missing data?", value = TRUE),
     actionButton(ns("run"), "Prepare data")
   )
 }
@@ -32,8 +33,11 @@ prep_prep_module_server <- function(id, common, parent_session) {
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
     })
 
-
-
+    output$resolution_out <- renderUI({
+      gargoyle::watch("prep_resolution")
+      req(common$covs_prep_lores)
+      selectInput(session$ns("resolution"), "Select covariate resolution", c("Low resolution", "High resolution"))
+    })
 
   observeEvent(input$run, {
     # WARNING ####
@@ -52,13 +56,25 @@ prep_prep_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
-    common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
-                                         covariate_rasters = common$covs_prep,
-                                         aggregation_raster = common$agg_prep,
-                                         id_var = as.character(input$id_var),
-                                         response_var = as.character(input$resp_var),
-                                         na.action = input$na_action,
-                                         makeMesh = FALSE)
+
+    if (is.null(input$resolution) || input$resolution == "High resolution"){
+     common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+                                                 covariate_rasters = common$covs_prep,
+                                                 aggregation_raster = common$agg_prep,
+                                                 id_var = as.character(input$id_var),
+                                                 response_var = as.character(input$resp_var),
+                                                 na.action = input$na_action,
+                                                 makeMesh = FALSE)
+    } else {
+     common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+                                                  covariate_rasters = common$covs_prep_lores,
+                                                  aggregation_raster = common$agg_prep_lores,
+                                                  id_var = as.character(input$id_var),
+                                                  response_var = as.character(input$resp_var),
+                                                  na.action = input$na_action,
+                                                  makeMesh = FALSE)
+    }
+
     common$prep$mesh <- common$mesh
     close_loading_modal()
     common$logger %>% writeLog("Data preparation is completed")
@@ -68,15 +84,10 @@ prep_prep_module_server <- function(id, common, parent_session) {
     common$meta$prep_prep$id_var <- as.character(input$id_var)
     common$meta$prep_prep$resp_var <- as.character(input$resp_var)
     common$meta$prep_prep$na_action <- input$na_action
+    common$meta$prep_prep$resolution <- input$resolution
     # TRIGGER
     gargoyle::trigger("prep_prep")
-    updateTabsetPanel(parent_session, "main", selected = "Results")
-  })
-
-  output$result <- renderPlot({
-    gargoyle::watch("prep_prep")
-    req(common$prep)
-    plot(common$prep)
+    updateTabsetPanel(parent_session, "main", selected = "Map")
   })
 
   return(list(
@@ -94,9 +105,15 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 })
 }
 
-prep_prep_module_result <- function(id) {
-  ns <- NS(id)
-  plotOutput(ns("result"))
+prep_prep_module_map <- function(map, common){
+  for (layer in names(common$prep$covariate_rasters)){
+    covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
+  }
+  if (is.null(common$meta$prep_prep$resolution) || common$meta$prep_prep$resolution == "High resolution"){
+    covariate_map(map, common, common$agg_prep, names(common$agg_prep))
+  } else {
+    covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores))
+  }
 }
 
 prep_prep_module_rmd <- function(common) {
@@ -108,4 +125,3 @@ prep_prep_module_rmd <- function(common) {
     prep_na_action = common$meta$prep_prep$na_action
   )
 }
-

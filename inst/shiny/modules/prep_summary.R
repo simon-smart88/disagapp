@@ -13,7 +13,6 @@ prep_summary_module_ui <- function(id) {
 prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
-
   observeEvent(input$run, {
     # WARNING ####
     if (length(common$covs) == 0) {
@@ -41,8 +40,8 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
     observeEvent(input$resample, {
       # WARNING ####
-      if (is.null(input$cov_table_rows_selected)) {
-        common$logger %>% writeLog(type = "error", "Please select a row from the table")
+      if (is.null(input$cov_table_columns_selected)) {
+        common$logger %>% writeLog(type = "error", "Please select a column from the table")
         return()
       }
       # FUNCTION CALL ####
@@ -83,7 +82,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       req(common$covs_summary$original)
       out <- DT::datatable(common$covs_summary$original, selection = list(mode = "single", target = "column"), autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:length(common$covs))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
@@ -91,7 +90,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       req(common$covs_summary$resampled)
       out <- DT::datatable(common$covs_summary$resampled, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:length(common$covs))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
