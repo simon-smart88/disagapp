@@ -34,9 +34,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
     if (bearer() == ""){
       logger %>% writeLog(type = "error", "A NASA bearer token is required to download nighttime light data.
-                        See https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token
-                        for how to obtain one and then enter it in the box or set it as an environmental
-                        variable called 'NASA_bearer'")
+      See the module guidance for details on how to obtain one")
       return()
     }
     # FUNCTION CALL ####
