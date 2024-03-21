@@ -1,5 +1,5 @@
 Package: disagapp
-Version: 1.0.0
+Version: 0.0.1
 Date: 2023-12-05
 Title: Disaggregation regression application
 Description: disagapp is a shiny application for performing disaggregation 
