@@ -52,7 +52,8 @@ tagList(
             help_comp_ui("respHelp"),
             radioButtons(
               "respSel", "Modules Available:",
-              choices = insert_modules_options("resp"),
+              choiceNames = insert_modules_option_names("resp"),
+              choiceValues = insert_modules_option_values("resp"),
               selected = character(0)
             ),
             tags$hr(),
@@ -65,7 +66,8 @@ tagList(
             help_comp_ui("covHelp"),
             radioButtons(
               "covSel", "Modules Available:",
-              choices = insert_modules_options("cov"),
+              choiceNames = insert_modules_option_names("cov"),
+              choiceValues = insert_modules_option_values("cov"),
               selected = character(0)
             ),
             tags$hr(),
@@ -78,7 +80,8 @@ tagList(
             help_comp_ui("aggHelp"),
             radioButtons(
               "aggSel", "Modules Available:",
-              choices = insert_modules_options("agg"),
+              choiceNames = insert_modules_option_names("agg"),
+              choiceValues = insert_modules_option_values("agg"),
               selected = character(0)
             ),
             tags$hr(),
@@ -91,7 +94,8 @@ tagList(
             help_comp_ui("prepHelp"),
             radioButtons(
               "prepSel", "Modules Available:",
-              choices = insert_modules_options("prep")
+              choiceNames = insert_modules_option_names("prep"),
+              choiceValues = insert_modules_option_values("prep"),
             ),
             tags$hr(),
             insert_modules_ui("prep")
@@ -103,7 +107,8 @@ tagList(
             help_comp_ui("fitHelp"),
             radioButtons(
               "fitSel", "Modules Available:",
-              choices = insert_modules_options("fit")
+              choiceNames = insert_modules_option_names("fit"),
+              choiceValues = insert_modules_option_values("fit"),
             ),
             tags$hr(),
             insert_modules_ui("fit")
@@ -115,7 +120,8 @@ tagList(
             help_comp_ui("predHelp"),
             radioButtons(
               "predSel", "Modules Available:",
-              choices = insert_modules_options("pred")
+              choiceNames = insert_modules_option_names("pred"),
+              choiceValues = insert_modules_option_values("pred"),
             ),
             tags$hr(),
             insert_modules_ui("pred")
@@ -126,7 +132,8 @@ tagList(
             div("Component: Reproduce", class = "componentName"),
             radioButtons(
               "repSel", "Modules Available:",
-              choices = insert_modules_options("rep"),
+              choiceNames = insert_modules_option_names("rep"),
+              choiceValues = insert_modules_option_values("rep"),
               selected = character(0)
             ),
             tags$hr(),

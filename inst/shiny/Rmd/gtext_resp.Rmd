@@ -8,17 +8,17 @@ output: html_document
 **ORIENTATION**
 This component loads the response data - that is the data that you wish to fit the model to and obtain a high resolution map of. There are two parts to the response data - the numeric values of the response and the boundaries of the administrative areas that the response data corresponds to. The component has different modules to use, depending on the state that your data is currently in:
 
-#### Upload shapefile
+#### <span class="module_choice">Upload shapefile</span>
 When the response data and boundary data are both present in a shapefile. You will need to upload all four files.
 
-#### Upload spreadsheet 
+#### <span class="module_choice">Upload spreadsheet</span>
 When your response data is in a spreadsheet (.csv or .xlsx) but you do not have any boundary data. This module will load the boundary data for a selected country for you and merge it with the response data.
 
-#### Combine spreadsheet and shapefile
+#### <span class="module_choice">Combine spreadsheet and shapefile</span>
 When your response data is in a spreadsheet (.csv or .xlsx) and your boundary data is in a separate shapefile. The module will load both files and merge them together.
 
-#### Edit data
+#### <span class="module_optional">Edit data</span>
 Once you have uploaded response data using the previous modules, this allows you to edit the data to remove areas which you do not wish to include in the analysis. 
 
-#### Simplify polygons
+#### <span class="module_optional">Simplify polygons</span>
 Boundaries are often unnecessarily precise compared to what is required for the analysis and this module can be used to simplify the geometry resulting in a smaller file size.

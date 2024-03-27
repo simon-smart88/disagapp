@@ -3,3 +3,4 @@ short_name: "Prepare data"
 long_name: "Prepare data for fitting"
 authors: "Simon E H Smart"
 package: [disaggregation]
+class: mandatory

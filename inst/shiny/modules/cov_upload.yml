@@ -3,3 +3,4 @@ short_name: "Upload covariates"
 long_name: "Upload covariate rasters"
 authors: "Simon E H Smart"
 package: [terra]
+class: choice

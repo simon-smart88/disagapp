@@ -3,3 +3,4 @@ short_name: "Make predictions"
 long_name: "Make predictions from model"
 authors: "Simon E H Smart"
 package: [disaggregation]
+class: mandatory

@@ -3,3 +3,4 @@ short_name: "Fit model"
 long_name: "Fit disaggregation model"
 authors: "Simon E H Smart"
 package: [disaggregation]
+class: mandatory

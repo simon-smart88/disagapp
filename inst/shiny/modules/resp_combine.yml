@@ -3,3 +3,4 @@ short_name: "Combine spreadsheet and shapefile"
 long_name: "Combine data from spreadsheet and shapefile"
 authors: "Simon E H Smart"
 package: [sf]
+class: choice

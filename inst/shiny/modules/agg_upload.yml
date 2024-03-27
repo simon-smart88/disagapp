@@ -3,3 +3,4 @@ short_name: "Upload aggregation"
 long_name: "Upload aggregation raster"
 authors: "Simon E H Smart"
 package: [terra]
+class: choice

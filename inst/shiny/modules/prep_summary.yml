@@ -3,3 +3,4 @@ short_name: "Prepare rasters"
 long_name: "Prepare rasters"
 authors: "Simon E H Smart"
 package: [terra]
+class: mandatory

@@ -3,3 +3,4 @@ short_name: "Edit data"
 long_name: "Edit response data"
 authors: "Simon E H Smart"
 package: [sf, leaflet]
+class: optional

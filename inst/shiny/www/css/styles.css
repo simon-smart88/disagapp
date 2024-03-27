@@ -111,3 +111,15 @@ hr {
   color:#699FA1;
   margin:0px;
 }
+
+.module_choice {
+  color:blue;
+}
+
+.module_optional {
+  color:purple;
+}
+
+.module_mandatory {
+  color:green;
+}

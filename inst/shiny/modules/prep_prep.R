@@ -77,7 +77,7 @@ prep_prep_module_server <- function(id, common, parent_session) {
 
     common$prep$mesh <- common$mesh
     close_loading_modal()
-    common$logger %>% writeLog("Data preparation is completed")
+    common$logger %>% writeLog("Data preparation is complete")
     # LOAD INTO COMMON ####
 
     # METADATA ####

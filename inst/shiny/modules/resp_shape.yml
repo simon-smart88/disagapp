@@ -3,3 +3,4 @@ short_name: "Upload shapefile"
 long_name: "Upload response shapefile"
 authors: "Simon E H Smart"
 package: [sf]
+class: choice
