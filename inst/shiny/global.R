@@ -53,7 +53,7 @@ for (module_config_file in all_module_configs) {
   module_config$id <- id
 
   # Perform lots of error checking to ensure the module was written properly
-  required_fields <- c("component", "short_name", "long_name", "authors", "package")
+  required_fields <- c("component", "short_name", "long_name", "authors", "package", "class")
 
   if (id == "main") {
     stop("A module cannot be named `main`", call. = FALSE)
