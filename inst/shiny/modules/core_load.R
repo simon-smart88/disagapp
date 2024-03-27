@@ -25,6 +25,9 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
         common[[name]] <- temp[[name]]
       }
 
+      #blank map
+      common$map_layers = NULL
+
       # Ask each module to load its own data
       for (module_id in names(common$state)) {
         if (module_id != "main"){
