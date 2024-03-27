@@ -1,0 +1,6 @@
+component: "rep"
+short_name: "Reproduce environment"
+long_name: "Download list of dependencies"
+authors: "Simon Smart"
+package: [renv]
+class: optional
