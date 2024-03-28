@@ -19,7 +19,7 @@ common_class <- R6::R6Class(
     logger = NULL,
     meta = NULL,
     state = NULL,
-    countries = readRDS(system.file("ex/countries.rds", package="geodata")),
+    countries = readRDS(system.file("ex/countries.rds", package = "geodata")),
     selected_country = NULL,
     add_map_layer = function(new_names) {
       for (new_name in new_names){

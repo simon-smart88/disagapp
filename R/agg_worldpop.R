@@ -10,6 +10,7 @@
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
 #'   shiny, otherwise leave the default NULL
+#' @importFrom rlang .data
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
@@ -64,7 +65,7 @@ if (length(cont$data) == 0){
   return()
 }
 # select the file_url and download the raster
-data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(popyear == as.character(year) & grepl(".tif", files)) %>% dplyr::select("files")
+data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
 pop_ras <- terra::rast(data$files[[1]])
 
 #aggregate unconstrained as only available at 100m

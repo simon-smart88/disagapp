@@ -12,6 +12,10 @@ cov_bioclim(country_code, variables, shape, logger = NULL)
 \item{variables}{vector. List of the bioclimatic variables to be returned}
 
 \item{shape}{sf. sf object containing the area of interest}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a list of SpatRaster objects

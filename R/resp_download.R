@@ -30,7 +30,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
     shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
 
     shape <- shape %>%
-      dplyr::full_join(df, by = setNames(area_column, "shapeName"))
+      dplyr::full_join(df, by = stats::setNames(area_column, "shapeName"))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[resp_column]]))),(any(is.na(shape$shapeISO))))){

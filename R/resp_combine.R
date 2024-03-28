@@ -23,7 +23,7 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
 
     #merge data
     shape <- shape %>%
-      dplyr::full_join(df, by = setNames(df_area_column, shape_area_column))
+      dplyr::full_join(df, by = stats::setNames(df_area_column, shape_area_column))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[df_resp_column]]))),(any(is.na(shape[[shape_area_column]]))))){

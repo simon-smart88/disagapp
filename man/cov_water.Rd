@@ -9,7 +9,7 @@ cov_water(shape, token, logger = NULL)
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
-\item{token}{character. ArcGIS access token.
+\item{token}{httr2_token. ArcGIS access token.
 \href{https://developers.arcgis.com/sign-up/}{Click here} to obtain yours
 and either provide that or set the \code{ARCGIS_CLIENT} and \code{ARCGIS_SECRET}
 environmental variables to automate it as
