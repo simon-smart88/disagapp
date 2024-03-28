@@ -1,0 +1,6 @@
+component: "rep"
+short_name: "Download covariates"
+long_name: "Download copies of covariates"
+authors: "Simon Smart"
+package: [terra, zip]
+class: optional
