@@ -26,9 +26,8 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
                           encoding = "UTF-8")
         md_files <- c(md_files, md_intro_file)
 
-
         module_rmds <- NULL
-        #force rep_renv to beginning
+        #force rep modules to beginning
         components <- names(COMPONENT_MODULES)
         components <- c("rep", components[components != c("rep")])
         for (component in components) {
@@ -53,6 +52,14 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
             writeLines(module_rmd, module_rmd_file)
             module_rmds <- c(module_rmds, module_rmd_file)
           }
+        }
+
+        module_rmds <- module_rmds[!grepl("rep_markdown", module_rmds)]
+
+        #remove cov and agg modules if rep_covs has been used
+        if (common$meta$rep_covs$used){
+          module_rmds <- module_rmds[!grepl("cov_", module_rmds)]
+          module_rmds <- module_rmds[!grepl("agg_", module_rmds)]
         }
 
         module_md_file <- tempfile(pattern = paste0(module$id, "_"),

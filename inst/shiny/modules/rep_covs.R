@@ -2,29 +2,59 @@ rep_covs_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    downloadButton(ns("dl"), "Download covariates")
+    downloadButton(ns("download"), "Download covariates")
   )
 }
 
 rep_covs_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
-    output$save_session <- downloadHandler(
+    output$download <- downloadHandler(
       filename = function() {
         paste0("disagapp-covariates-", Sys.Date(), ".zip")
       },
       content = function(file) {
-        show_loading_modal("Please wait the session is saved")
 
+        common$meta$rep_covs$used <- TRUE
 
-        # wrap terra objects prior to save
-        common$covs <- wrap_terra(common$covs)
-        common$covs_prep <- wrap_terra(common$covs_prep)
-        common$covs_prep_lores <- wrap_terra(common$covs_prep_lores)
-        common$agg <- wrap_terra(common$agg)
-        common$agg_prep <- wrap_terra(common$agg_prep)
-        common$agg_prep_lores <- wrap_terra(common$agg_prep_lores)
-        common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
+        directory <- tempdir()
+        dir.create(file.path(directory, "rep_cov"))
+
+        if (is.null(common$prep)){
+          common$meta$rep_covs$pre_prep <- TRUE
+          lapply(names(common$covs), function(x)
+            terra::writeRaster(common$covs[[x]],
+                               file.path(directory, "rep_cov", paste0(x, ".tif"))))
+            terra::writeRaster(common$agg,
+                               file.path(directory, "rep_cov", "aggregation.tif"))
+        }
+
+        if (!is.null(common$covs_prep)) {
+          common$meta$rep_covs$post_prep <- TRUE
+          terra::writeRaster(common$covs_prep,
+                             file.path(directory, "rep_cov", "covariates.tif"))
+          terra::writeRaster(common$agg_prep,
+                             file.path(directory, "rep_cov", "aggregation.tif"))
+        }
+
+        if (!is.null(common$prep) & (!is.null(common$meta$prep_resolution$used))){
+          common$meta$rep_covs$low_res <- TRUE
+          terra::writeRaster(common$covs_prep_lores,
+                             file.path(directory, "rep_cov", "covariates_low_resolution.tif"))
+          terra::writeRaster(common$agg_prep_lores,
+                             file.path(directory, "rep_cov", "aggregation_low_resolution.tif"))
+        }
+
+        owd <- setwd(file.path(directory, "rep_cov"))
+        on.exit(setwd(owd))
+
+        files <- list.files(".")
+
+        zip::zipr(zipfile = file,
+                  files = files,
+                  mode = "mirror",
+                  include_directories = FALSE)
+
       }
     )
 
@@ -33,11 +63,10 @@ rep_covs_module_server <- function(id, common, parent_session) {
 
 
 rep_covs_module_rmd <- function(common) {
-  # Variables used in the module's Rmd code
   list(
-    rep_covs_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    rep_covs_knit = !is.null(common$meta$rep_covs$used),
+    knit_pre_prep = !is.null(common$meta$rep_covs$pre_prep),
+    knit_post_prep = !is.null(common$meta$rep_covs$post_prep),
+    knit_low_res = !is.null(common$meta$rep_covs$low_res)
   )
 }
-

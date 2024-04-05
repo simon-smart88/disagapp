@@ -1,7 +1,28 @@
 ```{asis, echo = {{rep_covs_knit}}, eval = {{rep_covs_knit}}, include = {{rep_covs_knit}}}
-Description of what the code will do {{var1}}
+Load the saved versions of covariates and aggregation raster. If you have decreased their resolution, both versions are loaded but the lower resolution versions are used be default. Delete the low resolution code block to use the high resolution versions.
 ```
 
-```{r, echo = {{rep_covs_knit}}, include = {{rep_covs_knit}}}
-# R code to run {{var2}}
+```{r, echo = {{knit_pre_prep}}, include = {{knit_pre_prep}}}
+dir.create("covariates")
+zip::unzip(paste0("disagapp-covariates-", Sys.Date(), ".zip"), exdir = "covariates")
+covariate_files <- list.files("covariates", full.names = TRUE)
+covariate_files <- covariate_files[!grepl("aggregation.tif", covariate_files)]
+covariates <- lapply(covariate_files, terra::rast)
+aggregation <- terra::rast("covariates/aggregation.tif")
+```
+
+```{r, echo = {{knit_post_prep}}, include = {{knit_post_prep}}}
+dir.create("covariates")
+zip::unzip(paste0("disagapp-covariates-", Sys.Date(), ".zip"), exdir = "covariates")
+covariates <- terra::rast("covariates/covariates.tif")
+aggregation <- terra::rast("covariates/aggregation.tif")
+```
+
+```{asis, echo = {{knit_low_res}}, eval = {{knit_low_res}}, include = {{knit_low_res}}}
+Delete the following block if you wish to use the high resolution versions of the covariates
+```
+
+```{r, echo = {{knit_low_res}}, include = {{knit_low_res}}}
+covariates <- terra::rast("covariates/covariates_low_resolution.tif")
+aggregation <- terra::rast("covariates/aggregation_low_resolution.tif")
 ```

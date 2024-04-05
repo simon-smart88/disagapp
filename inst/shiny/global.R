@@ -38,8 +38,8 @@ base_module_configs <- c("modules/resp_shape.yml",
                          "modules/fit_fit.yml",
                          "modules/pred_pred.yml",
                          "modules/rep_markdown.yml",
-                         "modules/rep_covs.yml",
                          "modules/rep_renv.yml",
+                         "modules/rep_covs.yml",
                          "modules/rep_refPackages.yml")
 
 # Load user-defined modules
