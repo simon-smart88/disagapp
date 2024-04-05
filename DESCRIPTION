@@ -9,28 +9,28 @@ Authors@R:
 Depends:
     R (>= 3.5.0),
     shiny (>= 1.6.0),
-    leaflet (>= 2.0.2),
-    terra,
-    R6,
-    gargoyle,
-    leaflet.extras (>= 1.0.0),
-    disaggregation
+    leaflet (>= 2.0.2)
 Imports:
-    arcgis,
+    arcgislayers,
+    arcgisutils,
     blackmarbler,
     corrplot,
+    disaggregation,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     fmesher,
+    gargoyle,
     geosphere,
     geodata,
     glue,
     httr,
     knitcitations,
     leafem,
+    leaflet.extras (>= 1.0.0),
     magrittr,
     malariaAtlas,
     openxlsx,
+    R6,
     RColorBrewer,
     rlang,
     rmarkdown,
@@ -38,11 +38,13 @@ Imports:
     shinyalert,
     shinybusy,
     shinyjs,
-    shinytest2,
     shinyWidgets (>= 0.6.0),
+    stats,
+    terra,
     tools,
     zip
 Suggests: 
+    shinytest2,
     testthat
 License: GPL-3
 URL: 

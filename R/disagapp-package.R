@@ -1,7 +1,7 @@
+"_PACKAGE"
 #' @name disagapp-package
 #' @aliases disagapp
 #' @aliases disagapp-package
-#' @docType package
 #' @title \emph{disagapp}: A modular platform for creating reproducible applications
 #' @description \emph{disagapp} is a \code{shiny} app template for creating
 #'   reproducible applications to academic standards. disagapp is forked from 'wallace'

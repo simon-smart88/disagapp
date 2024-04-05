@@ -7,6 +7,9 @@
 #' @param country_code character. ISO3 code of the country.
 #' @param variables vector. List of the bioclimatic variables to be returned
 #' @param shape sf. sf object containing the area of interest
+#' @param logger Stores all notification messages to be displayed in the Log
+#' Window. Insert the logger reactive list here for running in
+#' shiny, otherwise leave the default NULL
 #' @return a list of SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
