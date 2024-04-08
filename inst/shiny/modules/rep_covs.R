@@ -23,26 +23,26 @@ rep_covs_module_server <- function(id, common, parent_session) {
         if (is.null(common$prep)){
           common$meta$rep_covs$pre_prep <- TRUE
           lapply(names(common$covs), function(x)
-            terra::writeRaster(common$covs[[x]],
-                               file.path(directory, "rep_cov", paste0(x, ".tif"))))
-            terra::writeRaster(common$agg,
-                               file.path(directory, "rep_cov", "aggregation.tif"))
+            terra::writeRaster(common$covs[[x]], overwrite = TRUE,
+                               filename = file.path(directory, "rep_cov", paste0(x, ".tif"))))
+            terra::writeRaster(common$agg, overwrite = TRUE,
+                               filename = file.path(directory, "rep_cov", "aggregation.tif"))
         }
 
         if (!is.null(common$covs_prep)) {
           common$meta$rep_covs$post_prep <- TRUE
-          terra::writeRaster(common$covs_prep,
-                             file.path(directory, "rep_cov", "covariates.tif"))
-          terra::writeRaster(common$agg_prep,
-                             file.path(directory, "rep_cov", "aggregation.tif"))
+          terra::writeRaster(common$covs_prep, overwrite = TRUE,
+                             filename = file.path(directory, "rep_cov", "covariates.tif"))
+          terra::writeRaster(common$agg_prep, overwrite = TRUE,
+                             filename = file.path(directory, "rep_cov", "aggregation.tif"))
         }
 
         if (!is.null(common$prep) & (!is.null(common$meta$prep_resolution$used))){
           common$meta$rep_covs$low_res <- TRUE
-          terra::writeRaster(common$covs_prep_lores,
-                             file.path(directory, "rep_cov", "covariates_low_resolution.tif"))
-          terra::writeRaster(common$agg_prep_lores,
-                             file.path(directory, "rep_cov", "aggregation_low_resolution.tif"))
+          terra::writeRaster(common$covs_prep_lores, overwrite = TRUE,
+                             filename = file.path(directory, "rep_cov", "covariates_low_resolution.tif"))
+          terra::writeRaster(common$agg_prep_lores, overwrite = TRUE,
+                             filename = file.path(directory, "rep_cov", "aggregation_low_resolution.tif"))
         }
 
         owd <- setwd(file.path(directory, "rep_cov"))

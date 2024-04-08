@@ -4,7 +4,7 @@ Load the saved versions of covariates and aggregation raster. If you have decrea
 
 ```{r, echo = {{knit_pre_prep}}, include = {{knit_pre_prep}}}
 dir.create("covariates")
-zip::unzip(paste0("disagapp-covariates-", Sys.Date(), ".zip"), exdir = "covariates")
+zip::unzip('{{paste0("disagapp-covariates-", Sys.Date(), ".zip")}}', exdir = "covariates")
 covariate_files <- list.files("covariates", full.names = TRUE)
 covariate_files <- covariate_files[!grepl("aggregation.tif", covariate_files)]
 covariates <- lapply(covariate_files, terra::rast)
@@ -13,9 +13,9 @@ aggregation <- terra::rast("covariates/aggregation.tif")
 
 ```{r, echo = {{knit_post_prep}}, include = {{knit_post_prep}}}
 dir.create("covariates")
-zip::unzip(paste0("disagapp-covariates-", Sys.Date(), ".zip"), exdir = "covariates")
-covariates <- terra::rast("covariates/covariates.tif")
-aggregation <- terra::rast("covariates/aggregation.tif")
+zip::unzip('{{paste0("disagapp-covariates-", Sys.Date(), ".zip")}}', exdir = "covariates")
+covariates_prepared <- terra::rast("covariates/covariates.tif")
+aggregation_prepared <- terra::rast("covariates/aggregation.tif")
 ```
 
 ```{asis, echo = {{knit_low_res}}, eval = {{knit_low_res}}, include = {{knit_low_res}}}
@@ -23,6 +23,6 @@ Delete the following block if you wish to use the high resolution versions of th
 ```
 
 ```{r, echo = {{knit_low_res}}, include = {{knit_low_res}}}
-covariates <- terra::rast("covariates/covariates_low_resolution.tif")
-aggregation <- terra::rast("covariates/aggregation_low_resolution.tif")
+covariates_prepared <- terra::rast("covariates/covariates_low_resolution.tif")
+aggregation_prepared <- terra::rast("covariates/aggregation_low_resolution.tif")
 ```

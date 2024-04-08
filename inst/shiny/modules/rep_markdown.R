@@ -56,10 +56,14 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
 
         module_rmds <- module_rmds[!grepl("rep_markdown", module_rmds)]
 
-        #remove cov and agg modules if rep_covs has been used
-        if (common$meta$rep_covs$used){
+        #remove cov, agg and prep modules if rep_covs has been used
+        if (!is.null(common$meta$rep_covs$used)){
           module_rmds <- module_rmds[!grepl("cov_", module_rmds)]
           module_rmds <- module_rmds[!grepl("agg_", module_rmds)]
+        }
+        if (!is.null(common$meta$rep_covs$post_prep)){
+          module_rmds <- module_rmds[!grepl("prep_summary", module_rmds)]
+          module_rmds <- module_rmds[!grepl("prep_resolution", module_rmds)]
         }
 
         module_md_file <- tempfile(pattern = paste0(module$id, "_"),
