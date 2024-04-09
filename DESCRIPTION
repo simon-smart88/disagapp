@@ -9,7 +9,9 @@ Authors@R:
 Depends:
     R (>= 3.5.0),
     shiny (>= 1.6.0),
-    leaflet (>= 2.0.2)
+    leaflet (>= 2.0.2),
+    leaflet.extras (>= 1.0.0),
+    gargoyle
 Imports:
     arcgislayers,
     arcgisutils,
@@ -19,14 +21,12 @@ Imports:
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     fmesher,
-    gargoyle,
     geosphere,
     geodata,
     glue,
     httr,
     knitcitations,
     leafem,
-    leaflet.extras (>= 1.0.0),
     magrittr,
     malariaAtlas,
     openxlsx,
