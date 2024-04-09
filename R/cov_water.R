@@ -36,6 +36,7 @@ cov_water <- function(shape, token, logger = NULL) {
                                   crs = sf::st_crs(shape))
 
   ras <- terra::clamp(ras, upper = 60000, value = FALSE)
+  ras <- ras/250 #convert to distance in km
   ras <- terra::project(ras, "+proj=longlat +datum=WGS84")
   ras <- terra::crop(ras, shape, mask = TRUE)
 
