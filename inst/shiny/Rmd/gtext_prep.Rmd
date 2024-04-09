@@ -7,3 +7,19 @@ output: html_document
 
 **ORIENTATION**
 
+Before a model can be fitted, several preparation steps are required to transform the data to a suitable format for the analysis. 
+
+#### <span class="module_mandatory">Generate mesh</span>
+This module generates a spatial mesh from the response data.
+
+#### <span class="module_mandatory">Summarise and resample covariates</span>
+The covariates and aggregation raster need to be adjusted so that each raster has the same resolution and pixels in each raster align perfectly with each other. This module lets you examine the properties of the rasters and choose one to use as a template to transform the others.
+
+#### <span class="module_optional">Covariate correlations</span>
+Once the rasters have been prepared, this module can be used to examine the correlations between the covariates. If two covariates are highly correlated, there may be little benefit of using both in the model and you can choose to remove them.
+
+#### <span class="module_optional">Decrease resolution</span>
+The time required to fit the model increases with the number of pixels present in the rasters. You can use this module to generate a set of the rasters with a lower resolution to use in an initial model that will be quicker to fit.
+
+#### <span class="module_mandatory">Finalise</span>
+This final step combines the response data, spatial mesh, covariates and aggregation raster into one object, ready to fit the model.

@@ -7,5 +7,17 @@ output: html_document
 
 **ORIENTATION**
 
-Scientific practice increasingly emphasizes documentation and reproducibility and *shinyscholar* is designed to facilitate this. *shinyscholar* promotes documentation and downstream assessment of modeling quality by allowing users to download extensive information that includes sources of input data, methodological decisions, and results. One option for the documentation (see Module: *Download Session Code*) is a file that can be re-run in R to reproduce the analyses (if re-run on exactly the same versions of R and dependent packages). Many intermediate and advanced users of R likely will find this file useful as a template for modification. Additionally, *shinyscholar* provides citations of the particular R packages (and their versions) used in a given analysis (Module: *Reference Packages*).
+Scientific practice increasingly emphasizes documentation and reproducibility and *disagapp* is designed to facilitate this. *disagapp* promotes documentation and downstream assessment of modeling quality by allowing users to download extensive information that includes sources of input data, methodological decisions, and results. This component provides functionality which ensures that analyses completed in the app can be reproduced outside of the app, both now and in the future.
+
+#### <span class="module_optional">Download session code</span>
+This generates a file that can be re-run in R to reproduce the analyses. Many intermediate and advanced users of R likely will find this file useful as a template for modification. 
+
+#### <span class="module_optional">Reproduce environment</span> 
+To be certain that the exact analysis is reproducible, it needs to be re-run on exactly the same versions of R and the dependent packages. This module generates a file of all the dependent packages required to run the app and can be used to restore the exact package versions on another machine.
+
+#### <span class="module_optional">Download covariates</span> 
+The covariate modules rely on other packages and downloading data from web services which may not be available in the future. This module downloads a copy of the covariates to ensure that they are available in the same format in the future.
+
+#### <span class="module_optional">Reference packages</span> 
+*disagapp* relies on many other R packages to function and this module generates a list of citations of these packages that can be included in publications. 
 

@@ -10,4 +10,4 @@ A NASA bearer token is required to download nighttime light data. See https://cr
 
 **REFERENCES**
 
-references
+Román, M.O. et al. (2018) NASA’s Black Marble nighttime lights product suite. Remote Sensing of Environment. 210, 113–143.
