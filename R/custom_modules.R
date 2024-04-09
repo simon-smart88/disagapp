@@ -47,19 +47,19 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   # Copy the simple skeleton files to the new module directory
   dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  file.copy(system.file("module_skeleton", "skeleton.yml", package = "shinyscholar"),
+  file.copy(system.file("module_skeleton", "skeleton.yml", package = "disagapp"),
             file.path(dir, glue::glue("{id}.yml")), overwrite = TRUE)
-  file.copy(system.file("module_skeleton", "skeleton.md", package = "shinyscholar"),
+  file.copy(system.file("module_skeleton", "skeleton.md", package = "disagapp"),
             file.path(dir, glue::glue("{id}.md")), overwrite = TRUE)
 
   if (rmd) {
-    file.copy(system.file("module_skeleton", "skeleton.Rmd", package = "shinyscholar"),
+    file.copy(system.file("module_skeleton", "skeleton.Rmd", package = "disagapp"),
               file.path(dir, glue::glue("{id}.Rmd")), overwrite = TRUE)
   }
 
   # Copy the R code file, use the correct ID in all functions, and remove any
   # functions that the user doesn't want to use in this module
-  r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "shinyscholar"))
+  r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "disagapp"))
   r_file <- paste(r_file, collapse = "\n")
   if (!map) {
     r_file <- gsub("\n\\{\\{id}}_module_map <- function.*?}\n", "", r_file)
@@ -80,7 +80,7 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
 
   message(glue::glue("Template for module `{id}` successfully created at ",
                      "`{normalizePath(dir)}`.\nDon't forget to call ",
-                     "`shinyscholar::register_module(\"{dir}/{id}.yml\")` before running ",
-                     "the app to add your module to shinyscholar."))
+                     "`disagapp::register_module(\"{dir}/{id}.yml\")` before running ",
+                     "the app to add your module to disagapp."))
   invisible()
 }
