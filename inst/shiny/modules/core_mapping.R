@@ -24,7 +24,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%
-        addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+        leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
     )
 
@@ -73,13 +73,13 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       req(module())
       if (module() == "resp_edit"){
         map %>%
-          addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+          leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                          markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                          editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
       }
       if (module() != "resp_edit"){
         map %>%
-          removeDrawToolbar(clearFeatures = TRUE)
+          leaflet.extras::removeDrawToolbar(clearFeatures = TRUE)
       }
     })
 
