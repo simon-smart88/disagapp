@@ -1,4 +1,4 @@
-prep_prep_module_ui <- function(id) {
+prep_final_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
@@ -10,7 +10,7 @@ prep_prep_module_ui <- function(id) {
   )
 }
 
-prep_prep_module_server <- function(id, common, parent_session) {
+prep_final_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
     output$id_var_out <- renderUI({
@@ -81,12 +81,12 @@ prep_prep_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
 
     # METADATA ####
-    common$meta$prep_prep$id_var <- as.character(input$id_var)
-    common$meta$prep_prep$resp_var <- as.character(input$resp_var)
-    common$meta$prep_prep$na_action <- input$na_action
-    common$meta$prep_prep$resolution <- input$resolution
+    common$meta$prep_final$id_var <- as.character(input$id_var)
+    common$meta$prep_final$resp_var <- as.character(input$resp_var)
+    common$meta$prep_final$na_action <- input$na_action
+    common$meta$prep_final$resolution <- input$resolution
     # TRIGGER
-    gargoyle::trigger("prep_prep")
+    gargoyle::trigger("prep_final")
     updateTabsetPanel(parent_session, "main", selected = "Map")
   })
 
@@ -105,24 +105,24 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 })
 }
 
-prep_prep_module_map <- function(map, common){
+prep_final_module_map <- function(map, common){
   for (layer in names(common$prep$covariate_rasters)){
     covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
   }
   agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
-  if (is.null(common$meta$prep_prep$resolution) || common$meta$prep_prep$resolution == "High resolution"){
+  if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
     covariate_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
   } else {
     covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
   }
 }
 
-prep_prep_module_rmd <- function(common) {
+prep_final_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     prep_knit = !is.null(common$prep),
-    prep_id_var = common$meta$prep_prep$id_var,
-    prep_resp_var = common$meta$prep_prep$resp_var,
-    prep_na_action = common$meta$prep_prep$na_action
+    prep_id_var = common$meta$prep_final$id_var,
+    prep_resp_var = common$meta$prep_final$resp_var,
+    prep_na_action = common$meta$prep_final$na_action
   )
 }
