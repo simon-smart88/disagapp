@@ -44,6 +44,7 @@ agg_upload_module_server <- function(id, common, parent_session) {
 
     # LOAD INTO COMMON ####
     common$agg <- agg_raster
+    names(common$agg) <- input$name
 
     # METADATA ####
     common$meta$agg_upload$path <- aggdf$name

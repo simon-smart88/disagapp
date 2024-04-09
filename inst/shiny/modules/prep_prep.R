@@ -109,10 +109,11 @@ prep_prep_module_map <- function(map, common){
   for (layer in names(common$prep$covariate_rasters)){
     covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
   }
+  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
   if (is.null(common$meta$prep_prep$resolution) || common$meta$prep_prep$resolution == "High resolution"){
-    covariate_map(map, common, common$agg_prep, names(common$agg_prep))
+    covariate_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
   } else {
-    covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores))
+    covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
   }
 }
 

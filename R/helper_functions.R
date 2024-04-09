@@ -191,9 +191,10 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
   pal <- colorBin("plasma", domain = terra::values(raster), bins = 9, na.color = "#00000000")
 
   map %>%
+    clearControls() %>%
     removeLayersControl() %>%
     clearGroup(name) %>%
-    removeControl(name) %>%
+    # removeControl(name) %>%
     addRasterImage(raster, group = name, colors = pal) %>%
     addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
