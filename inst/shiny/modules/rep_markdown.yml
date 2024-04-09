@@ -1,6 +1,6 @@
 component: "rep"
 short_name: "Session Code"
-long_name: "Download Session Code"
-authors: "Jamie M. Kass, Gonzalo E. Pinilla-Buitrago, Bruno Vilela, Robert P. Anderson"
+long_name: "Download session code"
+authors: "Jamie M. Kass, Gonzalo E. Pinilla-Buitrago, Bruno Vilela, Robert P. Anderson, Simon E. H. Smart"
 package: [rmarkdown, knitr]
 class: optional
