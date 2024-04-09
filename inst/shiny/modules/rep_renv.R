@@ -11,7 +11,7 @@ rep_renv_module_server <- function(id, common, parent_session) {
 
     output$run <- downloadHandler(
       filename = function() {
-        paste0("shinyscholar-dependencies.lock")
+        paste0("disagapp-dependencies.lock")
       },
       content = function(file) {
       common$meta$rep_renv$used <- TRUE
