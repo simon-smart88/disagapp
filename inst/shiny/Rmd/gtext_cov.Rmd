@@ -7,3 +7,26 @@ output: html_document
 
 **ORIENTATION**
 
+This component loads the covariate data - that is the data that you wish to use to predict the response data from. Covariate data is in the form of *rasters* containing pixels of various sizes. You must use at least one module before proceeding to the next component.
+
+If you are running the app locally, some modules require authentication. 
+
+Depending on the area of your response data, some of the covariates may take a considerable time to download.
+
+#### <span class="module_choice">Accessibility</span>
+The time required to travel to cities, . Provided by the Malaria Atlas Project. 
+
+#### <span class="module_choice">Climate</span>
+Provided by Worldclim.
+
+#### <span class="module_choice">Land use</span>
+The percentage of land used for . Provided by the Copernicus programme.
+
+
+#### <span class="module_choice">Nighttime lights</span>
+
+Provided by NASA via the World Bank.
+
+#### <span class="module_choice">Distance to water</span>
+
+#### <span class="module_choice">Upload</span>
