@@ -27,12 +27,12 @@ cov_landuse <- function(shape, year, landuses) {
   y_all <- seq(from = min_y_tile, to = max_y_tile, 20)
   tiles <- expand.grid(x_all,y_all)
   colnames(tiles) <- c("x", "y")
-  tiles$x_str <- as.character(sprintf("%03d", tiles$x))
-  tiles$y_str <- as.character(sprintf("%02d", tiles$y))
+  tiles$x_str <- formatC(tiles$x, width = 4, format = "d", flag = "0+")
+  tiles$y_str <- formatC(tiles$y, width = 3, format = "d", flag = "0+")
   tiles$y_str <- gsub("-", "S", tiles$y_str)
-  tiles$y_str[tiles$y >= 0] <- paste0("N", tiles$y_str[tiles$y >= 0])
+  tiles$y_str <- gsub("+", "N", tiles$y_str)
   tiles$x_str <- gsub("-", "W", tiles$x_str)
-  tiles$x_str[tiles$x >= 0] <- paste0("E", tiles$x_str[tiles$x >= 0])
+  tiles$x_str <- gsub("+", "E", tiles$x_str)
   tiles$url <- paste0(tiles$x_str, tiles$y_str,"/", tiles$x_str, tiles$y_str)
 
   #request each tile
