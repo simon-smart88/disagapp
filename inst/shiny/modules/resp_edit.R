@@ -63,7 +63,8 @@ resp_edit_module_map <- function(map, common) {
   #find which meta response isn't NULL, return the first if more than one
   response_variable <- c(common$meta$resp_shape$response,
                          common$meta$resp_combine$response,
-                         common$meta$resp_download$response)[1]
+                         common$meta$resp_download$response,
+                         common$meta$resp_example$response)[1]
   response <- common$shape[[response_variable]]
   shape_map(map, common, response)
   map %>%
