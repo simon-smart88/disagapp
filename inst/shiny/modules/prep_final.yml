@@ -1,6 +1,6 @@
 component: "prep"
-short_name: "Prepare data"
-long_name: "Prepare data for fitting"
+short_name: "Finalise data"
+long_name: "Finalise data preparation"
 authors: "Simon E H Smart"
 package: [disaggregation]
 class: mandatory
