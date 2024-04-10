@@ -13,6 +13,7 @@ output: html_document
 - <span class="module_choice">Combine spreadsheet and shapefile</span>
 - <span class="module_choice">Upload spreadsheet</span>
 - <span class="module_choice">Upload shapefile</span>
+- <span class="module_choice">Example datasets</span>
 - <span class="module_optional">Edit data</span>
 - <span class="module_optional">Simplify polygons</span>
 

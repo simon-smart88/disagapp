@@ -4,13 +4,13 @@ agg_upload_module_ui <- function(id) {
     fileInput(inputId = ns("agg"),
               label = "Upload aggregation data",
               multiple = FALSE,
-              accept = c('.tif')),
-    checkboxInput(ns("example"), "Use example data", TRUE),
+              accept = c(".tif")),
+    uiOutput(ns("example_out")),
     textInput(ns("name"),
               label = "Aggregation name",
               value = "Population"),
     checkboxInput(ns("log"),
-                  label = 'Plot as log values',
+                  label = "Plot as log values",
                   value = TRUE),
     actionButton(ns("run"), "Upload file")
   )
@@ -20,10 +20,17 @@ agg_upload_module_ui <- function(id) {
 agg_upload_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
+  output$example_out <- renderUI({
+    gargoyle::watch("resp_example")
+    if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
+      checkboxInput(session$ns("example"), "Use example data", TRUE)
+    }
+  })
+
   observeEvent(input$run, {
     # WARNING ####
     # check a file is selected
-    if (input$example == FALSE){
+    if (is.null(input$example) || (input$example == FALSE)){
       if (is.null(input$agg)) {
         common$logger %>% writeLog(type = "error", "Please select a raster file")
         return()
@@ -33,8 +40,7 @@ agg_upload_module_server <- function(id, common, parent_session) {
 
     # check all files are .tif(?)
 
-
-    if (input$example == TRUE){
+    if (is.null(input$example) || (input$example == TRUE)){
     aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="disagapp"), full.names = TRUE),
                         name = list.files(system.file("extdata/aggregation", package="disagapp")))
     }

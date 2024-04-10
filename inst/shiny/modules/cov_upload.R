@@ -5,7 +5,7 @@ cov_upload_module_ui <- function(id) {
               label = "Upload covariate data",
               multiple = TRUE,
               accept = c('.tif')),
-    checkboxInput(ns("example"), "Use example data", TRUE),
+    uiOutput(ns("example_out")),
     actionButton(ns("run"), "Upload file(s)")
   )
 }
@@ -13,12 +13,19 @@ cov_upload_module_ui <- function(id) {
 cov_upload_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
+  output$example_out <- renderUI({
+    gargoyle::watch("resp_example")
+    if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
+      checkboxInput(session$ns("example"), "Use example data", TRUE)
+    }
+  })
+
   observeEvent(input$run, {
     # WARNING ####
 
     # check all files are .tif
 
-    if (input$example == FALSE){
+    if (is.null(input$example) || (input$example == FALSE)){
       # check a file is selected
       if (is.null(input$cov)) {
         common$logger %>% writeLog(type = "error", "Please select a raster file")
@@ -27,7 +34,7 @@ cov_upload_module_server <- function(id, common, parent_session) {
       covdf <- input$cov
     }
 
-    if (input$example == TRUE){
+    if (is.null(input$example) || (input$example == TRUE)){
       covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
                           name = list.files(system.file("extdata/covariates", package="disagapp")))
     }
