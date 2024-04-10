@@ -5,7 +5,6 @@ resp_shape_module_ui <- function(id) {
               label = "Upload all shapefile data",
               multiple = TRUE,
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
-    checkboxInput(ns("example"), "Use example data", TRUE),
     uiOutput(ns("resp_var_out")),
     actionButton(ns("run"), "Load data")
   )
@@ -18,16 +17,8 @@ resp_shape_module_server <- function(id, common, parent_session) {
     #the response variable prior to running
     shape <- reactive({
 
-      if (input$example == FALSE){
-        req(input$shape)
-        shpdf <- input$shape
-      }
-
-      if (input$example == TRUE){
-        shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                            name = list.files(system.file("extdata/shapes", package="disagapp")))
-        updateSelectInput(session, "resp_var", selected = 'inc')
-      }
+      req(input$shape)
+      shpdf <- input$shape
 
       # WARNING ####
       if (nrow(shpdf) != 4) {
@@ -63,11 +54,10 @@ resp_shape_module_server <- function(id, common, parent_session) {
       return()
     }
 
-    # commented out for now while example data is in use
-    # if (is.null(input$shape)) {
-    #   common$logger %>% writeLog(type = "error", "Please upload a shapefile")
-    #   return()
-    # }
+    if (is.null(input$shape)) {
+      common$logger %>% writeLog(type = "error", "Please upload a shapefile")
+      return()
+    }
 
     # LOAD INTO COMMON ####
     common$shape <- shape()
@@ -81,11 +71,10 @@ resp_shape_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(example = input$example,
+list(
 resp_var = input$resp_var)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = state$example)
 updateSelectInput(session, "resp_var", selected = state$resp_var)
     }
   ))

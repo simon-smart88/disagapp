@@ -1,0 +1,6 @@
+component: "resp"
+short_name: "Example datasets"
+long_name: "Load example datasets"
+authors: "Simon E H Smart"
+package: [sf, SpatialEpi]
+class: choice

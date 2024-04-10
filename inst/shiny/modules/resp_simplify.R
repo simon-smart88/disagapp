@@ -33,6 +33,7 @@ resp_simplify_module_server <- function(id, common, parent_session) {
     gargoyle::watch("resp_shape")
     gargoyle::watch("resp_combine")
     gargoyle::watch("resp_download")
+    gargoyle::watch("resp_example")
     gargoyle::watch("resp_edit")
     gargoyle::watch("resp_simplify")
     req(common$shape)
@@ -55,7 +56,8 @@ resp_simplify_module_map <- function(map, common) {
   #find which meta response isn't NULL, return the first if more than one
   response_variable <- c(common$meta$resp_shape$response,
                          common$meta$resp_combine$response,
-                         common$meta$resp_download$response)[1]
+                         common$meta$resp_download$response,
+                         common$meta$resp_example$response)[1]
   response <- common$shape[[response_variable]]
   shape_map(map, common, response)
 }

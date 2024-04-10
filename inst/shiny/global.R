@@ -19,6 +19,7 @@ COMPONENT_MODULES <- list()
 base_module_configs <- c("modules/resp_shape.yml",
                          "modules/resp_combine.yml",
                          "modules/resp_download.yml",
+                         "modules/resp_example.yml",
                          "modules/resp_edit.yml",
                          "modules/resp_simplify.yml",
                          "modules/cov_access.yml",

@@ -17,6 +17,7 @@ prep_final_module_server <- function(id, common, parent_session) {
       gargoyle::watch("resp_shape")
       gargoyle::watch("resp_download")
       gargoyle::watch("resp_combine")
+      gargoyle::watch("resp_example")
       req(common$shape)
       selectInput(session$ns("id_var"), "Select ID variable", c("",names(common$shape)))
     })
@@ -26,10 +27,12 @@ prep_final_module_server <- function(id, common, parent_session) {
       gargoyle::watch("resp_shape")
       gargoyle::watch("resp_download")
       gargoyle::watch("resp_combine")
+      gargoyle::watch("resp_example")
       req(common$shape)
       selected_response <- c(common$meta$resp_shape$response,
                              common$meta$resp_combine$response,
-                             common$meta$resp_download$response)[1]
+                             common$meta$resp_download$response,
+                             common$meta$resp_example$response)[1]
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
     })
 

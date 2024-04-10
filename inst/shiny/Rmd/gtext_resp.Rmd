@@ -17,6 +17,9 @@ When your response data is in a spreadsheet (.csv or .xlsx) but you do not have 
 #### <span class="module_choice">Combine spreadsheet and shapefile</span>
 When your response data is in a spreadsheet (.csv or .xlsx) and your boundary data is in a separate shapefile. The module will load both files and merge them together.
 
+#### <span class="module_choice">Example datasets</span>
+Load an example dataset.
+
 #### <span class="module_optional">Edit data</span>
 Once you have uploaded response data using the previous modules, this allows you to edit the data to remove areas which you do not wish to include in the analysis. 
 

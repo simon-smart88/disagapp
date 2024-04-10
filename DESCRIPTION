@@ -40,6 +40,7 @@ Imports:
     shinyjs,
     shinyWidgets (>= 0.6.0),
     stats,
+    SpatialEpi,
     terra,
     tools,
     zip
