@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{create_module}
 \alias{create_module}
-\title{Create a shinyscholar module}
+\title{Create a disagapp module}
 \usage{
 create_module(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE)
 }
@@ -23,8 +23,8 @@ download.}
 user saves the current session.}
 }
 \description{
-Create the template of a new shinyscholar module.
+Create the template of a new disagapp module.
 }
 \seealso{
-\code{\link[shinyscholar]{register_module}}
+\code{\link[disagapp]{register_module}}
 }

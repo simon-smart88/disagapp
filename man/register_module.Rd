@@ -2,7 +2,7 @@
 % Please edit documentation in R/custom_modules.R
 \name{register_module}
 \alias{register_module}
-\title{Register a shinyscholar module}
+\title{Register a disagapp module}
 \usage{
 register_module(config_file)
 }
@@ -11,9 +11,9 @@ register_module(config_file)
 one or more modules.}
 }
 \description{
-Before running the shinyscholar application with \code{run_smart()}, you can
-register your own modules to be used in shinyscholar.
+Before running the disagapp application with \code{run_smart()}, you can
+register your own modules to be used in disagapp.
 }
 \seealso{
-\code{\link[shinyscholar]{create_module}}
+\code{\link[disagapp]{create_module}}
 }
