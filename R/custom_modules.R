@@ -1,11 +1,11 @@
-#' Register a shinyscholar module
+#' Register a disagapp module
 #'
-#' Before running the shinyscholar application with \code{run_smart()}, you can
-#' register your own modules to be used in shinyscholar.
+#' Before running the disagapp application with \code{run_smart()}, you can
+#' register your own modules to be used in disagapp.
 #'
 #' @param config_file The path to a YAML file that contains the information about
 #' one or more modules.
-#' @seealso \code{\link[shinyscholar]{create_module}}
+#' @seealso \code{\link[disagapp]{create_module}}
 #' @export
 register_module <- function(config_file) {
   full_path <- NULL
@@ -20,13 +20,13 @@ register_module <- function(config_file) {
     stop("The provided file is not a YAML file: ", config_file, call. = FALSE)
   }
 
-  new_paths <- unique(c(getOption("shinyscholar_module_configs"), full_path))
-  options("shinyscholar_module_configs" = new_paths)
+  new_paths <- unique(c(getOption("disagapp_module_configs"), full_path))
+  options("disagapp_module_configs" = new_paths)
 }
 
-#' Create a shinyscholar module
+#' Create a disagapp module
 #'
-#' Create the template of a new shinyscholar module.
+#' Create the template of a new disagapp module.
 #'
 #' @param id The id of the module.
 #' @param dir A directory where the new module should be created.
@@ -37,7 +37,7 @@ register_module <- function(config_file) {
 #' download.
 #' @param save Whether or not the module has some custom data to save when the
 #' user saves the current session.
-#' @seealso \code{\link[shinyscholar]{register_module}}
+#' @seealso \code{\link[disagapp]{register_module}}
 #' @export
 create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, save = FALSE) {
   if (!grepl("^[A-Za-z0-9_]+$", id)) {

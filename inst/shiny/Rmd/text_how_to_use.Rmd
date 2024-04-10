@@ -21,7 +21,7 @@ Many scientific analyses require the researcher to make decisions and the guidan
 
 As the user proceeds through the workflow, the relevant guidance texts can be found to the right of the Results tab in the Visualization panel.
 
-If more support is needed, the Support tab in the orange navigation bar at the top provides links to the shinyscholar homepage and email.
+If more support is needed, the Support tab in the orange navigation bar at the top provides links to the disagapp homepage and email.
 
 #### **Saving and Reproducing Results**
 Users can stop an analysis and restart it later, by saving the workflow progress as an RDS file, found in the Save tab. This file can be loaded into *disagapp* later using the Intro component’s Load Prior Session tab, to restart the analysis where the user left off. 

@@ -5,5 +5,5 @@ Restore the environment used to run the analysis using {renv}. This block will i
 ```{r, echo = {{rep_renv_knit}}, include = {{rep_renv_knit}}}
 if (!require("renv")) install.packages("renv")
 renv::init(bare = TRUE)
-renv::restore("shinyscholar-dependencies.lock")
+renv::restore("disagapp-dependencies.lock")
 ```
