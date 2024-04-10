@@ -30,9 +30,9 @@ cov_landuse <- function(shape, year, landuses) {
   tiles$x_str <- formatC(tiles$x, width = 4, format = "d", flag = "0+")
   tiles$y_str <- formatC(tiles$y, width = 3, format = "d", flag = "0+")
   tiles$y_str <- gsub("-", "S", tiles$y_str)
-  tiles$y_str <- gsub("+", "N", tiles$y_str)
+  tiles$y_str <- gsub("\\+", "N", tiles$y_str)
   tiles$x_str <- gsub("-", "W", tiles$x_str)
-  tiles$x_str <- gsub("+", "E", tiles$x_str)
+  tiles$x_str <- gsub("\\+", "E", tiles$x_str)
   tiles$url <- paste0(tiles$x_str, tiles$y_str,"/", tiles$x_str, tiles$y_str)
 
   #request each tile
