@@ -32,6 +32,11 @@ resp_shape_module_server <- function(id, common, parent_session) {
       #shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
       shape <- resp_shape(shpdf)
 
+      crs <- sf::st_crs(shape)
+      if (crs$input != "EPSG:4326"){
+        shape <- sf::st_transform(shape, crs = 4326)
+      }
+
       # METADATA ####
       common$meta$resp_shape$used <- TRUE
       common$meta$resp_shape$path <- shpdf$name
