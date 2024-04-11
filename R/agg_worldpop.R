@@ -3,6 +3,7 @@
 #' This function is called by the agg_worldpop module and downloads data on
 #' population density for a single country from worldpop
 #'
+#' @param shape sf. sf object containing the area of interest
 #' @param country_code character. ISO3 code of the country.
 #' @param method character. The method used to estimate population. Either `Constrained` or `Unconstrained`.
 #' @param resolution character. The resolution of the returned raster. Either `100m` or `1km`.
@@ -15,7 +16,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-agg_worldpop <- function(country_code, method, resolution, year, logger = NULL) {
+agg_worldpop <- function(shape, country_code, method, resolution, year, logger = NULL) {
 
 if (!(method %in% c("Unconstrained", "Constrained"))){
   logger %>% writeLog(type = "error", "Method must be either \"Constrained\" or \"Unconstrained\"")
@@ -72,6 +73,9 @@ pop_ras <- terra::rast(data$files[[1]])
 if (method == "Constrained" & resolution == "1km"){
 pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
 }
+
+pop_ras <- terra::crop(pop_ras, shape)
+pop_ras <- terra::mask(pop_ras, shape)
 
 names(pop_ras) <- "Population"
 return(pop_ras)
