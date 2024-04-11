@@ -65,10 +65,10 @@ resp_example_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(dataset = input$dataset)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "dataset", selected = state$dataset)
     }
   ))
 })
