@@ -6,6 +6,7 @@ resp_shape_module_ui <- function(id) {
               multiple = TRUE,
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
     uiOutput(ns("resp_var_out")),
+    uiOutput(ns("reset_out")),
     actionButton(ns("run"), "Load data")
   )
 }
@@ -45,10 +46,19 @@ resp_shape_module_server <- function(id, common, parent_session) {
      selectInput(session$ns("resp_var"), "Select response variable", c("", names(shape())))
    })
 
+   output$reset_out <- renderUI({
+     reset_data_ui(session, common)
+   })
 
   observeEvent(input$run, {
 
     # WARNING ####
+    if (!is.null(input$reset) && (input$reset == FALSE)){
+      common$logger %>% writeLog(type = "error",
+                                 "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
+      return()
+    }
+
     if (input$resp_var == "") {
       common$logger %>% writeLog(type = "error", "Please select a response variable")
       return()

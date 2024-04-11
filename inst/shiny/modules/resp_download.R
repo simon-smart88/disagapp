@@ -9,6 +9,7 @@ resp_download_module_ui <- function(id) {
     uiOutput(ns("resp_column_out")),
     uiOutput(ns("country_out")),
     selectInput(ns("admin"), "Administrative level", c("ADM1", "ADM2")),
+    uiOutput(ns("reset_out")),
     actionButton(ns("run"), "Load data")
   )
 }
@@ -42,8 +43,18 @@ resp_download_module_server <- function(id, common, parent_session) {
       selectInput(session$ns("response_column"), "Select response column", c("",colnames(df())))
     })
 
+    output$reset_out <- renderUI({
+      reset_data_ui(session, common)
+    })
+
   observeEvent(input$run, {
     # WARNING ####
+    if (!is.null(input$reset) && (input$reset == FALSE)){
+      common$logger %>% writeLog(type = "error",
+                                 "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
+      return()
+    }
+
     if (input$response_column == "") {
       common$logger %>% writeLog(type = "error", "Please select the response column")
       return()

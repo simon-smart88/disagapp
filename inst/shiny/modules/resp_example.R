@@ -4,6 +4,7 @@ resp_example_module_ui <- function(id) {
     selectInput(ns("dataset"), "Dataset", choices = c("Malaria in Madagascar" = "mad",
                                                       "Leukemia in New York State" = "nys",
                                                       "Lip cancer in Scotland" = "scot")),
+    uiOutput(ns("reset_out")),
     actionButton(ns("run"), "Load data")
   )
 }
@@ -33,7 +34,19 @@ resp_example_module_server <- function(id, common, parent_session) {
   shape
   })
 
+  output$reset_out <- renderUI({
+    reset_data_ui(session, common)
+  })
+
   observeEvent(input$run, {
+
+    # WARNING
+    if (!is.null(input$reset) && (input$reset == FALSE)){
+      common$logger %>% writeLog(type = "error",
+                                 "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
+      return()
+    }
+
     # LOAD INTO COMMON ####
     common$reset()
     common$shape <- shape()

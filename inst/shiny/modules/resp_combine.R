@@ -12,6 +12,7 @@ resp_combine_module_ui <- function(id) {
               multiple = TRUE,
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
     uiOutput(ns("shape_area_column_out")),
+    uiOutput(ns("reset_out")),
     actionButton(ns("run"), "Combine data")
   )
 }
@@ -45,6 +46,9 @@ resp_combine_module_server <- function(id, common, parent_session) {
       selectInput(session$ns("spread_response_column"), "Select spreadsheet response column", c("", colnames(df())))
     })
 
+    output$reset_out <- renderUI({
+      reset_data_ui(session, common)
+    })
 
     shape <- reactive({
 
@@ -75,6 +79,12 @@ resp_combine_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+    if (!is.null(input$reset) && (input$reset == FALSE)){
+      common$logger %>% writeLog(type = "error",
+                                 "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
+      return()
+    }
+
     if (input$spread_response_column == "") {
       common$logger %>% writeLog(type = "error", "Please select the spreadsheet response column")
       return()

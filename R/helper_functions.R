@@ -237,3 +237,19 @@ unwrap_terra <- function(object){
     return(object)
   }
 }
+
+#' @title reset_data_ui
+#' @description For internal use. UI component that appears once response data has been loaded
+#' @keywords internal
+#' @param session The session object passed to function given to shinyServer.
+#' @param common The common data structure
+#' @export
+reset_data_ui <- function(session, common){
+gargoyle::watch("resp_shape")
+gargoyle::watch("resp_combine")
+gargoyle::watch("resp_download")
+gargoyle::watch("resp_example")
+if (!is.null(common$shape)){
+  shinyWidgets::materialSwitch(session$ns("reset"), "Delete existing data?", FALSE, status = "success")
+}
+}
