@@ -113,13 +113,13 @@ hr {
 }
 
 .module_choice {
-  color:blue;
+  color:#648FFF;
 }
 
 .module_optional {
-  color:purple;
+  color:#DC267F;
 }
 
 .module_mandatory {
-  color:green;
+  color:#FE6100;
 }
