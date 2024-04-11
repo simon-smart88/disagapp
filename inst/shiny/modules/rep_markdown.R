@@ -5,12 +5,20 @@ rep_markdown_module_ui <- function(id) {
     strong("Select download file type"),
     selectInput(ns("rmdFileType"), label = "",
                 choices = c("Rmd" = ".Rmd", "PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
-    downloadButton(ns("dlRMD"), 'Download Session Code')
+    uiOutput(ns("cov_chunks_out")),
+    downloadButton(ns("dlRMD"), "Download Session Code")
   )
 }
 
 rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
+
+    output$cov_chunks_out <- renderUI({
+      gargoyle::watch("rep_covs")
+      if (!is.null(common$meta$rep_covs$used)){
+        shinyWidgets::materialSwitch(session$ns("cov_chunks"), "Include covariate chunks?", FALSE, status = "success")
+      }
+    })
 
     output$dlRMD <- downloadHandler(
       filename = function() {
@@ -57,11 +65,11 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
         module_rmds <- module_rmds[!grepl("rep_markdown", module_rmds)]
 
         #remove cov, agg and prep modules if rep_covs has been used
-        if (!is.null(common$meta$rep_covs$used)){
+        if (!is.null(common$meta$rep_covs$used) && (input$cov_chunks == FALSE)){
           module_rmds <- module_rmds[!grepl("cov_", module_rmds)]
           module_rmds <- module_rmds[!grepl("agg_", module_rmds)]
         }
-        if (!is.null(common$meta$rep_covs$post_prep)){
+        if (!is.null(common$meta$rep_covs$post_prep) && (input$cov_chunks == FALSE)){
           module_rmds <- module_rmds[!grepl("prep_summary", module_rmds)]
           module_rmds <- module_rmds[!grepl("prep_resolution", module_rmds)]
         }

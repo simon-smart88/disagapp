@@ -7,6 +7,8 @@ Here, the user can download documented code that corresponds to the analyses run
 
 The *disagapp* session code .Rmd file is composed of a chain of module functions that are internal to *disagapp*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize.
 
+If you have downloaded a copy of the covariates, you can choose to either generate a version that omits or includes the steps required to download the covariates from their original sources.
+
 #### Notes
 To generate a PDF of your session code, it is essential you have a working version of TeX installed. For Mac OS, download MacTeX [here](http://www.tug.org/mactex/). For Windows, please perform the following steps:
   

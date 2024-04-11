@@ -50,6 +50,8 @@ rep_covs_module_server <- function(id, common, parent_session) {
 
         files <- list.files(".")
 
+        gargoyle::trigger("rep_covs")
+
         zip::zipr(zipfile = file,
                   files = files,
                   mode = "mirror",
