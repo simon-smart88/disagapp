@@ -26,6 +26,8 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       gargoyle::watch("resp_download")
       gargoyle::watch("resp_combine")
       gargoyle::watch("resp_example")
+      #reset once data is prepared
+      gargoyle::watch("prep_final")
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%

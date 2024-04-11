@@ -2,6 +2,7 @@ common_class <- R6::R6Class(
   classname = "common",
   public = list(
     shape = NULL,
+    response_name = NULL,
     agg = NULL,
     agg_prep = NULL,
     agg_prep_lores = NULL,
@@ -31,6 +32,7 @@ common_class <- R6::R6Class(
     },
     reset = function(){
       self$shape <- NULL
+      self$response_name <- NULL
       self$agg <- NULL
       self$agg_prep <-NULL
       self$agg_prep_lores <- NULL

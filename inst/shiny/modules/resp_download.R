@@ -79,6 +79,7 @@ resp_download_module_server <- function(id, common, parent_session) {
     common$reset()
     common$shape <- shape
     common$selected_country <- input$country
+    common$response_name <- input$response_column
     # METADATA ####
     common$meta$resp_download$used <- TRUE
     common$meta$resp_download$datapath <- input$spread$name[1]
@@ -107,8 +108,7 @@ updateSelectInput(session, "response_column", selected = state$response_column)
 }
 
 resp_download_module_map <- function(map, common) {
-  response <- as.numeric(common$shape[[common$meta$resp_download$response]])
-  shape_map(map, common, response)
+  shape_map(map, common)
 }
 
 resp_download_module_rmd <- function(common) {

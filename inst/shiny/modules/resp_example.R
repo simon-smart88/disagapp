@@ -50,14 +50,15 @@ resp_example_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$reset()
     common$shape <- shape()
+    switch(input$dataset,
+           "mad" = {common$response_name <- "inc"},
+           "nys" = {common$response_name <- "cases"},
+           "scot" = {common$response_name <- "cases"},
+    )
     # METADATA ####
     common$meta$resp_example$used <- TRUE
     common$meta$resp_example$dataset <- input$dataset
-    switch(input$dataset,
-           "mad" = {common$meta$resp_example$response <- "inc"},
-           "nys" = {common$meta$resp_example$response <- "cases"},
-           "scot" = {common$meta$resp_example$response <- "cases"},
-           )
+    common$meta$resp_example$response <- common$response_name
 
     # TRIGGER
     gargoyle::trigger("resp_example")
@@ -75,8 +76,7 @@ updateSelectInput(session, "dataset", selected = state$dataset)
 }
 
 resp_example_module_map <- function(map, common) {
-  response <- as.numeric(common$shape[[common$meta$resp_example$response]])
-  shape_map(map, common, response)
+  shape_map(map, common)
 }
 
 resp_example_module_rmd <- function(common) {

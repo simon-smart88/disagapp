@@ -155,7 +155,8 @@ country_out <- function(session, common){
 #' @param response The values of response data to plot
 #' @keywords internal
 #' @export
-shape_map <- function(map, common, response){
+shape_map <- function(map, common){
+  response <- as.numeric(common$shape[[common$response_name]])
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
@@ -190,10 +191,9 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
   pal <- colorBin("plasma", domain = terra::values(raster), bins = 9, na.color = "#00000000")
 
   map %>%
-    clearControls() %>%
     removeLayersControl() %>%
     clearGroup(name) %>%
-    # removeControl(name) %>%
+    removeControl(name) %>%
     addRasterImage(raster, group = name, colors = pal) %>%
     addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%

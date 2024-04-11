@@ -103,6 +103,7 @@ resp_combine_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$reset()
     common$shape <- shape
+    common$response_name <- input$spread_response_column
     # METADATA ####
     common$meta$resp_combine$used <- TRUE
     common$meta$resp_combine$response <- input$spread_response_column
@@ -129,8 +130,7 @@ updateSelectInput(session, "shape_area_column", selected = state$shape_area_colu
 }
 
 resp_combine_module_map <- function(map, common) {
-  response <- as.numeric(common$shape[[common$meta$resp_combine$response]])
-  shape_map(map, common, response)
+  shape_map(map, common)
 }
 
 resp_combine_module_rmd <- function(common) {

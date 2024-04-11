@@ -77,7 +77,7 @@ resp_shape_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
     common$reset()
     common$shape <- shape()
-
+    common$response_name <- input$resp_var
     # METADATA
     common$meta$resp_shape$response <- input$resp_var
 
@@ -98,8 +98,7 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 }
 
 resp_shape_module_map <- function(map, common) {
-  response <- as.numeric(common$shape[[common$meta$resp_shape$response]])
-  shape_map(map, common, response)
+  shape_map(map, common)
 }
 
 

@@ -109,6 +109,7 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 }
 
 prep_final_module_map <- function(map, common){
+  shape_map(map, common)
   for (layer in names(common$prep$covariate_rasters)){
     covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
   }
