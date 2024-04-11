@@ -114,7 +114,7 @@ function(input, output, session) {
   ### DEBUGGING ####
   ################################
 
-  output$`core_load-common_covs` <- renderPrint({
+  output$debug <- renderPrint({
     browser()
     print(common$covs)
     }) %>% bindEvent(input$debug_button)
