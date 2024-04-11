@@ -60,6 +60,7 @@ resp_shape_module_server <- function(id, common, parent_session) {
     }
 
     # LOAD INTO COMMON ####
+    common$reset()
     common$shape <- shape()
 
     # METADATA

@@ -91,6 +91,7 @@ resp_combine_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     shape <- resp_combine(df(), input$spread_area_column, input$spread_response_column, shape(), input$shape_area_column, common$logger)
     # LOAD INTO COMMON ####
+    common$reset()
     common$shape <- shape
     # METADATA ####
     common$meta$resp_combine$used <- TRUE

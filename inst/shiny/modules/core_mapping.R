@@ -20,13 +20,18 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
   moduleServer(id, function(input, output, session) {
 
     # create map
-    output$map <- renderLeaflet(
+    output$map <- renderLeaflet({
+      #reset the map whenever a new dataset is loaded
+      gargoyle::watch("resp_shape")
+      gargoyle::watch("resp_download")
+      gargoyle::watch("resp_combine")
+      gargoyle::watch("resp_example")
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
         addProviderTiles("Esri.WorldTopoMap") %>%
         leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                        markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
-    )
+    })
 
     # create map proxy to make further changes to existing map
     map <- leafletProxy("map")
@@ -45,8 +50,6 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       common$poly <- xy
       gargoyle::trigger("change_poly")
     }) %>% bindEvent(input$map_draw_new_feature)
-
-
 
     component <- reactive({
       main_input$tabs

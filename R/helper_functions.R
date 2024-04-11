@@ -156,7 +156,6 @@ country_out <- function(session, common){
 #' @keywords internal
 #' @export
 shape_map <- function(map, common, response){
-  req(common$shape)
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")

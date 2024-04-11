@@ -28,6 +28,27 @@ common_class <- R6::R6Class(
           invisible(self)
         }
       }
+    },
+    reset = function(){
+      self$shape <- NULL
+      self$agg <- NULL
+      self$agg_prep <-NULL
+      self$agg_prep_lores <- NULL
+      self$covs <- list()
+      self$covs_prep <- NULL
+      self$covs_prep_lores <- NULL
+      self$covs_matrix <- NULL
+      self$covs_summary <- NULL
+      self$mesh <- NULL
+      self$prep <- NULL
+      self$fit <- NULL
+      self$pred <- NULL
+      self$map_layers <- NULL
+      self$poly <- NULL
+      self$meta <- NULL
+      self$state <- NULL
+      self$selected_country <- NULL
+      invisible(self)
     }
   )
 )

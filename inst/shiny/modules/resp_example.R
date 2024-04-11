@@ -35,6 +35,7 @@ resp_example_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # LOAD INTO COMMON ####
+    common$reset()
     common$shape <- shape()
     # METADATA ####
     common$meta$resp_example$used <- TRUE
