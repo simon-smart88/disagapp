@@ -30,7 +30,7 @@ cov_water_module_server <- function(id, common, parent_session) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
-    if ((Sys.getenv("ARCGIS_CLIENT") == "") & (input$token == "")){
+    if ((Sys.getenv("ARCGIS_CLIENT") == "") && (input$token == "")){
       common$logger %>% writeLog(type = "error", "An ArcGIS token is required to use this module.
                           See the module guidance for details of how to obtain one.")
       return()
