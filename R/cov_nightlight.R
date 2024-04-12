@@ -39,10 +39,16 @@ ras <- blackmarbler::bm_raster(roi_sf = shape,
                         date = year,
                         bearer = bearer,
                         quiet = TRUE)
+if (is.null(ras)){
+  logger %>% writeLog(type = "error", "An error occurred whilst trying to download the data")
+  return()
+} else {
+  ras <- terra::rast(ras)
+  names(ras) <- "Nighttime light"
+  ras <- terra::crop(ras, shape, mask = TRUE )
+  return(ras)
+}
 
-ras <- terra::rast(ras)
-names(ras) <- "Nighttime light"
-ras <- terra::crop(ras, shape, mask = TRUE )
 
-return(ras)
+
 }
