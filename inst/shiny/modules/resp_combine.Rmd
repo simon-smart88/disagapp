@@ -1,5 +1,5 @@
 ```{asis, echo = {{resp_combine_knit}}, eval = {{resp_combine_knit}}, include = {{resp_combine_knit}}}
-Upload response data from a spreadsheet and polygon data from a shapefile and merge to create an sf object. You need to specify the directories of the files unless they are in your current working directory.
+Upload response data from a spreadsheet and polygon data from a shapefile and merge to create an sf object. You need to specify the directories where the files are located.
 ```
 
 ```{r, echo = {{resp_combine_knit}}, include = {{resp_combine_knit}}}

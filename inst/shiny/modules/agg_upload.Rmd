@@ -1,5 +1,5 @@
 ```{asis, echo = {{agg_upload_knit}}, eval = {{agg_upload_knit}}, include = {{agg_upload_knit}}}
-Upload an aggregation raster. You need to specify the directory unless they are in your current working directory.
+Upload an aggregation raster. You need to specify the directory where the file is located.
 ```
 
 ```{r, echo = {{agg_upload_knit}}, include = {{agg_upload_knit}}}

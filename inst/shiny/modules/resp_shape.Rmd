@@ -1,5 +1,5 @@
 ```{asis, echo = {{resp_shape_knit}}, eval = {{resp_shape_knit}}, include = {{resp_shape_knit}}}
-Upload the shapefile and create an sf object. You need to specify the directory of the shape files unless they are in your current working directory.
+Upload the shapefile and create an sf object. You need to specify the directory where the files are located.
 ```
 
 ```{r, echo = {{resp_shape_knit}}, include = {{resp_shape_knit}}}

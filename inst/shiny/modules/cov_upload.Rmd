@@ -1,5 +1,5 @@
 ```{asis, echo = {{cov_upload_knit}}, eval = {{cov_upload_knit}}, include = {{cov_upload_knit}}}
-Upload covariates from local files and add to the list of covariates. You need to specify the directory unless they are in your current working directory.
+Upload covariates from local files and add to the list of covariates. You need to specify the directory where the file is located.
 ```
 
 ```{r, echo = {{cov_upload_knit}}, include = {{cov_upload_knit}}}

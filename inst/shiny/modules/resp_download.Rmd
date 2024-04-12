@@ -1,5 +1,5 @@
 ```{asis, echo = {{resp_download_knit}}, eval = {{resp_download_knit}}, include = {{resp_download_knit}}}
-Download boundary data and combine with the uploaded response data. You need to specify the directory unless the spreadsheet is in your current working directory.
+Download boundary data and combine with the uploaded response data. You need to specify the directory where the spreadsheet is located.
 ```
 
 ```{r, echo = {{resp_download_knit}}, include = {{resp_download_knit}}}
