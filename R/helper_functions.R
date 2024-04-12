@@ -232,16 +232,16 @@ map %>%
 #' @keywords internal
 #' @export
 wrap_terra <- function(object){
-  if (!is.null(object)){
-    if (class(object)[1] == "list"){
+  if (!is.null(object) & (length(object) > 0)){
+    if (class(object)[1] == "list") {
       if (class(object[[1]])[1] == "SpatRaster"){
         object <- lapply(object, terra::wrap)
     }}
     if (class(object)[1] == "SpatRaster"){
       object <- terra::wrap(object)
     }
-    return(object)
   }
+  return(object)
 }
 
 #' @title unwrap_terra
@@ -251,7 +251,7 @@ wrap_terra <- function(object){
 #' @keywords internal
 #' @export
 unwrap_terra <- function(object){
-  if (!is.null(object)){
+  if (!is.null(object) & (length(object) > 0)){
     if (class(object)[1] == "list"){
       if (class(object[[1]])[1] == "PackedSpatRaster"){
         object <- lapply(object, terra::unwrap)
@@ -259,8 +259,8 @@ unwrap_terra <- function(object){
     if (class(object)[1] == "PackedSpatRaster"){
       object <- terra::unwrap(object)
     }
-    return(object)
   }
+  return(object)
 }
 
 #' @title reset_data_ui
