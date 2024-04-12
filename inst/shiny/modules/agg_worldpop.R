@@ -36,7 +36,7 @@ agg_worldpop_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    agg_ras <- agg_worldpop(country_code, input$method, input$resolution, input$year, common$logger)
+    agg_ras <- agg_worldpop(common$shape, country_code, input$method, input$resolution, input$year, common$logger)
 
     # LOAD INTO COMMON ####
     common$agg <- agg_ras
