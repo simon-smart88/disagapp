@@ -4,9 +4,11 @@
 \alias{agg_worldpop}
 \title{agg_worldpop}
 \usage{
-agg_worldpop(country_code, method, resolution, year, logger = NULL)
+agg_worldpop(shape, country_code, method, resolution, year, logger = NULL)
 }
 \arguments{
+\item{shape}{sf. sf object containing the area of interest}
+
 \item{country_code}{character. ISO3 code of the country.}
 
 \item{method}{character. The method used to estimate population. Either \code{Constrained} or \code{Unconstrained}.}

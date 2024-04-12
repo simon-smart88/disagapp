@@ -49,6 +49,7 @@ resp_example_module_server <- function(id, common, parent_session) {
 
     # LOAD INTO COMMON ####
     common$reset()
+    gargoyle::trigger("clear_map")
     common$shape <- shape()
     switch(input$dataset,
            "mad" = {common$response_name <- "inc"},

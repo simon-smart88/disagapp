@@ -76,6 +76,7 @@ resp_shape_module_server <- function(id, common, parent_session) {
 
     # LOAD INTO COMMON ####
     common$reset()
+    gargoyle::trigger("clear_map")
     common$shape <- shape()
     common$response_name <- input$resp_var
     # METADATA

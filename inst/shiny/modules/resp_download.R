@@ -77,6 +77,7 @@ resp_download_module_server <- function(id, common, parent_session) {
     close_loading_modal()
     # LOAD INTO COMMON ####
     common$reset()
+    gargoyle::trigger("clear_map")
     common$shape <- shape
     common$selected_country <- input$country
     common$response_name <- input$response_column

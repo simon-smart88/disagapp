@@ -4,9 +4,14 @@
 \alias{reset_data_ui}
 \title{reset_data_ui}
 \usage{
-reset_data_ui(common)
+reset_data_ui(session, common)
+}
+\arguments{
+\item{session}{The session object passed to function given to shinyServer.}
+
+\item{common}{The common data structure}
 }
 \description{
-For internal use.
+For internal use. UI component that appears once response data has been loaded
 }
 \keyword{internal}

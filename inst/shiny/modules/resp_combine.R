@@ -102,6 +102,7 @@ resp_combine_module_server <- function(id, common, parent_session) {
     shape <- resp_combine(df(), input$spread_area_column, input$spread_response_column, shape(), input$shape_area_column, common$logger)
     # LOAD INTO COMMON ####
     common$reset()
+    gargoyle::trigger("clear_map")
     common$shape <- shape
     common$response_name <- input$spread_response_column
     # METADATA ####

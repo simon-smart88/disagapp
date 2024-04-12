@@ -68,20 +68,7 @@ prep_mesh_module_server <- function(id, common, parent_session) {
 
 prep_mesh_module_map <- function(map, common) {
 
-  #convert the inla mesh to a format which leaflet can handle
-  sf_mesh <- common$mesh |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
-  bbox <- sf::st_bbox(sf_mesh)
-
-  common$add_map_layer("Mesh")
-
-  map %>%
-    removeLayersControl() %>%
-    clearGroup("Mesh") %>%
-    addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") %>%
-    fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    hideGroup(common$map_layers[!common$map_layers == "Mesh"])
-
+  mesh_map(map, common)
 }
 
 prep_mesh_module_rmd <- function(common) {

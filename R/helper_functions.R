@@ -152,7 +152,6 @@ country_out <- function(session, common){
 #' @description For internal use. Plot response data on the leaflet map
 #' @param map The leafletProxy object to add the shape to
 #' @param common The common data structure
-#' @param response The values of response data to plot
 #' @keywords internal
 #' @export
 shape_map <- function(map, common){
@@ -191,6 +190,7 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
   pal <- colorBin("plasma", domain = terra::values(raster), bins = 9, na.color = "#00000000")
 
   map %>%
+    clearControls() %>%
     removeLayersControl() %>%
     clearGroup(name) %>%
     removeControl(name) %>%
@@ -199,6 +199,31 @@ covariate_map <- function(map, common, raster, name, log = FALSE){
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
     hideGroup(common$map_layers[!common$map_layers == name])
 }
+
+
+#' @title mesh_map
+#' @description For internal use. Plot spatial mesh on the leaflet map
+#' @param map The leafletProxy object to add the mesh to
+#' @param common The common data structure
+#' @keywords internal
+#' @export
+mesh_map <- function(map, common){
+#convert the inla mesh to a format which leaflet can handle
+sf_mesh <- common$mesh |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
+bbox <- sf::st_bbox(sf_mesh)
+
+common$add_map_layer("Mesh")
+
+map %>%
+  clearControls() %>%
+  removeLayersControl() %>%
+  clearGroup("Mesh") %>%
+  addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") %>%
+  fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
+  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
+  hideGroup(common$map_layers[!common$map_layers == "Mesh"])
+}
+
 
 #' @title wrap_terra
 #' @description For internal use. Flexible function for wrapping SpatRasters or

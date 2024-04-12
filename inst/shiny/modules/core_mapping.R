@@ -2,37 +2,27 @@ core_mapping_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     leaflet::leafletOutput(ns("map"), height = 700),
-    absolutePanel(
-      top = 160, right = 20, width = 150, draggable = TRUE,
-      selectInput(ns("bmap"), "",
-                  choices = c('ESRI Topo' = "Esri.WorldTopoMap",
-                              'Stamen Terrain' = "Stamen.Terrain",
-                              'Open Topo' = "OpenTopoMap",
-                              'ESRI Imagery' = "Esri.WorldImagery",
-                              'ESRI Nat Geo' = 'Esri.NatGeoWorldMap'),
-                  selected = "Esri.WorldTopoMap"
-      )
+    selectInput(ns("bmap"), "Background map",
+                choices = c("ESRI Topo" = "Esri.WorldTopoMap",
+                            "Open Topo" = "OpenTopoMap",
+                            "ESRI Imagery" = "Esri.WorldImagery",
+                            "ESRI Nat Geo" = "Esri.NatGeoWorldMap"),
+                selected = "Esri.WorldTopoMap")
     )
-  )
 }
 
 core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
 
+    gargoyle::init("clear_map")
+
     # create map
     output$map <- renderLeaflet({
-      #reset the map whenever a new dataset is loaded
-      gargoyle::watch("resp_shape")
-      gargoyle::watch("resp_download")
-      gargoyle::watch("resp_combine")
-      gargoyle::watch("resp_example")
       #reset once data is prepared
-      gargoyle::watch("prep_final")
+      gargoyle::watch("clear_map")
       leaflet() %>%
         setView(0, 0, zoom = 2) %>%
-        addProviderTiles("Esri.WorldTopoMap") %>%
-        leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
-                       markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE, polygonOptions = FALSE)
+        addProviderTiles(isolate(input$bmap))
     })
 
     # create map proxy to make further changes to existing map
@@ -47,7 +37,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     gargoyle::init("change_poly")
     observe({
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
-      xy <- matrix(c(coords[c(TRUE,FALSE)], coords[c(FALSE,TRUE)]), ncol=2)
+      xy <- matrix(c(coords[c(TRUE, FALSE)], coords[c(FALSE, TRUE)]), ncol = 2)
       colnames(xy) <- c("longitude", "latitude")
       common$poly <- xy
       gargoyle::trigger("change_poly")

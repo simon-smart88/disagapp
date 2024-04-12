@@ -98,13 +98,13 @@ function(input, output, session) {
   })
 
   ######################## #
-  ### MAPPING LOGIC ####
+  ### MAPPING ####
   ######################## #
 
   map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
   ################################
-  ### SAVE / LOAD FUNCTIONALITY ####
+  ### SAVE / LOAD  ####
   ################################
 
   core_save_module_server("core_save", common, modules, COMPONENTS, input)

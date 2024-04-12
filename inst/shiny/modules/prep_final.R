@@ -29,11 +29,7 @@ prep_final_module_server <- function(id, common, parent_session) {
       gargoyle::watch("resp_combine")
       gargoyle::watch("resp_example")
       req(common$shape)
-      selected_response <- c(common$meta$resp_shape$response,
-                             common$meta$resp_combine$response,
-                             common$meta$resp_download$response,
-                             common$meta$resp_example$response)[1]
-      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = selected_response)
+      selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = common$response_name)
     })
 
     output$resolution_out <- renderUI({
@@ -89,6 +85,7 @@ prep_final_module_server <- function(id, common, parent_session) {
     common$meta$prep_final$na_action <- input$na_action
     common$meta$prep_final$resolution <- input$resolution
     # TRIGGER
+    gargoyle::trigger("clear_map")
     gargoyle::trigger("prep_final")
     updateTabsetPanel(parent_session, "main", selected = "Map")
   })
@@ -119,6 +116,8 @@ prep_final_module_map <- function(map, common){
   } else {
     covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
   }
+  mesh_map(map, common)
+  map %>% showGroup("Response")
 }
 
 prep_final_module_rmd <- function(common) {
