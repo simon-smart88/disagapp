@@ -6,7 +6,7 @@
   )
 }
 
-{{id}}_module_server <- function(id, common) {
+{{id}}_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
@@ -19,7 +19,7 @@
     # METADATA ####
 
     # TRIGGER
-    gargoyle::trigger({{id}})
+    gargoyle::trigger("{{id}}")
   })
 
   output$result <- renderText({
