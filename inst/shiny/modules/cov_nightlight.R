@@ -28,15 +28,23 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+
+    if (curl::has_internet() == FALSE){
+      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      return()
+    }
+
     if (is.null(common$shape)) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
+
     if (bearer() == ""){
       logger %>% writeLog(type = "error", "A NASA bearer token is required to download nighttime light data.
       See the module guidance for details on how to obtain one")
       return()
     }
+
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     light <- cov_nightlight(common$shape, input$year, bearer())

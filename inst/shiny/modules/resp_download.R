@@ -49,6 +49,11 @@ resp_download_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+    if (curl::has_internet() == FALSE){
+      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      return()
+    }
+
     if (!is.null(input$reset) && (input$reset == FALSE)){
       common$logger %>% writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")

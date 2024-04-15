@@ -16,6 +16,11 @@ cov_landuse_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+    if (curl::has_internet() == FALSE){
+      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      return()
+    }
+
     if (is.null(input$uses)) {
       common$logger %>% writeLog(type = "error", "Please select the land use categories to download")
       return()

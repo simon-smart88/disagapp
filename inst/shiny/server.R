@@ -21,6 +21,16 @@ function(input, output, session) {
     shinyjs::js$scrollLogger()
   })
 
+  check_timer <- reactiveTimer(5000)
+  check_online <- observe({
+    check_timer()
+    if (curl::has_internet() == FALSE){
+      shinyalert::shinyalert("An internet connection is required to use some functions of disagapp. Please connect in order to make full use of the app.",
+                             type = "warning")
+      check_online$destroy()
+    }
+})
+
   ########################## #
   # REACTIVE VALUES LISTS ####
   ########################## #
@@ -115,8 +125,8 @@ function(input, output, session) {
   ################################
 
   output$debug <- renderPrint({
-    browser()
-    print(common$covs)
+    #browser()
+    print(pryr::mem_used())
     }) %>% bindEvent(input$debug_button)
 
   ################################
