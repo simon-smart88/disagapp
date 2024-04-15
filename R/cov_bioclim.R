@@ -5,7 +5,16 @@
 #' selected variables
 #'
 #' @param country_code character. ISO3 code of the country.
-#' @param variables vector. List of the bioclimatic variables to be returned
+#' @param variables vector. List of the bioclimatic variables to be returned.
+#' Options are: `Mean temperature`, `Mean diurnal range`, `Isothermality`,
+#' `Temperature seasonality`, `Maximum temperature warmest month`,
+#' `Minimum temperature coldest month`, `Temperature range`,
+#' `Mean temperature wettest quarter`, `Mean temperature driest quarter`,
+#' `Mean temperature warmest quarter`, `Mean temperature coldest quarter`,
+#' `Total precipitation`, `Precipitation wettest month`,
+#' `Precipitation driest month`, `Precipitation seasonality`,
+#' `Precipitation wettest quarter`, `Precipitation driest quarter`,
+#' `Precipitation warmest quarter`, `Precipitation coldest quarter`
 #' @param shape sf. sf object containing the area of interest
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
