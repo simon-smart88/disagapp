@@ -1,0 +1,6 @@
+component: "prep"
+short_name: "Scale covariates"
+long_name: "Scale covariates"
+authors: "Simon E H Smart"
+package: [terra]
+class: mandatory

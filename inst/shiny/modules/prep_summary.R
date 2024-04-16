@@ -5,8 +5,7 @@ prep_summary_module_ui <- function(id) {
     actionButton(ns("run"), "Prepare covariate summary"),
     checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
-    actionButton(ns("resample"), "Resample covariates"),
-    actionButton(ns("scale"), "Scale covariates"),
+    actionButton(ns("resample"), "Resample covariates")
   )
 }
 

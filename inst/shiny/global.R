@@ -33,14 +33,16 @@ base_module_configs <- c("modules/resp_shape.yml",
                          "modules/agg_uniform.yml",
                          "modules/prep_mesh.yml",
                          "modules/prep_summary.yml",
+                         "modules/prep_scale.yml",
                          "modules/prep_resolution.yml",
                          "modules/prep_correlation.yml",
                          "modules/prep_final.yml",
                          "modules/fit_fit.yml",
                          "modules/pred_pred.yml",
+                         "modules/pred_transfer.yml",
+                         "modules/rep_covs.yml",
                          "modules/rep_markdown.yml",
                          "modules/rep_renv.yml",
-                         "modules/rep_covs.yml",
                          "modules/rep_refPackages.yml")
 
 # Load user-defined modules

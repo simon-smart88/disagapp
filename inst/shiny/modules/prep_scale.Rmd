@@ -1,0 +1,10 @@
+```{asis, echo = {{prep_scale_knit}}, eval = {{prep_scale_knit}}, include = {{prep_scale_knit}}}
+Scale the covariates and store the parameters for potential reuse 
+```
+
+```{r, echo = {{prep_scale_knit}}, include = {{prep_scale_knit}}}
+scaled_covariate_output <- prep_scale(covariates_prepared)
+
+covariates_prepared <- scaled_covariate_output[["covariates"]]
+scaling_parameters <- scaled_covariate_output[["parameters"]]
+```
