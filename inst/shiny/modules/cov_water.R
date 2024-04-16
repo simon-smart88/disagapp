@@ -19,7 +19,7 @@ cov_water_module_server <- function(id, common, parent_session) {
       if (Sys.getenv("ARCGIS_CLIENT") != ""){
         token <- arcgisutils::auth_client()
       } else {
-        token = httr2::oauth_token(input$token, arcgis_host = arcgisutils::arc_host())
+        token <- httr2::oauth_token(input$token, arcgis_host = arcgisutils::arc_host())
       }
       token
     })
@@ -51,6 +51,7 @@ cov_water_module_server <- function(id, common, parent_session) {
     close_loading_modal()
     # METADATA ####
     common$meta$cov_water$used <- TRUE
+    common$meta$cov_water$token <- input$token
     # TRIGGER
     gargoyle::trigger("cov_water")
   })
@@ -65,7 +66,8 @@ cov_water_module_map <- function(map, common) {
 cov_water_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    cov_water_knit = !is.null(common$meta$cov_water$used)
+    cov_water_knit = !is.null(common$meta$cov_water$used),
+    cov_water_token = common$meta$cov_water$token
   )
 }
 
