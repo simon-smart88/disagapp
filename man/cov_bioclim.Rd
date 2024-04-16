@@ -9,7 +9,16 @@ cov_bioclim(country_code, variables, shape, logger = NULL)
 \arguments{
 \item{country_code}{character. ISO3 code of the country.}
 
-\item{variables}{vector. List of the bioclimatic variables to be returned}
+\item{variables}{vector. List of the bioclimatic variables to be returned.
+Options are: \verb{Mean temperature}, \verb{Mean diurnal range}, \code{Isothermality},
+\verb{Temperature seasonality}, \verb{Maximum temperature warmest month},
+\verb{Minimum temperature coldest month}, \verb{Temperature range},
+\verb{Mean temperature wettest quarter}, \verb{Mean temperature driest quarter},
+\verb{Mean temperature warmest quarter}, \verb{Mean temperature coldest quarter},
+\verb{Total precipitation}, \verb{Precipitation wettest month},
+\verb{Precipitation driest month}, \verb{Precipitation seasonality},
+\verb{Precipitation wettest quarter}, \verb{Precipitation driest quarter},
+\verb{Precipitation warmest quarter}, \verb{Precipitation coldest quarter}}
 
 \item{shape}{sf. sf object containing the area of interest}
 
