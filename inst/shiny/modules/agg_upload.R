@@ -45,8 +45,10 @@ agg_upload_module_server <- function(id, common, parent_session) {
                         name = list.files(system.file("extdata/aggregation", package="disagapp")))
     }
     # FUNCTION CALL ####
-
-    agg_raster <- agg_upload(aggdf$datapath)
+    agg_raster <- agg_upload(aggdf$datapath, common$shape, common$logger)
+    if (is.null(agg_raster)){
+      return()
+    }
 
     # LOAD INTO COMMON ####
     common$agg <- agg_raster

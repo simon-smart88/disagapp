@@ -4,10 +4,16 @@
 \alias{agg_upload}
 \title{agg_upload}
 \usage{
-agg_upload(path)
+agg_upload(path, shape, logger = NULL)
 }
 \arguments{
 \item{path}{character. The location of the file to be loaded.}
+
+\item{shape}{sf. sf object containing the area of interest}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a SpatRaster object

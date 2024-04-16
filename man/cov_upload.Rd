@@ -4,18 +4,26 @@
 \alias{cov_upload}
 \title{cov_upload}
 \usage{
-cov_upload(path_df)
+cov_upload(path_df, shape, logger = NULL)
 }
 \arguments{
 \item{path_df}{data.frame. Containing \code{datapath} and \code{name} columns of the
 file(s) to be uploaded.}
+
+\item{shape}{sf. sf object containing the area of interest}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a list containing SpatRaster objects
 }
 \description{
-This function is called by the cov_upload module and loads a
-raster image.
+This function is called by the cov_upload module. It loads raster images,
+checks their projection and transforms them if necessary, checks that they
+overlap with the area of interest and crops and masks them to the area of
+interest.
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

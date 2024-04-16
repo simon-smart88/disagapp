@@ -41,7 +41,12 @@ cov_upload_module_server <- function(id, common, parent_session) {
 
     # FUNCTION CALL ####
 
-    cov_list <- cov_upload(covdf)
+    cov_list <- cov_upload(covdf, common$shape, common$logger)
+
+    if (is.null(cov_list)){
+      return()
+    }
+
     common$logger %>% writeLog("Covariates uploaded")
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, cov_list)
