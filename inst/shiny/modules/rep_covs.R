@@ -25,8 +25,10 @@ rep_covs_module_server <- function(id, common, parent_session) {
           lapply(names(common$covs), function(x)
             terra::writeRaster(common$covs[[x]], overwrite = TRUE,
                                filename = file.path(directory, "rep_cov", paste0(x, ".tif"))))
-            terra::writeRaster(common$agg, overwrite = TRUE,
-                               filename = file.path(directory, "rep_cov", "aggregation.tif"))
+            if (!is.null(common$agg)){
+              terra::writeRaster(common$agg, overwrite = TRUE,
+                                 filename = file.path(directory, "rep_cov", "aggregation.tif"))
+            }
         }
 
         if (!is.null(common$covs_prep)) {
