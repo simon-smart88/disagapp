@@ -48,6 +48,7 @@ prep_mesh_module_server <- function(id, common, parent_session) {
     common$meta$prep_mesh$mesh_offset <- input$mesh_offset
     # TRIGGER
     gargoyle::trigger("prep_mesh")
+    show_map(parent_session)
   })
 
   return(list(

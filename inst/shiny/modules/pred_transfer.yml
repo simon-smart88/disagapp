@@ -1,0 +1,6 @@
+component: "pred"
+short_name: "Transfer model"
+long_name: "Make predictions over a new area"
+authors: "Simon E H Smart"
+package: [disaggregation]
+class: optional

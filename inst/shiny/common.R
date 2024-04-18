@@ -15,6 +15,7 @@ common_class <- R6::R6Class(
     prep = NULL,
     fit = NULL,
     pred = NULL,
+    transfer = NULL,
     map_layers = NULL,
     poly = NULL,
     logger = NULL,
@@ -45,6 +46,7 @@ common_class <- R6::R6Class(
       self$prep <- NULL
       self$fit <- NULL
       self$pred <- NULL
+      self$transfer <- NULL
       self$map_layers <- NULL
       self$poly <- NULL
       self$meta <- NULL

@@ -4,7 +4,7 @@ cov_upload_module_ui <- function(id) {
     fileInput(inputId = ns("cov"),
               label = "Upload covariate data",
               multiple = TRUE,
-              accept = c('.tif')),
+              accept = c(".tif")),
     uiOutput(ns("example_out")),
     actionButton(ns("run"), "Upload file(s)")
   )
