@@ -16,7 +16,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
     })
 
     observeEvent(input$goLoad_session, {
-      show_loading_modal("Please wait the session is restored")
+      show_loading_modal("Please wait while the session is restored")
       temp <- temp <- readRDS(input$load_session$datapath)
       temp_names <- names(temp)
       #exclude the non-public and function objects
@@ -51,6 +51,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       common$pred$field <- unwrap_terra(common$pred$field)
       common$pred$prediction <- unwrap_terra(common$pred$prediction)
       common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+      common$transfer
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
