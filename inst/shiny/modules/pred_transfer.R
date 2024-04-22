@@ -35,7 +35,7 @@ pred_transfer_module_server <- function(id, common, parent_session) {
 
     # FUNCTION CALL ####
     if (is.null(common$meta$cov_upload$used) & is.null(common$meta$agg_upload$used)){
-      show_loading_modal()
+      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
       common$transfer <- pred_transfer(country_code, common)
       close_loading_modal()
     }
@@ -45,7 +45,7 @@ pred_transfer_module_server <- function(id, common, parent_session) {
         common$logger %>% writeLog(type = "error", "Please upload covariates")
         return()
       }
-      show_loading_modal()
+      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
       common$transfer <- pred_transfer(country_code, common, covdf = input$cov)
       close_loading_modal()
     }
@@ -55,7 +55,7 @@ pred_transfer_module_server <- function(id, common, parent_session) {
         common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
-      show_loading_modal()
+      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
       common$transfer <- pred_transfer(country_code, common, covdf = input$cov)
       close_loading_modal()
     }
@@ -69,7 +69,7 @@ pred_transfer_module_server <- function(id, common, parent_session) {
         common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
-      show_loading_modal()
+      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
       common$transfer <- pred_transfer(country_code, common, covdf = input$cov, aggdf = input$agg$datapath)
       close_loading_modal()
     }

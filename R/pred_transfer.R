@@ -29,7 +29,7 @@ if ("cov_access" %in% cov_modules){
 }
 
 if ("cov_bioclim" %in% cov_modules){
-  covs <- append(covs, cov_bioclim(country_code, common$meta$cov_bioclim$variables, new_shape))
+  covs <- append(covs, cov_bioclim(country, common$meta$cov_bioclim$variables, new_shape))
 }
 
 if ("cov_landuse" %in% cov_modules){
@@ -81,22 +81,28 @@ covs_prep <- lapply(covs, terra::resample, covs[[common$meta$prep_summary$resamp
 agg <- covs[["agg"]]
 covs_prep["agg"] <- NULL
 
-#scale covariates using original parameters
+# resolution
+
+# scale covariates using original parameters
 cov_names <- names(covs_prep)
 scaling_parameters <- common$meta$prep_scale$parameters
 
 for (cov_layer in cov_names){
-  layer_mean <- scaling_parameters$mean_values[row.names(scaling_parameters) == cov_layer]
-  layer_rms <- scaling_parameters$rms_values[row.names(scaling_parameters) == cov_layer]
+  layer_mean <- scaling_parameters$mean[row.names(scaling_parameters) == cov_layer]
+  layer_rms <- scaling_parameters$rms[row.names(scaling_parameters) == cov_layer]
   residual <- covs_prep[[cov_layer]] - layer_mean
   covs_prep[[cov_layer]] <- residual / layer_rms
 }
+
+covs_prep <- terra::rast(covs_prep)
 
 # generate the prediction
 transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep)
 
 # convert to cases
-transfer$cases <- transfer$prediction * agg
+transfer$agg <- agg
+#transfer$cases <- transfer$prediction * agg
+transfer$covariates <- covs_prep
 
 return(transfer)
 }
