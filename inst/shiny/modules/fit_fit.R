@@ -1,8 +1,8 @@
 fit_fit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("family"), "Model family", c("gaussian", "poisson", "binomial"), selected = "poisson"),
-    radioButtons(ns("link"), "Model link", c("logit", "log", "identity"), selected = "log"),
+    radioButtons(ns("family"), "Model family", c("Guassian" = "gaussian", "Poisson" = "poisson", "Binomial" = "binomial"), selected = "poisson"),
+    radioButtons(ns("link"), "Model link", c("Logit" = "logit", "Log" = "log", "Identity" = "identity"), selected = "log"),
     checkboxInput(ns("field"), "Use field", value = TRUE),
     checkboxInput(ns("iid"), "iid", value = TRUE),
     actionButton(ns("run"), "Fit model")
@@ -21,13 +21,14 @@ fit_fit_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the model is fitted")
-    common$fit <- suppressMessages(disaggregation::disag_model(data = common$prep,
+    common$fit <- tryCatch({expr = disaggregation::disag_model(data = common$prep,
                                           family = input$family,
                                           link = input$link,
                                           field = input$field,
-                                          iid = input$iid))
+                                          iid = input$iid)},
+                           error = common$logger %>% writeLog("An error occurred whilst fitting the model"))
     close_loading_modal()
-    common$logger %>% writeLog('Model fitting has completed')
+    common$logger %>% writeLog("Model fitting has completed")
     # LOAD INTO COMMON ####
 
     # METADATA ####
