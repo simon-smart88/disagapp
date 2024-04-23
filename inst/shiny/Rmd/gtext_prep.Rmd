@@ -16,7 +16,7 @@ This module generates a spatial mesh from the response data which is required to
 The covariates and aggregation raster need to be adjusted so that each raster has the same resolution and pixels in each raster align perfectly with each other. This module lets you examine the properties of the rasters and choose one to use as a template to transform the others.
 
 #### <span class="module_mandatory">Scale covariates</span>
-The covariates typically have different ranges of values which if left unaltered may distort their relative importance in the model.
+The covariates typically have different ranges of values. If unaltered, you cannot directly compare the coefficient values from the estimated model and setting priors become challenging. This module scales the values of each covariate so that they can be compared fairly.
 
 #### <span class="module_optional">Covariate correlations</span>
 Once the rasters have been prepared, this module can be used to examine the correlations between the covariates. If two covariates are highly correlated, there may be little benefit of using both in the model and you can choose to remove them.

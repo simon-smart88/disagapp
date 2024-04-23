@@ -33,6 +33,7 @@ output: html_document
 **4.** *Prepare*  
 - <span class="module_mandatory">Generate mesh</span>
 - <span class="module_mandatory">Summarise and resample covariates</span>
+- <span class="module_mandatory">Scale covariates</span>
 - <span class="module_optional">Covariate correlations</span>
 - <span class="module_optional">Reduce covariate resolution</span>
 - <span class="module_mandatory">Finalise data preparation</span>
@@ -42,6 +43,7 @@ output: html_document
 
 **6.** *Predict*
 - <span class="module_mandatory">Make predictions</span>
+- <span class="module_optional">Transfer predictions</span>
 
 **7.** *Reproduce*  
 - <span class="module_optional">Download session code</span>
