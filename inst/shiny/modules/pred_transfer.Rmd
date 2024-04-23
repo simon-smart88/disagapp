@@ -1,9 +1,8 @@
-```{asis, echo = {{moduleID_knit}}, eval = {{moduleID_knit}}, include = {{moduleID_knit}}}
-# Remember to change moduleID to the name of your module 
-# (e.g. moduleID_knit => occs_queryDb_knit) 
-Description of what the code will do {{var1}}
+```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+Transfer the model to a different country
+
 ```
 
-```{r, echo = {{moduleID_knit}}, include = {{moduleID_knit}}}
+```{r, echo = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
 # R code to run {{var2}}
 ```

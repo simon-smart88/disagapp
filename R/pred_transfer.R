@@ -49,7 +49,7 @@ if ("cov_water" %in% cov_modules){
   if (Sys.getenv("ARCGIS_CLIENT") != ""){
     token <- arcgisutils::auth_client()
   } else {
-    token <- httr2::oauth_token(input$token, arcgis_host = arcgisutils::arc_host())
+    token <- httr2::oauth_token(common$meta$cov_water$token, arcgis_host = arcgisutils::arc_host())
   }
   covs[["Distance to water"]] <-  cov_water(new_shape, token)
 }
@@ -78,10 +78,8 @@ if ("agg_uniform" %in% agg_modules){
 # resample
 covs[["agg"]] <- agg
 covs_prep <- lapply(covs, terra::resample, covs[[common$meta$prep_summary$resample_target]])
-agg <- covs[["agg"]]
-covs_prep["agg"] <- NULL
-
-# resolution
+agg <- covs_prep[["agg"]]
+covs_prep[["agg"]] <- NULL
 
 # scale covariates using original parameters
 cov_names <- names(covs_prep)
@@ -94,15 +92,35 @@ for (cov_layer in cov_names){
   covs_prep[[cov_layer]] <- residual / layer_rms
 }
 
+# list to stack
 covs_prep <- terra::rast(covs_prep)
 
-# generate the prediction
-transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep)
+if (common$meta$prep_final$resolution == "High resolution"){
 
-# convert to cases
-transfer$agg <- agg
-#transfer$cases <- transfer$prediction * agg
-transfer$covariates <- covs_prep
+  # generate the prediction
+  transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep)
+
+  # convert to cases
+  transfer$agg <- agg
+  transfer$cases <- transfer$prediction * transfer$agg
+  transfer$covariates <- covs_prep
+}
+
+if (common$meta$prep_final$resolution == "Low resolution"){
+
+  # resolution
+  covs_prep_lores <- terra::aggregate(covs_prep, fact = common$meta$prep_resolution$factor, fun = "mean")
+  agg_lores <- terra::aggregate(agg, fact = common$meta$prep_resolution$factor, fun = "sum")
+
+  # generate the prediction
+  transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep_lores)
+
+  # convert to cases
+  transfer$agg <- agg_lores
+  transfer$cases <- transfer$prediction * transfer$agg
+  transfer$covariates <- covs_prep_lores
+}
+
 
 return(transfer)
 }

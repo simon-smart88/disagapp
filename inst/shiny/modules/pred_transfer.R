@@ -1,7 +1,7 @@
 pred_transfer_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    selectInput(ns("country"), "Select country", choices = common$countries, multiple = FALSE),
+    selectInput(ns("country"), "Select country", choices = c("", common$countries$NAME), multiple = FALSE),
     uiOutput(ns("cov_out")),
     uiOutput(ns("agg_out")),
     actionButton(ns("run"), "Transfer predictions")
@@ -29,7 +29,6 @@ pred_transfer_module_server <- function(id, common, parent_session) {
     })
 
   observeEvent(input$run, {
-
 
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
 
@@ -74,8 +73,9 @@ pred_transfer_module_server <- function(id, common, parent_session) {
       close_loading_modal()
     }
 
-
     # METADATA ####
+    common$meta$pred_transfer$used <- TRUE
+    common$meta$pred_transfer$country <- country_code
 
     # TRIGGER
     gargoyle::trigger("pred_transfer")
@@ -95,14 +95,15 @@ pred_transfer_module_server <- function(id, common, parent_session) {
 pred_transfer_module_map <- function(map, common) {
   covariate_map(map, common, common$transfer$prediction, "Transferred prediction (rate)")
   covariate_map(map, common, common$transfer$cases, "Transferred prediction (cases)")
+  for (layer in names(common$transfer$covariates)){
+    covariate_map(map, common, common$prep$covariate_rasters[[layer]], paste0(layer, " (transferred)"))
+  }
 }
 
 pred_transfer_module_rmd <- function(common) {
-  # Variables used in the module's Rmd code
   list(
-    pred_transfer_knit = !is.null(common$some_object),
-    var1 = common$meta$setting1,
-    var2 = common$meta$setting2
+    pred_transfer_knit = !is.null(common$meta$pred_transfer$used),
+    pred_transfer_country = common$meta$pred_transfer$country
   )
 }
 
