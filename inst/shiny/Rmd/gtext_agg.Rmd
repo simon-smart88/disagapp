@@ -1,0 +1,20 @@
+---
+title: "cov"
+output: html_document
+---
+
+### **Component: Aggregation data**
+
+**ORIENTATION**
+
+This component loads the aggregation data. This is typically population count data. You must use at least one module before proceeding to the next component. 
+
+#### <span class="module_choice">Worldpop</span>
+Population count data provided by Worldpop.
+
+#### <span class="module_choice">Upload aggregation</span>
+Upload your own aggregation raster.
+
+#### <span class="module_choice">Uniform</span>
+There may be cases where you do not wish to use an aggregation variable in which case you can use this module to generate a uniform raster to use instead.
+
