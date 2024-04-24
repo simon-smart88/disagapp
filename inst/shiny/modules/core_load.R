@@ -51,7 +51,11 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       common$pred$field <- unwrap_terra(common$pred$field)
       common$pred$prediction <- unwrap_terra(common$pred$prediction)
       common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
-      common$transfer
+      common$transfer$agg <- unwrap_terra(common$transfer$agg)
+      common$transfer$cases <- unwrap_terra(common$transfer$cases)
+      common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
+      common$transfer$field <- unwrap_terra(common$transfer$field)
+      common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
