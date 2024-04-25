@@ -46,6 +46,7 @@ if (is.null(ras)){
   ras <- terra::rast(ras)
   names(ras) <- "Nighttime light"
   ras <- terra::crop(ras, shape, mask = TRUE )
+  ras <- terra::wrap(ras)
   return(ras)
 }
 

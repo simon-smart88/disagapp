@@ -1,5 +1,7 @@
 function(input, output, session) {
 
+  future::plan(future::multisession)
+
   ########################## #
   # LOGGER ####
   ########################## #

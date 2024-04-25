@@ -4,7 +4,7 @@ cov_nightlight_module_ui <- function(id) {
     # UI
     selectInput(ns("year"), "Year", choices = c(2022:2012)),
     uiOutput(ns("bearer_out")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
@@ -26,6 +26,13 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
   bearer
   })
 
+
+  cov_nightlight_task <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_nightlight(...)
+    })
+  }) |> bslib::bind_task_button("run")
+
   observeEvent(input$run, {
     # WARNING ####
 
@@ -46,16 +53,20 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    light <- cov_nightlight(common$shape, input$year, bearer())
-    # LOAD INTO COMMON ####
-    common$covs[["Nighttime light"]] <- light
-    common$logger %>% writeLog("Nighttime light data has been downloaded")
-    close_loading_modal()
+    cov_nightlight_task$invoke(common$shape, input$year, bearer(), common$logger)
+    common$logger %>% writeLog("Starting to download nightlight data")
+    results$resume()
     # METADATA ####
     common$meta$cov_nightlight$used <- TRUE
     common$meta$cov_nightlight$year <- input$year
     common$meta$cov_nightlight$bearer <- input$bearer
+  })
+
+  results <- observe({
+    # LOAD INTO COMMON ####
+    common$covs[["Nighttime light"]] <- terra::unwrap(cov_nightlight_task$result())
+    results$suspend()
+    common$logger %>% writeLog("Nighttime light data has been downloaded")
     # TRIGGER
     gargoyle::trigger("cov_nightlight")
   })
