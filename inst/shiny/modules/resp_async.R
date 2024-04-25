@@ -2,8 +2,8 @@ resp_async_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    actionButton(ns("run_a"), "Run task A"),
-    actionButton(ns("run_b"), "Run task B"),
+    bslib::input_task_button(ns("run_a"), "Run task A"),
+    bslib::input_task_button(ns("run_b"), "Run task B"),
     textOutput(ns("result_a")),
     textOutput(ns("result_b"))
   )
@@ -25,43 +25,40 @@ resp_async_module_server <- function(id, common, parent_session) {
     return(glue::glue("Task B {task_number} completed"))
   }
 
-  task_a <- ExtendedTask$new(function() common$controller$promise(mode = "one"))
-  observe(if (task_a$status() != "running") task_a$invoke())
+  task_a <- ExtendedTask$new(function(x) {
+    promises::future_promise({
+      resp_async_a(x)
+    })
+  }) |> bslib::bind_task_button("run_a")
 
-  task_b <- ExtendedTask$new(function() common$controller$promise(mode = "one"))
-  observe(if (task_b$status() != "running") task_b$invoke())
+  task_b <- ExtendedTask$new(function(x) {
+    promises::future_promise({
+      resp_async_b(x)
+    })
+  }) |> bslib::bind_task_button("run_b")
 
 
   observeEvent(input$run_a, {
-    task_number <- input$run_a
-    common$logger %>% writeLog(glue::glue("Starting task A {task_number}"))
-    common$controller$push(command = resp_async_a(task_number),
-                           data = list(resp_async_a = resp_async_a,
-                                       task_number = task_number))
-    common$logger %>% writeLog("Running tasks: ", common$controller$unresolved())
+    task_a$invoke(as.integer(input$run_a))
+    common$logger %>% writeLog(glue::glue("Starting task A {as.integer(input$run_a)}"))
+    obs_a$resume()
   })
-
 
   observeEvent(input$run_b, {
-    task_number <- input$run_b
-    common$logger %>% writeLog(glue::glue("Starting task B {task_number}"))
-    common$controller$push(command = resp_async_b(task_number),
-                           data = list(resp_async_b = resp_async_b,
-                                       task_number = task_number))
-    common$logger %>% writeLog("Running tasks: ", common$controller$unresolved())
+    task_b$invoke(as.integer(input$run_b))
+    common$logger %>% writeLog(glue::glue("Starting task B {as.integer(input$run_b)}"))
   })
 
-  observe({
-    common$async_result_a <- task_a$result()$result[[1L]]
+  obs_a <- observe({
+    common$async_result_a <- task_a$result()
+    obs_a$suspend()
     common$logger %>% writeLog(common$async_result_a)
-    common$logger %>% writeLog("Running tasks: ", common$controller$unresolved())
     gargoyle::trigger("resp_async_a")
   })
 
   observe({
-    common$async_result_b <- task_b$result()$result[[1L]]
+    common$async_result_b <- task_b$result()
     common$logger %>% writeLog(common$async_result_b)
-    common$logger %>% writeLog("Running tasks: ", common$controller$unresolved())
     gargoyle::trigger("resp_async_b")
   })
 
