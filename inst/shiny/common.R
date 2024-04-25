@@ -21,6 +21,9 @@ common_class <- R6::R6Class(
     logger = NULL,
     meta = NULL,
     state = NULL,
+    controller = crew::crew_controller_local(workers = 4, seconds_idle = 10),
+    async_result_a = NULL,
+    async_result_b = NULL,
     countries = readRDS(system.file("ex/countries.rds", package = "geodata")),
     selected_country = NULL,
     add_map_layer = function(new_names) {

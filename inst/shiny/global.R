@@ -22,6 +22,7 @@ base_module_configs <- c("modules/resp_shape.yml",
                          "modules/resp_example.yml",
                          "modules/resp_edit.yml",
                          "modules/resp_simplify.yml",
+                         "modules/resp_async.yml",
                          "modules/cov_access.yml",
                          "modules/cov_bioclim.yml",
                          "modules/cov_landuse.yml",
@@ -148,4 +149,9 @@ for (module in core_modules){
 #load common object
 source(system.file("shiny/common.R", package = "disagapp"))
 common <- common_class$new()
+
+#start controller
+common$controller$start()
+onStop(function() common$controller$terminate())
+
 
