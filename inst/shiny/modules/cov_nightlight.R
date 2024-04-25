@@ -53,7 +53,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    cov_nightlight_task$invoke(common$shape, input$year, bearer(), common$logger)
+    cov_nightlight_task$invoke(common$shape, input$year, bearer(), common$logger, TRUE)
     common$logger %>% writeLog("Starting to download nightlight data")
     results$resume()
     # METADATA ####
@@ -64,7 +64,8 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
 
   results <- observe({
     # LOAD INTO COMMON ####
-    common$covs[["Nighttime light"]] <- terra::unwrap(cov_nightlight_task$result())
+    result <- cov_nightlight_task$result()
+    common$covs[["Nighttime light"]] <- terra::unwrap(result)
     results$suspend()
     common$logger %>% writeLog("Nighttime light data has been downloaded")
     # TRIGGER

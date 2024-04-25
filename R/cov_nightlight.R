@@ -13,11 +13,13 @@
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL
+#' @param async Whether or not the function is being used asynchronously. When
+#' `TRUE` the returned object is a wrapped SpatRaster.
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_nightlight <- function(shape, year, bearer, logger = NULL) {
+cov_nightlight <- function(shape, year, bearer, logger = NULL, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
     logger %>% writeLog(type = "error", "Shape must be an sf object")
@@ -46,7 +48,7 @@ if (is.null(ras)){
   ras <- terra::rast(ras)
   names(ras) <- "Nighttime light"
   ras <- terra::crop(ras, shape, mask = TRUE )
-  ras <- terra::wrap(ras)
+  if (async){ ras <- terra::wrap(ras) }
   return(ras)
 }
 
