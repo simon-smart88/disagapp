@@ -40,7 +40,7 @@ if (method == "Constrained" & year != 2020){
 
 base_url <- "https://hub.worldpop.org/rest/data/pop/"
 
-#select the product url
+# select the product url
 if (method == "Unconstrained" & resolution == "1km"){
   product <- "wpic1km"
 }
@@ -51,7 +51,7 @@ if (method == "Constrained"){
   product <- "cic2020_100m"
 }
 
-#call the API and return error if it doesn't work
+# call the API and return error if it doesn't work
 api_url <- glue::glue("{base_url}{product}?iso3={country_code}")
 req <- httr::GET(api_url)
 if (req$status_code != 200){
@@ -59,7 +59,7 @@ if (req$status_code != 200){
   return()
 }
 
-#fetch the API call content and return an error if it is empty
+# fetch the API call content and return an error if it is empty
 cont <- httr::content(req)
 if (length(cont$data) == 0){
   logger %>% writeLog(type="error", "The requested data could not be found")
@@ -69,10 +69,13 @@ if (length(cont$data) == 0){
 data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
 pop_ras <- terra::rast(data$files[[1]])
 
-#aggregate unconstrained as only available at 100m
+# aggregate unconstrained as only available at 100m
 if (method == "Constrained" & resolution == "1km"){
 pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
 }
+
+# convert NAs to zero
+pop_ras <- terra::subst(pop_ras, NA, 0)
 
 pop_ras <- terra::crop(pop_ras, shape)
 pop_ras <- terra::mask(pop_ras, shape)
