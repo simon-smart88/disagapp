@@ -1,0 +1,7 @@
+```{asis, echo = {{fit_family_knit}}, eval = {{fit_family_knit}}, include = {{fit_family_knit}}}
+Description of what the code will do {{var1}}
+```
+
+```{r, echo = {{fit_family_knit}}, include = {{fit_family_knit}}}
+# R code to run {{var2}}
+```

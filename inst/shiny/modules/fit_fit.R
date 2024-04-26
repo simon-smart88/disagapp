@@ -1,7 +1,6 @@
 fit_fit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("family"), "Model family", c("Gaussian" = "gaussian", "Poisson" = "poisson", "Binomial" = "binomial"), selected = "poisson"),
     radioButtons(ns("link"), "Model link", c("Logit" = "logit", "Log" = "log", "Identity" = "identity"), selected = "log"),
     checkboxInput(ns("field"), "Use field", value = TRUE),
     checkboxInput(ns("iid"), "iid", value = TRUE),
@@ -22,7 +21,8 @@ fit_fit_module_server <- function(id, common, parent_session) {
 
     show_loading_modal("Please wait while the model is fitted")
     common$fit <- tryCatch({disaggregation::disag_model(data = common$prep,
-                                          family = input$family,
+                                          priors = common$priors,
+                                          family = common$family,
                                           link = input$link,
                                           field = input$field,
                                           iid = input$iid)
@@ -34,7 +34,6 @@ fit_fit_module_server <- function(id, common, parent_session) {
     # LOAD INTO COMMON ####
 
     # METADATA ####
-    common$meta$fit_fit$family <- input$family
     common$meta$fit_fit$link <- input$link
     common$meta$fit_fit$iid <- input$iid
     # TRIGGER
@@ -51,13 +50,11 @@ fit_fit_module_server <- function(id, common, parent_session) {
     save = function() {
 list(field = input$field,
 iid = input$iid,
-family = input$family,
 link = input$link)
     },
     load = function(state) {
 updateCheckboxInput(session, "field", value = state$field)
 updateCheckboxInput(session, "iid", value = state$iid)
-updateRadioButtons(session, "family", selected = state$family)
 updateRadioButtons(session, "link", selected = state$link)
     }
   ))

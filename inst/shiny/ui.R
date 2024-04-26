@@ -97,6 +97,7 @@ tagList(
               "prepSel", "Modules Available:",
               choiceNames = insert_modules_option_names("prep"),
               choiceValues = insert_modules_option_values("prep"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("prep")
@@ -110,6 +111,7 @@ tagList(
               "fitSel", "Modules Available:",
               choiceNames = insert_modules_option_names("fit"),
               choiceValues = insert_modules_option_values("fit"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("fit")
@@ -123,6 +125,7 @@ tagList(
               "predSel", "Modules Available:",
               choiceNames = insert_modules_option_names("pred"),
               choiceValues = insert_modules_option_values("pred"),
+              selected = character(0)
             ),
             tags$hr(),
             insert_modules_ui("pred")

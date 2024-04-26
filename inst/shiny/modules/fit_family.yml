@@ -1,0 +1,6 @@
+component: "fit"
+short_name: "Model family"
+long_name: "Choose model family"
+authors: "Simon E H Smart"
+package: [disaggregation]
+class: mandatory
