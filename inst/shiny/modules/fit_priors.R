@@ -15,6 +15,9 @@ fit_priors_module_ui <- function(id) {
   )
 }
 
+#rho and sigma only if field
+#iid only if iid
+
 fit_priors_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
@@ -29,8 +32,14 @@ fit_priors_module_server <- function(id, common, parent_session) {
 
       # check how we can estimate these
       sd_intercept <- mean_intercept * 0.25
+      # captures range in min and max for cases/polygon and err on the side of wider
+      # 1 in 100 to 1 in 1,000,000
+
       sd_slope <- 3
+      #10 - gives lots of flexibility
+
       #max_iid ?
+      # would be higher for infectious or where the variation is very high (more random effects)
 
       updateNumericInput(session, "mean_intercept", value = round(mean_intercept, 1), step = 0.1)
       updateNumericInput(session, "sd_intercept", value = round(sd_intercept, 1), step = 0.1)
