@@ -6,11 +6,11 @@ fit_priors_module_ui <- function(id) {
     numericInput(ns("mean_slope"), "Mean slope", 0),
     numericInput(ns("sd_slope"), "Slope standard deviation", 0),
     numericInput(ns("rho_min"), "Minimum rho", 0),
-    numericInput(ns("rho_prob"), "Rho probability", 0.01),
+    numericInput(ns("rho_prob"), "Rho probability", value = 0.01, step = 0.01),
     numericInput(ns("sigma_max"), "Maximum sigma", 0),
-    numericInput(ns("sigma_prob"), "Sigma probability", 0.01),
-    numericInput(ns("iideffect_max"), "Maximum IID effect", 1),
-    numericInput(ns("iideffect_prob"), "IID effect probability", 0.01),
+    numericInput(ns("sigma_prob"), "Sigma probability", value = 0.01, step = 0.01),
+    numericInput(ns("iideffect_max"), "Maximum IID effect", value = 1, step = 0.1),
+    numericInput(ns("iideffect_prob"), "IID effect probability", value = 0.01, step = 0.01),
     actionButton(ns("run"), "Save priors")
   )
 }
@@ -20,20 +20,23 @@ fit_priors_module_server <- function(id, common, parent_session) {
 
     gargoyle::on("prep_final", {
       limits <- sf::st_bbox(common$shape)
-      hypotenuse <- sqrt((limits$xmax - limits$xmin)^2 + (limits$ymax - limits$ymin)^2)
-      rho_min <- hypotenuse/3
+      hypotenuse <- as.numeric(sqrt((limits$xmax - limits$xmin)^2 + (limits$ymax - limits$ymin)^2))
+      rho_min <- hypotenuse / 3
       sigma_max <- sd(common$prep$polygon_data$response/mean(common$prep$polygon_data$response))
-      mean_intercept <- as.integer(log(sum(common$prep$polygon_data$response) / sum(terra::values(common$agg))))
+      resp_sum <- sum(common$prep$polygon_data$response, na.rm = TRUE)
+      agg_sum <- sum(terra::values(common$agg), na.rm = TRUE)
+      mean_intercept <- log(resp_sum / agg_sum)
+
+      # check how we can estimate these
       sd_intercept <- mean_intercept * 0.25
-
-      # check how we can estimate this one
       sd_slope <- 3
+      #max_iid ?
 
-      updateNumericInput(session, "mean_intercept", value = mean_intercept)
-      updateNumericInput(session, "sd_intercept", value = sd_intercept)
-      updateNumericInput(session, "sd_slope", value = sd_slope)
-      updateNumericInput(session, "rho_min", value = rho_min)
-      updateNumericInput(session, "sigma_max", value = sigma_max)
+      updateNumericInput(session, "mean_intercept", value = round(mean_intercept, 1), step = 0.1)
+      updateNumericInput(session, "sd_intercept", value = round(sd_intercept, 1), step = 0.1)
+      updateNumericInput(session, "sd_slope", value = round(sd_slope, 1), step = 0.1)
+      updateNumericInput(session, "rho_min", value = round(rho_min, 1), step = 0.1)
+      updateNumericInput(session, "sigma_max", value = round(sigma_max, 1), step = 0.1)
     })
 
   observeEvent(input$run, {
