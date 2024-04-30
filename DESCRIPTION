@@ -29,6 +29,7 @@ Imports:
     leafem,
     magrittr,
     malariaAtlas,
+    markdown,
     openxlsx,
     R6,
     RColorBrewer,

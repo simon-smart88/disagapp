@@ -131,7 +131,7 @@ function(input, output, session) {
   ################################
 
   output$debug <- renderPrint({
-    browser()
+    #browser()
     #print(pryr::mem_used())
     }) %>% bindEvent(input$debug_button)
 
