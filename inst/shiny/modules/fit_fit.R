@@ -98,9 +98,12 @@ fit_fit_module_server <- function(id, common, parent_session) {
                                           family = input$family,
                                           link = input$link,
                                           field = input$field,
-                                          iid = input$iid)
-                           common$logger %>% writeLog("Model fitting has completed")},
-                           error = function(x){ common$logger %>% writeLog(type = "error", "An error occurred whilst fitting the model")})
+                                          iid = input$iid)},
+    error = function(x){ common$logger %>% writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))})
+
+    if (!is.null(common$fit)){
+      common$logger %>% writeLog("Model fitting has completed")
+    }
 
     close_loading_modal()
 
