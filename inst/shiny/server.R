@@ -1,6 +1,12 @@
 function(input, output, session) {
 
   ########################## #
+  # LOAD COMMON ####
+  ########################## #
+  source(system.file("shiny/common.R", package = "disagapp"))
+  common <- common_class$new()
+
+  ########################## #
   # LOGGER ####
   ########################## #
 
