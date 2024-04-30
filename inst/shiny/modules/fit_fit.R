@@ -20,14 +20,14 @@ fit_fit_module_server <- function(id, common, parent_session) {
       gargoyle::watch("prep_final")
       validate(need(common$prep, "You need to prepare the data before setting priors"))
 
-      resp_sum <- sum(common$prep$polygon_data$response, na.rm = TRUE)
-      agg_sum <- sum(terra::values(common$agg), na.rm = TRUE)
-      mean_intercept <- log(resp_sum / agg_sum)
-
-      # check how we can estimate these
-      sd_intercept <- mean_intercept * 0.25
-      # captures range in min and max for cases/polygon and err on the side of wider
-      # 1 in 100 to 1 in 1,000,000
+      agg_name <- names(common$agg_prep)
+      pop_per_poly <- terra::extract(common$agg_prep, common$shape, fun = "sum", na.rm = T)
+      poly_summary <- cbind(pop_per_poly, common$prep$polygon_data)
+      poly_summary$rate <-  poly_summary$response / poly_summary[[agg_name]]
+      mean_intercept <- log((sum(poly_summary$response)/sum(poly_summary[[agg_name]])))
+      min_intercept <- log(min(poly_summary$rate))
+      max_intercept <- log(max(poly_summary$rate))
+      sd_intercept <- max(c((abs(min_intercept) - abs(mean_intercept)), (abs(max_intercept) - abs(mean_intercept))))
 
       tagList(
         numericInput(session$ns("mean_intercept"), "Mean intercept", value = round(mean_intercept, 1), step = 0.1),
