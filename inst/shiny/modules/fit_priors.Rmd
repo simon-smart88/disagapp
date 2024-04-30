@@ -1,7 +1,0 @@
-```{asis, echo = {{fit_priors_knit}}, eval = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
-Description of what the code will do {{var1}}
-```
-
-```{r, echo = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
-# R code to run {{var2}}
-```

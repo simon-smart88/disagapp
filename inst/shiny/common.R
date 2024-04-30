@@ -13,8 +13,6 @@ common_class <- R6::R6Class(
     covs_summary = NULL,
     mesh = NULL,
     prep = NULL,
-    family = NULL,
-    priors = NULL,
     fit = NULL,
     pred = NULL,
     transfer = NULL,
