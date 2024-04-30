@@ -93,30 +93,33 @@ fit_fit_module_server <- function(id, common, parent_session) {
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the model is fitted")
-    # common$fit <- tryCatch({disaggregation::disag_model(data = common$prep,
-    #                                       priors = priors(),
-    #                                       family = input$family,
-    #                                       link = input$link,
-    #                                       field = input$field,
-    #                                       iid = input$iid)
-    #                        common$logger %>% writeLog("Model fitting has completed")},
-    #                        error = function(x){ common$logger %>% writeLog(type = "error", "An error occurred whilst fitting the model")})
-
-    common$fit <- disaggregation::disag_model(data = common$prep,
+    common$fit <- tryCatch({disaggregation::disag_model(data = common$prep,
                                           priors = priors(),
                                           family = input$family,
                                           link = input$link,
                                           field = input$field,
                                           iid = input$iid)
-                           common$logger %>% writeLog("Model fitting has completed")
+                           common$logger %>% writeLog("Model fitting has completed")},
+                           error = function(x){ common$logger %>% writeLog(type = "error", "An error occurred whilst fitting the model")})
 
     close_loading_modal()
 
     # LOAD INTO COMMON ####
 
     # METADATA ####
+    common$meta$fit_fit$family <- input$family
     common$meta$fit_fit$link <- input$link
     common$meta$fit_fit$iid <- input$iid
+    common$meta$fit_fit$mean_intercept <- input$mean_intercept
+    common$meta$fit_fit$sd_intercept <- input$sd_intercept
+    common$meta$fit_fit$mean_slope <- input$mean_slope
+    common$meta$fit_fit$sd_slope <- input$sd_slope
+    common$meta$fit_fit$rho_min <- input$rho_min
+    common$meta$fit_fit$rho_prob <- input$rho_prob
+    common$meta$fit_fit$sigma_max <- input$sigma_max
+    common$meta$fit_fit$sigma_prob <- input$sigma_prob
+    common$meta$fit_fit$iideffect_sd_max <- input$iideffect_max
+    common$meta$fit_fit$iideffect_sd_prob <- input$iideffect_prob
     # TRIGGER
     gargoyle::trigger("fit_fit")
   })
@@ -129,31 +132,31 @@ fit_fit_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(mean_intercept = input$mean_intercept, 
-sd_intercept = input$sd_intercept, 
-mean_slope = input$mean_slope, 
-sd_slope = input$sd_slope, 
-rho_min = input$rho_min, 
-rho_prob = input$rho_prob, 
-sigma_max = input$sigma_max, 
-sigma_prob = input$sigma_prob, 
-iideffect_max = input$iideffect_max, 
-iideffect_prob = input$iideffect_prob, 
-family = input$family, 
+list(mean_intercept = input$mean_intercept,
+sd_intercept = input$sd_intercept,
+mean_slope = input$mean_slope,
+sd_slope = input$sd_slope,
+rho_min = input$rho_min,
+rho_prob = input$rho_prob,
+sigma_max = input$sigma_max,
+sigma_prob = input$sigma_prob,
+iideffect_max = input$iideffect_max,
+iideffect_prob = input$iideffect_prob,
+family = input$family,
 link = input$link)
     },
     load = function(state) {
-updateNumericInput(session, "mean_intercept", value = state$mean_intercept) 
-updateNumericInput(session, "sd_intercept", value = state$sd_intercept) 
-updateNumericInput(session, "mean_slope", value = state$mean_slope) 
-updateNumericInput(session, "sd_slope", value = state$sd_slope) 
-updateNumericInput(session, "rho_min", value = state$rho_min) 
-updateNumericInput(session, "rho_prob", value = state$rho_prob) 
-updateNumericInput(session, "sigma_max", value = state$sigma_max) 
-updateNumericInput(session, "sigma_prob", value = state$sigma_prob) 
-updateNumericInput(session, "iideffect_max", value = state$iideffect_max) 
-updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob) 
-updateRadioButtons(session, "family", selected = state$family) 
+updateNumericInput(session, "mean_intercept", value = state$mean_intercept)
+updateNumericInput(session, "sd_intercept", value = state$sd_intercept)
+updateNumericInput(session, "mean_slope", value = state$mean_slope)
+updateNumericInput(session, "sd_slope", value = state$sd_slope)
+updateNumericInput(session, "rho_min", value = state$rho_min)
+updateNumericInput(session, "rho_prob", value = state$rho_prob)
+updateNumericInput(session, "sigma_max", value = state$sigma_max)
+updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
+updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
+updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
+updateRadioButtons(session, "family", selected = state$family)
 updateRadioButtons(session, "link", selected = state$link)
     }
   ))
@@ -172,7 +175,17 @@ fit_fit_module_rmd <- function(common) {
     fit_knit = !is.null(common$fit),
     fit_family = common$meta$fit_fit$family,
     fit_link = common$meta$fit_fit$link,
-    fit_iid = common$meta$fit_fit$iid
+    fit_iid = common$meta$fit_fit$iid,
+    fit_mean_intercept = common$meta$fit_fit$mean_intercept,
+    fit_sd_intercept = common$meta$fit_fit$sd_intercept,
+    fit_mean_slope = common$meta$fit_fit$mean_slope,
+    fit_sd_slope = common$meta$fit_fit$sd_slope,
+    fit_rho_min = common$meta$fit_fit$rho_min,
+    fit_rho_prob = common$meta$fit_fit$rho_prob,
+    fit_sigma_max = common$meta$fit_fit$sigma_max,
+    fit_sigma_prob = common$meta$fit_fit$sigma_prob,
+    fit_iid_sd_max = common$meta$fit_fit$iideffect_sd_max,
+    fit_iid_sd_prob = common$meta$fit_fit$iideffect_sd_prob
   )
 }
 
