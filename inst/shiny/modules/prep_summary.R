@@ -3,7 +3,7 @@ prep_summary_module_ui <- function(id) {
   tagList(
     # UI
     actionButton(ns("run"), "Prepare covariate summary"),
-    checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
+    shinyWidgets::materialSwitch(ns("remove"), "Remove identical rows?", FALSE, status = "success"),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
     actionButton(ns("resample"), "Resample covariates")
   )

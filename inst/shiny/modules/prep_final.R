@@ -5,7 +5,7 @@ prep_final_module_ui <- function(id) {
     uiOutput(ns("id_var_out")),
     uiOutput(ns("resp_var_out")),
     uiOutput(ns("resolution_out")),
-    checkboxInput(ns("na_action"), "Handle missing data?", value = TRUE),
+    shinyWidgets::materialSwitch(ns("na_action"), "Handle missing data?", value = TRUE, status = "success"),
     actionButton(ns("run"), "Prepare data")
   )
 }

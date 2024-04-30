@@ -16,7 +16,7 @@ cov_upload_module_server <- function(id, common, parent_session) {
   output$example_out <- renderUI({
     gargoyle::watch("resp_example")
     if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
-      checkboxInput(session$ns("example"), "Use example data", TRUE)
+      shinyWidgets::materialSwitch(session$ns("example"), "Use example data", value = TRUE, status = "success")
     }
   })
 

@@ -6,9 +6,7 @@ agg_worldpop_module_ui <- function(id) {
     selectInput(ns("method"), "Method", choices = c("Constrained", "Unconstrained")),
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     uiOutput(ns("year_out")),
-    checkboxInput(ns("log"),
-                  label = 'Plot as log values',
-                  value = TRUE),
+    shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
     actionButton(ns("run"), "Fetch data")
   )
 }
