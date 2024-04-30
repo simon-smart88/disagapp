@@ -25,6 +25,7 @@ Imports:
     geodata,
     glue,
     httr,
+    httr2,
     knitcitations,
     leafem,
     magrittr,

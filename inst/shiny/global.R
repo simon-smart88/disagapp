@@ -1,5 +1,7 @@
 library(glue)
+library(markdown)
 library(disagapp)
+
 options(shiny.fullstacktrace = TRUE)
 
 MB <- 1024^2
