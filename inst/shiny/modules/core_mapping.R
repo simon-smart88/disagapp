@@ -25,6 +25,9 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
         addProviderTiles(isolate(input$bmap))
     })
 
+    #Give the map priority in rendering order
+    outputOptions(output, "map", suspendWhenHidden = FALSE , priority = 10)
+
     # create map proxy to make further changes to existing map
     map <- leafletProxy("map")
 
