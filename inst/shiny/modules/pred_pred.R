@@ -18,8 +18,10 @@ pred_pred_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the model predictions are generated")
     prediction <- disaggregation::predict_model(common$fit)
-    terra::crs(prediction$field) <- terra::crs(common$prep$covariate_rasters[[1]])
-    prediction$field <- terra::mask(prediction$field, common$prep$covariate_rasters[[1]])
+    if (!is.null(prediction$field)){
+      terra::crs(prediction$field) <- terra::crs(common$prep$covariate_rasters[[1]])
+      prediction$field <- terra::mask(prediction$field, common$prep$covariate_rasters[[1]])
+    }
     close_loading_modal()
     common$logger %>% writeLog('Model predictions are available')
     # LOAD INTO COMMON ####
@@ -54,7 +56,9 @@ pred_pred_module_server <- function(id, common, parent_session) {
 
 pred_pred_module_map <- function(map, common) {
   for (variable in c("Field", "Prediction")){
-    covariate_map(map, common, common$pred[[tolower(variable)]], variable)
+    if (!is.null(common$pred[[tolower(variable)]])){
+      covariate_map(map, common, common$pred[[tolower(variable)]], variable)
+    }
   }
 }
 
