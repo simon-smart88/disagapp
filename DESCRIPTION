@@ -34,6 +34,7 @@ Imports:
     openxlsx,
     R6,
     RColorBrewer,
+    renv,
     rlang,
     rmarkdown,
     sf,
