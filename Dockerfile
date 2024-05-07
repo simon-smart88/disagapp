@@ -1,6 +1,6 @@
 FROM rocker/shiny:latest
 
-# system libraries of general use
+# system dependencies
 RUN apt-get update && apt-get install -y \
     sudo \
     libcurl4-gnutls-dev \
@@ -19,14 +19,12 @@ RUN apt-get update && apt-get install -y \
     libhdf5-dev \
     patch
 
-# install R packages required
-RUN R -e "install.packages('splancs', dependencies=TRUE)"
-RUN install2.r --error --deps TRUE hdf5r
-
+# install R packages 
 RUN R -e "install.packages('INLA',repos=c(getOption('repos'),INLA='https://inla.r-inla-download.org/R/testing'), dep=TRUE)"
 RUN R -e "install.packages('devtools')"
 RUN R -e "devtools::install_github('simon-smart88/disagapp')"
 
+# copy app files
 COPY ./inst/shiny/ /srv/shiny-server/disagapp
 
 # select port
