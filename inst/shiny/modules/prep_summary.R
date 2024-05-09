@@ -34,7 +34,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("prep_summary")
-    updateTabsetPanel(parent_session, "main", selected = "Results")
+    show_results(parent_session)
   })
 
     observeEvent(input$resample, {
@@ -60,7 +60,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
       common$meta$prep_summary$resample_target <- colnames(common$covs_summary$resampled)[[input$cov_table_columns_selected]]
       # TRIGGER
       gargoyle::trigger("prep_summary")
-      updateTabsetPanel(parent_session, "main", selected = "Results")
+      show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
     })
 
