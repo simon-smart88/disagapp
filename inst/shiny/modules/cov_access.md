@@ -13,6 +13,8 @@ Three layers are available:
 
 Data are obtained via the `malariaAtlas::getRaster()` function. 
 
+To download the data, select the layer you want to use from the dropdown list and then click ""Download data".
+
 **REFERENCES**
 
 - Weiss D.J., Nelson, A., Gibson, H.S. *et al*. (2018). A global map of travel time to cities to assess inequalities in accessibility in 2015. *Nature*. 553(7688):333-336. <a href="https://doi.org/10.1038/nature25181" target="_blank">DOI: 10.1038/nature25181</a>.

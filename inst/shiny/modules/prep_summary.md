@@ -1,13 +1,17 @@
-### **Module:**
+### **Module: Summarise and resample covariates**
 
 **BACKGROUND**
 
-text
+The covariates and aggregation rasters have different resolutions 
+and before they can be used in the model, they need to be adjusted so that the pixels in each raster align perfectly with each other. This module lets you examine the properties of the rasters and choose one to use as a template to transform the others.
 
 **IMPLEMENTATION**
+This module uses the `terra::resample()` function to resample the covariates and 
 
-text
+You can choose to remove rows in the table for characteristics of the rasters that are identical by toggling the "Remove identical rows?" switch. 
 
-**REFERENCES**
+Click "Prepare covariate summary" to summarise the covariates. 
 
-references
+The view will switch to a table in the results tab and you can click on a column to select a covariate that will be used as a template.
+
+Click "Resample covariates" and a table of the resampled covariates will be displayed. You can toggle between the tables by clicking on "Original" or "Resampled".
