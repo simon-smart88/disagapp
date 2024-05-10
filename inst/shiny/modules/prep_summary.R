@@ -64,17 +64,6 @@ prep_summary_module_server <- function(id, common, parent_session) {
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
     })
 
-    observeEvent(input$scale, {
-      # WARNING ####
-      if (is.null(common$covs_prep)) {
-        common$logger %>% writeLog(type = "error", "Please resample the rasters first")
-        return()
-      }
-      common$covs_prep <- terra::scale(common$covs_prep, scale = TRUE, center = TRUE)
-      common$logger %>% writeLog("Covariates have been scaled")
-      common$meta$prep_summary$scale <- TRUE
-    })
-
     output$cov_table <- DT::renderDataTable({
     gargoyle::watch("prep_summary")
     if (input$table == "Original"){
