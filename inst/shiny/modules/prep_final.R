@@ -57,26 +57,34 @@ prep_final_module_server <- function(id, common, parent_session) {
     show_loading_modal("Please wait while the data is prepared")
 
     if (is.null(input$resolution) || input$resolution == "High resolution"){
-     common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+
+     common$prep <- tryCatch({disaggregation::prepare_data(polygon_shapefile = common$shape,
                                                  covariate_rasters = common$covs_prep,
                                                  aggregation_raster = common$agg_prep,
                                                  id_var = as.character(input$id_var),
                                                  response_var = as.character(input$resp_var),
                                                  na.action = input$na_action,
-                                                 makeMesh = FALSE)
+                                                 makeMesh = FALSE)},
+                             error = function(x){ common$logger %>% writeLog(type = "error",
+                               paste0("An error occurred whilst preparing the data: ", x))})
     } else {
-     common$prep <- disaggregation::prepare_data(polygon_shapefile = common$shape,
+     common$prep <- tryCatch({disaggregation::prepare_data(polygon_shapefile = common$shape,
                                                   covariate_rasters = common$covs_prep_lores,
                                                   aggregation_raster = common$agg_prep_lores,
                                                   id_var = as.character(input$id_var),
                                                   response_var = as.character(input$resp_var),
                                                   na.action = input$na_action,
-                                                  makeMesh = FALSE)
+                                                  makeMesh = FALSE)},
+                             error = function(x){ common$logger %>% writeLog(type = "error",
+                                paste0("An error occurred whilst preparing the data: ", x))})
     }
 
-    common$prep$mesh <- common$mesh
+
     close_loading_modal()
-    common$logger %>% writeLog("Data preparation is complete")
+    if (!is.null(common$prep)){
+      common$prep$mesh <- common$mesh
+      common$logger %>% writeLog("Data preparation is complete")
+    }
     # LOAD INTO COMMON ####
 
     # METADATA ####
@@ -87,7 +95,7 @@ prep_final_module_server <- function(id, common, parent_session) {
     # TRIGGER
     gargoyle::trigger("clear_map")
     gargoyle::trigger("prep_final")
-    updateTabsetPanel(parent_session, "main", selected = "Map")
+    show_map(parent_session)
   })
 
   return(list(
@@ -106,6 +114,7 @@ updateSelectInput(session, "resp_var", selected = state$resp_var)
 }
 
 prep_final_module_map <- function(map, common){
+  req(common$prep)
   shape_map(map, common)
   for (layer in names(common$prep$covariate_rasters)){
     covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
