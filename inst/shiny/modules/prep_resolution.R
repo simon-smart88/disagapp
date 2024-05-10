@@ -39,7 +39,7 @@ prep_resolution_module_server <- function(id, common, parent_session) {
 
       factors <- 2:20
       choices <- round(original_resolution$width * factors, 0)
-      selectInput(session$ns("resolution"), "New pixel width (m)", choices = choices)
+      selectInput(session$ns("resolution"), "New cell width (m)", choices = choices)
     })
 
 
@@ -56,11 +56,11 @@ prep_resolution_module_server <- function(id, common, parent_session) {
       }
 
       if (input$plot_type == "Histogram"){
-        plot <- list(graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Pixels per polygon"))
+        plot <- list(graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Cells per polygon"))
       }
 
       if (input$plot_type == "Boxplot"){
-        plot <- list(graphics::boxplot(pixels_per_poly$n_pixels, main = '', ylab = "Pixels per polygon"))
+        plot <- list(graphics::boxplot(pixels_per_poly$n_pixels, main = '', ylab = "Cells per polygon"))
       }
 
       leg <- legend("topright",  bty="n", legend = c(
