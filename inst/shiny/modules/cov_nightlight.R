@@ -47,7 +47,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    light <- cov_nightlight(common$shape, input$year, bearer())
+    light <- cov_nightlight(common$shape, input$year, bearer(), common$logger)
     # LOAD INTO COMMON ####
     common$covs[["Nighttime light"]] <- light
     common$logger %>% writeLog("Nighttime light data has been downloaded")
