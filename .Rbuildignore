@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 lie.csv
 lie_data.rds
+^\.httr-oauth$
