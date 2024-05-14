@@ -100,14 +100,16 @@ prep_final_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(na_action = input$na_action,
-id_var = input$id_var,
-resp_var = input$resp_var)
+list(id_var = input$id_var, 
+resp_var = input$resp_var, 
+resolution = input$resolution, 
+na_action = input$na_action)
     },
     load = function(state) {
-updateCheckboxInput(session, "na_action", value = state$na_action)
-updateSelectInput(session, "id_var", selected = state$id_var)
-updateSelectInput(session, "resp_var", selected = state$resp_var)
+updateSelectInput(session, "id_var", selected = state$id_var) 
+updateSelectInput(session, "resp_var", selected = state$resp_var) 
+updateSelectInput(session, "resolution", selected = state$resolution) 
+shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
     }
   ))
 })

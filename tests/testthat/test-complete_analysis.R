@@ -4,6 +4,8 @@ df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
                             "Planken","Vaduz"),
                  "response" = 1:11)
 
+save_path <- "~/temprds/saved_file.rds"
+
 # not functioning yet
 test_that("{shinytest2} recording: e2e_complete_analysis", {
 
@@ -33,11 +35,18 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(covSel = "cov_landuse")
   app$set_inputs(`cov_landuse-uses` = c("BuiltUp", "Crops"))
   app$click("cov_landuse-run")
-  app$set_inputs(covSel = "cov_nightlight")
-  app$click("cov_nightlight-run")
+  # exclude for now as no token
+  # app$set_inputs(covSel = "cov_nightlight")
+  # app$click("cov_nightlight-run")
 
   common <- app$get_value(export = "common")
-  expect_length(common$covs, 6)
+  expect_is(common$shape, "sf")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+  common$covs <- unwrap_terra(common$covs)
+  expect_length(common$covs, 5)
 
   app$set_inputs(tabs = "agg")
   app$set_inputs(aggSel = "agg_worldpop")
@@ -53,19 +62,27 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(prepSel = "prep_prep")
   app$set_inputs(`prep_prep-id_var` = "shapeID")
   app$click("prep_prep-run")
-  common <- app$get_value(export = "common")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+  common$covs_prep <- unwrap_terra(common$covs_prep)
   expect_length(common$covs_prep, 1)
   expect_is(common$covs_prep, "SpatRaster")
   expect_is(common$prep, "disag_data")
 
   app$set_inputs(tabs = "fit")
   app$click("fit_fit-run")
-  common <- app$get_value(export = "common")
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
   expect_is(common$fit, "disag_model")
 
   app$set_inputs(tabs = "pred")
   app$click("pred_pred-run")
-  common <- app$get_value(export = "common")
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
   expect_is(common$pred, "disag_prediction")
 
 })

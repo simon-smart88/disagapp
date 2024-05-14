@@ -96,11 +96,11 @@ prep_resolution_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(plot_type = input$plot_type,
+list(plot_type = input$plot_type, 
 resolution = input$resolution)
     },
     load = function(state) {
-updateSelectInput(session, "plot_type", selected = state$plot_type)
+updateSelectInput(session, "plot_type", selected = state$plot_type) 
 updateSelectInput(session, "resolution", selected = state$resolution)
     }
   ))

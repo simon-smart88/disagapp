@@ -73,7 +73,7 @@ cov_upload_module_server <- function(id, common, parent_session) {
 list(example = input$example)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = state$example)
+shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))
 })

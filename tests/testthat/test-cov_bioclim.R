@@ -8,6 +8,8 @@ resp_column <- "response"
 country_code <- "LIE"
 admin_level <- "ADM1"
 
+save_path <- "~/temprds/saved_file.rds"
+
 test_that("Check cov_bioclim function works as expected", {
   shape <- resp_download(df, area_column, resp_column, country_code, admin_level)
 
@@ -41,7 +43,16 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   app$set_inputs("cov_bioclim-variables" = c("Mean temperature", "Mean diurnal range"))
   app$click("cov_bioclim-run")
 
+  #not needed but save fails without this
   common <- app$get_value(export = "common")
+  expect_is(common$shape, "sf")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+
+  # common <- app$get_value(export = "common")
+  common$covs <- unwrap_terra(common$covs)
   expect_is(common$covs[[1]], "SpatRaster")
   expect_equal(length(common$covs), 2)
 })

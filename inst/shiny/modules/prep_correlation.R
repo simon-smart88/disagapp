@@ -75,16 +75,16 @@ prep_correlation_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(method = input$method,
-type = input$type,
-self = input$self,
-cov_layers = input$cov_layers)
+list(method = input$method, 
+type = input$type, 
+cov_layers = input$cov_layers, 
+self = input$self)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method)
-updateSelectInput(session, "type", selected = state$type)
-updateCheckboxInput(session, "self", value = state$self)
-updateSelectInput(session, "cov_layers", selected = state$cov_layers)
+updateSelectInput(session, "method", selected = state$method) 
+updateSelectInput(session, "type", selected = state$type) 
+updateSelectInput(session, "cov_layers", selected = state$cov_layers) 
+shinyWidgets::updateMaterialSwitch(session, "self", value = state$self)
     }
   ))
 })

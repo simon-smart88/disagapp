@@ -90,7 +90,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 list(remove = input$remove)
     },
     load = function(state) {
-updateCheckboxInput(session, "remove", value = state$remove)
+shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))
 })

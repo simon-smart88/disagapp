@@ -46,11 +46,11 @@ cov_landuse_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(uses = input$uses,
+list(uses = input$uses, 
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = state$uses)
+updateSelectInput(session, "uses", selected = state$uses) 
 updateSelectInput(session, "year", selected = state$year)
     }
   ))

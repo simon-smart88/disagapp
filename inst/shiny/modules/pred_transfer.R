@@ -87,10 +87,10 @@ pred_transfer_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(country = input$country)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "country", selected = state$country)
     }
   ))
 })
