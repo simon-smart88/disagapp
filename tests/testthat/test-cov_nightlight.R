@@ -3,9 +3,11 @@ shape <- sf::st_read(shp, quiet = TRUE)
 shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 
 test_that("Check cov_nightlight function works as expected", {
-  result <- cov_nightlight(shape, 2022)
+  result <- cov_nightlight(shape, 2022, Sys.getenv("NASA_bearer"))
   expect_is(result, "SpatRaster")
 })
+
+save_path <- "~/temprds/saved_file.rds"
 
 test_that("{shinytest2} recording: e2e_cov_nightlight", {
 
@@ -15,7 +17,6 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")
-  app$set_inputs("resp_shape-example" = FALSE) #will need deleting later
   app$upload_file("resp_shape-shape" = shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")
@@ -23,7 +24,13 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   app$set_inputs(covSel = "cov_nightlight")
   app$set_inputs("cov_nightlight-year" = "2022")
   app$click("cov_nightlight-run")
-  common <- app$get_value(export = "common")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+  common$covs <- unwrap_terra(common$covs)
+
+  # common <- app$get_value(export = "common")
   expect_is(common$covs[[1]], "SpatRaster")
   expect_equal(length(common$covs), 1)
 })

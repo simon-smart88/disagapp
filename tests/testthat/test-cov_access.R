@@ -4,10 +4,10 @@ shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 
 save_path <- "~/temprds/saved_file.rds"
 
-# test_that("Check cov_access function works as expected", {
-#   result <- cov_access(shape, "Travel Time to Cities (2015)")
-#   expect_is(result, "SpatRaster")
-# })
+test_that("Check cov_access function works as expected", {
+  result <- cov_access(shape, "Travel Time to Cities (2015)")
+  expect_is(result, "SpatRaster")
+})
 
 test_that("{shinytest2} recording: e2e_cov_access", {
 

@@ -12,6 +12,8 @@ admin_level <- "ADM1"
 
 shape <- resp_download(df, area_column, resp_column, country_code, admin_level)
 
+save_path <- "~/temprds/saved_file.rds"
+
 test_that("Check agg_worldpop function works as expected", {
   result <- agg_worldpop(shape, country_code, "Constrained", "100m", 2020)
   expect_is(result, "SpatRaster")
@@ -37,14 +39,29 @@ expect_error(agg_worldpop(shape, country_code, "Unconstrained", "1km", 1999), "U
 expect_error(agg_worldpop(shape, "ZZZ", "Unconstrained", "1km", 2000), "The requested data could not be found")
 })
 
-# test_that("{shinytest2} recording: e2e_agg_worldpop", {
-#   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop")
-#   app$set_inputs("agg_worldpop-method" = "Unconstrained")
-#   app$set_inputs("agg_worldpop-year" = 2020)
-#   app$set_inputs("agg_worldpop-resolution" = "1km")
-#   app$set_inputs("agg_worldpop-country" = "Liechtenstein")
-#   app$click("agg_worldpop-run")
-#   common <- app$get_value(export = "common")
-#   expect_is(common$agg, "SpatRaster")
-# })
-#
+test_that("{shinytest2} recording: e2e_agg_worldpop", {
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop")
+
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_download")
+  app$upload_file("resp_download-spread" = "../../lie.csv")
+  app$set_inputs("resp_download-response_column" = resp_column)
+  app$set_inputs("resp_download-area_column" = area_column)
+  app$set_inputs("resp_download-country" = "Liechtenstein")
+  app$set_inputs("resp_download-admin" = "ADM1")
+  app$click("resp_download-run")
+
+  app$set_inputs("agg_worldpop-method" = "Unconstrained")
+  app$set_inputs("agg_worldpop-year" = 2020)
+  app$set_inputs("agg_worldpop-resolution" = "1km")
+  app$set_inputs("agg_worldpop-country" = "Liechtenstein")
+  app$click("agg_worldpop-run")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+  common$agg <- unwrap_terra(common$agg)
+
+  expect_is(common$agg, "SpatRaster")
+})
+
