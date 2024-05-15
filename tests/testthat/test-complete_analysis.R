@@ -1,11 +1,4 @@
 
-df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
-                            "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
-                            "Planken","Vaduz"),
-                 "response" = 1:11)
-
-save_path <- "~/temprds/saved_file.rds"
-
 test_that("{shinytest2} recording: e2e_complete_analysis", {
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis")

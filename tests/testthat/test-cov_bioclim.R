@@ -1,14 +1,3 @@
-df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
-                            "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
-                            "Planken","Vaduz"),
-                 "response" = 1:11)
-
-area_column <- "area"
-resp_column <- "response"
-country_code <- "LIE"
-admin_level <- "ADM1"
-
-save_path <- "~/temprds/saved_file.rds"
 
 test_that("Check cov_bioclim function works as expected", {
   shape <- resp_download(df, area_column, resp_column, country_code, admin_level)

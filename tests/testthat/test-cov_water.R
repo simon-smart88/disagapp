@@ -1,18 +1,9 @@
-shp <- list.files(system.file("extdata/shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
-shape <- sf::st_read(shp, quiet = TRUE)
-shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
-
 test_that("Check cov_water function works as expected", {
   result <- cov_water(shape, arcgisutils::auth_client())
   expect_is(result, "SpatRaster")
 })
 
-save_path <- "~/temprds/saved_file.rds"
-
-test_that("{shinytest2} recording: e2e_cov_nightlight", {
-
-  shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                      name = list.files(system.file("extdata/shapes", package="disagapp")))
+test_that("{shinytest2} recording: e2e_cov_water", {
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight")
   app$set_inputs(tabs = "resp")
