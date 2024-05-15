@@ -1,9 +1,9 @@
 prep_mesh_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    sliderInput(ns("mesh_edge"), "Max edge", min = 0, max = 10, value = c(0.7, 8), step = 0.1),
-    sliderInput(ns("mesh_cut"), "Cut", min = 0, max = 1, value = 0.05, step = 0.01),
-    sliderInput(ns("mesh_offset"), "Offset", min = 0, max = 10, value = c(1, 2), step = 0.1),
+    sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
+    sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
+    sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
     actionButton(ns("run"), "Make mesh")
   )
 }
@@ -16,6 +16,7 @@ prep_mesh_module_server <- function(id, common, parent_session) {
     gargoyle::watch("resp_shape")
     gargoyle::watch("resp_download")
     gargoyle::watch("resp_combine")
+    gargoyle::watch("resp_example")
     gargoyle::watch("resp_edit")
     req(common$shape)
 
@@ -53,13 +54,13 @@ prep_mesh_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(mesh_edge = input$mesh_edge, 
-mesh_cut = input$mesh_cut, 
+list(mesh_edge = input$mesh_edge,
+mesh_cut = input$mesh_cut,
 mesh_offset = input$mesh_offset)
     },
     load = function(state) {
-updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
-updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
+updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
+updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
 updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
     }
   ))
