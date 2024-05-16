@@ -1,10 +1,5 @@
-area_column <- "area"
-resp_column <- "response"
-admin_level <- "ADM1"
 
 lie_shape <- resp_download(df, area_column, resp_column, country_code, admin_level)
-
-save_path <- "~/temprds/saved_file.rds"
 
 test_that("Check agg_worldpop function works as expected", {
   result <- agg_worldpop(lie_shape, country_code, "Constrained", "100m", 2020)
@@ -13,10 +8,10 @@ test_that("Check agg_worldpop function works as expected", {
   result <- agg_worldpop(lie_shape, country_code, "Constrained", "1km", 2020)
   expect_is(result, "SpatRaster")
 
-  result <- agg_worldpop(slie_hape, country_code, "Unconstrained", "100m", 2000)
+  result <- agg_worldpop(lie_shape, country_code, "Unconstrained", "100m", 2000)
   expect_is(result, "SpatRaster")
 
-  result <- agg_worldpop(slie_hape, country_code, "Unconstrained", "1km", 2000)
+  result <- agg_worldpop(lie_shape, country_code, "Unconstrained", "1km", 2000)
   expect_is(result, "SpatRaster")
 
   result <- agg_worldpop(lie_shape, country_code, "Unconstrained", "1km", 2020)

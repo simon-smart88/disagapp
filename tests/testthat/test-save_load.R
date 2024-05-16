@@ -1,9 +1,3 @@
-shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/shapes", package="disagapp")))
-
-#set semi-temporary path so that the same file can be read between different tests
-save_path <- "~/temprds/saved_file.rds"
-
 test_that("{shinytest2} recording: e2e_empty_save", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_save")
   app$set_inputs(tabs = "resp")
