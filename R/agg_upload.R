@@ -12,7 +12,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
- agg_upload <- function(path, shape, logger = NULL) {
+agg_upload <- function(path, shape, logger = NULL) {
   agg <- terra::rast(path)
 
   #check crs and reproject if necessary

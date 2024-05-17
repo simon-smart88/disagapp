@@ -23,6 +23,11 @@ cov_water <- function(shape, token, logger = NULL) {
     return()
   }
 
+  if (!("httr2_token" %in% class(token))){
+    logger %>% writeLog(type = "error", "Token must be an httr2_token")
+    return()
+  }
+
   arcgisutils::set_arc_token(token)
 
   furl <- "https://landscape6.arcgis.com/arcgis/rest/services/World_Distance_to_Surface_Water/ImageServer"
