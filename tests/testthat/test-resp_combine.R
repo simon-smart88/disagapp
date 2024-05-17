@@ -24,7 +24,6 @@ test_that("{shinytest2} recording: e2e_resp_combine", {
   app$set_inputs("resp_combine-shape_area_column" = shape_area_column)
   app$click("resp_combine-run")
 
-
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)

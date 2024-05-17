@@ -1,12 +1,12 @@
 
 test_that("Check resp_edit function works as expected", {
-  shape <- resp_shape(shpdf)
+  mad_shape <- resp_shape(shpdf)
   poly <- matrix(c(40, 40, 55, 55, 40, -10, -20, -20, -10, -10), ncol = 2)
   colnames(poly) <- c("longitude", "latitude")
-  result <- resp_edit(shape, poly, "Outside")
+  result <- resp_edit(mad_shape, poly, "Outside")
   expect_is(result, "sf")
   expect_equal(nrow(result), 47)
-  result <- resp_edit(shape, poly, "Inside")
+  result <- resp_edit(mad_shape, poly, "Inside")
   expect_is(result, "sf")
   expect_equal(nrow(result), 62)
 })
