@@ -24,7 +24,6 @@ Imports:
     geosphere,
     geodata,
     glue,
-    httr,
     httr2,
     knitcitations,
     leafem,
