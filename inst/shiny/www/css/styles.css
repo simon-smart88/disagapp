@@ -123,3 +123,14 @@ hr {
 .module_mandatory {
   color:#FE6100;
 }
+
+.btn-check:checked+.btn {
+  background-color: #C8C8C8;
+  border-color: #C8C8C8;
+}
+
+.btn.btn-outline-secondary{
+  text-align: left;
+  background-color: #E8E8E8;
+  padding: 0.3rem 0.3rem 0.3rem 0.3rem;
+}
