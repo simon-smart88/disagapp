@@ -113,15 +113,15 @@ hr {
 }
 
 .module_choice {
-  color:#648FFF;
+  color:#0072B2;
 }
 
 .module_optional {
-  color:#DC267F;
+  color:#CC79A7;
 }
 
 .module_mandatory {
-  color:#FE6100;
+  color:#D55E00;
 }
 
 .btn-check:checked+.btn {
@@ -134,3 +134,5 @@ hr {
   background-color: #E8E8E8;
   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
+
+
