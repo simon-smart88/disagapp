@@ -3,7 +3,14 @@ title: "pred"
 output: html_document
 ---
 
-### **Component: Make Prediction**
+### **Component: Make Predictions**
 
 **ORIENTATION**
 
+This component generates predictions from the fitted model. 
+
+#### <span class="module_mandatory">Make predictions</span>
+Generate a prediction for the existing area of interest
+
+#### <span class="module_optional">Transfer predictions</span>
+Transfer the model to predict the response data over a new area of interest.

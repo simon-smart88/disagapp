@@ -30,6 +30,7 @@ pred_pred_module_server <- function(id, common, parent_session) {
     common$meta$pred_pred$used <- TRUE
     # TRIGGER
     gargoyle::trigger("pred_pred")
+    show_map(parent_session)
   })
 
   # output$result <- renderText({

@@ -83,6 +83,7 @@ pred_transfer_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("pred_transfer")
+    show_map(parent_session)
   })
 
   return(list(
