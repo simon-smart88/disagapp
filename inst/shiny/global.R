@@ -1,5 +1,7 @@
 library(glue)
+library(markdown)
 library(disagapp)
+
 options(shiny.fullstacktrace = TRUE)
 
 MB <- 1024^2
@@ -146,7 +148,4 @@ for (module in core_modules){
   source(module, local = TRUE)
 }
 
-#load common object
-source(system.file("shiny/common.R", package = "disagapp"))
-common <- common_class$new()
 

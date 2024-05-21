@@ -16,8 +16,8 @@ pred_transfer <- function(country, common, covdf = NULL, aggdf = NULL, logger = 
 
 # fetch boundary
 url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{country}/ADM1/")
-req <- httr::GET(url)
-cont <- httr::content(req)
+req <- httr2::request(url) |> httr2::req_perform()
+cont <- httr2::resp_body_json(req)
 new_shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
 
 # find which covariates were used and download versions for new shape

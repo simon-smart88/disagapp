@@ -13,7 +13,7 @@ Before a model can be fitted, several preparation steps are required to transfor
 This module generates a spatial mesh from the response data which is required to fit the model.
 
 #### <span class="module_mandatory">Summarise and resample covariates</span>
-The covariates and aggregation raster need to be adjusted so that each raster has the same resolution and pixels in each raster align perfectly with each other. This module lets you examine the properties of the rasters and choose one to use as a template to transform the others.
+The covariates and aggregation raster need to be adjusted so that each raster has the same resolution and cells in each raster align perfectly with each other. This module lets you examine the properties of the rasters and choose one to use as a template to transform the others.
 
 #### <span class="module_mandatory">Scale covariates</span>
 The covariates typically have different ranges of values. If unaltered, you cannot directly compare the coefficient values from the estimated model and setting priors become challenging. This module scales the values of each covariate so that they can be compared fairly.
@@ -22,7 +22,7 @@ The covariates typically have different ranges of values. If unaltered, you cann
 Once the rasters have been prepared, this module can be used to examine the correlations between the covariates. If two covariates are highly correlated, there may be little benefit of using both in the model and you can choose to remove them.
 
 #### <span class="module_optional">Decrease resolution</span>
-The time required to fit the model increases with the number of pixels present in the rasters. You can use this module to generate a set of the rasters with a lower resolution to use in an initial model that will be quicker to fit.
+The time required to fit the model increases with the number of cells present in the rasters. You can use this module to generate a set of the rasters with a lower resolution to use in an initial model that will be quicker to fit.
 
 #### <span class="module_mandatory">Finalise</span>
 This final step combines the response data, spatial mesh, covariates and aggregation raster into one object, ready to fit the model.

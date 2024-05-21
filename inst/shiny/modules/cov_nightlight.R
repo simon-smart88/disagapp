@@ -74,10 +74,12 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(year = input$year)
+list(year = input$year,
+bearer = input$bearer)
     },
     load = function(state) {
 updateSelectInput(session, "year", selected = state$year)
+updateTextInput(session, "bearer", value = state$bearer)
     }
   ))
 })

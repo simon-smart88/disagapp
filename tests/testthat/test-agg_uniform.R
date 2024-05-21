@@ -1,5 +1,3 @@
-covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/covariates", package="disagapp")))
 
 test_that("Check agg_uniform function works as expected", {
   cov <- terra::rast(covdf$datapath[1])
@@ -9,9 +7,22 @@ test_that("Check agg_uniform function works as expected", {
 
 test_that("{shinytest2} recording: e2e_agg_uniform", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_uniform")
+
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
+  app$upload_file("resp_shape-shape" = shpdf$datapath)
+  app$set_inputs("resp_shape-resp_var" = "inc")
+  app$click("resp_shape-run")
+
   app$upload_file("cov_upload-cov" = covdf$datapath)
   app$click("cov_upload-run")
+
   app$click("agg_uniform-run")
-  common <- app$get_value(export = "common")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+  common$agg <- unwrap_terra(common$agg)
   expect_is(common$agg, "SpatRaster")
+
 })

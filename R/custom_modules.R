@@ -57,6 +57,11 @@ create_module <- function(id, dir, map = FALSE, result = FALSE, rmd = FALSE, sav
               file.path(dir, glue::glue("{id}.Rmd")), overwrite = TRUE)
   }
 
+  #add the module ID
+  rmd_file <- readLines(file.path(dir, glue::glue("{id}.Rmd")))
+  rmd_file <- gsub("moduleID_knit", glue::glue("{id}_knit"), rmd_file)
+  writeLines(rmd_file, file.path(dir, glue::glue("{id}.Rmd")))
+
   # Copy the R code file, use the correct ID in all functions, and remove any
   # functions that the user doesn't want to use in this module
   r_file <- readLines(system.file("module_skeleton", "skeleton.R", package = "disagapp"))

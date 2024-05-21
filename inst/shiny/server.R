@@ -3,6 +3,12 @@ function(input, output, session) {
   future::plan(future::multisession)
 
   ########################## #
+  # LOAD COMMON ####
+  ########################## #
+  source(system.file("shiny/common.R", package = "disagapp"))
+  common <- common_class$new()
+
+  ########################## #
   # LOGGER ####
   ########################## #
 
@@ -127,7 +133,7 @@ function(input, output, session) {
   ################################
 
   output$debug <- renderPrint({
-    browser()
+    #browser()
     #print(pryr::mem_used())
     }) %>% bindEvent(input$debug_button)
 

@@ -1,10 +1,12 @@
-
-test_that("Check cov_nightlight function works as expected", {
-  result <- cov_nightlight(shape, 2022, Sys.getenv("NASA_bearer"))
+test_that("Check cov_water function works as expected", {
+  result <- cov_water(shape, arcgisutils::auth_client())
   expect_is(result, "SpatRaster")
+
+  expect_error(cov_water(shpdf, arcgisutils::auth_client()), "Shape must be an sf object")
+  expect_error(cov_water(shape, "token"), "Token must be an httr2_token")
 })
 
-test_that("{shinytest2} recording: e2e_cov_nightlight", {
+test_that("{shinytest2} recording: e2e_cov_water", {
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight")
   app$set_inputs(tabs = "resp")
@@ -13,9 +15,8 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")
   app$set_inputs(tabs = "cov")
-  app$set_inputs(covSel = "cov_nightlight")
-  app$set_inputs("cov_nightlight-year" = "2022")
-  app$click("cov_nightlight-run")
+  app$set_inputs(covSel = "cov_water")
+  app$click("cov_water-run")
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)

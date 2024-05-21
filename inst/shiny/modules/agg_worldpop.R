@@ -6,9 +6,7 @@ agg_worldpop_module_ui <- function(id) {
     selectInput(ns("method"), "Method", choices = c("Constrained", "Unconstrained")),
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     uiOutput(ns("year_out")),
-    checkboxInput(ns("log"),
-                  label = 'Plot as log values',
-                  value = TRUE),
+    shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
     actionButton(ns("run"), "Fetch data")
   )
 }
@@ -65,16 +63,16 @@ agg_worldpop_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(method = input$method,
-resolution = input$resolution,
-log = input$log,
-year = input$year)
+list(method = input$method, 
+resolution = input$resolution, 
+year = input$year, 
+log = input$log)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method)
-updateSelectInput(session, "resolution", selected = state$resolution)
-updateCheckboxInput(session, "log", value = state$log)
-updateSelectInput(session, "year", selected = state$year)
+updateSelectInput(session, "method", selected = state$method) 
+updateSelectInput(session, "resolution", selected = state$resolution) 
+updateSelectInput(session, "year", selected = state$year) 
+shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
 })

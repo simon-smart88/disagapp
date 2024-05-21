@@ -39,7 +39,7 @@ prep_resolution_module_server <- function(id, common, parent_session) {
 
       factors <- 2:20
       choices <- round(original_resolution$width * factors, 0)
-      selectInput(session$ns("resolution"), "New pixel width (m)", choices = choices)
+      selectInput(session$ns("resolution"), "New cell width (m)", choices = choices)
     })
 
 
@@ -56,11 +56,11 @@ prep_resolution_module_server <- function(id, common, parent_session) {
       }
 
       if (input$plot_type == "Histogram"){
-        plot <- list(graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Pixels per polygon"))
+        plot <- list(graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Cells per polygon"))
       }
 
       if (input$plot_type == "Boxplot"){
-        plot <- list(graphics::boxplot(pixels_per_poly$n_pixels, main = '', ylab = "Pixels per polygon"))
+        plot <- list(graphics::boxplot(pixels_per_poly$n_pixels, main = '', ylab = "Cells per polygon"))
       }
 
       leg <- legend("topright",  bty="n", legend = c(
@@ -84,8 +84,8 @@ prep_resolution_module_server <- function(id, common, parent_session) {
       factor <- as.integer(as.numeric(input$resolution) / original_resolution$width)
 
       # FUNCTION CALL ####
-      common$covs_prep_lores <- terra::aggregate(common$covs_prep, fact = factor, fun = "mean")
-      common$agg_prep_lores <- terra::aggregate(common$agg_prep, fact = factor, fun = "sum")
+      common$covs_prep_lores <- terra::aggregate(common$covs_prep, fact = factor, fun = "mean", na.rm = TRUE)
+      common$agg_prep_lores <- terra::aggregate(common$agg_prep, fact = factor, fun = "sum", na.rm = TRUE)
 
       common$logger %>% writeLog("Low resolution covariates have been created")
       common$meta$prep_resolution$used <- TRUE
@@ -96,11 +96,11 @@ prep_resolution_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(plot_type = input$plot_type,
+list(plot_type = input$plot_type, 
 resolution = input$resolution)
     },
     load = function(state) {
-updateSelectInput(session, "plot_type", selected = state$plot_type)
+updateSelectInput(session, "plot_type", selected = state$plot_type) 
 updateSelectInput(session, "resolution", selected = state$resolution)
     }
   ))

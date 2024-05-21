@@ -1,7 +1,7 @@
 pred_transfer_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    selectInput(ns("country"), "Select country", choices = c("", common$countries$NAME), multiple = FALSE),
+    uiOutput(ns("country_out")),
     uiOutput(ns("cov_out")),
     uiOutput(ns("agg_out")),
     actionButton(ns("run"), "Transfer predictions")
@@ -10,6 +10,10 @@ pred_transfer_module_ui <- function(id) {
 
 pred_transfer_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
+
+    output$country_out <- renderUI({
+      selectInput(session$ns("country"), "Select country", choices = c("", common$countries$NAME), multiple = FALSE)
+    })
 
     output$cov_out <- renderUI({
       if (!is.null(common$meta$cov_upload$used)){
@@ -79,14 +83,15 @@ pred_transfer_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("pred_transfer")
+    show_map(parent_session)
   })
 
   return(list(
     save = function() {
-      # Save any values that should be saved when the current session is saved
+list(country = input$country)
     },
     load = function(state) {
-      # Load
+updateSelectInput(session, "country", selected = state$country)
     }
   ))
 })

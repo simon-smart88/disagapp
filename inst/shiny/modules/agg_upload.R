@@ -9,9 +9,9 @@ agg_upload_module_ui <- function(id) {
     textInput(ns("name"),
               label = "Aggregation name",
               value = "Population"),
-    checkboxInput(ns("log"),
+    shinyWidgets::materialSwitch(ns("log"),
                   label = "Plot as log values",
-                  value = TRUE),
+                  value = TRUE, status = "success"),
     actionButton(ns("run"), "Upload file")
   )
 }
@@ -23,7 +23,7 @@ agg_upload_module_server <- function(id, common, parent_session) {
   output$example_out <- renderUI({
     gargoyle::watch("resp_example")
     if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
-      checkboxInput(session$ns("example"), "Use example data", TRUE)
+      shinyWidgets::materialSwitch(session$ns("example"), "Use example data", value = TRUE, status = "success")
     }
   })
 
@@ -66,14 +66,14 @@ agg_upload_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(example = input$example,
-name = input$name,
-log = input$log)
+list(name = input$name, 
+log = input$log, 
+example = input$example)
     },
     load = function(state) {
-updateCheckboxInput(session, "example", value = state$example)
-updateTextInput(session, "name", value = state$name)
-updateCheckboxInput(session, "log", value = state$log)
+updateTextInput(session, "name", value = state$name) 
+shinyWidgets::updateMaterialSwitch(session, "log", value = state$log) 
+shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))
 })

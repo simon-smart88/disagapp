@@ -1,5 +1,3 @@
-shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/shapes", package="disagapp")))
 
 test_that("Check resp_shape function works as expected", {
   result <- resp_shape(shpdf)

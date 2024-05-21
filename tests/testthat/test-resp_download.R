@@ -1,13 +1,3 @@
-df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
-                            "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
-                            "Planken","Vaduz"),
-                 "response" = 1:11)
-
-area_column <- "area"
-resp_column <- "response"
-country_code <- "LIE"
-admin_level <- "ADM1"
-
 test_that("Check resp_download function works as expected", {
   result <- resp_download(df, area_column, resp_column, country_code, admin_level)
   expect_is(result, "sf")
@@ -30,25 +20,29 @@ test_that("Check resp_download reports errors when data cannot be merged", {
   expect_equal(messages[1], "Response data for aaa could not be matched with an area\n")
 })
 
-
-#works, but not using the temp file
+#works using the temp file but only after uploading local first
 test_that("{shinytest2} recording: e2e_resp_download", {
 
   df_path <- tempfile(fileext = ".csv")
-  write.csv(df, df_path)
+  write.csv(df, df_path, row.names = FALSE)
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
   app$upload_file("resp_download-spread" = "../../lie.csv")
-  #app$upload_file("resp_download-spread" = df_path)
+  app$upload_file("resp_download-spread" = df_path)
   app$set_inputs("resp_download-response_column" = resp_column)
   app$set_inputs("resp_download-area_column" = area_column)
   app$set_inputs("resp_download-country" = "Liechtenstein")
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
-  common <- app$get_value(export = "common")
+
+  app$set_inputs(main = "Save")
+  save_file <- app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_file)
+
   expect_is(common$shape, "sf")
   expect_equal(nrow(common$shape), 11)
 })
+
 

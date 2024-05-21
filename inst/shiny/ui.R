@@ -51,11 +51,14 @@ tagList(
             "input.tabs == 'resp'",
             div("Component: Response Data", class = "componentName"),
             help_comp_ui("respHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "respSel", "Modules Available:",
               choiceNames = insert_modules_option_names("resp"),
               choiceValues = insert_modules_option_values("resp"),
-              selected = character(0)
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("resp")
@@ -65,11 +68,14 @@ tagList(
             "input.tabs == 'cov'",
             div("Component: Covariate Data", class = "componentName"),
             help_comp_ui("covHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "covSel", "Modules Available:",
               choiceNames = insert_modules_option_names("cov"),
               choiceValues = insert_modules_option_values("cov"),
-              selected = character(0)
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("cov")
@@ -79,11 +85,14 @@ tagList(
             "input.tabs == 'agg'",
             div("Component: Aggregation Data", class = "componentName"),
             help_comp_ui("aggHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "aggSel", "Modules Available:",
               choiceNames = insert_modules_option_names("agg"),
               choiceValues = insert_modules_option_values("agg"),
-              selected = character(0)
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("agg")
@@ -93,10 +102,14 @@ tagList(
             "input.tabs == 'prep'",
             div("Component: Prepare Data", class = "componentName"),
             help_comp_ui("prepHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "prepSel", "Modules Available:",
               choiceNames = insert_modules_option_names("prep"),
               choiceValues = insert_modules_option_values("prep"),
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("prep")
@@ -106,10 +119,14 @@ tagList(
             "input.tabs == 'fit'",
             div("Component: Fit Model", class = "componentName"),
             help_comp_ui("fitHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "fitSel", "Modules Available:",
               choiceNames = insert_modules_option_names("fit"),
               choiceValues = insert_modules_option_values("fit"),
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("fit")
@@ -119,10 +136,14 @@ tagList(
             "input.tabs == 'pred'",
             div("Component: Make Prediction", class = "componentName"),
             help_comp_ui("predHelp"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "predSel", "Modules Available:",
               choiceNames = insert_modules_option_names("pred"),
               choiceValues = insert_modules_option_values("pred"),
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("pred")
@@ -131,11 +152,14 @@ tagList(
           conditionalPanel(
             "input.tabs == 'rep'",
             div("Component: Reproduce", class = "componentName"),
-            radioButtons(
+            shinyWidgets::radioGroupButtons(
               "repSel", "Modules Available:",
               choiceNames = insert_modules_option_names("rep"),
               choiceValues = insert_modules_option_values("rep"),
-              selected = character(0)
+              selected = character(0),
+              direction = "vertical",
+              status = "outline-secondary",
+              width = "100%"
             ),
             tags$hr(),
             insert_modules_ui("rep")

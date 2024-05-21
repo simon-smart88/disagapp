@@ -26,6 +26,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       }
 
       #blank map
+      gargoyle::trigger("clear_map")
       common$map_layers = NULL
 
       # Ask each module to load its own data

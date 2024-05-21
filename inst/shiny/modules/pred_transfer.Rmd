@@ -4,5 +4,4 @@ Transfer the model to a different country
 ```
 
 ```{r, echo = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
-# R code to run {{var2}}
 ```

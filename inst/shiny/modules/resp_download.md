@@ -11,3 +11,7 @@
 * Choose the administrative level for which you wish to load the boundary data. "ADM1" is the first administrative subdivision of the country (e.g. state or county) and "ADM2" is the next subdivision.
 
 * Finally, click "Load data" and the data will be plotted on the map. If any rows in the spreadsheet cannot be matched with the boundary data, errors will be printed in the log window.
+
+**REFERENCES**
+
+- Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. <a href="https://doi.org/10.1371/journal.pone.0231866" target="_blank">DOI: 10.1371/journal.pone.0231866</a>.   

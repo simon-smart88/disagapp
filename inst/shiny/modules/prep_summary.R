@@ -3,7 +3,7 @@ prep_summary_module_ui <- function(id) {
   tagList(
     # UI
     actionButton(ns("run"), "Prepare covariate summary"),
-    checkboxInput(ns("remove"), "Remove identical columns?", FALSE),
+    shinyWidgets::materialSwitch(ns("remove"), "Remove identical rows?", FALSE, status = "success"),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
     actionButton(ns("resample"), "Resample covariates")
   )
@@ -13,6 +13,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
+    print("prep_summary")
     # WARNING ####
     if (length(common$covs) == 0) {
       common$logger %>% writeLog(type = "error", "Please upload covariates")
@@ -34,18 +35,26 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("prep_summary")
-    updateTabsetPanel(parent_session, "main", selected = "Results")
+    show_results(parent_session)
   })
 
     observeEvent(input$resample, {
       # WARNING ####
-      if (is.null(input$cov_table_columns_selected)) {
-        common$logger %>% writeLog(type = "error", "Please select a column from the table")
-        return()
+      if (isFALSE(getOption("shiny.testmode"))) {
+        if (is.null(input$cov_table_columns_selected)) {
+          common$logger %>% writeLog(type = "error", "Please select a column from the table")
+          return()
+        }
+        column_selected <- input$cov_table_columns_selected
       }
+
+      if (isTRUE(getOption("shiny.testmode"))) {
+        column_selected <- 1
+      }
+
       # FUNCTION CALL ####
       common$covs$Aggregation <- common$agg
-      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$cov_table_columns_selected]])
+      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[column_selected]])
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
@@ -57,22 +66,11 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
       # METADATA ####
       common$meta$prep_summary$used <- TRUE
-      common$meta$prep_summary$resample_target <- colnames(common$covs_summary$resampled)[[input$cov_table_columns_selected]]
+      common$meta$prep_summary$resample_target <- colnames(common$covs_summary$resampled)[[column_selected]]
       # TRIGGER
       gargoyle::trigger("prep_summary")
-      updateTabsetPanel(parent_session, "main", selected = "Results")
+      show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
-    })
-
-    observeEvent(input$scale, {
-      # WARNING ####
-      if (is.null(common$covs_prep)) {
-        common$logger %>% writeLog(type = "error", "Please resample the rasters first")
-        return()
-      }
-      common$covs_prep <- terra::scale(common$covs_prep, scale = TRUE, center = TRUE)
-      common$logger %>% writeLog("Covariates have been scaled")
-      common$meta$prep_summary$scale <- TRUE
     })
 
     output$cov_table <- DT::renderDataTable({
@@ -101,7 +99,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 list(remove = input$remove)
     },
     load = function(state) {
-updateCheckboxInput(session, "remove", value = state$remove)
+shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))
 })

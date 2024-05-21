@@ -53,14 +53,14 @@ if (method == "Constrained"){
 
 # call the API and return error if it doesn't work
 api_url <- glue::glue("{base_url}{product}?iso3={country_code}")
-req <- httr::GET(api_url)
+req <- httr2::request(api_url) |> httr2::req_perform()
 if (req$status_code != 200){
   logger %>% writeLog(type="error", "The requested data could not be found")
   return()
 }
 
 # fetch the API call content and return an error if it is empty
-cont <- httr::content(req)
+cont <- httr2::resp_body_json(req)
 if (length(cont$data) == 0){
   logger %>% writeLog(type="error", "The requested data could not be found")
   return()

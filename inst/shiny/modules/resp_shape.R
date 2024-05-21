@@ -88,8 +88,7 @@ resp_shape_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(
-resp_var = input$resp_var)
+list(resp_var = input$resp_var)
     },
     load = function(state) {
 updateSelectInput(session, "resp_var", selected = state$resp_var)

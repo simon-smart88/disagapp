@@ -17,16 +17,15 @@
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
-  #Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866.
-
   url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{country_code}/{admin_level}/")
-  req <- httr::GET(url)
+  req <- httr2::request(url) |> httr2::req_perform()
+
   if (req$status_code != 200){
     logger %>% writeLog("The requested boundaries could not be downloaded")
     return()
   } else {
 
-    cont <- httr::content(req)
+    cont <- httr2::resp_body_json(req)
     shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
 
     shape <- shape %>%

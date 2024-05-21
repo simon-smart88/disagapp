@@ -37,9 +37,9 @@ resp_edit_module_server <- function(id, common, parent_session) {
     common$shape <- shape
 
     # METADATA ####
-    common$meta$edit_shape$poly <- common$poly
-    common$meta$edit_shape$type <- input$type
-    common$meta$edit_shape$used <- TRUE
+    common$meta$resp_edit$poly <- common$poly
+    common$meta$resp_edit$type <- input$type
+    common$meta$resp_edit$used <- TRUE
     # TRIGGER
     gargoyle::trigger("resp_edit")
   })
@@ -70,9 +70,9 @@ resp_edit_module_map <- function(map, common) {
 resp_edit_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    resp_edit_knit = !is.null(common$meta$edit_shape$used),
-    resp_edit_type = common$meta$edit_shape$type,
-    resp_edit_poly = printVecAsis(common$meta$edit_shape$poly)
+    resp_edit_knit = !is.null(common$meta$resp_edit$used),
+    resp_edit_type = common$meta$resp_edit$type,
+    resp_edit_poly = printVecAsis(common$meta$resp_edit$poly)
   )
 }
 

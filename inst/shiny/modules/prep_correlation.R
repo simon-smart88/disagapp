@@ -14,7 +14,7 @@ prep_correlation_module_ui <- function(id) {
                 choices = c("Lower" = "lower",
                             "Upper" = "upper",
                             "Full" = "full")),
-    checkboxInput(ns("self"), "Include self-correlations?", value = FALSE),
+    shinyWidgets::materialSwitch(ns("self"), "Include self-correlations?", value = FALSE, status = "success"),
     actionButton(ns("run"), "Plot correlation matrix"),
     uiOutput(ns("cov_layers_out")),
     actionButton(ns("remove"), "Remove selected covariate")
@@ -67,6 +67,9 @@ prep_correlation_module_server <- function(id, common, parent_session) {
     # UPDATE COMMON ####
     for (covariate in input$cov_layers){
     common$covs_prep[[covariate]] <- NULL
+    if (!is.null(common$covs_prep_lores)){
+      common$covs_prep_lores[[covariate]] <- NULL
+    }
     }
     # METADATA ####
     common$meta$prep_correlation$removed <- TRUE
@@ -77,14 +80,14 @@ prep_correlation_module_server <- function(id, common, parent_session) {
     save = function() {
 list(method = input$method,
 type = input$type,
-self = input$self,
-cov_layers = input$cov_layers)
+cov_layers = input$cov_layers,
+self = input$self)
     },
     load = function(state) {
 updateSelectInput(session, "method", selected = state$method)
 updateSelectInput(session, "type", selected = state$type)
-updateCheckboxInput(session, "self", value = state$self)
 updateSelectInput(session, "cov_layers", selected = state$cov_layers)
+shinyWidgets::updateMaterialSwitch(session, "self", value = state$self)
     }
   ))
 })

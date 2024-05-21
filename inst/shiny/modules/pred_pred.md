@@ -1,13 +1,9 @@
-### **Module:**
+### **Module: Make predictions**
 
 **BACKGROUND**
 
-text
+This module generates predictions from the fitted model for the area of interest. 
 
-**IMPLEMENTATION**
+**IMPLEMENTATION** 
 
-text
-
-**REFERENCES**
-
-references
+Click "Produce model predictions" and the output will be visible on the map. 
