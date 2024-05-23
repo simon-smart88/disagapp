@@ -183,6 +183,12 @@ tagList(
                 id = "messageLog",
                 div(id = "logHeader", div(id = "logContent"))
               )
+            ),
+            column(
+              2,
+              offset = 6,
+              br(),
+              textOutput("running_tasks")
             )
           )
         ),

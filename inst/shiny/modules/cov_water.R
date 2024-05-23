@@ -2,7 +2,7 @@ cov_water_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     uiOutput(ns("token_out")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
@@ -24,6 +24,12 @@ cov_water_module_server <- function(id, common, parent_session) {
       token
     })
 
+  common$tasks$cov_water <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_water(...)
+    })
+  }) |> bslib::bind_task_button("run")
+
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
@@ -43,17 +49,27 @@ cov_water_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    water <- cov_water(common$shape, token(), common$logger)
-    # LOAD INTO COMMON ####
-    common$covs[["Distance to water"]] <- water
-    common$logger %>% writeLog("Distance to water data has been downloaded")
-    close_loading_modal()
+    common$tasks$cov_water$invoke(common$shape, token(), common$logger, TRUE)
+
     # METADATA ####
     common$meta$cov_water$used <- TRUE
     common$meta$cov_water$token <- input$token
-    # TRIGGER
-    gargoyle::trigger("cov_water")
+  })
+
+
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$cov_nightlight$result()
+    results$suspend()
+    if (class(result) == "PackedSpatRaster"){
+      common$covs[["Distance to water"]] <- unwrap_terra(result)
+      common$logger %>% writeLog("Distance to water data has been downloaded")
+      # TRIGGER
+      gargoyle::trigger("cov_water")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
+    }
+
   })
 
 })

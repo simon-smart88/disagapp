@@ -7,12 +7,18 @@ cov_landuse_module_ui <- function(id) {
                                     "MossLichen", "PermanentWater", "SeasonalWater",
                                   "Shrub", "Snow", "Tree")),
     selectInput(ns("year"), "Year", choices = 2015:2019, selected = 2019),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
 cov_landuse_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
+
+    common$tasks$cov_landuse <- ExtendedTask$new(function(...) {
+      promises::future_promise({
+        cov_landuse(...)
+      })
+    }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -25,32 +31,38 @@ cov_landuse_module_server <- function(id, common, parent_session) {
       common$logger %>% writeLog(type = "error", "Please select the land use categories to download")
       return()
     }
+
     if (is.null(common$shape)) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    land_use <- cov_landuse(common$shape, input$year, input$uses)
-    # LOAD INTO COMMON ####
-    common$covs <- append(common$covs, land_use)
-    close_loading_modal()
-    common$logger %>% writeLog("Land use data has been downloaded")
+    common$tasks$cov_landuse$invoke(common$shape, input$year, input$uses, TRUE)
+    common$logger %>% writeLog("Starting to download land use data")
     # METADATA ####
     common$meta$cov_landuse$used <- TRUE
     common$meta$cov_landuse$uses <- input$uses
     common$meta$cov_landuse$year <- input$year
+  })
+
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$cov_landuse$result()
+    result <- unwrap_terra(result)
+    common$covs <- append(common$covs, result)
+    results$suspend()
+    common$logger %>% writeLog("Land use data has been downloaded")
     # TRIGGER
     gargoyle::trigger("cov_landuse")
   })
 
   return(list(
     save = function() {
-list(uses = input$uses, 
+list(uses = input$uses,
 year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = state$uses) 
+updateSelectInput(session, "uses", selected = state$uses)
 updateSelectInput(session, "year", selected = state$year)
     }
   ))

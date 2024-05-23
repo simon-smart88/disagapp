@@ -23,7 +23,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
+cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
 
   layers  <-  c("Mean temperature",
                 "Mean diurnal range",
@@ -47,8 +47,7 @@ cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
 
   for (v in variables){
   if (!(v %in% layers)){
-    logger %>% writeLog(type = "error", glue::glue("{v} is not a valid bioclim variable"))
-    return()
+    stop(glue::glue("{v} is not a valid bioclim variable"))
   }}
 
   bioclim_ras <- terra::rast(glue::glue("https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{country_code}_wc2.1_30s_bio.tif"))
@@ -56,5 +55,8 @@ cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
   names(bioclim_ras) <- layers
   bioclim_ras <- as.list(bioclim_ras[[variables]])
   names(bioclim_ras) <- variables
+  if (async){
+    bioclim_ras <- wrap_terra(bioclim_ras)
+  }
   return(bioclim_ras)
 }

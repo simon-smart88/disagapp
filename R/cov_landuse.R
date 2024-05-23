@@ -15,7 +15,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_landuse <- function(shape, year, landuses) {
+cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
   #determine which 20 degree tiles are required
   bbx <- sf::st_bbox(shape)/20
@@ -55,6 +55,10 @@ cov_landuse <- function(shape, year, landuses) {
     raster_tiles <- terra::aggregate(raster_tiles, fact = 10, fun = "mean")
     raster_layers[[tile_name]] <- raster_tiles
     names(raster_layers[[tile_name]]) <- tile_name
+  }
+
+  if (async){
+    raster_layers <- wrap_terra(raster_layers)
   }
 
   return(raster_layers)

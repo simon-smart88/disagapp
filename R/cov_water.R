@@ -16,7 +16,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_water <- function(shape, token, logger = NULL) {
+cov_water <- function(shape, token, logger = NULL, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
     logger %>% writeLog(type = "error", "Shape must be an sf object")
@@ -46,6 +46,10 @@ cov_water <- function(shape, token, logger = NULL) {
   ras <- terra::crop(ras, shape, mask = TRUE)
 
   names(ras) <- "Distance to water"
+
+  if (async){
+    ras <- wrap_terra(ras)
+  }
 
   return(ras)
 }

@@ -37,7 +37,13 @@ function(input, output, session) {
                              type = "warning")
       check_online$destroy()
     }
-})
+  })
+
+  output$running_tasks <- renderText({
+    status <- unlist(lapply(common$tasks, function(x){x$status()}))
+    running <- length(status[status == "running"])
+    glue::glue("There are currently {running} tasks running")
+  })
 
   ########################## #
   # REACTIVE VALUES LISTS ####
@@ -105,7 +111,7 @@ function(input, output, session) {
       if (module$id == "rep_markdown"){
         return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
       } else {
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map))
       }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&

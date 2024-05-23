@@ -27,7 +27,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
   })
 
 
-  cov_nightlight_task <- ExtendedTask$new(function(...) {
+  common$tasks$cov_nightlight <- ExtendedTask$new(function(...) {
     promises::future_promise({
       cov_nightlight(...)
     })
@@ -53,7 +53,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    cov_nightlight_task$invoke(common$shape, input$year, bearer(), common$logger, TRUE)
+    common$tasks$cov_nightlight$invoke(common$shape, input$year, bearer(), TRUE)
     common$logger %>% writeLog("Starting to download nightlight data")
     results$resume()
     # METADATA ####
@@ -64,12 +64,17 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
 
   results <- observe({
     # LOAD INTO COMMON ####
-    result <- cov_nightlight_task$result()
-    common$covs[["Nighttime light"]] <- terra::unwrap(result)
+    result <- common$tasks$cov_nightlight$result()
     results$suspend()
-    common$logger %>% writeLog("Nighttime light data has been downloaded")
-    # TRIGGER
-    gargoyle::trigger("cov_nightlight")
+    if (class(result) == "PackedSpatRaster"){
+      common$covs[["Nighttime light"]] <- unwrap_terra(result)
+      common$logger %>% writeLog("Nighttime light data has been downloaded")
+      # TRIGGER
+      gargoyle::trigger("cov_nightlight")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
+    }
+
   })
 
   return(list(

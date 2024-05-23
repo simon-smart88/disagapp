@@ -19,21 +19,33 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_nightlight <- function(shape, year, bearer, logger = NULL, async = FALSE) {
+cov_nightlight <- function(shape, year, bearer, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
-    logger %>% writeLog(type = "error", "Shape must be an sf object")
-    return()
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   if (year > 2022 | year < 2012){
-    logger %>% writeLog(type = "error", "Night time illumination data is only available between 2012 and 2022")
-    return()
+    message <- "Nighttime data is only available between 2012 and 2022"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   if (nchar(bearer) < 200){
-    logger %>% writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
-    return()
+    message <- "That doesn't look like a valid NASA bearer token"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
 ras <- blackmarbler::bm_raster(roi_sf = shape,
@@ -41,9 +53,14 @@ ras <- blackmarbler::bm_raster(roi_sf = shape,
                         date = year,
                         bearer = bearer,
                         quiet = TRUE)
+
 if (is.null(ras)){
-  logger %>% writeLog(type = "error", "An error occurred whilst trying to download the data")
-  return()
+  message <- "An error occurred whilst trying to download nighttime light data"
+  if (async){
+    return(message)
+  } else {
+    stop(message)
+  }
 } else {
   ras <- terra::rast(ras)
   names(ras) <- "Nighttime light"
