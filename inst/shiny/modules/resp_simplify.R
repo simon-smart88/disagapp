@@ -9,7 +9,7 @@ resp_simplify_module_ui <- function(id) {
   )
 }
 
-resp_simplify_module_server <- function(id, common, parent_session) {
+resp_simplify_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

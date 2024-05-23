@@ -11,7 +11,7 @@ agg_worldpop_module_ui <- function(id) {
   )
 }
 
-agg_worldpop_module_server <- function(id, common, parent_session) {
+agg_worldpop_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$country_out <- country_out(session, common)

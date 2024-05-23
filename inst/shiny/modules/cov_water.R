@@ -6,7 +6,7 @@ cov_water_module_ui <- function(id) {
   )
 }
 
-cov_water_module_server <- function(id, common, parent_session) {
+cov_water_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     #use the environmental variable if set, if not display box to enter it
@@ -65,6 +65,7 @@ cov_water_module_server <- function(id, common, parent_session) {
       common$covs[["Distance to water"]] <- unwrap_terra(result)
       common$logger %>% writeLog("Distance to water data has been downloaded")
       # TRIGGER
+      do.call("cov_water_module_map", list(map, common))
       gargoyle::trigger("cov_water")
     } else {
       common$logger %>% writeLog(type = "error", result)

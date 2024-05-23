@@ -8,7 +8,7 @@ cov_nightlight_module_ui <- function(id) {
   )
 }
 
-cov_nightlight_module_server <- function(id, common, parent_session) {
+cov_nightlight_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   #use the environmental variable if set, if not display box to enter it
@@ -71,6 +71,7 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
       common$logger %>% writeLog("Nighttime light data has been downloaded")
       # TRIGGER
       gargoyle::trigger("cov_nightlight")
+      do.call("cov_nightlight_module_map", list(map, common))
     } else {
       common$logger %>% writeLog(type = "error", result)
     }

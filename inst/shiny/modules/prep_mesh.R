@@ -8,7 +8,7 @@ prep_mesh_module_ui <- function(id) {
   )
 }
 
-prep_mesh_module_server <- function(id, common, parent_session) {
+prep_mesh_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   #update default mesh arguments

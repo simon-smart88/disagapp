@@ -97,6 +97,12 @@ function(input, output, session) {
       observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
       })})
 
+  ######################## #
+  ### MAPPING ####
+  ######################## #
+
+  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
+
   ####################
   ### INITIALISATION ####
   ###################
@@ -121,11 +127,7 @@ function(input, output, session) {
     })
   })
 
-  ######################## #
-  ### MAPPING ####
-  ######################## #
 
-  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
   ################################
   ### SAVE / LOAD  ####

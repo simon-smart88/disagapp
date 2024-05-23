@@ -10,7 +10,7 @@ rep_markdown_module_ui <- function(id) {
   )
 }
 
-rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MODULES) {
+rep_markdown_module_server <- function(id, common, parent_session, map, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
 
     output$cov_chunks_out <- renderUI({

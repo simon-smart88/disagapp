@@ -10,7 +10,7 @@ resp_async_module_ui <- function(id) {
   )
 }
 
-resp_async_module_server <- function(id, common, parent_session) {
+resp_async_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   gargoyle::init("resp_async_a")

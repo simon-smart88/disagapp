@@ -14,7 +14,7 @@ resp_download_module_ui <- function(id) {
   )
 }
 
-resp_download_module_server <- function(id, common, parent_session) {
+resp_download_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$country_out <- country_out(session, common)

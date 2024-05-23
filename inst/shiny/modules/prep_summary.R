@@ -9,7 +9,7 @@ prep_summary_module_ui <- function(id) {
   )
 }
 
-prep_summary_module_server <- function(id, common, parent_session) {
+prep_summary_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

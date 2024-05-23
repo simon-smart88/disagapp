@@ -8,7 +8,7 @@ cov_access_module_ui <- function(id) {
   )
 }
 
-cov_access_module_server <- function(id, common, parent_session) {
+cov_access_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   common$tasks$cov_access <- ExtendedTask$new(function(...) {
@@ -47,6 +47,7 @@ cov_access_module_server <- function(id, common, parent_session) {
         common$logger %>% writeLog("Accessibility data has been downloaded")
         # TRIGGER
         gargoyle::trigger("cov_access")
+        do.call("cov_access_module_map", list(map, common))
       } else {
         common$logger %>% writeLog(type = "error", result)
       }

@@ -8,7 +8,7 @@ pred_transfer_module_ui <- function(id) {
   )
 }
 
-pred_transfer_module_server <- function(id, common, parent_session) {
+pred_transfer_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$country_out <- renderUI({

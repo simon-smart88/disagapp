@@ -55,16 +55,16 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       else main_input[[glue("{component()}Sel")]]
     })
 
-    observe({
-      req(module())
-      current_mod <- module()
-      gargoyle::on(current_mod, {
-        map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
-        if (!is.null(map_fx)) {
-          do.call(map_fx, list(map, common = common))
-        }
-      })
-    })
+    # observe({
+    #   req(module())
+    #   current_mod <- module()
+    #   gargoyle::on(current_mod, {
+    #     map_fx <- COMPONENT_MODULES[[component()]][[module()]]$map_function
+    #     if (!is.null(map_fx)) {
+    #       do.call(map_fx, list(map, common = common))
+    #     }
+    #   })
+    # })
 
     # Add the draw toolbar when using the resp_edit module
     observe({
