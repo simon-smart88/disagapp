@@ -5,6 +5,7 @@ prep_summary_module_ui <- function(id) {
     actionButton(ns("run"), "Prepare covariate summary"),
     shinyWidgets::materialSwitch(ns("remove"), "Remove identical rows?", FALSE, status = "success"),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
+    uiOutput(ns("resample_layer_out")),
     actionButton(ns("resample"), "Resample covariates")
   )
 }
@@ -12,8 +13,21 @@ prep_summary_module_ui <- function(id) {
 prep_summary_module_server <- function(id, common, parent_session) {
   moduleServer(id, function(input, output, session) {
 
+    output$resample_layer_out <- renderUI({
+      gargoyle::watch("cov_access")
+      gargoyle::watch("cov_bioclim")
+      gargoyle::watch("cov_landuse")
+      gargoyle::watch("cov_nightlight")
+      gargoyle::watch("cov_water")
+      gargoyle::watch("cov_upload")
+      gargoyle::watch("agg_worldpop")
+      gargoyle::watch("agg_upload")
+      gargoyle::watch("agg_uniform")
+      selectInput(session$ns("resample_layer"), "Covariate to use as template", choices = c("", names(common$covs), names(common$agg)), multiple = FALSE)
+    })
+
+
   observeEvent(input$run, {
-    print("prep_summary")
     # WARNING ####
     if (length(common$covs) == 0) {
       common$logger %>% writeLog(type = "error", "Please upload covariates")
@@ -39,22 +53,15 @@ prep_summary_module_server <- function(id, common, parent_session) {
   })
 
     observeEvent(input$resample, {
-      # WARNING ####
-      if (isFALSE(getOption("shiny.testmode"))) {
-        if (is.null(input$cov_table_columns_selected)) {
-          common$logger %>% writeLog(type = "error", "Please select a column from the table")
-          return()
-        }
-        column_selected <- input$cov_table_columns_selected
-      }
 
-      if (isTRUE(getOption("shiny.testmode"))) {
-        column_selected <- 1
+      if (input$resample_layer == "") {
+        common$logger %>% writeLog(type = "error", "Please select a covariate to use as a template for resampling")
+        return()
       }
 
       # FUNCTION CALL ####
       common$covs$Aggregation <- common$agg
-      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[column_selected]])
+      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$resample_layer]])
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
@@ -66,7 +73,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
 
       # METADATA ####
       common$meta$prep_summary$used <- TRUE
-      common$meta$prep_summary$resample_target <- colnames(common$covs_summary$resampled)[[column_selected]]
+      common$meta$prep_summary$resample_target <- input$resample_layer
       # TRIGGER
       gargoyle::trigger("prep_summary")
       show_results(parent_session)
@@ -77,7 +84,7 @@ prep_summary_module_server <- function(id, common, parent_session) {
     gargoyle::watch("prep_summary")
     if (input$table == "Original"){
       req(common$covs_summary$original)
-      out <- DT::datatable(common$covs_summary$original, selection = list(mode = "single", target = "column"), autoHideNavigation = TRUE,
+      out <- DT::datatable(common$covs_summary$original, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
                                           columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)

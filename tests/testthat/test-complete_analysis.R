@@ -48,6 +48,7 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
 
   app$set_inputs(tabs = "prep")
   app$set_inputs(prepSel = "prep_summary")
+  app$set_inputs("prep_summary-resample_layer" = "Mean temperature")
   app$click("prep_summary-run")
   app$click("prep_summary-resample")
 
