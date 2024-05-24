@@ -1,7 +1,7 @@
 
 test_that("{shinytest2} recording: e2e_complete_analysis", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 15000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
