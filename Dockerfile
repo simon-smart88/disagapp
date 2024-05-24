@@ -37,6 +37,8 @@ RUN sudo chown -R shiny:shiny /srv/shiny-server
 # Add configuration to enable log preservation
 RUN echo 'preserve_logs true;' >> /etc/shiny-server/shiny-server.conf
 
+COPY .Renviron /srv/shiny-server/disagapp/.Renviron
+
 USER shiny
 
 # run app
