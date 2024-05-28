@@ -40,6 +40,15 @@ prep_final_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+
+    if (is.null(common$shape)) {
+      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      return()
+    }
+    if (is.null(common$covs)) {
+      common$logger %>% writeLog(type = "error", "Please load covariates first")
+      return()
+    }
     if (input$id_var == "") {
       common$logger %>% writeLog(type = "error", "Please select the ID variable")
       return()
@@ -100,15 +109,15 @@ prep_final_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(id_var = input$id_var, 
-resp_var = input$resp_var, 
-resolution = input$resolution, 
+list(id_var = input$id_var,
+resp_var = input$resp_var,
+resolution = input$resolution,
 na_action = input$na_action)
     },
     load = function(state) {
-updateSelectInput(session, "id_var", selected = state$id_var) 
-updateSelectInput(session, "resp_var", selected = state$resp_var) 
-updateSelectInput(session, "resolution", selected = state$resolution) 
+updateSelectInput(session, "id_var", selected = state$id_var)
+updateSelectInput(session, "resp_var", selected = state$resp_var)
+updateSelectInput(session, "resolution", selected = state$resolution)
 shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
     }
   ))
