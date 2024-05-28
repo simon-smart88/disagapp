@@ -60,6 +60,16 @@ resp_download_module_server <- function(id, common, parent_session) {
       return()
     }
 
+    if (is.null(input$spread)) {
+      common$logger %>% writeLog(type = "error", "Please upload a spreadsheet")
+      return()
+    }
+
+    if (input$country == "") {
+      common$logger %>% writeLog(type = "error", "Please select a country")
+      return()
+    }
+
     if (input$response_column == "") {
       common$logger %>% writeLog(type = "error", "Please select the response column")
       return()
@@ -100,13 +110,13 @@ resp_download_module_server <- function(id, common, parent_session) {
 
   return(list(
     save = function() {
-list(admin = input$admin, 
-area_column = input$area_column, 
+list(admin = input$admin,
+area_column = input$area_column,
 response_column = input$response_column)
     },
     load = function(state) {
-updateSelectInput(session, "admin", selected = state$admin) 
-updateSelectInput(session, "area_column", selected = state$area_column) 
+updateSelectInput(session, "admin", selected = state$admin)
+updateSelectInput(session, "area_column", selected = state$area_column)
 updateSelectInput(session, "response_column", selected = state$response_column)
     }
   ))

@@ -64,13 +64,13 @@ resp_shape_module_server <- function(id, common, parent_session) {
       return()
     }
 
-    if (input$resp_var == "") {
-      common$logger %>% writeLog(type = "error", "Please select a response variable")
+    if (is.null(input$shape)) {
+      common$logger %>% writeLog(type = "error", "Please upload a shapefile")
       return()
     }
 
-    if (is.null(input$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload a shapefile")
+    if (input$resp_var == "") {
+      common$logger %>% writeLog(type = "error", "Please select a response variable")
       return()
     }
 
