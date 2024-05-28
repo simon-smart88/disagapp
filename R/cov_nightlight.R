@@ -34,13 +34,19 @@ cov_nightlight <- function(shape, year, bearer, logger = NULL) {
     return()
   }
 
-ras <- blackmarbler::bm_raster(roi_sf = shape,
+ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                         product_id = "VNP46A4",
                         date = year,
                         bearer = bearer,
-                        quiet = TRUE)
+                        quiet = TRUE)},
+                error = function(x){logger %>% writeLog(type = "error",
+                paste0("An error occurred whilst trying to download the data: ", x))
+                NULL},
+                warning = function(x){logger %>% writeLog(type = "error",
+                paste0("An error occurred whilst trying to download the data: ", x))
+                NULL})
+
 if (is.null(ras)){
-  logger %>% writeLog(type = "error", "An error occurred whilst trying to download the data")
   return()
 } else {
   ras <- terra::rast(ras)

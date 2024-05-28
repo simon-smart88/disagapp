@@ -24,16 +24,20 @@ cov_access_module_server <- function(id, common, parent_session) {
     }
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    access <- cov_access(common$shape, input$layer)
-    # LOAD INTO COMMON ####
-    common$covs[[input$layer]] <- access
-    common$logger %>% writeLog("Accessibility data has been downloaded")
+    access <- cov_access(common$shape, input$layer, common$logger)
     close_loading_modal()
-    # METADATA ####
-    common$meta$cov_access$used <- TRUE
-    common$meta$cov_access$layer <- input$layer
-    # TRIGGER
-    gargoyle::trigger("cov_access")
+
+    if (!is.null(access)){
+      # LOAD INTO COMMON ####
+      common$covs[[input$layer]] <- access
+      common$logger %>% writeLog("Accessibility data has been downloaded")
+
+      # METADATA ####
+      common$meta$cov_access$used <- TRUE
+      common$meta$cov_access$layer <- input$layer
+      # TRIGGER
+      gargoyle::trigger("cov_access")
+    }
   })
 
   return(list(

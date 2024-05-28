@@ -7,17 +7,30 @@
 #' @param layer character. The layer to be returned - one of:
 #' `Travel Time to Cities (2015)`, `Motorized Travel Time to Healthcare (2020)`
 #' or `Walking Only Travel Time to Healthcare (2020)`
+#' @param logger Stores all notification messages to be displayed in the Log
+#' Window. Insert the logger reactive list here for running in
+#' shiny, otherwise leave the default NULL
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_access <- function(shape, layer) {
+cov_access <- function(shape, layer, logger) {
 
   datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
                    `Motorized Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Motorized_Travel_Time_to_Healthcare",
                    `Walking Only Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Walking_Only_Travel_Time_To_Healthcare")
 
-  acc <- malariaAtlas::getRaster(dataset_id = datasets[[layer]], shp = shape)
+  acc <- tryCatch({malariaAtlas::getRaster(dataset_id = datasets[[layer]], shp = shape)},
+                  error = function(x){logger %>% writeLog(type = "error",
+                  paste0("An error occurred whilst trying to download the data: ", x))
+                  NULL},
+                  warning = function(x){logger %>% writeLog(type = "error",
+                  paste0("An error occurred whilst trying to download the data: ", x))
+                  NULL}
+  )
+  if (is.null(acc)){
+    return()
+  }
   return(acc)
 }
 

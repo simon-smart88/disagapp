@@ -48,25 +48,29 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     light <- cov_nightlight(common$shape, input$year, bearer(), common$logger)
-    # LOAD INTO COMMON ####
-    common$covs[["Nighttime light"]] <- light
-    common$logger %>% writeLog("Nighttime light data has been downloaded")
     close_loading_modal()
-    # METADATA ####
-    common$meta$cov_nightlight$used <- TRUE
-    common$meta$cov_nightlight$year <- input$year
-    common$meta$cov_nightlight$bearer <- input$bearer
-    # TRIGGER
-    gargoyle::trigger("cov_nightlight")
+
+    if (!is.null(light)){
+      # LOAD INTO COMMON ####
+      common$covs[["Nighttime light"]] <- light
+      common$logger %>% writeLog("Nighttime light data has been downloaded")
+
+      # METADATA ####
+      common$meta$cov_nightlight$used <- TRUE
+      common$meta$cov_nightlight$year <- input$year
+      common$meta$cov_nightlight$bearer <- input$bearer
+      # TRIGGER
+      gargoyle::trigger("cov_nightlight")
+    }
   })
 
   return(list(
     save = function() {
-list(year = input$year, 
+list(year = input$year,
 bearer = input$bearer)
     },
     load = function(state) {
-updateSelectInput(session, "year", selected = state$year) 
+updateSelectInput(session, "year", selected = state$year)
 updateTextInput(session, "bearer", value = state$bearer)
     }
   ))

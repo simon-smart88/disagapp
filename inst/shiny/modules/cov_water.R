@@ -45,15 +45,19 @@ cov_water_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     water <- cov_water(common$shape, token(), common$logger)
-    # LOAD INTO COMMON ####
-    common$covs[["Distance to water"]] <- water
-    common$logger %>% writeLog("Distance to water data has been downloaded")
     close_loading_modal()
-    # METADATA ####
-    common$meta$cov_water$used <- TRUE
-    common$meta$cov_water$token <- input$token
-    # TRIGGER
-    gargoyle::trigger("cov_water")
+
+    if (!is.null(water)){
+      # LOAD INTO COMMON ####
+      common$covs[["Distance to water"]] <- water
+      common$logger %>% writeLog("Distance to water data has been downloaded")
+
+      # METADATA ####
+      common$meta$cov_water$used <- TRUE
+      common$meta$cov_water$token <- input$token
+      # TRIGGER
+      gargoyle::trigger("cov_water")
+    }
   })
 
 })

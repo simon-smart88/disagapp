@@ -49,12 +49,14 @@ cov_bioclim_module_server <- function(id, common, parent_session) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    bioclim <- cov_bioclim(country_code, input$variables, common$shape)
+    bioclim <- cov_bioclim(country_code, input$variables, common$shape, common$logger)
+    close_loading_modal()
+    gargoyle::trigger("country_out")
 
+    if (!is.null(bioclim)){
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, bioclim)
     common$selected_country <- input$country
-    close_loading_modal()
     common$logger %>% writeLog("Bioclim data has been downloaded")
 
     # METADATA ####
@@ -64,7 +66,7 @@ cov_bioclim_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("cov_bioclim")
-    gargoyle::trigger("country_out")
+    }
   })
 
   return(list(

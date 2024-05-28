@@ -40,38 +40,41 @@ agg_worldpop_module_server <- function(id, common, parent_session) {
     show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     agg_ras <- agg_worldpop(common$shape, country_code, input$method, input$resolution, input$year, common$logger)
-
-    # LOAD INTO COMMON ####
-    common$agg <- agg_ras
-    common$selected_country <- input$country
-    close_loading_modal()
-    common$logger %>% writeLog("Worldpop data has been downloaded")
-
-    # METADATA ####
-    common$meta$agg_worldpop$name <- "Population"
-    common$meta$agg_worldpop$log <- input$log
-    common$meta$agg_worldpop$used <- TRUE
-    common$meta$agg_worldpop$country <- country_code
-    common$meta$agg_worldpop$method <- input$method
-    common$meta$agg_worldpop$resolution <- input$resolution
-    common$meta$agg_worldpop$year <- input$year
-
-    # TRIGGER
-    gargoyle::trigger("agg_worldpop")
     gargoyle::trigger("country_out")
+    close_loading_modal()
+
+    if (!is.null(agg_ras)){
+      # LOAD INTO COMMON ####
+      common$agg <- agg_ras
+      common$selected_country <- input$country
+
+      common$logger %>% writeLog("Worldpop data has been downloaded")
+
+      # METADATA ####
+      common$meta$agg_worldpop$name <- "Population"
+      common$meta$agg_worldpop$log <- input$log
+      common$meta$agg_worldpop$used <- TRUE
+      common$meta$agg_worldpop$country <- country_code
+      common$meta$agg_worldpop$method <- input$method
+      common$meta$agg_worldpop$resolution <- input$resolution
+      common$meta$agg_worldpop$year <- input$year
+
+      # TRIGGER
+      gargoyle::trigger("agg_worldpop")
+    }
   })
 
   return(list(
     save = function() {
-list(method = input$method, 
-resolution = input$resolution, 
-year = input$year, 
+list(method = input$method,
+resolution = input$resolution,
+year = input$year,
 log = input$log)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method) 
-updateSelectInput(session, "resolution", selected = state$resolution) 
-updateSelectInput(session, "year", selected = state$year) 
+updateSelectInput(session, "method", selected = state$method)
+updateSelectInput(session, "resolution", selected = state$resolution)
+updateSelectInput(session, "year", selected = state$year)
 shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
