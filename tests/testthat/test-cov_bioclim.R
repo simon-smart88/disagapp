@@ -14,7 +14,7 @@ test_that("Check cov_bioclim function returns errors as expected", {
 
 test_that("{shinytest2} recording: e2e_cov_nightlight", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 30000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -30,17 +30,13 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   app$set_inputs(covSel = "cov_bioclim")
   app$set_inputs("cov_bioclim-country" = "Liechtenstein")
   app$set_inputs("cov_bioclim-variables" = c("Mean temperature", "Mean diurnal range"))
-  app$click("cov_bioclim-run")
-
-  #not needed but save fails without this
-  common <- app$get_value(export = "common")
-  expect_is(common$shape, "sf")
+  app$click(selector = "#cov_bioclim-run")
+  app$wait_for_value(input = "cov_bioclim-complete")
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
 
-  # common <- app$get_value(export = "common")
   common$covs <- unwrap_terra(common$covs)
   expect_is(common$covs[[1]], "SpatRaster")
   expect_equal(length(common$covs), 2)

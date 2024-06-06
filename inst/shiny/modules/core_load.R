@@ -20,7 +20,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       temp <- temp <- readRDS(input$load_session$datapath)
       temp_names <- names(temp)
       #exclude the non-public and function objects
-      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers", "reset")]
+      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers", "reset", "tasks")]
       for (name in temp_names){
         common[[name]] <- temp[[name]]
       }

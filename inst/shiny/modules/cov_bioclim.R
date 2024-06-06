@@ -76,6 +76,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("cov_bioclim")
     do.call("cov_bioclim_module_map", list(map, common))
+    shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
   })
 
   return(list(

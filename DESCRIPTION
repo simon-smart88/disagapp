@@ -31,6 +31,7 @@ Imports:
     malariaAtlas,
     markdown,
     openxlsx,
+    promises,
     R6,
     RColorBrewer,
     renv,

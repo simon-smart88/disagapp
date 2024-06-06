@@ -59,7 +59,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
 
   results <- observe({
     # LOAD INTO COMMON ####
-    result <- common$tasks$cov_nightlight$result()
+    result <- common$tasks$cov_water$result()
     results$suspend()
     if (class(result) == "PackedSpatRaster"){
       common$covs[["Distance to water"]] <- unwrap_terra(result)
@@ -67,6 +67,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
       # TRIGGER
       do.call("cov_water_module_map", list(map, common))
       gargoyle::trigger("cov_water")
+      shinyjs::runjs("Shiny.setInputValue('cov_water-complete', 'complete');")
     } else {
       common$logger %>% writeLog(type = "error", result)
     }

@@ -48,6 +48,7 @@ cov_access_module_server <- function(id, common, parent_session, map) {
         # TRIGGER
         gargoyle::trigger("cov_access")
         do.call("cov_access_module_map", list(map, common))
+        shinyjs::runjs("Shiny.setInputValue('cov_access-complete', 'complete');")
       } else {
         common$logger %>% writeLog(type = "error", result)
       }

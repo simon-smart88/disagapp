@@ -72,6 +72,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
       # TRIGGER
       gargoyle::trigger("cov_nightlight")
       do.call("cov_nightlight_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_nightlight-complete', 'complete');")
     } else {
       common$logger %>% writeLog(type = "error", result)
     }
