@@ -1,7 +1,7 @@
 pred_pred_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
+    shinyWidgets::materialSwitch(ns("uncertain"), "Include uncertainty?", FALSE, status = "success"),
     actionButton(ns("run"), "Produce model predictions")
   )
 }
@@ -22,12 +22,19 @@ pred_pred_module_server <- function(id, common, parent_session) {
       terra::crs(prediction$field) <- terra::crs(common$prep$covariate_rasters[[1]])
       prediction$field <- terra::mask(prediction$field, common$prep$covariate_rasters[[1]])
     }
+    if (input$uncertain){
+      uncertainty <- disaggregation::predict_uncertainty(common$fit)
+    }
     close_loading_modal()
     common$logger %>% writeLog('Model predictions are available')
     # LOAD INTO COMMON ####
     common$pred <- prediction
+    if (input$uncertain){
+      common$pred$uncertainty <- uncertainty
+    }
     # METADATA ####
     common$meta$pred_pred$used <- TRUE
+    common$meta$pred_pred$uncertain <- input$uncertain
     # TRIGGER
     gargoyle::trigger("pred_pred")
     show_map(parent_session)
@@ -60,6 +67,10 @@ pred_pred_module_map <- function(map, common) {
     if (!is.null(common$pred[[tolower(variable)]])){
       covariate_map(map, common, common$pred[[tolower(variable)]], variable)
     }
+  }
+  if (common$meta$pred_pred$uncertain){
+    covariate_map(map, common, common$pred$uncertainty$predictions_ci$`lower CI`, "Lower credible interval")
+    covariate_map(map, common, common$pred$uncertainty$predictions_ci$`upper CI`, "Upper credible interval")
   }
 }
 
