@@ -125,47 +125,132 @@ fit_fit_module_server <- function(id, common, parent_session) {
     common$meta$fit_fit$iideffect_sd_prob <- input$iideffect_prob
     # TRIGGER
     gargoyle::trigger("fit_fit")
+    show_results(parent_session)
   })
 
-    output$model_plot <- renderPlot({
+
+    output$model_plot <- plotly::renderPlotly({
       gargoyle::watch("fit_fit")
       req(common$fit)
-      plot(common$fit)
+
+      parameter <- sd <- obs <- pred <- NULL
+      posteriors <- as.data.frame(summary(common$fit$sd_out, select = 'fixed'))
+      posteriors <- dplyr::mutate(posteriors, name = rownames(posteriors))
+      names(posteriors) <- c('mean', 'sd', 'parameter')
+      posteriors$fixed <- grepl('slope', posteriors$parameter)
+      posteriors$type <- ifelse(posteriors$fixed, 'Slope', 'Other')
+
+      # Check name lengths match before substituting.
+      lengths_match <- terra::nlyr(common$fit$data$covariate_rasters) == sum(posteriors$fixed)
+      if(lengths_match){
+        posteriors$parameter[grepl('slope', posteriors$parameter)] <- names(common$fit$data$covariate_rasters)
+      }
+
+      # Unique types for faceting
+      unique_types <- unique(posteriors$type)
+
+      # Create subplots for each type
+      plots <- lapply(unique_types, function(type) {
+        subset_data <- posteriors[posteriors$type == type, ]
+
+        plot_ly(subset_data,
+                y = ~parameter,
+                x = ~mean,
+                type = 'scatter',
+                mode = 'markers',
+                marker = list(color = 'black'),
+                error_x = list(array = ~sd, color = "blue")) %>%
+          layout(title = list(text = type, x = 0.5),
+                 xaxis = list(title = 'SD', showline = TRUE, zeroline = FALSE),
+                 yaxis = list(title = 'Parameter', showline = TRUE, zeroline = FALSE,
+                              range = c(-1, nrow(subset_data))),
+                 margin = list(t = 100))
+      })
+
+      # Combine subplots into a single plot
+      final_plot <- subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) %>%
+        layout(title = "Model parameters (excluding random effects)",
+               showlegend = FALSE)
+
+      final_plot
+
+    })
+
+
+    output$obs_pred_plot <- plotly::renderPlotly({
+      gargoyle::watch("fit_fit")
+      req(common$fit)
+    report <- common$fit$obj$report()
+
+    # Form of the observed and predicted results depends on the likelihood function used
+    if( model_result$model_setup$family == 'gaussian') {
+      observed_data = report$polygon_response_data/report$reportnormalisation
+      predicted_data = report$reportprediction_rate
+      title <- 'In sample performance: incidence rate'
+    } else if( model_result$model_setup$family == 'binomial') {
+      observed_data =  model_result$data$polygon_data$response / model_result$data$polygon_data$N
+      predicted_data = report$reportprediction_rate
+      title <- 'In sample performance: prevalence rate'
+    } else if( model_result$model_setup$family == 'poisson') {
+      observed_data = report$polygon_response_data/report$reportnormalisation
+      predicted_data = report$reportprediction_rate
+      title <- 'In sample performance: incidence rate'
+    }
+
+    data <- data.frame(obs = observed_data, pred = predicted_data)
+
+    title <- "Observed vs Predicted"
+
+    # Define range for the identity line
+    x_range <- range(data$obs, data$pred)
+    identity_line <- data.frame(x = x_range, y = x_range)
+
+    # Create scatter plot and add identity line
+    obspred_plot <- plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
+      add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
+      layout(title = list(text = title, x = 0.5),
+             xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
+             yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),
+             margin = list(t = 100),
+             showlegend = FALSE)
+
+    # Display the plot
+    obspred_plot
     })
 
   return(list(
     save = function() {
-list(mean_intercept = input$mean_intercept, 
-sd_intercept = input$sd_intercept, 
-mean_slope = input$mean_slope, 
-sd_slope = input$sd_slope, 
-rho_min = input$rho_min, 
-rho_prob = input$rho_prob, 
-sigma_max = input$sigma_max, 
-sigma_prob = input$sigma_prob, 
-iideffect_max = input$iideffect_max, 
-iideffect_prob = input$iideffect_prob, 
-family = input$family, 
-link = input$link, 
-field = input$field, 
-iid = input$iid, 
+list(mean_intercept = input$mean_intercept,
+sd_intercept = input$sd_intercept,
+mean_slope = input$mean_slope,
+sd_slope = input$sd_slope,
+rho_min = input$rho_min,
+rho_prob = input$rho_prob,
+sigma_max = input$sigma_max,
+sigma_prob = input$sigma_prob,
+iideffect_max = input$iideffect_max,
+iideffect_prob = input$iideffect_prob,
+family = input$family,
+link = input$link,
+field = input$field,
+iid = input$iid,
 priors = input$priors)
     },
     load = function(state) {
-updateNumericInput(session, "mean_intercept", value = state$mean_intercept) 
-updateNumericInput(session, "sd_intercept", value = state$sd_intercept) 
-updateNumericInput(session, "mean_slope", value = state$mean_slope) 
-updateNumericInput(session, "sd_slope", value = state$sd_slope) 
-updateNumericInput(session, "rho_min", value = state$rho_min) 
-updateNumericInput(session, "rho_prob", value = state$rho_prob) 
-updateNumericInput(session, "sigma_max", value = state$sigma_max) 
-updateNumericInput(session, "sigma_prob", value = state$sigma_prob) 
-updateNumericInput(session, "iideffect_max", value = state$iideffect_max) 
-updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob) 
-updateRadioButtons(session, "family", selected = state$family) 
-updateRadioButtons(session, "link", selected = state$link) 
-shinyWidgets::updateMaterialSwitch(session, "field", value = state$field) 
-shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid) 
+updateNumericInput(session, "mean_intercept", value = state$mean_intercept)
+updateNumericInput(session, "sd_intercept", value = state$sd_intercept)
+updateNumericInput(session, "mean_slope", value = state$mean_slope)
+updateNumericInput(session, "sd_slope", value = state$sd_slope)
+updateNumericInput(session, "rho_min", value = state$rho_min)
+updateNumericInput(session, "rho_prob", value = state$rho_prob)
+updateNumericInput(session, "sigma_max", value = state$sigma_max)
+updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
+updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
+updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
+updateRadioButtons(session, "family", selected = state$family)
+updateRadioButtons(session, "link", selected = state$link)
+shinyWidgets::updateMaterialSwitch(session, "field", value = state$field)
+shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
 shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
     }
   ))
@@ -174,7 +259,10 @@ shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
 
 fit_fit_module_result <- function(id) {
   ns <- NS(id)
-  plotOutput(ns("model_plot"))
+  tagList(
+  plotly::plotlyOutput(ns("model_plot")),
+  plotly::plotlyOutput(ns("obs_pred_plot"))
+  )
 }
 
 
