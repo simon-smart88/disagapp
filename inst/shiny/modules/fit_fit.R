@@ -180,42 +180,42 @@ fit_fit_module_server <- function(id, common, parent_session) {
     output$obs_pred_plot <- plotly::renderPlotly({
       gargoyle::watch("fit_fit")
       req(common$fit)
-    report <- common$fit$obj$report()
+      report <- common$fit$obj$report()
 
-    # Form of the observed and predicted results depends on the likelihood function used
-    if( model_result$model_setup$family == 'gaussian') {
-      observed_data = report$polygon_response_data/report$reportnormalisation
-      predicted_data = report$reportprediction_rate
-      title <- 'In sample performance: incidence rate'
-    } else if( model_result$model_setup$family == 'binomial') {
-      observed_data =  model_result$data$polygon_data$response / model_result$data$polygon_data$N
-      predicted_data = report$reportprediction_rate
-      title <- 'In sample performance: prevalence rate'
-    } else if( model_result$model_setup$family == 'poisson') {
-      observed_data = report$polygon_response_data/report$reportnormalisation
-      predicted_data = report$reportprediction_rate
-      title <- 'In sample performance: incidence rate'
-    }
+      # Form of the observed and predicted results depends on the likelihood function used
+      if( model_result$model_setup$family == 'gaussian') {
+        observed_data = report$polygon_response_data/report$reportnormalisation
+        predicted_data = report$reportprediction_rate
+        title <- 'In sample performance: incidence rate'
+      } else if( model_result$model_setup$family == 'binomial') {
+        observed_data =  model_result$data$polygon_data$response / model_result$data$polygon_data$N
+        predicted_data = report$reportprediction_rate
+        title <- 'In sample performance: prevalence rate'
+      } else if( model_result$model_setup$family == 'poisson') {
+        observed_data = report$polygon_response_data/report$reportnormalisation
+        predicted_data = report$reportprediction_rate
+        title <- 'In sample performance: incidence rate'
+      }
 
-    data <- data.frame(obs = observed_data, pred = predicted_data)
+      data <- data.frame(obs = observed_data, pred = predicted_data)
 
-    title <- "Observed vs Predicted"
+      title <- "Observed vs Predicted"
 
-    # Define range for the identity line
-    x_range <- range(data$obs, data$pred)
-    identity_line <- data.frame(x = x_range, y = x_range)
+      # Define range for the identity line
+      x_range <- range(data$obs, data$pred)
+      identity_line <- data.frame(x = x_range, y = x_range)
 
-    # Create scatter plot and add identity line
-    obspred_plot <- plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
-      add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
-      layout(title = list(text = title, x = 0.5),
-             xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
-             yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),
-             margin = list(t = 100),
-             showlegend = FALSE)
+      # Create scatter plot and add identity line
+      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
+        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
+        plotly::layout(title = list(text = title, x = 0.5),
+               xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
+               yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),
+               margin = list(t = 100),
+               showlegend = FALSE)
 
-    # Display the plot
-    obspred_plot
+      # Display the plot
+      obspred_plot
     })
 
   return(list(
