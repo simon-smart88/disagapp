@@ -17,6 +17,7 @@ Imports:
     arcgisutils,
     blackmarbler,
     corrplot,
+    curl,
     disaggregation,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
