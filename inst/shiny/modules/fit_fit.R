@@ -183,15 +183,15 @@ fit_fit_module_server <- function(id, common, parent_session) {
       report <- common$fit$obj$report()
 
       # Form of the observed and predicted results depends on the likelihood function used
-      if( model_result$model_setup$family == 'gaussian') {
+      if( common$fit$model_setup$family == 'gaussian') {
         observed_data = report$polygon_response_data/report$reportnormalisation
         predicted_data = report$reportprediction_rate
         title <- 'In sample performance: incidence rate'
-      } else if( model_result$model_setup$family == 'binomial') {
-        observed_data =  model_result$data$polygon_data$response / model_result$data$polygon_data$N
+      } else if( common$fit$model_setup$family == 'binomial') {
+        observed_data =  common$fit$data$polygon_data$response / common$fit$data$polygon_data$N
         predicted_data = report$reportprediction_rate
         title <- 'In sample performance: prevalence rate'
-      } else if( model_result$model_setup$family == 'poisson') {
+      } else if( common$fit$model_setup$family == 'poisson') {
         observed_data = report$polygon_response_data/report$reportnormalisation
         predicted_data = report$reportprediction_rate
         title <- 'In sample performance: incidence rate'
