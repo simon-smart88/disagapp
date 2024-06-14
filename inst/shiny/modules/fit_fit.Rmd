@@ -1,8 +1,8 @@
-```{asis, echo = {{fit_priors}}, eval = {{fit_priors}}, include = {{fit_priors}}}
+```{asis, echo = {{fit_priors_knit}}, eval = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
 Create the priors
 ```
 
-```{r, echo = {{fit_priors}}, include = {{fit_priors}}}}
+```{r, echo = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
 
 priors <- list(
          priormean_intercept = {{fit_mean_intercept}},
@@ -14,7 +14,8 @@ priors <- list(
          prior_sigma_max = {{fit_sigma_max}},
          prior_sigma_prob = {{fit_sigma_prob}},
          prior_iideffect_sd_max = {{fit_iid_sd_max}},
-         prior_iideffect_sd_prob = {{fit_iid_sd_prob}})
+         prior_iideffect_sd_prob = {{fit_iid_sd_prob}}
+         )
 
 ```
 

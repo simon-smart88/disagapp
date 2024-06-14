@@ -3,6 +3,7 @@ fit_fit_module_ui <- function(id) {
   tagList(
     radioButtons(ns("family"), "Model family", c("Gaussian" = "gaussian", "Poisson" = "poisson", "Binomial" = "binomial"), selected = "poisson"),
     radioButtons(ns("link"), "Model link", c("Logit" = "logit", "Log" = "log", "Identity" = "identity"), selected = "log"),
+    numericInput(ns("iterations"), "Number of iterations", 100, step = 1),
     shinyWidgets::materialSwitch(ns("field"), "Include spatial field", value = TRUE, status = "success"),
     shinyWidgets::materialSwitch(ns("iid"), "Include IID", value = TRUE, status = "success"),
     shinyWidgets::materialSwitch(ns("priors"), "Set priors", value = FALSE, status = "success"),
@@ -66,16 +67,16 @@ fit_fit_module_server <- function(id, common, parent_session) {
     priors <- reactive({
       if (input$priors){
       out <- list(
-         priormean_intercept = input$mean_intercept,
-         priorsd_intercept = input$sd_intercept,
-         priormean_slope = input$mean_slope,
-         priorsd_slope = input$sd_slope,
-         prior_rho_min = input$rho_min,
-         prior_rho_prob = input$rho_prob,
-         prior_sigma_max = input$sigma_max,
-         prior_sigma_prob = input$sigma_prob,
-         prior_iideffect_sd_max = input$iideffect_max,
-         prior_iideffect_sd_prob = input$iideffect_prob)
+         priormean_intercept = as.numeric(input$mean_intercept),
+         priorsd_intercept = as.numeric(input$sd_intercept),
+         priormean_slope = as.numeric(input$mean_slope),
+         priorsd_slope = as.numeric(input$sd_slope),
+         prior_rho_min = as.numeric(input$rho_min),
+         prior_rho_prob = as.numeric(input$rho_prob),
+         prior_sigma_max = as.numeric(input$sigma_max),
+         prior_sigma_prob = as.numeric(input$sigma_prob),
+         prior_iideffect_sd_max = as.numeric(input$iideffect_max),
+         prior_iideffect_sd_prob = as.numeric(input$iideffect_prob))
       } else {
         out <- NULL
       }
@@ -97,9 +98,12 @@ fit_fit_module_server <- function(id, common, parent_session) {
                                           priors = priors(),
                                           family = input$family,
                                           link = input$link,
+                                          iterations = as.numeric(input$iterations),
                                           field = input$field,
                                           iid = input$iid)},
-    error = function(x){ common$logger %>% writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))})
+    error = function(x){ common$logger %>% writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
+    warning = function(x){ common$logger %>% writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
+    )
 
     if (!is.null(common$fit)){
       common$logger %>% writeLog("Model fitting has completed")
@@ -112,17 +116,20 @@ fit_fit_module_server <- function(id, common, parent_session) {
     # METADATA ####
     common$meta$fit_fit$family <- input$family
     common$meta$fit_fit$link <- input$link
+    common$meta$fit_fit$iterations <- as.numeric(input$iterations)
+    common$meta$fit_fit$field <- input$field
     common$meta$fit_fit$iid <- input$iid
-    common$meta$fit_fit$mean_intercept <- input$mean_intercept
-    common$meta$fit_fit$sd_intercept <- input$sd_intercept
-    common$meta$fit_fit$mean_slope <- input$mean_slope
-    common$meta$fit_fit$sd_slope <- input$sd_slope
-    common$meta$fit_fit$rho_min <- input$rho_min
-    common$meta$fit_fit$rho_prob <- input$rho_prob
-    common$meta$fit_fit$sigma_max <- input$sigma_max
-    common$meta$fit_fit$sigma_prob <- input$sigma_prob
-    common$meta$fit_fit$iideffect_sd_max <- input$iideffect_max
-    common$meta$fit_fit$iideffect_sd_prob <- input$iideffect_prob
+    common$meta$fit_fit$priors <- input$priors
+    common$meta$fit_fit$mean_intercept <- as.numeric(input$mean_intercept)
+    common$meta$fit_fit$sd_intercept <- as.numeric(input$sd_intercept)
+    common$meta$fit_fit$mean_slope <- as.numeric(input$mean_slope)
+    common$meta$fit_fit$sd_slope <- as.numeric(input$sd_slope)
+    common$meta$fit_fit$rho_min <- as.numeric(input$rho_min)
+    common$meta$fit_fit$rho_prob <- as.numeric(input$rho_prob)
+    common$meta$fit_fit$sigma_max <- as.numeric(input$sigma_max)
+    common$meta$fit_fit$sigma_prob <- as.numeric(input$sigma_prob)
+    common$meta$fit_fit$iideffect_sd_max <- as.numeric(input$iideffect_max)
+    common$meta$fit_fit$iideffect_sd_prob <- as.numeric(input$iideffect_prob)
     # TRIGGER
     gargoyle::trigger("fit_fit")
     show_results(parent_session)
@@ -131,7 +138,7 @@ fit_fit_module_server <- function(id, common, parent_session) {
 
     output$model_plot <- plotly::renderPlotly({
       gargoyle::watch("fit_fit")
-      req(common$fit)
+      req(common$fit$sd_out)
 
       parameter <- sd <- obs <- pred <- NULL
       posteriors <- as.data.frame(summary(common$fit$sd_out, select = 'fixed'))
@@ -153,14 +160,14 @@ fit_fit_module_server <- function(id, common, parent_session) {
       plots <- lapply(unique_types, function(type) {
         subset_data <- posteriors[posteriors$type == type, ]
 
-        plot_ly(subset_data,
+        plotly::plot_ly(subset_data,
                 y = ~parameter,
                 x = ~mean,
                 type = 'scatter',
                 mode = 'markers',
                 marker = list(color = 'black'),
                 error_x = list(array = ~sd, color = "blue")) %>%
-          layout(title = list(text = type, x = 0.5),
+          plotly::layout(title = list(text = type, x = 0.5),
                  xaxis = list(title = 'SD', showline = TRUE, zeroline = FALSE),
                  yaxis = list(title = 'Parameter', showline = TRUE, zeroline = FALSE,
                               range = c(-1, nrow(subset_data))),
@@ -168,8 +175,8 @@ fit_fit_module_server <- function(id, common, parent_session) {
       })
 
       # Combine subplots into a single plot
-      final_plot <- subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) %>%
-        layout(title = "Model parameters (excluding random effects)",
+      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) %>%
+        plotly::layout(title = "Model parameters (excluding random effects)",
                showlegend = FALSE)
 
       final_plot
@@ -233,6 +240,7 @@ iideffect_prob = input$iideffect_prob,
 family = input$family,
 link = input$link,
 field = input$field,
+iterations = input$iterations,
 iid = input$iid,
 priors = input$priors)
     },
@@ -247,6 +255,7 @@ updateNumericInput(session, "sigma_max", value = state$sigma_max)
 updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
 updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
 updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
+updateNumericInput(session, "iterations", value = state$iterations)
 updateRadioButtons(session, "family", selected = state$family)
 updateRadioButtons(session, "link", selected = state$link)
 shinyWidgets::updateMaterialSwitch(session, "field", value = state$field)
@@ -265,14 +274,16 @@ fit_fit_module_result <- function(id) {
   )
 }
 
-
 fit_fit_module_rmd <- function(common) {
-  # Variables used in the module's Rmd code
   list(
     fit_knit = !is.null(common$fit),
     fit_family = common$meta$fit_fit$family,
     fit_link = common$meta$fit_fit$link,
+    fit_iterations = common$meta$fit_fit$iterations,
+    fit_field = common$meta$fit_fit$field,
     fit_iid = common$meta$fit_fit$iid,
+    fit_priors_knit = !is.null(common$meta$fit_fit$priors),
+    fit_priors = common$meta$fit_fit$priors,
     fit_mean_intercept = common$meta$fit_fit$mean_intercept,
     fit_sd_intercept = common$meta$fit_fit$sd_intercept,
     fit_mean_slope = common$meta$fit_fit$mean_slope,
