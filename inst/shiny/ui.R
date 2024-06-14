@@ -123,7 +123,7 @@ tagList(
               "fitSel", "Modules Available:",
               choiceNames = insert_modules_option_names("fit"),
               choiceValues = insert_modules_option_values("fit"),
-              selected = character(0),
+              selected = "fit_fit",
               direction = "vertical",
               status = "outline-secondary",
               width = "100%"
