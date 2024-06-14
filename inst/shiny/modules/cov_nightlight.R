@@ -50,6 +50,10 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     light <- cov_nightlight(common$shape, input$year, bearer(), common$logger)
     close_loading_modal()
 
+    if (is.null(light)){
+      common$logger %>% writeLog(type= "error", "Nighttime light data could not be downloaded at this time")
+    }
+
     if (!is.null(light)){
       # LOAD INTO COMMON ####
       common$covs[["Nighttime light"]] <- light
