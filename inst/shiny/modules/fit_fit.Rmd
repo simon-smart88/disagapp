@@ -1,10 +1,41 @@
+```{asis, echo = {{fit_priors_knit}}, eval = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
+Create the priors
+```
+
+```{r, echo = {{fit_priors_knit}}, include = {{fit_priors_knit}}}
+
+priors <- list(
+         priormean_intercept = {{fit_mean_intercept}},
+         priorsd_intercept = {{fit_sd_intercept}},
+         priormean_slope = {{fit_mean_slope}},
+         priorsd_slope = {{fit_sd_slope}},
+         prior_rho_min = {{fit_rho_min}},
+         prior_rho_prob = {{fit_rho_prob}},
+         prior_sigma_max = {{fit_sigma_max}},
+         prior_sigma_prob = {{fit_sigma_prob}},
+         prior_iideffect_sd_max = {{fit_iid_sd_max}},
+         prior_iideffect_sd_prob = {{fit_iid_sd_prob}}
+         )
+
+```
+
 ```{asis, echo = {{fit_knit}}, eval = {{fit_knit}}, include = {{fit_knit}}}
 Fit the model
 ```
 
 ```{r, echo = {{fit_knit}}, include = {{fit_knit}}}
+
+# Create NULL priors if they have not been set
+if (!exists("priors")) {
+  priors <- NULL
+}
+
 fitted_model <- disaggregation::disag_model(data = prepared_data,
-                                      family = "{{fit_family}}",
-                                      link = "{{fit_link}}",
-                                      iid = {{fit_iid}})
+                                            priors = priors,
+                                            family = "{{fit_family}}",
+                                            link = "{{fit_link}}",
+                                            iterations = {{fit_iterations}},
+                                            field = {{fit_field}},
+                                            iid = {{fit_iid}}
+                                            )
 ```

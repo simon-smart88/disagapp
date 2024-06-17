@@ -3,8 +3,26 @@ Generate predictions from the model
 ```
 
 ```{r, echo = {{pred_knit}}, include = {{pred_knit}}}
-prediction <- disaggregation::predict_model(fitted_model)
+prediction <- disaggregation::predict_model(fitted_model, predict_iid = {{pred_iid}})
 
 plot(prediction$prediction)
-plot(prediction$field)
+
+if (!is.null(prediction$field)){
+  terra::crs(prediction$field) <- terra::crs(prepared_data$covariate_rasters[[1]])
+  prediction$field <- terra::mask(prediction$field, prepared_data$covariate_rasters[[1]])
+  plot(prediction$field)  
+}
+
+if (!is.null(prediction$iid)){
+  plot(prediction$iid)  
+}
 ```
+
+```{r, echo = {{pred_uncertain_knit}}, include = {{pred_uncertain_knit}}}
+
+uncertainty <- disaggregation::predict_uncertainty(fitted_model, predict_iid = {{pred_iid}}, N = {{pred_uncertain_n}}, CI =  {{pred_uncertain_ci}})
+
+plot(uncertainty$predictions_ci$`lower CI`)
+plot(uncertainty$predictions_ci$`upper CI`)
+```
+

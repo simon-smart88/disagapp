@@ -4,7 +4,7 @@
 \alias{cov_nightlight}
 \title{cov_nightlight}
 \usage{
-cov_nightlight(shape, year, bearer, logger = NULL)
+cov_nightlight(shape, year, bearer, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
@@ -14,12 +14,12 @@ cov_nightlight(shape, year, bearer, logger = NULL)
 \item{bearer}{character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
 for details of how to obtain one.}
 
-\item{logger}{Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL}
+\item{async}{Whether or not the function is being used asynchronously. When
+\code{TRUE} the returned object is a wrapped SpatRaster.}
 }
 \value{
-a SpatRaster object
+a SpatRaster object when \code{async} is \code{FALSE} or a PackedSpatRaster
+when \code{async} is \code{TRUE}.
 }
 \description{
 This function is called by the cov_nightlight module and downloads annual

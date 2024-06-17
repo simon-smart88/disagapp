@@ -10,12 +10,10 @@
 #' @param year numeric. Year for which to download the data. Limited to 2012-2022
 #' @param bearer character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
 #' for details of how to obtain one.
-#' @param logger Stores all notification messages to be displayed in the Log
-#' Window. Insert the logger reactive list here for running in
-#' shiny, otherwise leave the default NULL
 #' @param async Whether or not the function is being used asynchronously. When
 #' `TRUE` the returned object is a wrapped SpatRaster.
-#' @return a SpatRaster object
+#' @return a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster
+#' when `async` is `TRUE`.
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -48,14 +46,19 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     }
   }
 
-ras <- blackmarbler::bm_raster(roi_sf = shape,
+ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                         product_id = "VNP46A4",
                         date = year,
                         bearer = bearer,
-                        quiet = TRUE)
+                        quiet = TRUE)},
+                error = function(x){
+                message <- paste0("An error occurred whilst trying to download the data: ", x)
+                NULL},
+                warning = function(x){
+                message <- paste0("An error occurred whilst trying to download the data: ", x)
+                NULL})
 
 if (is.null(ras)){
-  message <- "An error occurred whilst trying to download nighttime light data"
   if (async){
     return(message)
   } else {

@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
 # install R packages 
 RUN R -e "install.packages('INLA',repos=c(getOption('repos'),INLA='https://inla.r-inla-download.org/R/testing'), dep=TRUE)"
 RUN R -e "install.packages('devtools')"
+ARG DISAGAPP_VER=unknown
 RUN R -e "devtools::install_github('simon-smart88/disagapp')"
 
 # copy app files
@@ -35,6 +36,8 @@ RUN sudo chown -R shiny:shiny /srv/shiny-server
 
 # Add configuration to enable log preservation
 RUN echo 'preserve_logs true;' >> /etc/shiny-server/shiny-server.conf
+
+COPY .Renviron /srv/shiny-server/disagapp/.Renviron
 
 USER shiny
 

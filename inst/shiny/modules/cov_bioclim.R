@@ -59,6 +59,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     common$logger %>% writeLog("Starting to download bioclim data")
     results$resume()
 
+
     # METADATA ####
     common$meta$cov_bioclim$used <- TRUE
     common$meta$cov_bioclim$country <- country_code
@@ -70,13 +71,17 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_bioclim$result()
-    common$covs <- append(common$covs, unwrap_terra(result))
-    results$suspend()
-    common$logger %>% writeLog("Bioclim data has been downloaded")
-    # TRIGGER
-    gargoyle::trigger("cov_bioclim")
-    do.call("cov_bioclim_module_map", list(map, common))
-    shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
+    if (class(result) == "list"){
+      common$covs <- append(common$covs, unwrap_terra(result))
+      results$suspend()
+      common$logger %>% writeLog("Bioclim data has been downloaded")
+      # TRIGGER
+      gargoyle::trigger("cov_bioclim")
+      do.call("cov_bioclim_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
+    }
   })
 
   return(list(

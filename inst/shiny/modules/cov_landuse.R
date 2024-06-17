@@ -48,14 +48,18 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_landuse$result()
-    result <- unwrap_terra(result)
-    common$covs <- append(common$covs, result)
-    results$suspend()
-    common$logger %>% writeLog("Land use data has been downloaded")
-    # TRIGGER
-    gargoyle::trigger("cov_landuse")
-    do.call("cov_landuse_module_map", list(map, common))
-    shinyjs::runjs("Shiny.setInputValue('cov_landuse-complete', 'complete');")
+    if (class(result) == "list"){
+      result <- unwrap_terra(result)
+      common$covs <- append(common$covs, result)
+      results$suspend()
+      common$logger %>% writeLog("Land use data has been downloaded")
+      # TRIGGER
+      gargoyle::trigger("cov_landuse")
+      do.call("cov_landuse_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_landuse-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
+    }
   })
 
   return(list(
