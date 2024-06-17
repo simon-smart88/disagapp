@@ -1,7 +1,7 @@
 
 test_that("{shinytest2} recording: e2e_complete_analysis", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 15000)
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 30000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -17,7 +17,8 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(tabs = "cov")
   app$set_inputs(covSel = "cov_bioclim")
   app$set_inputs(`cov_bioclim-variables` = c("Mean temperature", "Total precipitation"))
-  app$click("cov_bioclim-run")
+  app$click(selector = "#cov_bioclim-run")
+  app$wait_for_value(input = "cov_bioclim-complete")
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
@@ -29,7 +30,9 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(aggSel = "agg_worldpop")
   app$set_inputs("agg_worldpop-method" = "Unconstrained")
   app$set_inputs("agg_worldpop-country" = "Liechtenstein")
-  app$click("agg_worldpop-run")
+  app$click(selector = "#agg_worldpop-run")
+  app$wait_for_value(input = "agg_worldpop-complete")
+
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
@@ -40,7 +43,8 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(prepSel = "prep_mesh")
   app$set_inputs("prep_mesh-mesh_edge" = c(0.1, 0.3))
   app$set_inputs("prep_mesh-mesh_offset" = c(0.1, 0.3))
-  app$click("prep_mesh-run")
+  app$click(selector = "#prep_mesh-run")
+  app$wait_for_value(input = "prep_mesh-complete")
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)

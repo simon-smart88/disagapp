@@ -61,18 +61,20 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_upload$used <- TRUE
     # TRIGGER
     gargoyle::trigger("agg_upload")
+    do.call("agg_upload_module_map", list(map, common))
+
   })
 
 
   return(list(
     save = function() {
-list(name = input$name, 
-log = input$log, 
+list(name = input$name,
+log = input$log,
 example = input$example)
     },
     load = function(state) {
-updateTextInput(session, "name", value = state$name) 
-shinyWidgets::updateMaterialSwitch(session, "log", value = state$log) 
+updateTextInput(session, "name", value = state$name)
+shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
 shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))

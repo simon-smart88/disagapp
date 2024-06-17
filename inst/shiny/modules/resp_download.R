@@ -106,6 +106,8 @@ resp_download_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_download")
     gargoyle::trigger("country_out")
+    do.call("resp_download_module_map", list(map, common))
+
   })
 
   return(list(

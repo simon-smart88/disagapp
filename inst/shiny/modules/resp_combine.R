@@ -123,6 +123,8 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     gargoyle::trigger("resp_combine")
+    do.call("resp_combine_module_map", list(map, common))
+
   })
 
   return(list(

@@ -104,6 +104,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("clear_map")
     gargoyle::trigger("prep_final")
+    do.call("prep_final_module_map", list(map, common))
     show_map(parent_session)
   })
 
