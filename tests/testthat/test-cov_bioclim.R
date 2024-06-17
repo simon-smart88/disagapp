@@ -12,7 +12,7 @@ test_that("Check cov_bioclim function returns errors as expected", {
   expect_error(cov_bioclim("LIE", "chicken"), "chicken is not a valid bioclim variable")
 })
 
-test_that("{shinytest2} recording: e2e_cov_nightlight", {
+test_that("{shinytest2} recording: e2e_cov_bioclim", {
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 30000)
 

@@ -9,14 +9,14 @@
 #' and either provide that or set the `ARCGIS_CLIENT` and `ARCGIS_SECRET`
 #' environmental variables to automate it as
 #' \href{https://r.esri.com/r-bridge-site/location-services/connecting-to-a-portal.html}{explained here}.
-#' @param logger Stores all notification messages to be displayed in the Log
-#' Window. Insert the logger reactive list here for running in
-#' shiny, otherwise leave the default NULL
-#' @return a SpatRaster object
+#' @param async Whether or not the function is being used asynchronously. When
+#' `TRUE` the returned object is a wrapped SpatRaster.
+#' @return a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster
+#' when `async` is `TRUE`.
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_water <- function(shape, token, logger = NULL, async = FALSE) {
+cov_water <- function(shape, token, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
     logger %>% writeLog(type = "error", "Shape must be an sf object")
@@ -32,20 +32,39 @@ cov_water <- function(shape, token, logger = NULL, async = FALSE) {
 
   furl <- "https://landscape6.arcgis.com/arcgis/rest/services/World_Distance_to_Surface_Water/ImageServer"
 
-  flayer <- arcgislayers::arc_open(furl)
+  flayer <- tryCatch({arcgislayers::arc_open(furl)},
+                     error = function(x){
+                     message <- paste0("An error occurred whilst trying to download the data: ", x)
+                     NULL},
+                     warning = function(x){
+                     message <- paste0("An error occurred whilst trying to download the data: ", x)
+                     NULL}
+                     )
 
-  bbox <- sf::st_bbox(shape)
+  if (is.null(flayer)){
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
-  ras <- arcgislayers::arc_raster(flayer, xmin = bbox[[1]], xmax = bbox[[3]],
-                                  ymin = bbox[[2]], ymax = bbox[[4]],
-                                  crs = sf::st_crs(shape))
+  if (!is.null(flayer)){
+    bbox <- sf::st_bbox(shape)
 
-  ras <- terra::clamp(ras, upper = 60000, value = FALSE)
-  ras <- ras/250 #convert to distance in km
-  ras <- terra::project(ras, "+proj=longlat +datum=WGS84")
-  ras <- terra::crop(ras, shape, mask = TRUE)
+    ras <- arcgislayers::arc_raster(flayer, xmin = bbox[[1]], xmax = bbox[[3]],
+                                    ymin = bbox[[2]], ymax = bbox[[4]],
+                                    crs = sf::st_crs(shape))
 
-  names(ras) <- "Distance to water"
+    ras <- terra::clamp(ras, upper = 60000, value = FALSE)
+    ras <- ras/250 #convert to distance in km
+    ras <- terra::project(ras, "+proj=longlat +datum=WGS84")
+    ras <- terra::crop(ras, shape, mask = TRUE)
+
+    names(ras) <- "Distance to water"
+
+    return(ras)
+  }
 
   if (async){
     ras <- wrap_terra(ras)

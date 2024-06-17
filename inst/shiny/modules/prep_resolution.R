@@ -38,12 +38,16 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       req(original_resolution$width)
 
       factors <- 2:20
-      choices <- round(original_resolution$width * factors, 0)
+      choices <- round(as.numeric(original_resolution$width) * factors, 0)
       selectInput(session$ns("resolution"), "New cell width (m)", choices = choices)
     })
 
+    observeEvent(input$summarise, {
+      show_results(parent_session)
+    })
 
-    output$plot <- renderPlot({
+
+    output$plot <- plotly::renderPlotly({
       req(common$covs_prep)
       if (is.null(common$covs_prep_lores)){
         pixels_per_poly <- terra::extract(common$covs_prep, common$shape) %>%
@@ -56,21 +60,49 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       }
 
       if (input$plot_type == "Histogram"){
-        plot <- list(graphics::hist(pixels_per_poly$n_pixels, main = '', xlab = "Cells per polygon"))
+        plot <- plotly::plot_ly( x = pixels_per_poly$n_pixels,
+                                 type = "histogram",
+                                 histnorm = "frequency",
+                                 marker = list(color = '#0072B2'),
+                                 stroke = list(color = 'black')) |>
+          plotly::layout(xaxis = list(title = "Cells per polygon"),
+                         yaxis = list(title = "Frequency"))
       }
 
       if (input$plot_type == "Boxplot"){
-        plot <- list(graphics::boxplot(pixels_per_poly$n_pixels, main = '', ylab = "Cells per polygon"))
+        plot <- plotly::plot_ly(x = pixels_per_poly$n_pixels,
+                                type = "box",
+                                fillcolor = "#0072B2",
+                                line = list(color = "black"),
+                                marker = list(color = "black"),
+                                name = "") |>
+          plotly::layout(xaxis = list(title = "Cells per polygon", showline = TRUE, zeroline = FALSE),
+                         yaxis = list(title = "", showline = TRUE, zeroline = FALSE))
       }
 
-      leg <- legend("topright",  bty="n", legend = c(
-                      glue::glue("Original average pixels per polygon = {round(mean(pixels_per_poly$n_pixels),2)}"),
-                      glue::glue("Original pixel width (m) = {round(original_resolution$width,0)}"),
-                      glue::glue("Original pixel height (m) = {round(original_resolution$height,0)}"))
-                      )
-
-      plot <- append(plot, leg)
-
+      plot <- plot |>
+        plotly::layout(
+          annotations = list(
+            list(
+              x = 1, y = 0.95, xref = "paper", yref = "paper",
+              text = glue("Original avg cells per polygon = {round(mean(pixels_per_poly$n_pixels), 2)}"),
+              font = list(size = 16, color = "black"),
+              showarrow = FALSE
+            ),
+            list(
+              x = 1, y = 0.88, xref = "paper", yref = "paper",
+              text = glue("Original cell width (m) = {round(original_resolution$width, 0)}"),
+              font = list(size = 16, color = "black"),
+              showarrow = FALSE
+            ),
+            list(
+              x = 1, y = 0.81, xref = "paper", yref = "paper",
+              text = glue("Original cell height (m) = {round(original_resolution$height, 0)}"),
+              font = list(size = 16, color = "black"),
+              showarrow = FALSE
+            )
+          )
+        )
       return(plot)
     }) %>% bindEvent(input$summarise)
 
@@ -96,11 +128,11 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
   return(list(
     save = function() {
-list(plot_type = input$plot_type, 
+list(plot_type = input$plot_type,
 resolution = input$resolution)
     },
     load = function(state) {
-updateSelectInput(session, "plot_type", selected = state$plot_type) 
+updateSelectInput(session, "plot_type", selected = state$plot_type)
 updateSelectInput(session, "resolution", selected = state$resolution)
     }
   ))
@@ -109,7 +141,7 @@ updateSelectInput(session, "resolution", selected = state$resolution)
 
 prep_resolution_module_result <- function(id) {
   ns <- shiny::NS(id)
-plotOutput(ns("plot"))
+plotly::plotlyOutput(ns("plot"))
 }
 
 prep_resolution_module_rmd <- function(common) {

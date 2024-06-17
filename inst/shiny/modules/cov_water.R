@@ -56,7 +56,6 @@ cov_water_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_water$token <- input$token
   })
 
-
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_water$result()

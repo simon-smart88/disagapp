@@ -76,7 +76,6 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     } else {
       common$logger %>% writeLog(type = "error", result)
     }
-
   })
 
   return(list(

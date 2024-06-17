@@ -10,8 +10,8 @@ This module uses the `terra::resample()` function to resample the covariates and
 
 You can choose to remove rows in the table for characteristics of the rasters that are identical by toggling the "Remove identical rows?" switch. 
 
-Click "Prepare covariate summary" to summarise the covariates. 
+Click "Prepare covariate summary" to summarise the covariates and the view will switch to a table in the results tab.
 
-The view will switch to a table in the results tab and you can click on a column to select a covariate that will be used as a template.
+Select a covariate from the dropdown list that will be used as a template to resample the others.
 
 Click "Resample covariates" and a table of the resampled covariates will be displayed. You can toggle between the tables by clicking on "Original" or "Resampled".

@@ -4,7 +4,7 @@
 \alias{cov_bioclim}
 \title{cov_bioclim}
 \usage{
-cov_bioclim(country_code, variables, shape, logger = NULL)
+cov_bioclim(country_code, variables, shape, async = FALSE)
 }
 \arguments{
 \item{country_code}{character. ISO3 code of the country.}
@@ -22,12 +22,12 @@ Options are: \verb{Mean temperature}, \verb{Mean diurnal range}, \code{Isotherma
 
 \item{shape}{sf. sf object containing the area of interest}
 
-\item{logger}{Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL}
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
-a list of SpatRaster objects
+a list of containing an item for each variable, either SpatRaster
+objects when \code{async} is \code{FALSE} or PackedSpatRaster objects when \code{async} is
+\code{TRUE}
 }
 \description{
 This function is called by the cov_bioclim module and downloads bioclimatic

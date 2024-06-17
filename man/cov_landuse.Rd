@@ -4,7 +4,7 @@
 \alias{cov_landuse}
 \title{cov_landuse}
 \usage{
-cov_landuse(shape, year, landuses)
+cov_landuse(shape, year, landuses, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
@@ -14,9 +14,13 @@ cov_landuse(shape, year, landuses)
 \item{landuses}{vector. List of the requested land use types from the
 following options: \code{Bare}, \code{BuiltUp}, \code{Crops}, \code{Grass}, \code{MossLichen},
 \code{PermanentWater}, \code{SeasonalWater}, \code{Shrub}, \code{Snow}, \code{Tree}}
+
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
-a list of SpatRaster objects containing an item for each land use
+a list of containing an item for each land use, either SpatRaster
+objects when \code{async} is \code{FALSE} or PackedSpatRaster objects when \code{async} is
+\code{TRUE}
 }
 \description{
 This function is called by the cov_landuse module and downloads data on the

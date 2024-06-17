@@ -11,7 +11,10 @@
 #' @param landuses vector. List of the requested land use types from the
 #' following options: `Bare`, `BuiltUp`, `Crops`, `Grass`, `MossLichen`,
 #' `PermanentWater`, `SeasonalWater`, `Shrub`, `Snow`, `Tree`
-#' @return a list of SpatRaster objects containing an item for each land use
+#' @param async logical. Whether or not the function is being used asynchronously
+#' @return a list of containing an item for each land use, either SpatRaster
+#' objects when `async` is `FALSE` or PackedSpatRaster objects when `async` is
+#' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
@@ -37,29 +40,45 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
   #request each tile
   raster_layers <- list()
-  for (l in landuses){
-    raster_tiles <- NULL
-    for (t in tiles$url){
-      url <- glue::glue("https://s3-eu-west-1.amazonaws.com/vito.landcover.global/v3.0.1/{year}/{t}_PROBAV_LC100_global_v3.0.1_2019-nrt_{l}-CoverFraction-layer_EPSG-4326.tif")
-      ras <- terra::rast(url)
-      if (is.null(raster_tiles)){
-        raster_tiles <- ras
-      } else {
-        raster_tiles <- terra::merge(raster_tiles, ras)
 
+  tryCatch({
+    for (l in landuses){
+      raster_tiles <- NULL
+      for (t in tiles$url){
+        url <- glue::glue("https://s3-eu-west-1.amazonaws.com/vito.landcover.global/v3.0.1/{year}/{t}_PROBAV_LC100_global_v3.0.1_2019-nrt_{l}-CoverFraction-layer_EPSG-4326.tif")
+        ras <- terra::rast(url)
+        if (is.null(raster_tiles)){
+          raster_tiles <- ras
+        } else {
+          raster_tiles <- terra::merge(raster_tiles, ras)
+        }
       }
+      tile_name <- paste0(l," land use")
+      raster_tiles <- terra::crop(raster_tiles, shape)
+      raster_tiles <- terra::mask(raster_tiles, shape)
+      raster_tiles <- terra::aggregate(raster_tiles, fact = 10, fun = "mean")
+      raster_layers[[tile_name]] <- raster_tiles
+      names(raster_layers[[tile_name]]) <- tile_name
     }
-    tile_name <- paste0(l,"_land_use")
-    raster_tiles <- terra::crop(raster_tiles, shape)
-    raster_tiles <- terra::mask(raster_tiles, shape)
-    raster_tiles <- terra::aggregate(raster_tiles, fact = 10, fun = "mean")
-    raster_layers[[tile_name]] <- raster_tiles
-    names(raster_layers[[tile_name]]) <- tile_name
-  }
+  },
+  error = function(x){
+    message <- paste0("An error occurred whilst trying to download the data: ", x)
+    NULL},
+  warning = function(x){
+    message <- paste0("An error occurred whilst trying to download the data: ", x)
+    NULL}
+  )
 
+  if (length(raster_layers) != length(landuses)){
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  } else {
   if (async){
     raster_layers <- wrap_terra(raster_layers)
   }
-
   return(raster_layers)
+  }
 }

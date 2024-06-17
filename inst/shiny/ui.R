@@ -123,7 +123,7 @@ tagList(
               "fitSel", "Modules Available:",
               choiceNames = insert_modules_option_names("fit"),
               choiceValues = insert_modules_option_values("fit"),
-              selected = character(0),
+              selected = "fit_fit",
               direction = "vertical",
               status = "outline-secondary",
               width = "100%"
@@ -170,7 +170,7 @@ tagList(
       column(
         8,
         conditionalPanel(
-          "input.tabs != 'intro' & input.tabs != 'rep'",
+          "input.tabs != 'intro'",
           fixedRow(
             column(
               2,
@@ -194,7 +194,7 @@ tagList(
         ),
         br(),
         conditionalPanel(
-          "input.tabs != 'intro' & input.tabs != 'rep'",
+          "input.tabs != 'intro'",
           tabsetPanel(
             id = "main",
             tabPanel(
@@ -222,25 +222,6 @@ tagList(
               "Save", icon = icon("floppy-disk", class = "save_icon"),
               core_save_module_ui("core_save")
             )
-          )
-        ),
-        ## save module data END ##
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == null",
-          column(8,
-                 includeMarkdown("Rmd/gtext_rep.Rmd")
-          )
-        ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == 'rep_markdown'",
-          column(8,
-                 includeMarkdown("modules/rep_markdown.md")
-          )
-        ),
-        conditionalPanel(
-          "input.tabs == 'rep' & input.repSel == 'rep_refPackages'",
-          column(8,
-                 includeMarkdown("modules/rep_refPackages.md")
           )
         ),
         conditionalPanel(

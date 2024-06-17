@@ -25,6 +25,12 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  common$tasks$agg_worldpop <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      agg_worldpop(...)
+    })
+  }) |> bslib::bind_task_button("run")
+
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
@@ -37,16 +43,8 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    agg_ras <- agg_worldpop(common$shape, country_code, input$method, input$resolution, input$year, common$logger)
-
-    # LOAD INTO COMMON ####
-    common$agg <- agg_ras
-    common$selected_country <- input$country
-    close_loading_modal()
-    common$logger %>% writeLog("Worldpop data has been downloaded")
-
+    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
     common$meta$agg_worldpop$log <- input$log
@@ -56,22 +54,39 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_worldpop$resolution <- input$resolution
     common$meta$agg_worldpop$year <- input$year
 
-    # TRIGGER
-    gargoyle::trigger("agg_worldpop")
+    common$selected_country <- input$country
     gargoyle::trigger("country_out")
   })
 
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$agg_worldpop$result()
+    if (class(result) == "PackedSpatRaster"){
+      result <- unwrap_terra(result)
+      common$agg <- result
+      results$suspend()
+      common$logger %>% writeLog("Worldpop data has been downloaded")
+      # TRIGGER
+      gargoyle::trigger("agg_worldpop")
+      do.call("agg_worldpop_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_landuse-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
+    }
+  })
+
+
   return(list(
     save = function() {
-list(method = input$method, 
-resolution = input$resolution, 
-year = input$year, 
+list(method = input$method,
+resolution = input$resolution,
+year = input$year,
 log = input$log)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method) 
-updateSelectInput(session, "resolution", selected = state$resolution) 
-updateSelectInput(session, "year", selected = state$year) 
+updateSelectInput(session, "method", selected = state$method)
+updateSelectInput(session, "resolution", selected = state$resolution)
+updateSelectInput(session, "year", selected = state$year)
 shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
