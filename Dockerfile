@@ -44,3 +44,6 @@ USER shiny
 # run app
 CMD ["/usr/bin/shiny-server"]
 
+#docker build --build-arg DISAGAPP_VER=20240524 -t simon/disagapp .
+
+
