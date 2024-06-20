@@ -8,7 +8,7 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
 Depends:
     R (>= 3.5.0),
-    shiny (>= 1.6.0),
+    shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
     gargoyle
