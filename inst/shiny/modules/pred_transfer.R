@@ -99,10 +99,10 @@ updateSelectInput(session, "country", selected = state$country)
 }
 
 pred_transfer_module_map <- function(map, common) {
-  covariate_map(map, common, common$transfer$prediction, "Transferred prediction (rate)")
-  covariate_map(map, common, common$transfer$cases, "Transferred prediction (cases)")
+  raster_map(map, common, common$transfer$prediction, "Transferred prediction (rate)")
+  raster_map(map, common, common$transfer$cases, "Transferred prediction (cases)")
   for (layer in names(common$transfer$covariates)){
-    covariate_map(map, common, common$prep$covariate_rasters[[layer]], paste0(layer, " (transferred)"))
+    raster_map(map, common, common$prep$covariate_rasters[[layer]], paste0(layer, " (transferred)"))
   }
 }
 

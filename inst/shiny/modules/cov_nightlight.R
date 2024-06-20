@@ -92,7 +92,7 @@ updateTextInput(session, "bearer", value = state$bearer)
 }
 
 cov_nightlight_module_map <- function(map, common) {
-  covariate_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
+  raster_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
 }
 
 cov_nightlight_module_rmd <- function(common) {

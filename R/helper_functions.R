@@ -172,7 +172,7 @@ shape_map <- function(map, common){
     hideGroup(common$map_layers[!common$map_layers == "Response"])
 }
 
-#' @title covariate_map
+#' @title raster_map
 #' @description For internal use. Plot covariate data on the leaflet map
 #' @param map The leafletProxy object to add the shape to
 #' @param common The common data structure
@@ -181,7 +181,7 @@ shape_map <- function(map, common){
 #' @param log Whether to plot the raster using a log scale
 #' @keywords internal
 #' @export
-covariate_map <- function(map, common, raster, name, log = FALSE){
+raster_map <- function(map, common, raster, name, log = FALSE){
   common$add_map_layer(name)
   if (log == TRUE){
     raster = log10(raster)

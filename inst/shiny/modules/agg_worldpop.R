@@ -95,7 +95,7 @@ shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
 }
 
 agg_worldpop_module_map <- function(map, common) {
-  covariate_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
+  raster_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
 }
 
 agg_worldpop_module_rmd <- function(common) {

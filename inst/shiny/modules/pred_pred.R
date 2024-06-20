@@ -116,12 +116,12 @@ shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
 pred_pred_module_map <- function(map, common) {
   for (variable in c("Field", "Prediction", "IID")){
     if (!is.null(common$pred[[tolower(variable)]])){
-      covariate_map(map, common, common$pred[[tolower(variable)]], variable)
+      raster_map(map, common, common$pred[[tolower(variable)]], variable)
     }
   }
   if (common$meta$pred_pred$uncertain){
-    covariate_map(map, common, common$pred$uncertainty$predictions_ci$`lower CI`, "Lower credible interval")
-    covariate_map(map, common, common$pred$uncertainty$predictions_ci$`upper CI`, "Upper credible interval")
+    raster_map(map, common, common$pred$uncertainty$predictions_ci$`lower CI`, "Lower credible interval")
+    raster_map(map, common, common$pred$uncertainty$predictions_ci$`upper CI`, "Upper credible interval")
   }
 }
 

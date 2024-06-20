@@ -136,13 +136,13 @@ prep_final_module_map <- function(map, common){
   req(common$prep)
   shape_map(map, common)
   for (layer in names(common$prep$covariate_rasters)){
-    covariate_map(map, common, common$prep$covariate_rasters[[layer]], layer)
+    raster_map(map, common, common$prep$covariate_rasters[[layer]], layer)
   }
   agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
   if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
-    covariate_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
+    raster_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
   } else {
-    covariate_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
+    raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
   }
   mesh_map(map, common)
   map %>% showGroup("Response")

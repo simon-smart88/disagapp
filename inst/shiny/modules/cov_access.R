@@ -67,7 +67,7 @@ updateSelectInput(session, "layer", selected = state$layer)
 
 cov_access_module_map <- function(map, common) {
   layer <- common$meta$cov_access$layer
-  covariate_map(map, common, common$covs[[layer]], layer)
+  raster_map(map, common, common$covs[[layer]], layer)
 }
 
 cov_access_module_rmd <- function(common) {

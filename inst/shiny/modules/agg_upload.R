@@ -89,7 +89,7 @@ agg_upload_module_result <- function(id) {
 }
 
 agg_upload_module_map <- function(map, common) {
-  covariate_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_upload$log)
+  raster_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_upload$log)
 }
 
 agg_upload_module_rmd <- function(common) {

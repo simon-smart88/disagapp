@@ -77,7 +77,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
 }
 
 cov_water_module_map <- function(map, common) {
-  covariate_map(map, common, common$covs[["Distance to water"]], "Distance to water")
+  raster_map(map, common, common$covs[["Distance to water"]], "Distance to water")
 }
 
 cov_water_module_rmd <- function(common) {
