@@ -10,7 +10,7 @@
 }
 #messageLog {
   height:100px;
-  width:450px;
+  width:475px;
   padding:5px;
   overflow:auto;
   border:1px solid grey;
@@ -135,4 +135,12 @@ hr {
   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
+.task_start{
+  color:#D55E00;
+}
+
+.task_end{
+  color:#0072B2;
+
+}
 

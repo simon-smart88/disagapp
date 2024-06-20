@@ -2,11 +2,11 @@ cov_water_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     uiOutput(ns("token_out")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
-cov_water_module_server <- function(id, common, parent_session) {
+cov_water_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     #use the environmental variable if set, if not display box to enter it
@@ -23,6 +23,12 @@ cov_water_module_server <- function(id, common, parent_session) {
       }
       token
     })
+
+  common$tasks$cov_water <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_water(...)
+    })
+  }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -43,21 +49,28 @@ cov_water_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    water <- cov_water(common$shape, token(), common$logger)
-    close_loading_modal()
+    common$tasks$cov_water$invoke(common$shape, token(), TRUE)
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download distance to water data"))
+    # METADATA ####
+    common$meta$cov_water$used <- TRUE
+    common$meta$cov_water$token <- input$token
+  })
 
-    if (!is.null(water)){
-      # LOAD INTO COMMON ####
-      common$covs[["Distance to water"]] <- water
-      common$logger %>% writeLog("Distance to water data has been downloaded")
-
-      # METADATA ####
-      common$meta$cov_water$used <- TRUE
-      common$meta$cov_water$token <- input$token
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$cov_water$result()
+    results$suspend()
+    if (class(result) == "PackedSpatRaster"){
+      common$covs[["Distance to water"]] <- unwrap_terra(result)
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Distance to water data has been downloaded"))
       # TRIGGER
+      do.call("cov_water_module_map", list(map, common))
       gargoyle::trigger("cov_water")
+      shinyjs::runjs("Shiny.setInputValue('cov_water-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
     }
+
   })
 
 })

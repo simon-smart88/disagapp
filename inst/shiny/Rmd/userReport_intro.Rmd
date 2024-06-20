@@ -29,6 +29,9 @@ library(disagapp)
 
 #create empty list to store covariate data
 covariates <- list()
+
+#set a seed
+set.seed({{seed}})
 ```
 
 The *disagapp* session code .Rmd file is composed of a chain of module functions that are internal to *disagapp*. Each of these functions corresponds to a single module that the user ran during the session. To see the internal code for these module functions, click on the links in the .Rmd file. Users are encouraged to write custom code in the .Rmd directly to modify their analysis, and even modify the module function code to further customize. To see the source code for any module function, just type its name into the R console and press Return.

@@ -5,7 +5,7 @@ prep_scale_module_ui <- function(id) {
   )
 }
 
-prep_scale_module_server <- function(id, common, parent_session) {
+prep_scale_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {

@@ -9,7 +9,7 @@ resp_example_module_ui <- function(id) {
   )
 }
 
-resp_example_module_server <- function(id, common, parent_session) {
+resp_example_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   shape <- reactive({
@@ -63,6 +63,7 @@ resp_example_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("resp_example")
+    do.call("resp_example_module_map", list(map, common))
   })
 
   return(list(

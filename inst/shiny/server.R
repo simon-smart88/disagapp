@@ -1,10 +1,15 @@
 function(input, output, session) {
 
+
+
   ########################## #
   # LOAD COMMON ####
   ########################## #
   source(system.file("shiny/common.R", package = "disagapp"))
   common <- common_class$new()
+
+  common$seed <- sample.int(n = 1000, size = 1)
+  set.seed(common$seed)
 
   ########################## #
   # LOGGER ####
@@ -35,7 +40,22 @@ function(input, output, session) {
                              type = "warning")
       check_online$destroy()
     }
-})
+  })
+
+  output$running_tasks <- renderText({
+    status <- unlist(lapply(common$tasks, function(x){x$status()}))
+    running <- length(status[status == "running"])
+    if (running == 0){
+      message <- "There are currently no tasks running"
+    }
+    if (running == 1){
+      message <- "There is currently 1 task running"
+    }
+    if (running > 1){
+      message <- glue::glue("There are currently {running} tasks running")
+    }
+    message
+  })
 
   ########################## #
   # REACTIVE VALUES LISTS ####
@@ -89,6 +109,12 @@ function(input, output, session) {
       observeEvent(input[[btn_id]], updateTabsetPanel(session, "main", "Module Guidance"))
       })})
 
+  ######################## #
+  ### MAPPING ####
+  ######################## #
+
+  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
+
   ####################
   ### INITIALISATION ####
   ###################
@@ -103,7 +129,7 @@ function(input, output, session) {
       if (module$id == "rep_markdown"){
         return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, COMPONENT_MODULES))
       } else {
-        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session))
+        return <- do.call(get(module$server_function), args = list(id = module$id, common = common, parent_session = session, map = map))
       }
       if (is.list(return) &&
           "save" %in% names(return) && is.function(return$save) &&
@@ -113,11 +139,7 @@ function(input, output, session) {
     })
   })
 
-  ######################## #
-  ### MAPPING ####
-  ######################## #
 
-  map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
   ################################
   ### SAVE / LOAD  ####

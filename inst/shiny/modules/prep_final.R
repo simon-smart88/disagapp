@@ -10,7 +10,7 @@ prep_final_module_ui <- function(id) {
   )
 }
 
-prep_final_module_server <- function(id, common, parent_session) {
+prep_final_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$id_var_out <- renderUI({
@@ -40,6 +40,13 @@ prep_final_module_server <- function(id, common, parent_session) {
 
   observeEvent(input$run, {
     # WARNING ####
+
+    mesh_status <- unlist(lapply(common$tasks[grep("^prep_", names(common$tasks), value = TRUE)], function(x){x$status()}))
+    mesh_running <- length(mesh_status[mesh_status == "running"])
+    if (mesh_running != 0) {
+      common$logger %>% writeLog(type = "error", "Please wait for the mesh to be built")
+      return()
+    }
 
     if (is.null(common$shape)) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
@@ -104,6 +111,7 @@ prep_final_module_server <- function(id, common, parent_session) {
     # TRIGGER
     gargoyle::trigger("clear_map")
     gargoyle::trigger("prep_final")
+    do.call("prep_final_module_map", list(map, common))
     show_map(parent_session)
   })
 

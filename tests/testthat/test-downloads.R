@@ -4,7 +4,7 @@ test_that("{shinytest2} recording: e2e_empty_markdown", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_markdown")
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
-  sess_file <- app$get_download("dlRMD")
+  sess_file <- app$get_download("rep_markdown-dlRMD")
   expect_false(is.null(sess_file))
   lines <- readLines(sess_file)
   writeLines(lines, sess_file)
@@ -22,7 +22,7 @@ test_that("{shinytest2} recording: e2e_empty_markdown", {
 # this is very temperamental
 test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_markdown_from_uploads")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_markdown_from_uploads", timeout = 60000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
@@ -43,10 +43,12 @@ test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
   app$set_inputs(prepSel = "prep_mesh")
   app$set_inputs("prep_mesh-mesh_edge" = c(0.1, 0.3))
   app$set_inputs("prep_mesh-mesh_offset" = c(0.1, 0.3))
-  app$click("prep_mesh-run")
+  app$click(selector = "#prep_mesh-run")
+  app$wait_for_value(input = "prep_mesh-complete")
 
   app$set_inputs(prepSel = "prep_summary")
   app$click("prep_summary-run")
+  app$set_inputs("prep_summary-resample_layer" = "EVI.tif")
   app$click("prep_summary-resample")
 
   app$set_inputs(prepSel = "prep_scale")
@@ -66,7 +68,7 @@ test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
 
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
-  sess_file <- app$get_download("dlRMD")
+  sess_file <- app$get_download("rep_markdown-dlRMD")
   expect_false(is.null(sess_file))
   lines <- readLines(sess_file)
 

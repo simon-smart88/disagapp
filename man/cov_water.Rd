@@ -4,7 +4,7 @@
 \alias{cov_water}
 \title{cov_water}
 \usage{
-cov_water(shape, token, logger = NULL)
+cov_water(shape, token, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
@@ -15,12 +15,12 @@ and either provide that or set the \code{ARCGIS_CLIENT} and \code{ARCGIS_SECRET}
 environmental variables to automate it as
 \href{https://r.esri.com/r-bridge-site/location-services/connecting-to-a-portal.html}{explained here}.}
 
-\item{logger}{Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL}
+\item{async}{Whether or not the function is being used asynchronously. When
+\code{TRUE} the returned object is a wrapped SpatRaster.}
 }
 \value{
-a SpatRaster object
+a SpatRaster object when \code{async} is \code{FALSE} or a PackedSpatRaster
+when \code{async} is \code{TRUE}.
 }
 \description{
 This function is called by the cov_water module and downloads data on the

@@ -9,7 +9,7 @@ resp_simplify_module_ui <- function(id) {
   )
 }
 
-resp_simplify_module_server <- function(id, common, parent_session) {
+resp_simplify_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   observeEvent(input$run, {
@@ -27,6 +27,7 @@ resp_simplify_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("resp_simplify")
+    do.call("resp_simplify_module_map", list(map, common))
   })
 
   output$current_size <- renderText({

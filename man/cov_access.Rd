@@ -4,7 +4,7 @@
 \alias{cov_access}
 \title{cov_access}
 \usage{
-cov_access(shape, layer)
+cov_access(shape, layer, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
@@ -12,6 +12,8 @@ cov_access(shape, layer)
 \item{layer}{character. The layer to be returned - one of:
 \verb{Travel Time to Cities (2015)}, \verb{Motorized Travel Time to Healthcare (2020)}
 or \verb{Walking Only Travel Time to Healthcare (2020)}}
+
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
 a SpatRaster object

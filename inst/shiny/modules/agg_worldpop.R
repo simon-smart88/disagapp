@@ -7,11 +7,11 @@ agg_worldpop_module_ui <- function(id) {
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     uiOutput(ns("year_out")),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
-    actionButton(ns("run"), "Fetch data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
-agg_worldpop_module_server <- function(id, common, parent_session) {
+agg_worldpop_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$country_out <- country_out(session, common)
@@ -25,6 +25,12 @@ agg_worldpop_module_server <- function(id, common, parent_session) {
     }
   })
 
+  common$tasks$agg_worldpop <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      agg_worldpop(...)
+    }, seed = TRUE)
+  }) |> bslib::bind_task_button("run")
+
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
@@ -37,32 +43,39 @@ agg_worldpop_module_server <- function(id, common, parent_session) {
       return()
     }
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    agg_ras <- agg_worldpop(common$shape, country_code, input$method, input$resolution, input$year, common$logger)
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download Worldpop data"))
+    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
+    # METADATA ####
+    common$meta$agg_worldpop$name <- "Population"
+    common$meta$agg_worldpop$log <- input$log
+    common$meta$agg_worldpop$used <- TRUE
+    common$meta$agg_worldpop$country <- country_code
+    common$meta$agg_worldpop$method <- input$method
+    common$meta$agg_worldpop$resolution <- input$resolution
+    common$meta$agg_worldpop$year <- input$year
+
+    common$selected_country <- input$country
     gargoyle::trigger("country_out")
-    close_loading_modal()
+  })
 
-    if (!is.null(agg_ras)){
-      # LOAD INTO COMMON ####
-      common$agg <- agg_ras
-      common$selected_country <- input$country
-
-      common$logger %>% writeLog("Worldpop data has been downloaded")
-
-      # METADATA ####
-      common$meta$agg_worldpop$name <- "Population"
-      common$meta$agg_worldpop$log <- input$log
-      common$meta$agg_worldpop$used <- TRUE
-      common$meta$agg_worldpop$country <- country_code
-      common$meta$agg_worldpop$method <- input$method
-      common$meta$agg_worldpop$resolution <- input$resolution
-      common$meta$agg_worldpop$year <- input$year
-
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$agg_worldpop$result()
+    results$suspend()
+    if (class(result) == "PackedSpatRaster"){
+      result <- unwrap_terra(result)
+      common$agg <- result
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Worldpop data has been downloaded"))
       # TRIGGER
       gargoyle::trigger("agg_worldpop")
+      do.call("agg_worldpop_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('agg_worldpop-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
     }
   })
+
 
   return(list(
     save = function() {
