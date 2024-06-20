@@ -1,6 +1,0 @@
-component: "resp"
-short_name: "Async"
-long_name: "Async"
-authors: "Simon E H Smart"
-package: [sf, leaflet]
-class: optional
