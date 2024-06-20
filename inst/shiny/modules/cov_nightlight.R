@@ -30,7 +30,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
   common$tasks$cov_nightlight <- ExtendedTask$new(function(...) {
     promises::future_promise({
       cov_nightlight(...)
-    })
+    }, seed = TRUE)
   }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {

@@ -34,7 +34,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
   common$tasks$cov_bioclim <- ExtendedTask$new(function(...) {
     promises::future_promise({
       cov_bioclim(...)
-    })
+    }, seed = TRUE)
   }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {

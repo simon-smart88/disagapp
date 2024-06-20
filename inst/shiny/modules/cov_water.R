@@ -27,7 +27,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
   common$tasks$cov_water <- ExtendedTask$new(function(...) {
     promises::future_promise({
       cov_water(...)
-    })
+    }, seed = TRUE)
   }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
