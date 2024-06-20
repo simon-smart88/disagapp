@@ -19,6 +19,8 @@
 
 cov_nightlight <- function(shape, year, bearer, async = FALSE) {
 
+  message <- NULL
+
   if (!("sf" %in% class(shape))){
     message <- "Shape must be an sf object"
     if (async){
@@ -59,6 +61,9 @@ ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                 NULL})
 
 if (is.null(ras)){
+  if (is.null(message)){
+    message <- paste0("An error occurred whilst trying to download night light data")
+  }
   if (async){
     return(message)
   } else {
@@ -71,7 +76,6 @@ if (is.null(ras)){
   if (async){ ras <- terra::wrap(ras) }
   return(ras)
 }
-
 
 
 }
