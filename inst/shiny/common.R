@@ -24,6 +24,7 @@ common_class <- R6::R6Class(
     async_result_a = NULL,
     async_result_b = NULL,
     tasks = list(),
+    seed = NULL,
     countries = readRDS(system.file("ex/countries.rds", package = "geodata")),
     selected_country = NULL,
     add_map_layer = function(new_names) {

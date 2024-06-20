@@ -62,10 +62,10 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
     }
   },
   error = function(x){
-    message <- paste0("An error occurred whilst trying to download the data: ", x)
+    message <- paste0("An error occurred whilst trying to download land use data: ", x)
     NULL},
   warning = function(x){
-    message <- paste0("An error occurred whilst trying to download the data: ", x)
+    message <- paste0("An error occurred whilst trying to download land use data: ", x)
     NULL}
   )
 

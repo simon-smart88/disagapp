@@ -1,10 +1,10 @@
-# test_that("Check cov_water function works as expected", {
-#   result <- cov_water(shape, arcgisutils::auth_client())
-#   expect_is(result, "SpatRaster")
-#
-#   expect_error(cov_water(shpdf, arcgisutils::auth_client()), "Shape must be an sf object")
-#   expect_error(cov_water(shape, "token"), "Token must be an httr2_token")
-# })
+test_that("Check cov_water function works as expected", {
+  result <- cov_water(shape, arcgisutils::auth_client())
+  expect_is(result, "SpatRaster")
+
+  expect_error(cov_water(shpdf, arcgisutils::auth_client()), "Shape must be an sf object")
+  expect_error(cov_water(shape, "token"), "Token must be an httr2_token")
+})
 
 test_that("{shinytest2} recording: e2e_cov_water", {
 

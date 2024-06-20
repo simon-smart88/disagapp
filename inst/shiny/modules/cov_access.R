@@ -30,7 +30,7 @@ cov_access_module_server <- function(id, common, parent_session, map) {
     }
     # FUNCTION CALL ####
     common$tasks$cov_access$invoke(common$shape, input$layer, TRUE)
-    common$logger %>% writeLog("Starting to download accessibility data")
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download accessibility data"))
     results$resume()
     # METADATA ####
     common$meta$cov_access$used <- TRUE
@@ -44,7 +44,7 @@ cov_access_module_server <- function(id, common, parent_session, map) {
       results$suspend()
       if (class(result) == "PackedSpatRaster"){
         common$covs[[common$meta$cov_access$layer]] <- unwrap_terra(result)
-        common$logger %>% writeLog("Accessibility data has been downloaded")
+        common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Accessibility data has been downloaded"))
         # TRIGGER
         gargoyle::trigger("cov_access")
         do.call("cov_access_module_map", list(map, common))

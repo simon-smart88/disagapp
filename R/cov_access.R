@@ -20,10 +20,10 @@ cov_access <- function(shape, layer, async = FALSE) {
 
   acc <- tryCatch({malariaAtlas::getRaster(dataset_id = datasets[[layer]], shp = shape)},
                   error = function(x){
-                  message <- paste0("An error occurred whilst trying to download the data: ", x)
+                  message <- paste0("An error occurred whilst trying to download accessibility data: ", x)
                   NULL},
-                  warning = function(x){l
-                  message <- paste0("An error occurred whilst trying to download the data: ", x)
+                  warning = function(x){
+                  message <- paste0("An error occurred whilst trying to download accessibility data: ", x)
                   NULL}
   )
 

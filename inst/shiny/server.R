@@ -1,12 +1,15 @@
 function(input, output, session) {
 
-  future::plan(future::multisession)
+
 
   ########################## #
   # LOAD COMMON ####
   ########################## #
   source(system.file("shiny/common.R", package = "disagapp"))
   common <- common_class$new()
+
+  common$seed <- sample.int(n = 1000, size = 1)
+  set.seed(common$seed)
 
   ########################## #
   # LOGGER ####
@@ -42,7 +45,16 @@ function(input, output, session) {
   output$running_tasks <- renderText({
     status <- unlist(lapply(common$tasks, function(x){x$status()}))
     running <- length(status[status == "running"])
-    glue::glue("There are currently {running} tasks running")
+    if (running == 0){
+      message <- "There are currently no tasks running"
+    }
+    if (running == 1){
+      message <- "There is currently 1 task running"
+    }
+    if (running > 1){
+      message <- glue::glue("There are currently {running} tasks running")
+    }
+    message
   })
 
   ########################## #

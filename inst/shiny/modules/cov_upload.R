@@ -55,12 +55,13 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_upload$used <- TRUE
     #prevent over-writing if the module has already been used
     if (is.null(common$meta$cov_upload$path)){
-    common$meta$cov_upload$path <- as.vector(covdf$name)
+      common$meta$cov_upload$path <- as.vector(covdf$name)
     } else {
-    common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
+      common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
     }
 
     # TRIGGER
+    do.call("cov_upload_module_map", list(map, common))
     gargoyle::trigger("cov_upload")
   })
 

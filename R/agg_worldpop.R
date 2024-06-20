@@ -17,26 +17,26 @@
 
 agg_worldpop <- function(shape, country_code, method, resolution, year, async = FALSE) {
 
+message <- NULL
+pop_ras <- NULL
+
 if (!(method %in% c("Unconstrained", "Constrained"))){
-  logger %>% writeLog(type = "error", "Method must be either \"Constrained\" or \"Unconstrained\"")
-  return()
+  message <-"Method must be either \"Constrained\" or \"Unconstrained\""
 }
 
 if (!(resolution %in% c("100m", "1km"))){
-  logger %>% writeLog(type = "error", "Resolution must be either \"100m\" or \"1km\"")
-  return()
+  message <- "Resolution must be either \"100m\" or \"1km\""
 }
 
 if (method == "Unconstrained" & (year > 2020| year < 2000)){
-  logger %>% writeLog(type = "error", "Unconstrained data is only available between 2000 and 2020")
-  return()
+  message <- "Unconstrained data is only available between 2000 and 2020"
 }
 
 if (method == "Constrained" & year != 2020){
-  logger %>% writeLog(type = "error", "Constrained population data is only available for 2020")
-  return()
+  message <- "Constrained population data is only available for 2020"
 }
 
+if (is.null(message)){
 base_url <- "https://hub.worldpop.org/rest/data/pop/"
 
 # select the product url
@@ -50,8 +50,6 @@ if (method == "Constrained"){
   product <- "cic2020_100m"
 }
 
-message <- NULL
-
 # call the API and return error if it doesn't work
 api_url <- glue::glue("{base_url}{product}?iso3={country_code}")
 req <- httr2::request(api_url) |> httr2::req_perform()
@@ -63,6 +61,7 @@ if (req$status_code != 200){
 cont <- httr2::resp_body_json(req)
 if (length(cont$data) == 0){
   message <- "The requested data could not be found"
+}
 }
 
 if (is.null(message)){
@@ -89,8 +88,6 @@ if (is.null(message)){
       message <- paste0("An error occurred whilst trying to download the data: ", x)
       NULL}
   )
-} else {
-  pop_ras <- NULL
 }
 
 if (is.null(pop_ras)){

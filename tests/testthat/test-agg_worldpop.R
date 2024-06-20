@@ -27,7 +27,7 @@ expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "The 
 })
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop")
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop", timeout = 30000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")

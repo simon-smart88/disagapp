@@ -52,10 +52,10 @@ ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                         bearer = bearer,
                         quiet = TRUE)},
                 error = function(x){
-                message <- paste0("An error occurred whilst trying to download the data: ", x)
+                message <- paste0("An error occurred whilst trying to download night light data: ", x)
                 NULL},
                 warning = function(x){
-                message <- paste0("An error occurred whilst trying to download the data: ", x)
+                message <- paste0("An error occurred whilst trying to download night light data: ", x)
                 NULL})
 
 if (is.null(ras)){

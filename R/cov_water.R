@@ -18,14 +18,24 @@
 
 cov_water <- function(shape, token, async = FALSE) {
 
+  message <- NULL
+
   if (!("sf" %in% class(shape))){
-    logger %>% writeLog(type = "error", "Shape must be an sf object")
-    return()
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   if (!("httr2_token" %in% class(token))){
-    logger %>% writeLog(type = "error", "Token must be an httr2_token")
-    return()
+    message <- "Token must be an httr2_token"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   arcgisutils::set_arc_token(token)
@@ -34,10 +44,10 @@ cov_water <- function(shape, token, async = FALSE) {
 
   flayer <- tryCatch({arcgislayers::arc_open(furl)},
                      error = function(x){
-                     message <- paste0("An error occurred whilst trying to download the data: ", x)
+                     message <- paste0("An error occurred whilst trying to download distance to water data: ", x)
                      NULL},
                      warning = function(x){
-                     message <- paste0("An error occurred whilst trying to download the data: ", x)
+                     message <- paste0("An error occurred whilst trying to download distance to water data: ", x)
                      NULL}
                      )
 
@@ -62,13 +72,12 @@ cov_water <- function(shape, token, async = FALSE) {
     ras <- terra::crop(ras, shape, mask = TRUE)
 
     names(ras) <- "Distance to water"
-
+    if (async){
+      ras <- wrap_terra(ras)
+    }
     return(ras)
   }
 
-  if (async){
-    ras <- wrap_terra(ras)
-  }
 
-  return(ras)
+
 }

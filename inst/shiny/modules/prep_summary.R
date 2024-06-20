@@ -23,12 +23,21 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       gargoyle::watch("agg_worldpop")
       gargoyle::watch("agg_upload")
       gargoyle::watch("agg_uniform")
+      req(length(common$covs) > 0)
       selectInput(session$ns("resample_layer"), "Covariate to use as template", choices = c("", names(common$covs), names(common$agg)), multiple = FALSE)
     })
 
 
   observeEvent(input$run, {
     # WARNING ####
+
+    ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
+    ras_running <- length(ras_status[ras_status == "running"])
+    if (ras_running != 0) {
+      common$logger %>% writeLog(type = "error", "Please wait for the running tasks to complete")
+      return()
+    }
+
     if (length(common$covs) == 0) {
       common$logger %>% writeLog(type = "error", "Please upload covariates")
       return()
@@ -42,10 +51,6 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     common$covs$Aggregation <- common$agg
     common$covs_summary$original <- prep_summary(common$covs, remove = input$remove)
     common$covs$Aggregation <- NULL
-
-    # LOAD INTO COMMON ####
-
-    # METADATA ####
 
     # TRIGGER
     gargoyle::trigger("prep_summary")

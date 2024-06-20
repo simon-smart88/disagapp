@@ -41,6 +41,13 @@ prep_final_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
 
+    mesh_status <- unlist(lapply(common$tasks[grep("^prep_", names(common$tasks), value = TRUE)], function(x){x$status()}))
+    mesh_running <- length(mesh_status[mesh_status == "running"])
+    if (mesh_running != 0) {
+      common$logger %>% writeLog(type = "error", "Please wait for the mesh to be built")
+      return()
+    }
+
     if (is.null(common$shape)) {
       common$logger %>% writeLog(type = "error", "Please upload response data first")
       return()

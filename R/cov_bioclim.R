@@ -52,10 +52,10 @@ cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
 
   bioclim_ras <- tryCatch({terra::rast(glue::glue("https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{country_code}_wc2.1_30s_bio.tif"))},
            error = function(x){
-           message <- paste0("An error occurred whilst trying to download the data: ", x)
+           message <- paste0("An error occurred whilst trying to download bioclim data: ", x)
            NULL},
            warning = function(x){
-           message <- paste0("An error occurred whilst trying to download the data: ", x)
+           message <- paste0("An error occurred whilst trying to download bioclim data: ", x)
            NULL}
   )
   if (is.null(bioclim_ras)){

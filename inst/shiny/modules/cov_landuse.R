@@ -38,7 +38,8 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     }
     # FUNCTION CALL ####
     common$tasks$cov_landuse$invoke(common$shape, input$year, input$uses, TRUE)
-    common$logger %>% writeLog("Starting to download land use data")
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download land use data"))
+    results$resume()
     # METADATA ####
     common$meta$cov_landuse$used <- TRUE
     common$meta$cov_landuse$uses <- input$uses
@@ -48,11 +49,11 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_landuse$result()
+    results$suspend()
     if (class(result) == "list"){
       result <- unwrap_terra(result)
       common$covs <- append(common$covs, result)
-      results$suspend()
-      common$logger %>% writeLog("Land use data has been downloaded")
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Land use data has been downloaded"))
       # TRIGGER
       gargoyle::trigger("cov_landuse")
       do.call("cov_landuse_module_map", list(map, common))
@@ -77,7 +78,7 @@ updateSelectInput(session, "year", selected = state$year)
 
 cov_landuse_module_map <- function(map, common) {
   for (use in common$meta$cov_landuse$uses){
-    land_use <- paste0(use,"_land_use")
+    land_use <- paste0(use, " land use")
     covariate_map(map, common, common$covs[[land_use]], land_use)
   }
 }

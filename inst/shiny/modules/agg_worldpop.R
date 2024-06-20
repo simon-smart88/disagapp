@@ -28,7 +28,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
   common$tasks$agg_worldpop <- ExtendedTask$new(function(...) {
     promises::future_promise({
       agg_worldpop(...)
-    })
+    }, seed = TRUE)
   }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
@@ -44,6 +44,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     }
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download Worldpop data"))
     common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
@@ -61,11 +62,11 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$agg_worldpop$result()
+    results$suspend()
     if (class(result) == "PackedSpatRaster"){
       result <- unwrap_terra(result)
       common$agg <- result
-      results$suspend()
-      common$logger %>% writeLog("Worldpop data has been downloaded")
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Worldpop data has been downloaded"))
       # TRIGGER
       gargoyle::trigger("agg_worldpop")
       do.call("agg_worldpop_module_map", list(map, common))

@@ -56,9 +56,8 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
     common$tasks$cov_bioclim$invoke(country_code, input$variables, common$shape, TRUE)
-    common$logger %>% writeLog("Starting to download bioclim data")
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download bioclim data"))
     results$resume()
-
 
     # METADATA ####
     common$meta$cov_bioclim$used <- TRUE
@@ -71,10 +70,10 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_bioclim$result()
+    results$suspend()
     if (class(result) == "list"){
       common$covs <- append(common$covs, unwrap_terra(result))
-      results$suspend()
-      common$logger %>% writeLog("Bioclim data has been downloaded")
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Bioclim data has been downloaded"))
       # TRIGGER
       gargoyle::trigger("cov_bioclim")
       do.call("cov_bioclim_module_map", list(map, common))

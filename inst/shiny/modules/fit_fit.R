@@ -132,7 +132,6 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     common$meta$fit_fit$iideffect_sd_prob <- as.numeric(input$iideffect_prob)
     # TRIGGER
     gargoyle::trigger("fit_fit")
-    do.call("fit_fit_module_map", list(map, common))
     show_results(parent_session)
   })
 
