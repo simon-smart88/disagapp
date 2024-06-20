@@ -196,7 +196,7 @@ raster_map <- function(map, common, raster, name, log = FALSE){
     clearGroup(name) %>%
     removeControl(name) %>%
     addRasterImage(raster, group = name, colors = pal) %>%
-    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name) %>%
+    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name, layer = name) %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
     hideGroup(common$map_layers[!common$map_layers == name])
 }
