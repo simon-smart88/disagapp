@@ -8,36 +8,35 @@
 #' @param method character. The method used to estimate population. Either `Constrained` or `Unconstrained`.
 #' @param resolution character. The resolution of the returned raster. Either `100m` or `1km`.
 #' @param year numeric. The year to obtain data for. Either 2000 to 2020 when `method = Unconstrained` or only 2020 when `method = Constrained`
-#' @param logger Stores all notification messages to be displayed in the Log
-#'   Window. Insert the logger reactive list here for running in
-#'   shiny, otherwise leave the default NULL
+#' @param async logical. Whether or not the function is being used asynchronously
 #' @importFrom rlang .data
-#' @return a SpatRaster object
+#' @return a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster
+#' when `async` is `TRUE`.
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-agg_worldpop <- function(shape, country_code, method, resolution, year, logger = NULL) {
+agg_worldpop <- function(shape, country_code, method, resolution, year, async = FALSE) {
+
+message <- NULL
+pop_ras <- NULL
 
 if (!(method %in% c("Unconstrained", "Constrained"))){
-  logger %>% writeLog(type = "error", "Method must be either \"Constrained\" or \"Unconstrained\"")
-  return()
+  message <-"Method must be either \"Constrained\" or \"Unconstrained\""
 }
 
 if (!(resolution %in% c("100m", "1km"))){
-  logger %>% writeLog(type = "error", "Resolution must be either \"100m\" or \"1km\"")
-  return()
+  message <- "Resolution must be either \"100m\" or \"1km\""
 }
 
 if (method == "Unconstrained" & (year > 2020| year < 2000)){
-  logger %>% writeLog(type = "error", "Unconstrained data is only available between 2000 and 2020")
-  return()
+  message <- "Unconstrained data is only available between 2000 and 2020"
 }
 
 if (method == "Constrained" & year != 2020){
-  logger %>% writeLog(type = "error", "Constrained population data is only available for 2020")
-  return()
+  message <- "Constrained population data is only available for 2020"
 }
 
+if (is.null(message)){
 base_url <- "https://hub.worldpop.org/rest/data/pop/"
 
 # select the product url
@@ -55,31 +54,54 @@ if (method == "Constrained"){
 api_url <- glue::glue("{base_url}{product}?iso3={country_code}")
 req <- httr2::request(api_url) |> httr2::req_perform()
 if (req$status_code != 200){
-  logger %>% writeLog(type="error", "The requested data could not be found")
-  return()
+  message <- "The requested data could not be found"
 }
 
 # fetch the API call content and return an error if it is empty
 cont <- httr2::resp_body_json(req)
 if (length(cont$data) == 0){
-  logger %>% writeLog(type="error", "The requested data could not be found")
-  return()
+  message <- "The requested data could not be found"
 }
-# select the file_url and download the raster
-data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
-pop_ras <- terra::rast(data$files[[1]])
-
-# aggregate unconstrained as only available at 100m
-if (method == "Constrained" & resolution == "1km"){
-pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
 }
 
-# convert NAs to zero
-pop_ras <- terra::subst(pop_ras, NA, 0)
+if (is.null(message)){
+  # select the file_url and download the raster
+  data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
+  tryCatch({
+    pop_ras <- terra::rast(data$files[[1]])
 
-pop_ras <- terra::crop(pop_ras, shape)
-pop_ras <- terra::mask(pop_ras, shape)
+    # aggregate unconstrained as only available at 100m
+    if (method == "Constrained" & resolution == "1km"){
+      pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
+    }
 
-names(pop_ras) <- "Population"
-return(pop_ras)
+    # convert NAs to zero
+    pop_ras <- terra::subst(pop_ras, NA, 0)
+
+    pop_ras <- terra::crop(pop_ras, shape)
+    pop_ras <- terra::mask(pop_ras, shape)
+    names(pop_ras) <- "Population"},
+    error = function(x){
+      message <- paste0("An error occurred whilst trying to download the data: ", x)
+      NULL},
+    warning = function(x){
+      message <- paste0("An error occurred whilst trying to download the data: ", x)
+      NULL}
+  )
+}
+
+if (is.null(pop_ras)){
+  if (async){
+    return(message)
+  } else {
+    stop(message)
+  }
+} else {
+  if (async){
+    pop_ras <- wrap_terra(pop_ras)
+  }
+  return(pop_ras)
+}
+
+
 }

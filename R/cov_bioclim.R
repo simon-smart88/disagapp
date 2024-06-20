@@ -16,14 +16,14 @@
 #' `Precipitation wettest quarter`, `Precipitation driest quarter`,
 #' `Precipitation warmest quarter`, `Precipitation coldest quarter`
 #' @param shape sf. sf object containing the area of interest
-#' @param logger Stores all notification messages to be displayed in the Log
-#' Window. Insert the logger reactive list here for running in
-#' shiny, otherwise leave the default NULL
-#' @return a list of SpatRaster objects
+#' @param async logical. Whether or not the function is being used asynchronously
+#' @return a list of containing an item for each variable, either SpatRaster
+#' objects when `async` is `FALSE` or PackedSpatRaster objects when `async` is
+#' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
+cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
 
   layers  <-  c("Mean temperature",
                 "Mean diurnal range",
@@ -47,25 +47,31 @@ cov_bioclim <- function(country_code, variables, shape, logger = NULL) {
 
   for (v in variables){
   if (!(v %in% layers)){
-    logger %>% writeLog(type = "error", glue::glue("{v} is not a valid bioclim variable"))
-    return()
+    stop(glue::glue("{v} is not a valid bioclim variable"))
   }}
 
   bioclim_ras <- tryCatch({terra::rast(glue::glue("https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{country_code}_wc2.1_30s_bio.tif"))},
-           error = function(x){logger %>% writeLog(type = "error",
-           paste0("An error occurred whilst trying to download the data: ", x))
+           error = function(x){
+           message <- paste0("An error occurred whilst trying to download bioclim data: ", x)
            NULL},
-           warning = function(x){logger %>% writeLog(type = "error",
-           paste0("An error occurred whilst trying to download the data: ", x))
+           warning = function(x){
+           message <- paste0("An error occurred whilst trying to download bioclim data: ", x)
            NULL}
   )
   if (is.null(bioclim_ras)){
-    return()
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   } else {
-  bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
-  names(bioclim_ras) <- layers
-  bioclim_ras <- as.list(bioclim_ras[[variables]])
-  names(bioclim_ras) <- variables
+    bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
+    names(bioclim_ras) <- layers
+    bioclim_ras <- as.list(bioclim_ras[[variables]])
+    names(bioclim_ras) <- variables
+  if (async){
+    bioclim_ras <- wrap_terra(bioclim_ras)
+  }
   return(bioclim_ras)
   }
 }

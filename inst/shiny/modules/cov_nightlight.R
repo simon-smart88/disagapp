@@ -4,11 +4,11 @@ cov_nightlight_module_ui <- function(id) {
     # UI
     selectInput(ns("year"), "Year", choices = c(2022:2012)),
     uiOutput(ns("bearer_out")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
-cov_nightlight_module_server <- function(id, common, parent_session) {
+cov_nightlight_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   #use the environmental variable if set, if not display box to enter it
@@ -25,6 +25,13 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
   }
   bearer
   })
+
+
+  common$tasks$cov_nightlight <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_nightlight(...)
+    })
+  }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -46,25 +53,28 @@ cov_nightlight_module_server <- function(id, common, parent_session) {
     }
 
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    light <- cov_nightlight(common$shape, input$year, bearer(), common$logger)
-    close_loading_modal()
+    common$tasks$cov_nightlight$invoke(common$shape, input$year, bearer(), TRUE)
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download nightlight data"))
+    results$resume()
+    # METADATA ####
+    common$meta$cov_nightlight$used <- TRUE
+    common$meta$cov_nightlight$year <- input$year
+    common$meta$cov_nightlight$bearer <- input$bearer
+  })
 
-    if (is.null(light)){
-      common$logger %>% writeLog(type= "error", "Nighttime light data could not be downloaded at this time")
-    }
-
-    if (!is.null(light)){
-      # LOAD INTO COMMON ####
-      common$covs[["Nighttime light"]] <- light
-      common$logger %>% writeLog("Nighttime light data has been downloaded")
-
-      # METADATA ####
-      common$meta$cov_nightlight$used <- TRUE
-      common$meta$cov_nightlight$year <- input$year
-      common$meta$cov_nightlight$bearer <- input$bearer
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$cov_nightlight$result()
+    results$suspend()
+    if (class(result) == "PackedSpatRaster"){
+      common$covs[["Nighttime light"]] <- unwrap_terra(result)
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Nighttime light data has been downloaded"))
       # TRIGGER
       gargoyle::trigger("cov_nightlight")
+      do.call("cov_nightlight_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_nightlight-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
     }
   })
 

@@ -14,7 +14,7 @@ fit_fit_module_ui <- function(id) {
   )
 }
 
-fit_fit_module_server <- function(id, common, parent_session) {
+fit_fit_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$priors_out <- renderUI({

@@ -4,7 +4,7 @@
 \alias{agg_worldpop}
 \title{agg_worldpop}
 \usage{
-agg_worldpop(shape, country_code, method, resolution, year, logger = NULL)
+agg_worldpop(shape, country_code, method, resolution, year, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
@@ -17,12 +17,11 @@ agg_worldpop(shape, country_code, method, resolution, year, logger = NULL)
 
 \item{year}{numeric. The year to obtain data for. Either 2000 to 2020 when \code{method = Unconstrained} or only 2020 when \code{method = Constrained}}
 
-\item{logger}{Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL}
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
-a SpatRaster object
+a SpatRaster object when \code{async} is \code{FALSE} or a PackedSpatRaster
+when \code{async} is \code{TRUE}.
 }
 \description{
 This function is called by the agg_worldpop module and downloads data on

@@ -10,28 +10,40 @@
 #' @param year numeric. Year for which to download the data. Limited to 2012-2022
 #' @param bearer character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
 #' for details of how to obtain one.
-#' @param logger Stores all notification messages to be displayed in the Log
-#' Window. Insert the logger reactive list here for running in
-#' shiny, otherwise leave the default NULL
-#' @return a SpatRaster object
+#' @param async Whether or not the function is being used asynchronously. When
+#' `TRUE` the returned object is a wrapped SpatRaster.
+#' @return a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster
+#' when `async` is `TRUE`.
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-cov_nightlight <- function(shape, year, bearer, logger = NULL) {
+cov_nightlight <- function(shape, year, bearer, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
-    logger %>% writeLog(type = "error", "Shape must be an sf object")
-    return()
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   if (year > 2022 | year < 2012){
-    logger %>% writeLog(type = "error", "Night time illumination data is only available between 2012 and 2022")
-    return()
+    message <- "Nighttime data is only available between 2012 and 2022"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
   if (nchar(bearer) < 200){
-    logger %>% writeLog(type = "error", "That doesn't look like a valid NASA bearer token")
-    return()
+    message <- "That doesn't look like a valid NASA bearer token"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   }
 
 ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
@@ -39,19 +51,24 @@ ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                         date = year,
                         bearer = bearer,
                         quiet = TRUE)},
-                error = function(x){logger %>% writeLog(type = "error",
-                paste0("An error occurred whilst trying to download the data: ", x))
+                error = function(x){
+                message <- paste0("An error occurred whilst trying to download night light data: ", x)
                 NULL},
-                warning = function(x){logger %>% writeLog(type = "error",
-                paste0("An error occurred whilst trying to download the data: ", x))
+                warning = function(x){
+                message <- paste0("An error occurred whilst trying to download night light data: ", x)
                 NULL})
 
 if (is.null(ras)){
-  return()
+  if (async){
+    return(message)
+  } else {
+    stop(message)
+  }
 } else {
   ras <- terra::rast(ras)
   names(ras) <- "Nighttime light"
   ras <- terra::crop(ras, shape, mask = TRUE )
+  if (async){ ras <- terra::wrap(ras) }
   return(ras)
 }
 

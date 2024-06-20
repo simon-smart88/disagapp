@@ -17,7 +17,7 @@ resp_combine_module_ui <- function(id) {
   )
 }
 
-resp_combine_module_server <- function(id, common, parent_session) {
+resp_combine_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     df <- reactive({
@@ -123,6 +123,8 @@ resp_combine_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("resp_combine")
+    do.call("resp_combine_module_map", list(map, common))
+
   })
 
   return(list(

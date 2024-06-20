@@ -4,12 +4,18 @@ cov_access_module_ui <- function(id) {
     selectInput(ns("layer"), "Layer", choices = c("Travel Time to Cities (2015)",
                                                   "Motorized Travel Time to Healthcare (2020)",
                                                   "Walking Only Travel Time to Healthcare (2020)")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
-cov_access_module_server <- function(id, common, parent_session) {
+cov_access_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
+
+  common$tasks$cov_access <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_access(...)
+    })
+  }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -23,21 +29,29 @@ cov_access_module_server <- function(id, common, parent_session) {
       return()
     }
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
-    access <- cov_access(common$shape, input$layer, common$logger)
-    close_loading_modal()
+    common$tasks$cov_access$invoke(common$shape, input$layer, TRUE)
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download accessibility data"))
+    results$resume()
+    # METADATA ####
+    common$meta$cov_access$used <- TRUE
+    common$meta$cov_access$layer <- input$layer
 
-    if (!is.null(access)){
+  })
+
+    results <- observe({
       # LOAD INTO COMMON ####
-      common$covs[[input$layer]] <- access
-      common$logger %>% writeLog("Accessibility data has been downloaded")
-
-      # METADATA ####
-      common$meta$cov_access$used <- TRUE
-      common$meta$cov_access$layer <- input$layer
-      # TRIGGER
-      gargoyle::trigger("cov_access")
-    }
+      result <- common$tasks$cov_access$result()
+      results$suspend()
+      if (class(result) == "PackedSpatRaster"){
+        common$covs[[common$meta$cov_access$layer]] <- unwrap_terra(result)
+        common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Accessibility data has been downloaded"))
+        # TRIGGER
+        gargoyle::trigger("cov_access")
+        do.call("cov_access_module_map", list(map, common))
+        shinyjs::runjs("Shiny.setInputValue('cov_access-complete', 'complete');")
+      } else {
+        common$logger %>% writeLog(type = "error", result)
+      }
   })
 
   return(list(

@@ -11,7 +11,7 @@ resp_shape_module_ui <- function(id) {
   )
 }
 
-resp_shape_module_server <- function(id, common, parent_session) {
+resp_shape_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     #not using the usual paradigm in this module due to needing to specify
@@ -84,6 +84,8 @@ resp_shape_module_server <- function(id, common, parent_session) {
 
     # TRIGGER
     gargoyle::trigger("resp_shape")
+    do.call("resp_shape_module_map", list(map, common))
+
   })
 
   return(list(

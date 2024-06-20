@@ -22,14 +22,20 @@ cov_bioclim_module_ui <- function(id) {
                             "Precipitation driest quarter",
                             "Precipitation warmest quarter",
                             "Precipitation coldest quarter")),
-    actionButton(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data")
   )
 }
 
-cov_bioclim_module_server <- function(id, common, parent_session) {
+cov_bioclim_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-    output$country_out <- country_out(session, common)
+  output$country_out <- country_out(session, common)
+
+  common$tasks$cov_bioclim <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      cov_bioclim(...)
+    })
+  }) |> bslib::bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####
@@ -42,30 +48,38 @@ cov_bioclim_module_server <- function(id, common, parent_session) {
       common$logger %>% writeLog(type = "error", "Please select a country")
       return()
     }
+
     if (is.null(input$variables)) {
       common$logger %>% writeLog(type = "error", "Please select the variables to download")
       return()
     }
     # FUNCTION CALL ####
-    show_loading_modal("Please wait while the data is loaded")
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
-    bioclim <- cov_bioclim(country_code, input$variables, common$shape, common$logger)
-    close_loading_modal()
-    gargoyle::trigger("country_out")
-
-    if (!is.null(bioclim)){
-    # LOAD INTO COMMON ####
-    common$covs <- append(common$covs, bioclim)
-    common$selected_country <- input$country
-    common$logger %>% writeLog("Bioclim data has been downloaded")
+    common$tasks$cov_bioclim$invoke(country_code, input$variables, common$shape, TRUE)
+    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download bioclim data"))
+    results$resume()
 
     # METADATA ####
     common$meta$cov_bioclim$used <- TRUE
     common$meta$cov_bioclim$country <- country_code
     common$meta$cov_bioclim$variables <- input$variables
+    common$selected_country <- input$country
+    gargoyle::trigger("country_out")
+  })
 
-    # TRIGGER
-    gargoyle::trigger("cov_bioclim")
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$cov_bioclim$result()
+    results$suspend()
+    if (class(result) == "list"){
+      common$covs <- append(common$covs, unwrap_terra(result))
+      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Bioclim data has been downloaded"))
+      # TRIGGER
+      gargoyle::trigger("cov_bioclim")
+      do.call("cov_bioclim_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
+    } else {
+      common$logger %>% writeLog(type = "error", result)
     }
   })
 
