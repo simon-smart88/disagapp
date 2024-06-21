@@ -32,7 +32,11 @@ cov_access <- function(shape, layer, async = FALSE) {
 
   if (is.null(acc)){
     if (is.null(message)){
+<<<<<<< HEAD
       message <- paste0("An error occurred whilst trying to download accessibility data")
+=======
+      message <- paste0("An error occurred whilst trying to download night light data")
+>>>>>>> bdb0a1e1e7079e7981b04aa673a6280a05d29888
     }
     if (async){
       return(message)
