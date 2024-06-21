@@ -13,6 +13,14 @@ df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
                             "Planken","Vaduz"),
                  "response" = 1:11)
 
+ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden',
+           'Basel-Landschaft', 'Basel-Stadt', 'Bern', 'Fribourg', 'Genève',
+           'Glarus', 'Graubünden', 'Jura', 'Luzern', 'Neuchâtel', 'Nidwalden',
+           'Obwalden', 'Schaffhausen', 'Schwyz', 'Solothurn', 'St. Gallen',
+           'Thurgau', 'Ticino', 'Uri', 'Valais', 'Vaud', 'Zug', 'Zürich'),
+           "response" = 1:26)
+
+mdf <- rbind(df, ch_df)
 
 save_path <- "~/temprds/saved_file.rds"
 
@@ -25,7 +33,7 @@ sf::st_write(shape, temp_shape, quiet = TRUE)
 shpdf_small <- data.frame(datapath = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape)), full.names = TRUE),
                     name = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape))))
 
-country_code <- "LIE"
+country_code <- c("LIE", "CHE")
 area_column <- "area"
 resp_column <- "response"
 admin_level <- "ADM1"

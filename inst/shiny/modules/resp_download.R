@@ -81,7 +81,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
+    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     shape <- resp_download(df = df(),
                          area_column = input$area_column,
                          resp_column = input$response_column,
@@ -137,7 +137,7 @@ resp_download_module_rmd <- function(common) {
     resp_column = common$meta$resp_download$response,
     area_column = common$meta$resp_download$area_column,
     admin_level = common$meta$resp_download$admin_level,
-    country_code = common$meta$resp_download$country
+    country_code = printVecAsis(common$meta$resp_download$country)
   )
 }
 
