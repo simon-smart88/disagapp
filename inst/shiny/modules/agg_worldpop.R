@@ -38,7 +38,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-    if (is.null(input$country)) {
+    if (input$country[1] == "") {
       common$logger %>% writeLog(type = "error", "Please select a country")
       return()
     }
