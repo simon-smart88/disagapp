@@ -14,6 +14,8 @@
 
 cov_access <- function(shape, layer, async = FALSE) {
 
+  message <- NULL
+
   datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
                    `Motorized Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Motorized_Travel_Time_to_Healthcare",
                    `Walking Only Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Walking_Only_Travel_Time_To_Healthcare")
@@ -27,7 +29,11 @@ cov_access <- function(shape, layer, async = FALSE) {
                   NULL}
   )
 
+
   if (is.null(acc)){
+    if (is.null(message)){
+      message <- paste0("An error occurred whilst trying to download accessibility data")
+    }
     if (async){
       return(message)
     } else {
