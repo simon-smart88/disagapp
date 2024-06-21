@@ -43,7 +43,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
+    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download Worldpop data"))
     common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
     # METADATA ####
@@ -102,7 +102,7 @@ agg_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     agg_worldpop_knit = !is.null(common$meta$agg_worldpop$used),
-    agg_worldpop_country = common$meta$agg_worldpop$country,
+    agg_worldpop_country = printVecAsis(common$meta$agg_worldpop$country),
     agg_worldpop_method = common$meta$agg_worldpop$method,
     agg_worldpop_resolution = common$meta$agg_worldpop$resolution,
     agg_worldpop_year = common$meta$agg_worldpop$year

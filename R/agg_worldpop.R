@@ -49,45 +49,42 @@ if (method == "Unconstrained" & resolution == "100m"){
 if (method == "Constrained"){
   product <- "cic2020_100m"
 }
-
-# call the API and return error if it doesn't work
-api_url <- glue::glue("{base_url}{product}?iso3={country_code}")
-req <- httr2::request(api_url) |> httr2::req_perform()
-if (req$status_code != 200){
-  message <- "The requested data could not be found"
-}
-
-# fetch the API call content and return an error if it is empty
-cont <- httr2::resp_body_json(req)
-if (length(cont$data) == 0){
-  message <- "The requested data could not be found"
-}
 }
 
 if (is.null(message)){
-  # select the file_url and download the raster
-  data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
-  tryCatch({
-    pop_ras <- terra::rast(data$files[[1]])
-
-    # aggregate unconstrained as only available at 100m
-    if (method == "Constrained" & resolution == "1km"){
-      pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
+  for (c in country_code){
+    # call the API and return error if it doesn't work
+    api_url <- glue::glue("{base_url}{product}?iso3={c}")
+    req <- httr2::request(api_url) |> httr2::req_perform()
+    if (req$status_code != 200){
+      message <- "The requested data could not be found"
     }
 
-    # convert NAs to zero
-    pop_ras <- terra::subst(pop_ras, NA, 0)
-
-    pop_ras <- terra::crop(pop_ras, shape)
-    pop_ras <- terra::mask(pop_ras, shape)
-    names(pop_ras) <- "Population"},
+    # fetch the API call content and return an error if it is empty
+    cont <- httr2::resp_body_json(req)
+    if (length(cont$data) == 0){
+      message <- "The requested data could not be found"
+    }
+    # select the file_url and download the raster
+    data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
+    tryCatch({
+      country_ras <- terra::rast(data$files[[1]])
+    },
     error = function(x){
-      message <- paste0("An error occurred whilst trying to download the data: ", x)
+      message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
       NULL},
     warning = function(x){
-      message <- paste0("An error occurred whilst trying to download the data: ", x)
+      message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
       NULL}
-  )
+    )
+    if (!(is.null(country_ras))){
+      if (is.null(pop_ras)){
+        pop_ras <- country_ras
+      } else {
+        pop_ras <- terra::merge(pop_ras, country_ras)
+      }
+    }
+  }
 }
 
 if (is.null(pop_ras)){
@@ -97,6 +94,18 @@ if (is.null(pop_ras)){
     stop(message)
   }
 } else {
+  # aggregate unconstrained as only available at 100m
+  if (method == "Constrained" & resolution == "1km"){
+    pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
+  }
+
+  # convert NAs to zero
+  pop_ras <- terra::subst(pop_ras, NA, 0)
+
+  pop_ras <- terra::crop(pop_ras, shape)
+  pop_ras <- terra::mask(pop_ras, shape)
+  names(pop_ras) <- "Population"
+
   if (async){
     pop_ras <- wrap_terra(pop_ras)
   }
