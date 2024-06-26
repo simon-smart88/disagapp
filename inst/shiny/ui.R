@@ -4,6 +4,7 @@ shiny::addResourcePath("disagapp-res", resourcePath)
 easy_print <- "https://rawgit.com/rowanwins/leaflet-easyPrint/gh-pages/dist/bundle.js"
 
 tagList(
+  rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
     script = file.path("disagapp-res", "js", "shinyjs-funcs.js"),
@@ -232,6 +233,8 @@ tagList(
             id = "introTabs",
             tabPanel(
               "About",
+              br(),
+              core_intro_module_ui("core_intro"),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(

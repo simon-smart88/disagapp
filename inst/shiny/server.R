@@ -145,6 +145,7 @@ function(input, output, session) {
   ### SAVE / LOAD  ####
   ################################
 
+  core_intro_module_server("core_intro", common)
   core_save_module_server("core_save", common, modules, COMPONENTS, input)
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
