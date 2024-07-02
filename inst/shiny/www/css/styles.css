@@ -141,6 +141,8 @@ hr {
 
 .task_end{
   color:#0072B2;
-
 }
 
+.left_panel{
+   max-width: 450px;
+}

@@ -39,6 +39,7 @@ tagList(
     fluidRow(
       column(
         4,
+        class = "left_panel",
         wellPanel(
           conditionalPanel(
             "input.tabs == 'intro'",
