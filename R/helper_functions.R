@@ -44,7 +44,6 @@ spurious <- function(x) {
   R6::R6Class(x)
   corrplot::corrplot(x)
   disaggregation::build_mesh(x)
-  INLA::inla.mesh.2d(x)
   leafem::addMouseCoordinates(x)
   leaflet.extras::removeDrawToolbar(x)
   fmesher::fm_as_sfc(x)

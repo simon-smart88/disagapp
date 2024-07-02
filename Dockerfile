@@ -19,8 +19,7 @@ RUN apt-get update && apt-get install -y \
     libhdf5-dev \
     patch
 
-# install R packages 
-RUN R -e "install.packages('INLA',repos=c(getOption('repos'),INLA='https://inla.r-inla-download.org/R/testing'), dep=TRUE)"
+# install R packages
 RUN R -e "install.packages('devtools')"
 ARG DISAGAPP_VER=unknown
 RUN R -e "devtools::install_github('simon-smart88/disagapp')"
