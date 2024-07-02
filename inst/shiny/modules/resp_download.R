@@ -90,24 +90,26 @@ resp_download_module_server <- function(id, common, parent_session, map) {
                          logger = common$logger)
 
     close_loading_modal()
-    # LOAD INTO COMMON ####
-    common$reset()
-    gargoyle::trigger("clear_map")
-    common$shape <- shape
-    common$selected_country <- input$country
-    common$response_name <- input$response_column
-    # METADATA ####
-    common$meta$resp_download$used <- TRUE
-    common$meta$resp_download$datapath <- input$spread$name[1]
-    common$meta$resp_download$response <- input$response_column
-    common$meta$resp_download$area_column <- input$area_column
-    common$meta$resp_download$admin_level <- input$admin
-    common$meta$resp_download$country <- country_code
-    # TRIGGER
-    gargoyle::trigger("resp_download")
-    gargoyle::trigger("country_out")
-    do.call("resp_download_module_map", list(map, common))
-    common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
+    if (!is.null(shape)){
+      # LOAD INTO COMMON ####
+      common$reset()
+      gargoyle::trigger("clear_map")
+      common$shape <- shape
+      common$selected_country <- input$country
+      common$response_name <- input$response_column
+      # METADATA ####
+      common$meta$resp_download$used <- TRUE
+      common$meta$resp_download$datapath <- input$spread$name[1]
+      common$meta$resp_download$response <- input$response_column
+      common$meta$resp_download$area_column <- input$area_column
+      common$meta$resp_download$admin_level <- input$admin
+      common$meta$resp_download$country <- country_code
+      # TRIGGER
+      gargoyle::trigger("resp_download")
+      gargoyle::trigger("country_out")
+      do.call("resp_download_module_map", list(map, common))
+      common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
+    }
   })
 
   return(list(

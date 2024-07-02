@@ -22,13 +22,17 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
   for (c in country_code){
 
     url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{c}/{admin_level}/")
-    req <- httr2::request(url) |> httr2::req_perform()
+    req <- httr2::request(url)
+    resp <- tryCatch(
+      req |> httr2::req_perform(),
+      httr2_http_404 = function(cnd){NULL}
+    )
 
-    if (req$status_code != 200){
-      logger %>% writeLog("The requested boundaries could not be downloaded")
+    if (is.null(resp) || resp$status_code != 200){
+      logger %>% writeLog(type = "error", "The requested boundaries could not be downloaded")
       return()
     } else {
-      cont <- httr2::resp_body_json(req)
+      cont <- httr2::resp_body_json(resp)
       c_shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
       if (is.null(shape)){
         shape <- c_shape
@@ -42,7 +46,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[resp_column]]))),(any(is.na(shape$shapeISO))))){
-      logger %>% writeLog(type = "warning")
+      logger %>% writeLog(type = "warning", "Some areas could not be matched with the response data - check the log")
     }
 
     #log the individual errors
