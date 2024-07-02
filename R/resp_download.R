@@ -17,30 +17,39 @@
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
-  url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{country_code}/{admin_level}/")
-  req <- httr2::request(url) |> httr2::req_perform()
+  shape <- NULL
 
-  if (req$status_code != 200){
-    logger %>% writeLog("The requested boundaries could not be downloaded")
-    return()
-  } else {
+  for (c in country_code){
 
-    cont <- httr2::resp_body_json(req)
-    shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
+    url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{c}/{admin_level}/")
+    req <- httr2::request(url) |> httr2::req_perform()
 
+    if (req$status_code != 200){
+      logger %>% writeLog("The requested boundaries could not be downloaded")
+      return()
+    } else {
+      cont <- httr2::resp_body_json(req)
+      c_shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
+      if (is.null(shape)){
+        shape <- c_shape
+      } else {
+        shape <- rbind(shape, c_shape)
+      }
+    }
+  }
     shape <- shape %>%
       dplyr::full_join(df, by = stats::setNames(area_column, "shapeName"))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[resp_column]]))),(any(is.na(shape$shapeISO))))){
       logger %>% writeLog(type = "warning")
-      }
+    }
 
     #log the individual errors
     if (any(is.na(shape[[resp_column]]))){
       missing <- shape$shapeName[is.na(shape[[resp_column]])]
       for (m in missing){
-      logger %>% writeLog(glue::glue("Area data for {m} could not be matched with response data"))
+        logger %>% writeLog(glue::glue("Area data for {m} could not be matched with response data"))
       }
     }
 
@@ -51,9 +60,5 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
       }
     }
     return(shape)
-  }
 
 }
-
-
-

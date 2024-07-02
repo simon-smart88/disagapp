@@ -1,22 +1,29 @@
-test_that("Check resp_download function works as expected", {
-  result <- resp_download(df, area_column, resp_column, country_code, admin_level)
+test_that("Check resp_download function works as expected for single country", {
+  result <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
   expect_is(result, "sf")
   expect_equal(nrow(result), 11)
 })
 
+test_that("Check resp_download function works as expected for multiple countries", {
+  result <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
+  expect_is(result, "sf")
+  expect_equal(nrow(result), 37)
+})
+
+
 test_that("Check resp_download reports errors when data cannot be merged", {
   tdf <- df
   tdf$area[11] <- "aaa"
-  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code, admin_level), "*"))
+  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code[1], admin_level), "*"))
   expect_equal(messages[1], "Area data for Vaduz could not be matched with response data\n")
   expect_equal(messages[2], "Response data for aaa could not be matched with an area\n")
 
   tdf <- tdf[tdf$response < 11,]
-  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code, admin_level), "*"))
+  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code[1], admin_level), "*"))
   expect_equal(messages[1], "Area data for Vaduz could not be matched with response data\n")
 
   tdf <- rbind(df, data.frame("area" = "aaa", response = 1))
-  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code, admin_level), "*"))
+  messages <- capture_messages(expect_warning(resp_download(tdf, area_column, resp_column, country_code[1], admin_level), "*"))
   expect_equal(messages[1], "Response data for aaa could not be matched with an area\n")
 })
 

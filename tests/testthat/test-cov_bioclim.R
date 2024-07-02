@@ -1,12 +1,28 @@
 
-test_that("Check cov_bioclim function works as expected", {
-  shape <- resp_download(df, area_column, resp_column, country_code, admin_level)
+test_that("Check cov_bioclim function works as expected for single country", {
+  shape <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
 
-  result <- cov_bioclim("LIE", c("Mean temperature", "Mean diurnal range"), shape)
+  result <- cov_bioclim(country_code[1], c("Mean temperature", "Mean diurnal range"), shape)
   expect_is(result, "list")
   expect_is(result[[1]], "SpatRaster")
   expect_equal(length(result), 2)
+  n_cells <- terra::ncell(result[[1]])
+  expect_gt(n_cells, 400)
+  expect_lt(n_cells, 500)
 })
+
+
+test_that("Check cov_bioclim function works as expected for multiple countries", {
+  shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
+
+  result <- cov_bioclim(country_code, c("Mean temperature", "Mean diurnal range"), shape)
+  expect_is(result, "list")
+  expect_is(result[[1]], "SpatRaster")
+  expect_equal(length(result), 2)
+  n_cells <- terra::ncell(result[[1]])
+  expect_gt(n_cells, 100000)
+})
+
 
 test_that("Check cov_bioclim function returns errors as expected", {
   expect_error(cov_bioclim("LIE", "chicken"), "chicken is not a valid bioclim variable")

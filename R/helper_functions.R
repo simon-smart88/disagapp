@@ -142,9 +142,9 @@ country_out <- function(session, common){
   renderUI({
     gargoyle::watch("country_out")
     if (is.null(common$selected_country)){
-      selectInput(session$ns("country"), "Select country", c('',common$countries$NAME))
+      selectInput(session$ns("country"), "Select country", c('',common$countries$NAME), multiple = TRUE)
     } else {
-      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = common$selected_country)
+      selectInput(session$ns("country"), "Select country", common$countries$NAME, selected = common$selected_country, multiple = TRUE)
     }
   })
 }

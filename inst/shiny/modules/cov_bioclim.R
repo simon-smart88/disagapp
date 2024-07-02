@@ -44,7 +44,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-    if (is.null(input$country)) {
+    if (input$country[1] == "") {
       common$logger %>% writeLog(type = "error", "Please select a country")
       return()
     }
@@ -54,7 +54,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
+    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$tasks$cov_bioclim$invoke(country_code, input$variables, common$shape, TRUE)
     common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download bioclim data"))
     results$resume()
@@ -104,7 +104,7 @@ cov_bioclim_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_bioclim_knit = !is.null(common$meta$cov_bioclim$used),
-    cov_bioclim_country = common$meta$cov_bioclim$country,
+    cov_bioclim_country = printVecAsis(common$meta$cov_bioclim$country),
     cov_bioclim_variables = printVecAsis(common$meta$cov_bioclim$variables)
   )
 }
