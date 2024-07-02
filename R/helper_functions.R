@@ -82,14 +82,27 @@ writeLog <- function(logger, ..., type = "default") {
   } else if (is.function(logger)) {
     if (type == "default") {
       pre <- "> "
+    } else if (type == "starting") {
+      pre <- paste0("> ", icon("clock", class = "task_start"), " ")
+    } else if (type == "complete") {
+      pre <- paste0("> ", icon("check", class = "task_end"), " ")
     } else if (type == "info") {
       shinyalert::shinyalert(..., type = "info")
       pre <- '> <font color="blue"><b>INFO</b></font> : '
     } else if (type == "error") {
-      shinyalert::shinyalert("Please, check Log window for more information ",
-                             type = "error")
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(...,
+                               type = "error")
+      } else {
+        shinyalert::shinyalert("Please, check Log window for more information ",
+                               type = "error")
+      }
       pre <- '> <font color="red"><b>! ERROR</b></font> : '
     } else if (type == "warning") {
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(...,
+                               type = "warning")
+      } else {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "warning")
       pre <- '> <font color="orange"><b>! WARNING</b></font> : '

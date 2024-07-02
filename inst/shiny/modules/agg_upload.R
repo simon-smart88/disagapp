@@ -62,7 +62,7 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("agg_upload")
     do.call("agg_upload_module_map", list(map, common))
-
+    common$logger %>% writeLog(type = "complete", "Aggregation data has been uploaded")
   })
 
 

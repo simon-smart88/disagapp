@@ -106,7 +106,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     )
 
     if (!is.null(common$fit)){
-      common$logger %>% writeLog("Model fitting has completed")
+      common$logger %>% writeLog(type = "complete", "Model fitting has completed")
     }
 
     close_loading_modal()

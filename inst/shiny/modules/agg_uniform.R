@@ -26,6 +26,7 @@ agg_uniform_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     gargoyle::trigger("agg_uniform")
+    common$logger %>% writeLog(type = "complete", "A uniform aggregation raster has been created")
   })
 
 })

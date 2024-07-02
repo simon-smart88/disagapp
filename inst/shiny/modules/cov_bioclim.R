@@ -39,6 +39,12 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
+
+    if (is.null(common$shape)) {
+      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      return()
+    }
+
     if (curl::has_internet() == FALSE){
       common$logger %>% writeLog(type = "error", "This module requires an internet connection")
       return()
@@ -56,7 +62,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$tasks$cov_bioclim$invoke(country_code, input$variables, common$shape, TRUE)
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download bioclim data"))
+    common$logger %>% writeLog(type = "starting", "Starting to download bioclim data")
     results$resume()
 
     # METADATA ####
@@ -73,7 +79,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     results$suspend()
     if (class(result) == "list"){
       common$covs <- append(common$covs, unwrap_terra(result))
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Bioclim data has been downloaded"))
+      common$logger %>% writeLog(type = "complete", "Bioclim data has been downloaded")
       # TRIGGER
       gargoyle::trigger("cov_bioclim")
       do.call("cov_bioclim_module_map", list(map, common))

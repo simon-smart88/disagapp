@@ -71,7 +71,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
       common$covs_prep$Aggregation <- NULL
-      common$logger %>% writeLog("Covariates have been resampled")
+      common$logger %>% writeLog(type = "complete", "Covariates have been resampled")
       # stack the rasters
       common$covs_prep <- terra::rast(common$covs_prep)
       # LOAD INTO COMMON ####

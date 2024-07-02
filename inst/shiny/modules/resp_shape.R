@@ -85,7 +85,7 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_shape")
     do.call("resp_shape_module_map", list(map, common))
-
+    common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
   })
 
   return(list(

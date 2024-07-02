@@ -54,7 +54,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
     common$tasks$cov_nightlight$invoke(common$shape, input$year, bearer(), TRUE)
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download nightlight data"))
+    common$logger %>% writeLog(type = "starting", "Starting to download nightlight data")
     results$resume()
     # METADATA ####
     common$meta$cov_nightlight$used <- TRUE
@@ -68,7 +68,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     results$suspend()
     if (class(result) == "PackedSpatRaster"){
       common$covs[["Nighttime light"]] <- unwrap_terra(result)
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Nighttime light data has been downloaded"))
+      common$logger %>% writeLog(type = "complete", "Nighttime light data has been downloaded")
       # TRIGGER
       gargoyle::trigger("cov_nightlight")
       do.call("cov_nightlight_module_map", list(map, common))

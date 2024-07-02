@@ -28,7 +28,7 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
       } else if (file_format == "xlsx"){
         df <- openxlsx::read.xlsx(input$spread$datapath[1])
       } else {
-        common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
+        common$logger %>% writeLog(type = "error", "The uploaded file was not a .csv or .xlsx")
         return()
       }
       common$meta$resp_combine$spread_path <- input$spread$name[1]
@@ -124,7 +124,7 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_combine")
     do.call("resp_combine_module_map", list(map, common))
-
+    common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
   })
 
   return(list(

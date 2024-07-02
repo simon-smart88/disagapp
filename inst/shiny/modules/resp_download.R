@@ -107,7 +107,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
     gargoyle::trigger("resp_download")
     gargoyle::trigger("country_out")
     do.call("resp_download_module_map", list(map, common))
-
+    common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
   })
 
   return(list(

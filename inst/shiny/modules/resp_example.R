@@ -64,6 +64,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_example")
     do.call("resp_example_module_map", list(map, common))
+    common$logger %>% writeLog(type = "complete", "Response data has been loaded")
   })
 
   return(list(

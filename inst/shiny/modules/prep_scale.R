@@ -16,7 +16,7 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
     }
     # FUNCTION CALL ####
     scaled_covariates <- prep_scale(common$covs_prep)
-    common$logger %>% writeLog("Covariates have been scaled")
+    common$logger %>% writeLog(type = "complete", "Covariates have been scaled")
 
     # LOAD INTO COMMON ####
     common$covs_prep <- scaled_covariates[["covariates"]]

@@ -119,7 +119,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       common$covs_prep_lores <- terra::aggregate(common$covs_prep, fact = factor, fun = "mean", na.rm = TRUE)
       common$agg_prep_lores <- terra::aggregate(common$agg_prep, fact = factor, fun = "sum", na.rm = TRUE)
 
-      common$logger %>% writeLog("Low resolution covariates have been created")
+      common$logger %>% writeLog(type = "complete", "Low resolution covariates have been created")
       common$meta$prep_resolution$used <- TRUE
       common$meta$prep_resolution$factor <- factor
 

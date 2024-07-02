@@ -99,7 +99,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     close_loading_modal()
     if (!is.null(common$prep)){
       common$prep$mesh <- common$mesh
-      common$logger %>% writeLog("Data preparation is complete")
+      common$logger %>% writeLog(type = "complete", "Data preparation is complete")
     }
     # LOAD INTO COMMON ####
 
