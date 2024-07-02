@@ -106,6 +106,7 @@ writeLog <- function(logger, ..., type = "default") {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "warning")
       pre <- '> <font color="orange"><b>! WARNING</b></font> : '
+      }
     }
     newEntries <- paste0("<br>", pre, ..., collapse = "")
     logger(paste0(logger(), newEntries))
