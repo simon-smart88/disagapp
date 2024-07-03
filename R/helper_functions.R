@@ -59,6 +59,23 @@ spurious <- function(x) {
   return()
 }
 
+#' @title reset_data_ui
+#' @description For internal use. UI component that appears once response data has been loaded
+#' @keywords internal
+#' @param session The session object passed to function given to shinyServer.
+#' @param common The common data structure
+#' @export
+reset_data_ui <- function(session, common){
+  gargoyle::watch("resp_shape")
+  gargoyle::watch("resp_combine")
+  gargoyle::watch("resp_download")
+  gargoyle::watch("resp_example")
+  if (!is.null(common$shape)){
+    shinyWidgets::materialSwitch(session$ns("reset"), "Delete existing data?", FALSE, status = "success")
+  }
+}
+
+
 ####################### #
 # SHINY LOG #
 ####################### #
@@ -145,6 +162,10 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
   session$sendModal("remove", NULL)
 }
 
+####################### #
+# SELECTED COUNTRIES #
+####################### #
+
 #' @title country_out
 #' @description For internal use. Produce a drop down list of countries and update all inputs once one country has been selected.
 #' @param session The session object passed to function given to shinyServer.
@@ -162,6 +183,10 @@ country_out <- function(session, common){
     }
   })
 }
+
+####################### #
+# MAPPING FUNCTIONS #
+####################### #
 
 #' @title shape_map
 #' @description For internal use. Plot response data on the leaflet map
@@ -264,6 +289,11 @@ show_results <- function(parent_session){
   updateTabsetPanel(parent_session, "main", selected = "Results")
 }
 
+
+####################### #
+# WRAP/UNWRAP TERRA #
+####################### #
+
 #' @title wrap_terra
 #' @description For internal use. Flexible function for wrapping SpatRasters or
 #' lists of SpatRasters but only when they exist.
@@ -302,18 +332,3 @@ unwrap_terra <- function(object){
   return(object)
 }
 
-#' @title reset_data_ui
-#' @description For internal use. UI component that appears once response data has been loaded
-#' @keywords internal
-#' @param session The session object passed to function given to shinyServer.
-#' @param common The common data structure
-#' @export
-reset_data_ui <- function(session, common){
-gargoyle::watch("resp_shape")
-gargoyle::watch("resp_combine")
-gargoyle::watch("resp_download")
-gargoyle::watch("resp_example")
-if (!is.null(common$shape)){
-  shinyWidgets::materialSwitch(session$ns("reset"), "Delete existing data?", FALSE, status = "success")
-}
-}
