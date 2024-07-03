@@ -27,9 +27,16 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     gargoyle::trigger("prep_scale")
+    do.call("prep_scale_module_map", list(map, common))
   })
 
 })
+}
+
+prep_scale_module_map <- function(map, common){
+  for (layer in names(common$covs_prep)){
+    raster_map(map, common, common$covs_prep[[layer]], layer)
+  }
 }
 
 prep_scale_module_rmd <- function(common) {

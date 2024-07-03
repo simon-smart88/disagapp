@@ -110,7 +110,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     common$meta$prep_final$resolution <- input$resolution
     # TRIGGER
     gargoyle::trigger("prep_final")
-    do.call("prep_final_module_map", list(map, common))
+    # do.call("prep_final_module_map", list(map, common))
     show_map(parent_session)
   })
 
@@ -131,21 +131,24 @@ shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action
 })
 }
 
-prep_final_module_map <- function(map, common){
-  req(common$prep)
-  shape_map(map, common)
-  for (layer in names(common$prep$covariate_rasters)){
-    raster_map(map, common, common$prep$covariate_rasters[[layer]], layer)
-  }
-  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
-  if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
-    raster_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
-  } else {
-    raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
-  }
-  mesh_map(map, common)
-  map %>% showGroup("Response")
-}
+# prep_final_module_map <- function(map, common){
+#   for (layer in names(common$prep$covariate_rasters)){
+#     raster_map(map, common, common$prep$covariate_rasters[[layer]], layer)
+#   }
+#   agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
+#   if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
+#     raster_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
+#     if (is.null(common$meta$prep_final$resolution)){
+#       shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Prepared"]\').checked = true;')
+#     } else {
+#       shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="High resolution"]\').checked = true;')
+#     }
+#   } else {
+#     raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
+#     shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Low resolution"]\').checked = true;')
+#   }
+#   map %>% showGroup("Response")
+# }
 
 prep_final_module_rmd <- function(common) {
   # Variables used in the module's Rmd code

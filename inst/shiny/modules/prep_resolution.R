@@ -123,7 +123,9 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_resolution$used <- TRUE
       common$meta$prep_resolution$factor <- factor
 
+      #TRIGGER
       gargoyle::trigger("prep_resolution")
+      # exceptionally, the mapping for this module is handled in core_mapping
   })
 
   return(list(

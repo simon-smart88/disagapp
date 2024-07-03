@@ -208,7 +208,8 @@ shape_map <- function(map, common){
     fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
     addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response", layerId = "Response") %>%
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    hideGroup(common$map_layers[!common$map_layers == "Response"])
+    hideGroup(common$map_layers) %>%
+    showGroup("Response")
 }
 
 #' @title raster_map
@@ -218,14 +219,17 @@ shape_map <- function(map, common){
 #' @param raster The SpatRaster to plot
 #' @param name The name of the covariate
 #' @param log Whether to plot the raster using a log scale
+#' @param selected The layer to display
 #' @keywords internal
 #' @export
-raster_map <- function(map, common, raster, name, log = FALSE){
+raster_map <- function(map, common, raster, name, log = FALSE, selected = NULL){
   common$add_map_layer(name)
   if (log == TRUE){
     raster[terra::values(raster) == 0] <- NA
     raster = log10(raster)
     title = paste0(name, " (log 10)")
+  } else {
+    title = name
   }
 
   domain <- c(min(terra::values(raster), na.rm = T), max(terra::values(raster), na.rm = T))
@@ -237,9 +241,18 @@ raster_map <- function(map, common, raster, name, log = FALSE){
     clearGroup(name) %>%
     removeControl(name) %>%
     addRasterImage(raster, group = name, colors = pal) %>%
-    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = name, layer = name) %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    hideGroup(common$map_layers[!common$map_layers == name])
+    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = title, layerId = name) %>%
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
+
+    if (is.null(selected)){
+      map %>%
+        hideGroup(common$map_layers) %>%
+        showGroup(name)
+    } else {
+      map %>%
+        hideGroup(common$map_layers) %>%
+        showGroup(selected)
+    }
 }
 
 
@@ -263,7 +276,8 @@ map %>%
   addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") %>%
   fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
   addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-  hideGroup(common$map_layers[!common$map_layers == "Mesh"])
+  hideGroup(common$map_layers) %>%
+  showGroup("Mesh")
 }
 
 

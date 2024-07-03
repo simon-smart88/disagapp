@@ -83,6 +83,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       gargoyle::trigger("prep_summary")
       show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
+      do.call("prep_summary_module_map", list(map, common))
     })
 
     output$cov_table <- DT::renderDataTable({
@@ -115,6 +116,14 @@ shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))
 })
+}
+
+prep_summary_module_map <- function(map, common){
+  for (layer in names(common$covs_prep)){
+    raster_map(map, common, common$covs_prep[[layer]], layer)
+  }
+  raster_map(map, common, common$agg_prep, names(common$agg_prep))
+  shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Prepared"]\').checked = true;')
 }
 
 prep_summary_module_result <- function(id) {
