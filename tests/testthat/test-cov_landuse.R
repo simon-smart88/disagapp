@@ -4,6 +4,12 @@ test_that("Check cov_landuse function works as expected", {
   expect_is(result[[1]], "SpatRaster")
 })
 
+test_that("Check cov_landuse function returns errors", {
+  expect_error(cov_landuse(123, 2019, c("Crops")), "Shape must be an sf object")
+  expect_error(cov_landuse(shape, 2019, c("banana")), "banana is not a valid land use type. ")
+  expect_error(cov_landuse(shape, 2020, c("Crops")), "Land use data is only available between 2015 and 2019")
+})
+
 test_that("{shinytest2} recording: e2e_cov_landuse", {
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_landuse", timeout = 600000)
