@@ -4,7 +4,7 @@
 #' data on from Bioclim via geodata. It returns a list of SpatRasters for the
 #' selected variables
 #'
-#' @param country_code character. ISO3 code of the country.
+#' @param country_code vector. ISO3 code of the country or countries.
 #' @param variables vector. List of the bioclimatic variables to be returned.
 #' Options are: `Mean temperature`, `Mean diurnal range`, `Isothermality`,
 #' `Temperature seasonality`, `Maximum temperature warmest month`,
@@ -24,6 +24,18 @@
 #' @export
 
 cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
+
+  valid_countries <- readRDS(system.file("ex/countries.rds", package = "geodata"))$ISO3
+
+  invalid_countries <- country_code[(!country_code %in% valid_countries)]
+  if (length(invalid_countries) > 0){
+    message <- glue::glue("{invalid_countries} is not a valid IS03 country code. ")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
   layers  <-  c("Mean temperature",
                 "Mean diurnal range",
@@ -45,10 +57,24 @@ cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
                 "Precipitation warmest quarter",
                 "Precipitation coldest quarter")
 
-  for (v in variables){
-  if (!(v %in% layers)){
-    stop(glue::glue("{v} is not a valid bioclim variable"))
-  }}
+  invalid_layers <- variables[(!variables %in% layers)]
+  if (length(invalid_layers) > 0){
+    message <- glue::glue("{invalid_layers} is not a valid bioclim variable. ")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
+  if (!("sf" %in% class(shape))){
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
   bioclim_ras <- NULL
 

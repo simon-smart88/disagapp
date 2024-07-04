@@ -1,4 +1,3 @@
-
 test_that("Check cov_bioclim function works as expected for single country", {
   shape <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
 
@@ -11,7 +10,6 @@ test_that("Check cov_bioclim function works as expected for single country", {
   expect_lt(n_cells, 500)
 })
 
-
 test_that("Check cov_bioclim function works as expected for multiple countries", {
   shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
 
@@ -23,9 +21,11 @@ test_that("Check cov_bioclim function works as expected for multiple countries",
   expect_gt(n_cells, 100000)
 })
 
-
 test_that("Check cov_bioclim function returns errors as expected", {
-  expect_error(cov_bioclim("LIE", "chicken"), "chicken is not a valid bioclim variable")
+  expect_error(cov_bioclim("ZZZ", c("Mean temperature", "Mean diurnal range"), shape), "ZZZ is not a valid IS03 country code. ")
+  expect_error(cov_bioclim(c("ZZZ", "LIE"), c("Mean temperature", "Mean diurnal range"), shape), "ZZZ is not a valid IS03 country code. ")
+  expect_error(cov_bioclim("LIE", "chicken", shape), "chicken is not a valid bioclim variable")
+  expect_error(cov_bioclim(country_code[1], c("Mean temperature", "Mean diurnal range"), 123), "Shape must be an sf object")
 })
 
 test_that("{shinytest2} recording: e2e_cov_bioclim", {
