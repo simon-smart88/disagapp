@@ -25,9 +25,9 @@
 
   no_crs <- ras_crs[is.na(ras_crs$code),]
   if (nrow(no_crs) > 0){
-    logger %>% writeLog(type = "error", "Some files do not have a coordinate reference system")
+    logger |> writeLog(type = "error", "Some files do not have a coordinate reference system")
     for (file in not_overlapping$column_label){
-      logger %>% writeLog(glue::glue("{file} does not have a coordinate reference system"))
+      logger |> writeLog(glue::glue("{file} does not have a coordinate reference system"))
     }
   }
 
@@ -41,10 +41,10 @@
   #check that rasters overlap with shape
   check_overlap <- as.vector(unlist(lapply(covs, terra::is.related, terra::vect(shape), "intersects")))
   if (any(check_overlap) == FALSE){
-    logger %>% writeLog(type = "error", "Some files do not overlap with the response data")
+    logger |> writeLog(type = "error", "Some files do not overlap with the response data")
     not_overlapping <- names(covs)[!check_overlap]
     for (file in not_overlapping){
-      logger %>% writeLog(glue::glue("{file} does not overlap with the response data"))
+      logger |> writeLog(glue::glue("{file} does not overlap with the response data"))
     }
     return(NULL)
   }

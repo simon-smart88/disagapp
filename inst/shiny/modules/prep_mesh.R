@@ -36,11 +36,11 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
-    common$logger %>% writeLog(type = "starting", "Starting to build the mesh")
+    common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
     common$tasks$prep_mesh$invoke(common$shape, mesh.args = list(max.edge = input$mesh_edge,
                                                               cut = input$mesh_cut,
@@ -58,7 +58,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     result <- common$tasks$prep_mesh$result()
     common$mesh <- result
     results$suspend()
-    common$logger %>% writeLog(type = "complete", "The mesh has been built")
+    common$logger |> writeLog(type = "complete", "The mesh has been built")
     # TRIGGER
     gargoyle::trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))

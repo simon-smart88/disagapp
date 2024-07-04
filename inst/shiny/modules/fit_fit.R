@@ -88,7 +88,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$prep)) {
-      common$logger %>% writeLog(type = "error", "Please prepare the data first")
+      common$logger |> writeLog(type = "error", "Please prepare the data first")
       return()
     }
 
@@ -101,12 +101,12 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
                                           iterations = as.numeric(input$iterations),
                                           field = input$field,
                                           iid = input$iid)},
-    error = function(x){ common$logger %>% writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
-    warning = function(x){ common$logger %>% writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
+    error = function(x){ common$logger |> writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
+    warning = function(x){ common$logger |> writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
     )
 
     if (!is.null(common$fit)){
-      common$logger %>% writeLog(type = "complete", "Model fitting has completed")
+      common$logger |> writeLog(type = "complete", "Model fitting has completed")
     }
 
     close_loading_modal()
@@ -166,7 +166,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
                 type = 'scatter',
                 mode = 'markers',
                 marker = list(color = 'black'),
-                error_x = list(array = ~sd, color = "blue")) %>%
+                error_x = list(array = ~sd, color = "blue")) |>
           plotly::layout(title = list(text = type, x = 0.5),
                  xaxis = list(title = 'SD', showline = TRUE, zeroline = FALSE),
                  yaxis = list(title = 'Parameter', showline = TRUE, zeroline = FALSE,
@@ -175,7 +175,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       })
 
       # Combine subplots into a single plot
-      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) %>%
+      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) |>
         plotly::layout(title = "Model parameters (excluding random effects)",
                showlegend = FALSE)
 
@@ -213,8 +213,8 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       identity_line <- data.frame(x = x_range, y = x_range)
 
       # Create scatter plot and add identity line
-      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
-        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
+      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') |>
+        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) |>
         plotly::layout(title = list(text = title, x = 0.5),
                xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
                yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),

@@ -13,7 +13,7 @@
 prep_correlation <- function(covariates, logger = NULL){
 
   if (terra::nlyr(covariates) < 2){
-    logger %>% writeLog(type = "error", "You must have more than one covariate to plot a correlation matrix")
+    logger |> writeLog(type = "error", "You must have more than one covariate to plot a correlation matrix")
     return()
   }
 

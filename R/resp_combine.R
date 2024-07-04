@@ -22,26 +22,26 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
     shape[[shape_area_column]] <- as.character(shape[[shape_area_column]])
 
     #merge data
-    shape <- shape %>%
+    shape <- shape |>
       dplyr::full_join(df, by = stats::setNames(df_area_column, shape_area_column))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[df_resp_column]]))),(any(is.na(shape[[shape_area_column]]))))){
-      logger %>% writeLog(type = "warning")
+      logger |> writeLog(type = "warning")
       }
 
     #log the individual errors
     if (any(is.na(shape[[df_resp_column]]))){
       missing <- shape[[shape_area_column]][is.na(shape[[df_resp_column]])]
       for (m in missing){
-      logger %>% writeLog(glue::glue("Area data for {m} could not be matched with response data"))
+      logger |> writeLog(glue::glue("Area data for {m} could not be matched with response data"))
       }
     }
 
     if (any(is.na(shape[[shape_area_column]]))){
       missing <- shape[[df_resp_column]][is.na(shape[[shape_area_column]])]
       for (m in missing){
-        logger %>% writeLog(glue::glue("Response data for {m} could not be matched with an area"))
+        logger |> writeLog(glue::glue("Response data for {m} could not be matched with an area"))
       }
     }
     return(shape)

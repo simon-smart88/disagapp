@@ -66,7 +66,7 @@ if (is.null(message)){
       message <- "The requested data could not be found"
     }
     # select the file_url and download the raster
-    data <- dplyr::bind_rows(cont$data) %>% dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) %>% dplyr::select("files")
+    data <- dplyr::bind_rows(cont$data) |> dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |> dplyr::select("files")
     tryCatch({
       country_ras <- terra::rast(data$files[[1]])
     },

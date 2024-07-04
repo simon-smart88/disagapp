@@ -15,7 +15,7 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
@@ -28,7 +28,7 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_simplify")
     do.call("resp_simplify_module_map", list(map, common))
-    common$logger %>% writeLog(type = "complete", "The polygons have been simplified")
+    common$logger |> writeLog(type = "complete", "The polygons have been simplified")
   })
 
   output$current_size <- renderText({

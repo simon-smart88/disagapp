@@ -32,7 +32,7 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     # check a file is selected
     if (is.null(input$example) || (input$example == FALSE)){
       if (is.null(input$agg)) {
-        common$logger %>% writeLog(type = "error", "Please select a raster file")
+        common$logger |> writeLog(type = "error", "Please select a raster file")
         return()
       }
       aggdf <- input$agg
@@ -62,7 +62,7 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("agg_upload")
     do.call("agg_upload_module_map", list(map, common))
-    common$logger %>% writeLog(type = "complete", "Aggregation data has been uploaded")
+    common$logger |> writeLog(type = "complete", "Aggregation data has been uploaded")
   })
 
 

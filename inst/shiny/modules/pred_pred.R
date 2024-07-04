@@ -38,7 +38,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$fit)){
-      common$logger %>% writeLog(type = "error", "Please fit a model first")
+      common$logger |> writeLog(type = "error", "Please fit a model first")
       return()
     }
     # FUNCTION CALL ####
@@ -62,7 +62,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
                                                          CI = input$uncertain_ci)
     }
     close_loading_modal()
-    common$logger %>% writeLog(type = "complete", "Model predictions are available")
+    common$logger |> writeLog(type = "complete", "Model predictions are available")
     # LOAD INTO COMMON ####
     common$pred <- prediction
     if (input$uncertain){

@@ -28,7 +28,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     if (is.null(input$example) || (input$example == FALSE)){
       # check a file is selected
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please select a raster file")
+        common$logger |> writeLog(type = "error", "Please select a raster file")
         return()
       }
       covdf <- input$cov
@@ -62,7 +62,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     do.call("cov_upload_module_map", list(map, common))
     gargoyle::trigger("cov_upload")
-    common$logger %>% writeLog(type = "complete", "Covariate data has been uploaded")
+    common$logger |> writeLog(type = "complete", "Covariate data has been uploaded")
   })
 
   output$result <- renderPlot({

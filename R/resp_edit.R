@@ -21,10 +21,10 @@ resp_edit <- function(shape, poly, type, logger = NULL) {
   sf::st_crs(crop_sf) <- 4326
 
   if (type == "Outside"){
-    shape <- shape[sf::st_covered_by(shape, crop_sf) %>% lengths == 0,]
+    shape <- shape[sf::st_covered_by(shape, crop_sf) |> lengths() == 0,]
   }
   if (type == "Inside"){
-    shape <- shape[sf::st_covered_by(shape, crop_sf) %>% lengths > 0,]
+    shape <- shape[sf::st_covered_by(shape, crop_sf) |> lengths() > 0,]
   }
 
   return(shape)

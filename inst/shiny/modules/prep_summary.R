@@ -34,16 +34,16 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
     ras_running <- length(ras_status[ras_status == "running"])
     if (ras_running != 0) {
-      common$logger %>% writeLog(type = "error", "Please wait for the running tasks to complete")
+      common$logger |> writeLog(type = "error", "Please wait for the running tasks to complete")
       return()
     }
 
     if (length(common$covs) == 0) {
-      common$logger %>% writeLog(type = "error", "Please upload covariates")
+      common$logger |> writeLog(type = "error", "Please upload covariates")
       return()
     }
     if (is.null(common$agg)) {
-      common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+      common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
       return()
     }
     # FUNCTION CALL ####
@@ -60,7 +60,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     observeEvent(input$resample, {
 
       if (input$resample_layer == "") {
-        common$logger %>% writeLog(type = "error", "Please select a covariate to use as a template for resampling")
+        common$logger |> writeLog(type = "error", "Please select a covariate to use as a template for resampling")
         return()
       }
 
@@ -71,7 +71,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       common$covs$Aggregation <- NULL
       common$agg_prep <- common$covs_prep$Aggregation
       common$covs_prep$Aggregation <- NULL
-      common$logger %>% writeLog(type = "complete", "Covariates have been resampled")
+      common$logger |> writeLog(type = "complete", "Covariates have been resampled")
       # stack the rasters
       common$covs_prep <- terra::rast(common$covs_prep)
       # LOAD INTO COMMON ####
@@ -92,7 +92,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       req(common$covs_summary$original)
       out <- DT::datatable(common$covs_summary$original, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) |>
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
@@ -100,7 +100,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       req(common$covs_summary$resampled)
       out <- DT::datatable(common$covs_summary$resampled, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) |>
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 

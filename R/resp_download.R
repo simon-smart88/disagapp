@@ -29,7 +29,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
     )
 
     if (is.null(resp) || resp$status_code != 200){
-      logger %>% writeLog(type = "error", "The requested boundaries could not be downloaded")
+      logger |> writeLog(type = "error", "The requested boundaries could not be downloaded")
       return()
     } else {
       cont <- httr2::resp_body_json(resp)
@@ -41,26 +41,26 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
       }
     }
   }
-    shape <- shape %>%
+    shape <- shape |>
       dplyr::full_join(df, by = stats::setNames(area_column, "shapeName"))
 
     #look for any NA in merged shapes, raise a warning if any found
     if (any(c(any(is.na(shape[[resp_column]]))),(any(is.na(shape$shapeISO))))){
-      logger %>% writeLog(type = "warning", "Some areas could not be matched with the response data - check the log")
+      logger |> writeLog(type = "warning", "Some areas could not be matched with the response data - check the log")
     }
 
     #log the individual errors
     if (any(is.na(shape[[resp_column]]))){
       missing <- shape$shapeName[is.na(shape[[resp_column]])]
       for (m in missing){
-        logger %>% writeLog(glue::glue("Area data for {m} could not be matched with response data"))
+        logger |> writeLog(glue::glue("Area data for {m} could not be matched with response data"))
       }
     }
 
     if (any(is.na(shape$shapeISO))){
       missing <- shape$shapeName[is.na(shape$shapeISO)]
       for (m in missing){
-        logger %>% writeLog(glue::glue("Response data for {m} could not be matched with an area"))
+        logger |> writeLog(glue::glue("Response data for {m} could not be matched with an area"))
       }
     }
     return(shape)

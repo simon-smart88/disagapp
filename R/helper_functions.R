@@ -199,16 +199,16 @@ shape_map <- function(map, common){
   ex <- as.vector(terra::ext(common$shape))
   common$add_map_layer("Response")
   pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
-  map %>%
-    clearControls() %>%
-    removeLayersControl() %>%
-    clearGroup("Response") %>%
-    removeControl("Response") %>%
-    addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) %>%
-    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) %>%
-    addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response", layerId = "Response") %>%
-    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-    hideGroup(common$map_layers) %>%
+  map |>
+    clearControls() |>
+    removeLayersControl() |>
+    clearGroup("Response") |>
+    removeControl("Response") |>
+    addPolygons(data = common$shape, fillColor = ~pal(response), color = "black", fillOpacity = 0.7, weight = 2, group = "Response", popup = ~as.character(round(response,0))) |>
+    fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]]) |>
+    addLegend(position = "bottomright", pal = pal, values = response, group = "Response", title = "Response", layerId = "Response") |>
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) |>
+    hideGroup(common$map_layers) |>
     showGroup("Response")
 }
 
@@ -235,22 +235,22 @@ raster_map <- function(map, common, raster, name, log = FALSE, selected = NULL){
   domain <- c(min(terra::values(raster), na.rm = T), max(terra::values(raster), na.rm = T))
   pal <- colorBin("plasma", domain = domain, bins = 9, na.color = "#00000000")
 
-  map %>%
-    clearControls() %>%
-    removeLayersControl() %>%
-    clearGroup(name) %>%
-    removeControl(name) %>%
-    addRasterImage(raster, group = name, colors = pal) %>%
-    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = title, layerId = name) %>%
+  map |>
+    clearControls() |>
+    removeLayersControl() |>
+    clearGroup(name) |>
+    removeControl(name) |>
+    addRasterImage(raster, group = name, colors = pal) |>
+    addLegend(position = "bottomleft", pal = pal, values = terra::values(raster), group = name, title = title, layerId = name) |>
     addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE))
 
     if (is.null(selected)){
-      map %>%
-        hideGroup(common$map_layers) %>%
+      map |>
+        hideGroup(common$map_layers) |>
         showGroup(name)
     } else {
-      map %>%
-        hideGroup(common$map_layers) %>%
+      map |>
+        hideGroup(common$map_layers) |>
         showGroup(selected)
     }
 }
@@ -269,14 +269,14 @@ bbox <- sf::st_bbox(sf_mesh)
 
 common$add_map_layer("Mesh")
 
-map %>%
-  clearControls() %>%
-  removeLayersControl() %>%
-  clearGroup("Mesh") %>%
-  addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") %>%
-  fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) %>%
-  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) %>%
-  hideGroup(common$map_layers) %>%
+map |>
+  clearControls() |>
+  removeLayersControl() |>
+  clearGroup("Mesh") |>
+  addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") |>
+  fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) |>
+  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) |>
+  hideGroup(common$map_layers) |>
   showGroup("Mesh")
 }
 

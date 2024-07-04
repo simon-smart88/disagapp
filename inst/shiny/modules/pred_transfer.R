@@ -45,7 +45,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (!is.null(common$meta$cov_upload$used) & is.null(common$meta$agg_upload$used)){
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please upload covariates")
+        common$logger |> writeLog(type = "error", "Please upload covariates")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
@@ -55,7 +55,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
       if (is.null(input$agg)) {
-        common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
@@ -65,11 +65,11 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (!is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please upload covariates")
+        common$logger |> writeLog(type = "error", "Please upload covariates")
         return()
       }
       if (is.null(input$agg)) {
-        common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")

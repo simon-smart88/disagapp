@@ -44,28 +44,28 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     mesh_status <- unlist(lapply(common$tasks[grep("^prep_", names(common$tasks), value = TRUE)], function(x){x$status()}))
     mesh_running <- length(mesh_status[mesh_status == "running"])
     if (mesh_running != 0) {
-      common$logger %>% writeLog(type = "error", "Please wait for the mesh to be built")
+      common$logger |> writeLog(type = "error", "Please wait for the mesh to be built")
       return()
     }
 
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     if (is.null(common$covs)) {
-      common$logger %>% writeLog(type = "error", "Please load covariates first")
+      common$logger |> writeLog(type = "error", "Please load covariates first")
       return()
     }
     if (input$id_var == "") {
-      common$logger %>% writeLog(type = "error", "Please select the ID variable")
+      common$logger |> writeLog(type = "error", "Please select the ID variable")
       return()
     }
     if (is.null(common$covs_prep)) {
-      common$logger %>% writeLog(type = "error", "Please prepare the covariates first")
+      common$logger |> writeLog(type = "error", "Please prepare the covariates first")
       return()
     }
     if (is.null(common$mesh)) {
-      common$logger %>% writeLog(type = "error", "Please prepare a mesh first")
+      common$logger |> writeLog(type = "error", "Please prepare a mesh first")
       return()
     }
     # FUNCTION CALL ####
@@ -81,7 +81,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                  response_var = as.character(input$resp_var),
                                                  na.action = input$na_action,
                                                  makeMesh = FALSE)},
-                             error = function(x){ common$logger %>% writeLog(type = "error",
+                             error = function(x){ common$logger |> writeLog(type = "error",
                                paste0("An error occurred whilst preparing the data: ", x))})
     } else {
      common$prep <- tryCatch({disaggregation::prepare_data(polygon_shapefile = common$shape,
@@ -91,7 +91,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                   response_var = as.character(input$resp_var),
                                                   na.action = input$na_action,
                                                   makeMesh = FALSE)},
-                             error = function(x){ common$logger %>% writeLog(type = "error",
+                             error = function(x){ common$logger |> writeLog(type = "error",
                                 paste0("An error occurred whilst preparing the data: ", x))})
     }
 
@@ -99,7 +99,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     close_loading_modal()
     if (!is.null(common$prep)){
       common$prep$mesh <- common$mesh
-      common$logger %>% writeLog(type = "complete", "Data preparation is complete")
+      common$logger |> writeLog(type = "complete", "Data preparation is complete")
     }
     # LOAD INTO COMMON ####
 
@@ -147,7 +147,7 @@ shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action
 #     raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
 #     shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Low resolution"]\').checked = true;')
 #   }
-#   map %>% showGroup("Response")
+#   map |> showGroup("Response")
 # }
 
 prep_final_module_rmd <- function(common) {

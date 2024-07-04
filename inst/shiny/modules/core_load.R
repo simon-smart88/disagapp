@@ -71,7 +71,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
         }
       }
       close_loading_modal()
-      common$logger %>% writeLog(type = "info", "The previous session has been loaded successfully")
+      common$logger |> writeLog(type = "info", "The previous session has been loaded successfully")
     })
 
   }

@@ -34,17 +34,17 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (input$country[1] == "") {
-      common$logger %>% writeLog(type = "error", "Please select a country")
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
-    common$logger %>% writeLog(type = "starting", "Starting to download Worldpop data")
+    common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
     common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
@@ -66,13 +66,13 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     if (class(result) == "PackedSpatRaster"){
       result <- unwrap_terra(result)
       common$agg <- result
-      common$logger %>% writeLog(type = "complete", "Worldpop data has been downloaded")
+      common$logger |> writeLog(type = "complete", "Worldpop data has been downloaded")
       # TRIGGER
       gargoyle::trigger("agg_worldpop")
       do.call("agg_worldpop_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('agg_worldpop-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
   })
 

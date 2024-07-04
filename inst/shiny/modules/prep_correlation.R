@@ -31,7 +31,7 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$covs_prep)) {
-      common$logger %>% writeLog(type = "error", "Please resample the rasters first")
+      common$logger |> writeLog(type = "error", "Please resample the rasters first")
       return()
     }
     # FUNCTION CALL ####
@@ -61,7 +61,7 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$remove,{
     # WARNING ####
     if (input$cov_layers == "") {
-      common$logger %>% writeLog(type = "error", "Please select a covariate to remove")
+      common$logger |> writeLog(type = "error", "Please select a covariate to remove")
       return()
     }
     # UPDATE COMMON ####

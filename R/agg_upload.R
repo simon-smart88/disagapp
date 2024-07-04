@@ -19,7 +19,7 @@ agg_upload <- function(path, shape, logger = NULL) {
   ras_crs <- terra::crs(agg, describe = TRUE)
 
   if (is.na(ras_crs$code)){
-    logger %>% writeLog(type = "error", "The uploaded file does not have a coordinate reference system")
+    logger |> writeLog(type = "error", "The uploaded file does not have a coordinate reference system")
     return(NULL)
   }
 
@@ -30,7 +30,7 @@ agg_upload <- function(path, shape, logger = NULL) {
   #check that raster overlaps with shape
   check_overlap <- terra::is.related(agg, terra::vect(shape), "intersects")
   if (check_overlap == FALSE){
-    logger %>% writeLog(type = "error", "The uploaded file does not overlap with the response data")
+    logger |> writeLog(type = "error", "The uploaded file does not overlap with the response data")
     return(NULL)
   }
 

@@ -27,7 +27,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
     } else if (file_format == "xlsx"){
       df <- openxlsx::read.xlsx(input$spread$datapath[1])
     } else {
-      common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
+      common$logger |> writeLog("The uploaded file was not a .csv or .xlsx")
       return()
     }
     df
@@ -50,32 +50,32 @@ resp_download_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (!is.null(input$reset) && (input$reset == FALSE)){
-      common$logger %>% writeLog(type = "error",
+      common$logger |> writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
       return()
     }
 
     if (is.null(input$spread)) {
-      common$logger %>% writeLog(type = "error", "Please upload a spreadsheet")
+      common$logger |> writeLog(type = "error", "Please upload a spreadsheet")
       return()
     }
 
     if (input$country[1] == "") {
-      common$logger %>% writeLog(type = "error", "Please select a country")
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
 
     if (input$response_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the response column")
+      common$logger |> writeLog(type = "error", "Please select the response column")
       return()
     }
     if (input$area_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the area column")
+      common$logger |> writeLog(type = "error", "Please select the area column")
       return()
     }
 
@@ -108,7 +108,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
       gargoyle::trigger("resp_download")
       gargoyle::trigger("country_out")
       do.call("resp_download_module_map", list(map, common))
-      common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
+      common$logger |> writeLog(type = "complete", "Response data has been uploaded")
     }
   })
 

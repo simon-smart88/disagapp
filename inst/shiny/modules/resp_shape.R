@@ -23,7 +23,7 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
 
       # WARNING ####
       if (nrow(shpdf) != 4) {
-        common$logger %>% writeLog(type = "error", "Please upload four files")
+        common$logger |> writeLog(type = "error", "Please upload four files")
         return()
       }
 
@@ -42,7 +42,7 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
       common$meta$resp_shape$path <- shpdf$name
 
       return(shape)
-    }) %>% bindEvent(input$shape)
+    }) |> bindEvent(input$shape)
 
 
    output$resp_var_out <- renderUI({
@@ -59,18 +59,18 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
 
     # WARNING ####
     if (!is.null(input$reset) && (input$reset == FALSE)){
-      common$logger %>% writeLog(type = "error",
+      common$logger |> writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
       return()
     }
 
     if (is.null(input$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload a shapefile")
+      common$logger |> writeLog(type = "error", "Please upload a shapefile")
       return()
     }
 
     if (input$resp_var == "") {
-      common$logger %>% writeLog(type = "error", "Please select a response variable")
+      common$logger |> writeLog(type = "error", "Please select a response variable")
       return()
     }
 
@@ -85,7 +85,7 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_shape")
     do.call("resp_shape_module_map", list(map, common))
-    common$logger %>% writeLog(type = "complete", "Response data has been uploaded")
+    common$logger |> writeLog(type = "complete", "Response data has been uploaded")
   })
 
   return(list(

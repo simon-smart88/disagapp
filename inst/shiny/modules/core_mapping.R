@@ -26,8 +26,8 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     output$map <- renderLeaflet({
       #reset if a new dataset is loaded
       gargoyle::watch("clear_map")
-      leaflet() %>%
-        setView(0, 0, zoom = 2) %>%
+      leaflet() |>
+        setView(0, 0, zoom = 2) |>
         addProviderTiles(isolate(input$bmap))
     })
 
@@ -39,7 +39,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
 
     # change provider tile option
     observe({
-      map %>% addProviderTiles(input$bmap)
+      map |> addProviderTiles(input$bmap)
     })
 
     # Capture coordinates of polygons
@@ -50,7 +50,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       colnames(xy) <- c("longitude", "latitude")
       common$poly <- xy
       gargoyle::trigger("change_poly")
-    }) %>% bindEvent(input$map_draw_new_feature)
+    }) |> bindEvent(input$map_draw_new_feature)
 
     component <- reactive({
       main_input$tabs
@@ -66,13 +66,13 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     observe({
       req(module())
       if (module() == "resp_edit"){
-        map %>%
+        map |>
           leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                          markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                          editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
       }
       if (module() != "resp_edit"){
-        map %>%
+        map |>
           leaflet.extras::removeDrawToolbar(clearFeatures = TRUE)
       }
     })
@@ -128,7 +128,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
         raster_map(map, common, common$agg_prep, agg_layer, agg_log, selected = current_layer)
       }
       if (!(agg_layer %in% current_layer)){
-        map %>%
+        map |>
           removeControl(agg_layer)
       }
 

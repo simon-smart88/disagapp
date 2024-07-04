@@ -11,7 +11,7 @@ agg_uniform_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (length(common$covs) == 0) {
-      common$logger %>% writeLog(type = "error", "Please load covariate data first")
+      common$logger |> writeLog(type = "error", "Please load covariate data first")
       return()
     }
 
@@ -26,7 +26,7 @@ agg_uniform_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     gargoyle::trigger("agg_uniform")
-    common$logger %>% writeLog(type = "complete", "A uniform aggregation raster has been created")
+    common$logger |> writeLog(type = "complete", "A uniform aggregation raster has been created")
   })
 
 })

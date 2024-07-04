@@ -20,17 +20,17 @@ cov_access_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
     common$tasks$cov_access$invoke(common$shape, input$layer, TRUE)
-    common$logger %>% writeLog(type = "starting", "Starting to download accessibility data")
+    common$logger |> writeLog(type = "starting", "Starting to download accessibility data")
     results$resume()
     # METADATA ####
     common$meta$cov_access$used <- TRUE
@@ -44,13 +44,13 @@ cov_access_module_server <- function(id, common, parent_session, map) {
       results$suspend()
       if (class(result) == "PackedSpatRaster"){
         common$covs[[common$meta$cov_access$layer]] <- unwrap_terra(result)
-        common$logger %>% writeLog(type = "complete", "Accessibility data has been downloaded")
+        common$logger |> writeLog(type = "complete", "Accessibility data has been downloaded")
         # TRIGGER
         gargoyle::trigger("cov_access")
         do.call("cov_access_module_map", list(map, common))
         shinyjs::runjs("Shiny.setInputValue('cov_access-complete', 'complete');")
       } else {
-        common$logger %>% writeLog(type = "error", result)
+        common$logger |> writeLog(type = "error", result)
       }
   })
 
