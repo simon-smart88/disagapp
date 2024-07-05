@@ -11,6 +11,12 @@ pred_transfer(country, common, covdf = NULL, aggdf = NULL, logger = NULL)
 
 \item{common}{The common data structure.}
 
+\item{covdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\code{datapath} columns of covariates}
+
+\item{aggdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\code{datapath} columns of the aggregation raster}
+
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
 shiny, otherwise leave the default NULL}

@@ -5,6 +5,10 @@
 #'
 #' @param country character. ISO3 code of the country.
 #' @param common The common data structure.
+#' @param covdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' `datapath` columns of covariates
+#' @param aggdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' `datapath` columns of the aggregation raster
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL

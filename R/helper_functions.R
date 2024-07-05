@@ -37,24 +37,28 @@ printVecAsis <- function(x, asChar = FALSE) {
 #' @description For internal use.
 #' @param x x
 #' @keywords internal
+#' @import gargoyle leaflet.extras
 #' @export
 spurious <- function(x) {
+  curl::curl(x)
   DT::renderDataTable(x)
   RColorBrewer::brewer.pal(x)
   R6::R6Class(x)
   corrplot::corrplot(x)
   disaggregation::build_mesh(x)
-  INLA::inla.mesh.2d(x)
-  leafem::addMouseCoordinates(x)
-  leaflet.extras::removeDrawToolbar(x)
   fmesher::fm_as_sfc(x)
-  gargoyle::init(x)
   geodata::worldclim_country(x)
   geosphere::centroid(x)
+  leafem::addMouseCoordinates(x)
+  markdown::html_format(x)
   openxlsx::read.xlsx(x)
+  plotly::plot_ly(x)
+  promises::promise(x)
+  renv::activate(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)
+  SpatialEpi::bayes_cluster(x)
   zip::zipr(x)
   return()
 }

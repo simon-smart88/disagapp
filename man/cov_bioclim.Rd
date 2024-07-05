@@ -7,7 +7,7 @@
 cov_bioclim(country_code, variables, shape, async = FALSE)
 }
 \arguments{
-\item{country_code}{character. ISO3 code of the country.}
+\item{country_code}{vector. ISO3 code of the country or countries.}
 
 \item{variables}{vector. List of the bioclimatic variables to be returned.
 Options are: \verb{Mean temperature}, \verb{Mean diurnal range}, \code{Isothermality},
