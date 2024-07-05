@@ -58,7 +58,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="disagapp">disagapp<a class="anchor" aria-label="anchor" href="#disagapp"></a>
 </h1></div>
-<p><img src="inst/shiny/www/logo.png" width="259" height="300" align="right"></p>
+<p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
 <p>Disagapp is an application written in R that can be used to perform disaggregation regression analyses using <a href="https://cran.r-project.org/package=disaggregation" class="external-link">{disaggregation}</a>.</p>
 <p>Disagapp was built using the <a href="https://github.com/simon-smart88/shinyscholar" class="external-link">{shinyscholar}</a> template which was itself forked from {wallace} v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>)</p>
 <p>It is currently in pre-alpha.</p>
@@ -68,6 +68,84 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"simon-smart88/disagapp"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">disagapp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/run_disagapp.html">run_disagapp</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="components-and-modules">Components and modules<a class="anchor" aria-label="anchor" href="#components-and-modules"></a>
+</h2>
+<p>The application is divided in components that are steps in the analysis and modules that are possible options in each step of the analysis. Each of the modules calls a function of the same name, either in this package or in <code>{disaggregation}</code>.</p>
+<div class="section level3">
+<h3 id="response---load-the-response-data">Response - load the response data<a class="anchor" aria-label="anchor" href="#response---load-the-response-data"></a>
+</h3>
+<ul>
+<li>Combine spreadsheet and shapefile: upload both files and merge them</li>
+<li>Upload spreadsheet: upload the data and combine it with boundary data</li>
+<li>Upload shapefile: when the data is already merged in a shapefile</li>
+<li>Example datasets: load an example dataset</li>
+<li>Edit data: remove unwanted parts of the data</li>
+<li>Simplify polygons: simplify the geometries of the boundary data</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="covariates---load-covariates-to-use-in-the-analysis">Covariates - load covariates to use in the analysis<a class="anchor" aria-label="anchor" href="#covariates---load-covariates-to-use-in-the-analysis"></a>
+</h3>
+<ul>
+<li>Accessibility: The time required to travel to cities or healthcare. Provided by the Malaria Atlas Project via <a href="https://github.com/malaria-atlas-project/malariaAtlas" class="external-link">malariaAtlas</a>
+</li>
+<li>Climate: Various bioclimatic variables relating to temperature and precipitation. Provided by Worldclim via <code>{geodata}</code>
+</li>
+<li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme</li>
+<li>Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via <a href="https://worldbank.github.io/blackmarbler/" class="external-link">blackmarbler</a> developed by the World Bank</li>
+<li>Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA</li>
+<li>Upload covariates: Upload your own covariates in the <code>.tif</code> format</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="aggregation---load-an-aggregation-raster">Aggregation - load an aggregation raster<a class="anchor" aria-label="anchor" href="#aggregation---load-an-aggregation-raster"></a>
+</h3>
+<ul>
+<li>Population density: Population data provided by Worldpop</li>
+<li>Upload aggregation: Upload your own aggregation raster in the <code>.tif</code> format</li>
+<li>Uniform: Generate a uniform aggregation raster</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="prepare---prepare-the-data-for-modelling">Prepare - prepare the data for modelling<a class="anchor" aria-label="anchor" href="#prepare---prepare-the-data-for-modelling"></a>
+</h3>
+<ul>
+<li>Generate mesh: generate a spatial mesh from the response data</li>
+<li>Summarise and resample covariates: resample covariates so that they have the same resolution and extent</li>
+<li>Scale covariates: scales the covariates so that their coefficients can be compared fairly</li>
+<li>Covariate correlations: examine correlations between covariates</li>
+<li>Reduce covariate resolution: generate lower resolution covariates to speed up model fitting</li>
+<li>Finalise data preparation: combine all the data together</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="fit---fit-a-disaggregation-model">Fit - fit a disaggregation model<a class="anchor" aria-label="anchor" href="#fit---fit-a-disaggregation-model"></a>
+</h3>
+<ul>
+<li>Fit model: using either gaussian, binomial or poisson likelihood functions and logit, log or identity link functions</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="predict---make-predictions">Predict - make predictions<a class="anchor" aria-label="anchor" href="#predict---make-predictions"></a>
+</h3>
+<ul>
+<li>Make predictions: generate predictions from the model</li>
+<li>Transfer predictions: transfer predictions to a new area of interest</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="reproduce">
+<em>Reproduce</em><a class="anchor" aria-label="anchor" href="#reproduce"></a>
+</h3>
+<ul>
+<li>Download session code: download a <code>.Rmd</code> file that completely replicates the analysis</li>
+<li>Reproduce environment: use <a href="https://rstudio.github.io/renv/" class="external-link">renv</a> to capture dependencies, allowing the analysis to be reproduced exactly</li>
+<li>Download covariates: download copies of the covariate data</li>
+<li>Download package references: download a list of all the packages used in the analysis</li>
+</ul>
+</div>
+</div>
 </div>
   </div>
 
