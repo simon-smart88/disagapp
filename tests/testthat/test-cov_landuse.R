@@ -15,7 +15,7 @@ test_that("{shinytest2} recording: e2e_cov_landuse", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_landuse", timeout = 600000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
-  app$upload_file("resp_download-spread" = "../../lie.csv")
+  app$upload_file("resp_download-spread" = df_path)
   app$set_inputs("resp_download-response_column" = resp_column)
   app$set_inputs("resp_download-area_column" = area_column)
   app$set_inputs("resp_download-country" = "Liechtenstein")

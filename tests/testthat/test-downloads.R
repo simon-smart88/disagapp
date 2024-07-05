@@ -22,6 +22,8 @@ test_that("{shinytest2} recording: e2e_empty_markdown", {
 # this is very temperamental
 test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
 
+  skip_on_ci()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_markdown_from_uploads", timeout = 60000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")

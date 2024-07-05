@@ -1,4 +1,7 @@
 test_that("Check cov_water function works as expected", {
+
+  skip_on_ci()
+
   result <- cov_water(shape, arcgisutils::auth_client())
   expect_is(result, "SpatRaster")
 
@@ -7,6 +10,8 @@ test_that("Check cov_water function works as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_water", {
+
+  skip_on_ci()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 30000)
   app$set_inputs(tabs = "resp")
