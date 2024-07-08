@@ -49,3 +49,8 @@ jobs:
           pak-version: devel # See https://github.com/r-lib/actions/issues/559
 
       - uses: r-lib/actions/check-r-package@v2
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
