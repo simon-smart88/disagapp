@@ -14,5 +14,4 @@
 #'    function \code{\link{run_disagapp}}.
 #'
 #' @import leaflet shiny
-#' @importFrom magrittr "%>%"
 NULL
