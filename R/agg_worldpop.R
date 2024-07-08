@@ -99,6 +99,17 @@ if (is.null(pop_ras)){
     pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
   }
 
+  #check that raster overlaps with shape
+  check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
+  if (check_overlap == FALSE){
+    message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
   # convert NAs to zero
   pop_ras <- terra::subst(pop_ras, NA, 0)
 

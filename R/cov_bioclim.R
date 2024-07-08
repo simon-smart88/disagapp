@@ -104,6 +104,18 @@ cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
       stop(message)
     }
   } else {
+
+    #check that raster overlaps with shape
+    check_overlap <- terra::is.related(bioclim_ras, terra::vect(shape), "intersects")
+    if (check_overlap == FALSE){
+      message <- "The downloaded bioclim data does not overlap with the response data - check the selected country"
+      if (async){
+        return(message)
+      } else {
+        stop(message)
+      }
+    }
+
     bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
     names(bioclim_ras) <- layers
     bioclim_ras <- as.list(bioclim_ras[[variables]])
