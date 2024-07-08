@@ -4,6 +4,7 @@ shiny::addResourcePath("disagapp-res", resourcePath)
 easy_print <- "https://rawgit.com/rowanwins/leaflet-easyPrint/gh-pages/dist/bundle.js"
 
 tagList(
+  rintrojs::introjsUI(),
   shinyjs::useShinyjs(),
   shinyjs::extendShinyjs(
     script = file.path("disagapp-res", "js", "shinyjs-funcs.js"),
@@ -43,7 +44,8 @@ tagList(
         wellPanel(
           conditionalPanel(
             "input.tabs == 'intro'",
-            actionButton("debug_button", "debug"),
+            #actionButton("debug_button", "debug"),
+            core_intro_module_ui("core_intro"),
             textOutput("debug"),
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
@@ -233,6 +235,7 @@ tagList(
             id = "introTabs",
             tabPanel(
               "About",
+              br(),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(
