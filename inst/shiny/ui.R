@@ -43,7 +43,8 @@ tagList(
         wellPanel(
           conditionalPanel(
             "input.tabs == 'intro'",
-            actionButton("debug_button", "debug"),
+            #actionButton("debug_button", "debug"),
+            core_intro_module_ui("core_intro"),
             textOutput("debug"),
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
@@ -234,7 +235,6 @@ tagList(
             tabPanel(
               "About",
               br(),
-              core_intro_module_ui("core_intro"),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
             tabPanel(

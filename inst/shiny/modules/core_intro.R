@@ -11,45 +11,34 @@ core_intro_module_server <- function(id, common) {
     steps <- data.frame(c(NA, "Welcome to Disagapp! This tour will show you various features of the application to help get you started", NA, NA),
                         c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
                         c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How To Use tab", "bottom","$('a[data-value=\"intro\"]').removeClass('active');
-                                                                                                                            $('a[data-value=\"How To Use\"]').trigger('click');
-                                                                                                                            $('a[data-value=\"How To Use\"]').addClass('active');"),
-                        c("a[data-value=\"resp\"]", "Click on the tabs to move between components", "bottom", "$('a[data-value=\"How To Use\"]').removeClass('active');
-                                                                                                          $('a[data-value=\"resp\"]').trigger('click');
+                                                                                                                            $('a[data-value=\"How To Use\"]').trigger('click');"),
+                        c("a[data-value=\"resp\"]", "Click on the tabs to move between components", "bottom", "$('a[data-value=\"resp\"]').trigger('click');
                                                                                                           $('a[data-value=\"resp\"]').addClass('active');"),
                         c("#respHelp", "Click on the question mark to view instructions for the component", "bottom", "$('a[data-value=\"resp\"]').removeClass('active');
                                                                                                                      $('a[data-value=\"Component Guidance\"]').trigger('click');
                                                                                                                      $('a[data-value=\"Component Guidance\"]').addClass('active');"),
-                        c("#respSel", "Select a module to load the options", "bottom", "$('a[data-value=\"Component Guidance\"]').removeClass('active');
-                                                                                        $('a[data-value=\"Map\"]').trigger('click');
-                                                                                        $('a[data-value=\"Map\"]').addClass('active');
-                                                                                        $('input[value=\"resp_shape\"]').trigger('click');
-                          "),
-                        c("#resp_shapeHelp", "Click on the question mark to view instructions for the module", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
-                                                                                                                        $('a[data-value=\"Module Guidance\"]').trigger('click');
-                                                                                                                        $('a[data-value=\"Module Guidance\"]').addClass('active');"),
-                        c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", "$('a[data-value=\"Module Guidance\"]').removeClass('active');
-                                                                                                                       $('a[data-value=\"Map\"]').trigger('click');
-                                                                                                                       $('a[data-value=\"Map\"]').addClass('active');"),
+                        c("#respSel", "Select a module to load the options", "right", "$('input[value=\"resp_shape\"]').trigger('click');"),
+                        c("#resp_shapeHelp", "Click on the question mark to view instructions for the module", "bottom", "$('a[id=\"resp_shapeHelp\"]').trigger('click');"),
+                        c("div[class=\"form-group shiny-input-container\"]", "Choose from the list of options", "bottom", NA),
                         c("#resp_shape-run", "Click the button to run the module", "bottom", NA),
-                        c("a[data-value=\"Map\"]", "Outputs will be loaded onto the Map...", "bottom", NA),
-                        c("a[data-value=\"Results\"]", "or the Results tabs depending on the module", "bottom", "$('a[data-value=\"Map\"]').removeClass('active');
-                                                                                                             $('a[data-value=\"Results\"]').trigger('click');
-                                                                                                             $('a[data-value=\"Results\"]').addClass('active');"),
+                        c("a[data-value=\"Map\"]", "Outputs will be loaded onto the Map...", "bottom", "$('a[data-value=\"Map\"]').trigger('click');"),
+                        c("a[data-value=\"Results\"]", "or the Results tabs depending on the module", "bottom", "$('a[data-value=\"Results\"]').trigger('click');"),
                         c("div[id=\"messageLog\"]", "Messages will appear in the log window", "bottom", NA),
                         c("div[id=\"running_tasks\"]", "Some modules run in the background and this tells you how many are currently running", "bottom", NA),
-
                         c("a[data-value=\"rep\"]", "You can download code to reproduce your analysis in the Session Code module", "bottom"," $('a[data-value=\"rep\"]').trigger('click');
                                                                                                                                              $('a[data-value=\"rep\"]').addClass('active');
-                                                                                                                                             $('input[value=\"rep_markdown\"]').trigger('click');"),
+                                                                                                                                             $('input[value=\"rep_markdown\"]').trigger('click');
+                                                                                                                                             $('a[id=\"rep_markdownHelp\"]').trigger('click');
+                                                                                                                                             $('a[data-value=\"Module Guidance\"]').trigger('click');"),
                         c("a[data-value=\"resp\"]", "When you are inside an analysis component...","bottom", "$('a[data-value=\"rep\"]').removeClass('active');
                                                                                                              $('a[data-value=\"resp\"]').trigger('click');
                                                                                                              $('a[data-value=\"resp\"]').addClass('active');"),
                         c("a[data-value=\"Save\"]", "you can download a file which saves the state of the app", "left", "$('a[data-value=\"Save\"]').trigger('click');
                                                                                                                               $('a[data-value=\"Save\"]').addClass('active');"),
                         c("a[data-value=\"intro\"]", "Next time you visit...", "bottom", "$('a[data-value=\"resp\"]').removeClass('active');
-                                                                                                                     $('a[data-value=\"intro\"]').trigger('click');
-                                                                                                                     $('a[data-value=\"intro\"]').addClass('active');"),
-                        c("a[data-value=\"Load Prior Session\"]", "you can upload the file to restore the app", "left","$('a[data-value=\"Load Prior Session\"]').trigger('click');
+                                                                                         $('a[data-value=\"intro\"]').trigger('click');
+                                                                                         $('a[data-value=\"intro\"]').addClass('active');"),
+                        c("a[data-value=\"Load Prior Session\"]", "you can upload the file to restore the app", "right","$('a[data-value=\"Load Prior Session\"]').trigger('click');
                                                                                                                      $('a[data-value=\"Load Prior Session\"]').addClass('active');"),
                         c(NA, "You are ready to go!", NA, "$('a[data-value=\"About\"]').trigger('click');
                                                          $('a[data-value=\"About\"]').addClass('active');")
@@ -67,25 +56,6 @@ core_intro_module_server <- function(id, common) {
       }
     }
     intro_js <- gsub("[\r\n]", "", intro_js)
-
-    # intro_cookie_value <- reactive({
-    #   cookie_value <- cookies::get_cookie(cookie_name = "intro")
-    #   return(cookie_value)
-    # })
-    #
-    # #launch intro if the intro cookie is empty
-    # #prevent running in test mode as the popup blocks other interactions
-    # observeEvent(
-    #   once = TRUE,
-    #   intro_cookie_value,
-    #   {
-    #     if (is.null(intro_cookie_value()) & (isTRUE(getOption("shiny.testmode")) == FALSE)) {
-    #       rintrojs::introjs(session, options = list(steps = steps, "showBullets" = "true", "showProgress" = "true",
-    #                                                 "showStepNumbers" = "false", "nextLabel" = "Next", "prevLabel" = "Prev", "skipLabel" = "Skip"),
-    #                         events = list(onbeforechange = I(intro_js)))
-    #       cookies::set_cookie(cookie_name = "intro",  cookie_value = TRUE, expiration = 365)
-    #     }
-    #   })
 
     #launch intro if the button is clicked
     observeEvent(input$intro,{
