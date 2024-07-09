@@ -21,8 +21,6 @@ common_class <- R6::R6Class(
     logger = NULL,
     meta = NULL,
     state = NULL,
-    async_result_a = NULL,
-    async_result_b = NULL,
     tasks = list(),
     seed = NULL,
     countries = readRDS(system.file("ex/countries.rds", package = "geodata")),

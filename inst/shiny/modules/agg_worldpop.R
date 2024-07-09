@@ -46,6 +46,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
     common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
+    results$resume()
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
     common$meta$agg_worldpop$log <- input$log
