@@ -104,12 +104,17 @@ writeLog <- function(logger, ..., type = "default") {
     if (type == "default") {
       pre <- "> "
     } else if (type == "starting") {
-      pre <- paste0("> ", icon("clock", class = "task_start"), " ")
+      pre <- paste0(icon("clock", class = "log_start"), " ")
     } else if (type == "complete") {
-      pre <- paste0("> ", icon("check", class = "task_end"), " ")
+      pre <- paste0(icon("check", class = "log_end"), " ")
     } else if (type == "info") {
-      shinyalert::shinyalert(..., type = "info")
-      pre <- '> <font color="blue"><b>INFO</b></font> : '
+      if (nchar(...) < 80){
+        shinyalert::shinyalert(..., type = "info")
+      } else {
+        shinyalert::shinyalert("Please, check Log window for more information ",
+                               type = "info")
+      }
+      pre <- paste0(icon("info", class = "log_info"), " ")
     } else if (type == "error") {
       if (nchar(...) < 80){
         shinyalert::shinyalert(...,
@@ -118,7 +123,7 @@ writeLog <- function(logger, ..., type = "default") {
         shinyalert::shinyalert("Please, check Log window for more information ",
                                type = "error")
       }
-      pre <- '> <font color="red"><b>! ERROR</b></font> : '
+      pre <- paste0(icon("xmark", class = "log_error"), " ")
     } else if (type == "warning") {
       if (nchar(...) < 80){
         shinyalert::shinyalert(...,
@@ -126,7 +131,8 @@ writeLog <- function(logger, ..., type = "default") {
       } else {
       shinyalert::shinyalert("Please, check Log window for more information ",
                              type = "warning")
-      pre <- '> <font color="orange"><b>! WARNING</b></font> : '
+
+      pre <- paste0(icon("triangle-exclamation", class = "log_warn"), " ")
       }
     }
     newEntries <- paste0("<br>", pre, ..., collapse = "")
