@@ -55,11 +55,15 @@ cov_access_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(layer = input$layer)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      layer = input$layer)
     },
     load = function(state) {
-updateSelectInput(session, "layer", selected = state$layer)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "layer", selected = state$layer)
     }
   ))
 })

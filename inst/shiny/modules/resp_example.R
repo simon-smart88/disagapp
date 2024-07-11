@@ -68,11 +68,15 @@ resp_example_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(dataset = input$dataset)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      dataset = input$dataset)
     },
     load = function(state) {
-updateSelectInput(session, "dataset", selected = state$dataset)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "dataset", selected = state$dataset)
     }
   ))
 })

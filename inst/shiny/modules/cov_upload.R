@@ -70,11 +70,15 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(example = input$example)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      example = input$example)
     },
     load = function(state) {
-shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
+      ### Manual load start
+      ### Manual load end
+      shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))
 })

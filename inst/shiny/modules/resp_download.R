@@ -113,15 +113,19 @@ resp_download_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(admin = input$admin,
-area_column = input$area_column,
-response_column = input$response_column)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      admin = input$admin, 
+      area_column = input$area_column, 
+      response_column = input$response_column)
     },
     load = function(state) {
-updateSelectInput(session, "admin", selected = state$admin)
-updateSelectInput(session, "area_column", selected = state$area_column)
-updateSelectInput(session, "response_column", selected = state$response_column)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "admin", selected = state$admin) 
+      updateSelectInput(session, "area_column", selected = state$area_column) 
+      updateSelectInput(session, "response_column", selected = state$response_column)
     }
   ))
 })

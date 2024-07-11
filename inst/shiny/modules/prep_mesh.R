@@ -68,15 +68,19 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
 
 
   return(list(
-    save = function() {
-list(mesh_edge = input$mesh_edge,
-mesh_cut = input$mesh_cut,
-mesh_offset = input$mesh_offset)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      mesh_edge = input$mesh_edge, 
+      mesh_cut = input$mesh_cut, 
+      mesh_offset = input$mesh_offset)
     },
     load = function(state) {
-updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
-updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
-updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
+      ### Manual load start
+      ### Manual load end
+      updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
+      updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
+      updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
     }
   ))
 })

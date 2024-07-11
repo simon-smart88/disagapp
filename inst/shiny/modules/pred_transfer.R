@@ -88,11 +88,15 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(country = input$country)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      country = input$country)
     },
     load = function(state) {
-updateSelectInput(session, "country", selected = state$country)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "country", selected = state$country)
     }
   ))
 })

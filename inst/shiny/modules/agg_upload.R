@@ -67,15 +67,19 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
 
 
   return(list(
-    save = function() {
-list(name = input$name,
-log = input$log,
-example = input$example)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      name = input$name, 
+      log = input$log, 
+      example = input$example)
     },
     load = function(state) {
-updateTextInput(session, "name", value = state$name)
-shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
-shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
+      ### Manual load start
+      ### Manual load end
+      updateTextInput(session, "name", value = state$name) 
+      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log) 
+      shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))
 })

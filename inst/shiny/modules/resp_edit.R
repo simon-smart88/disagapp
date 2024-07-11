@@ -45,11 +45,15 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(type = input$type)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      type = input$type)
     },
     load = function(state) {
-updateRadioButtons(session, "type", selected = state$type)
+      ### Manual load start
+      ### Manual load end
+      updateRadioButtons(session, "type", selected = state$type)
     }
   ))
 })

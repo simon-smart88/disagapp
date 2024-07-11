@@ -42,11 +42,15 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     glue::glue("{round((object.size(common$shape)/1024^2),2)} Mb")})
 
   return(list(
-    save = function() {
-list(distance = input$distance)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      distance = input$distance)
     },
     load = function(state) {
-updateNumericInput(session, "distance", value = state$distance)
+      ### Manual load start
+      ### Manual load end
+      updateNumericInput(session, "distance", value = state$distance)
     }
   ))
 })

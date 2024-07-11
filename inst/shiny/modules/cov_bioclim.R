@@ -90,11 +90,15 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(variables = input$variables)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      variables = input$variables)
     },
     load = function(state) {
-updateSelectInput(session, "variables", selected = state$variables)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "variables", selected = state$variables)
     }
   ))
 })

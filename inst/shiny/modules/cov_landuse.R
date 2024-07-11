@@ -64,13 +64,17 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(uses = input$uses,
-year = input$year)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      uses = input$uses, 
+      year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = state$uses)
-updateSelectInput(session, "year", selected = state$year)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "uses", selected = state$uses) 
+      updateSelectInput(session, "year", selected = state$year)
     }
   ))
 })

@@ -79,17 +79,21 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
 
 
   return(list(
-    save = function() {
-list(method = input$method,
-resolution = input$resolution,
-year = input$year,
-log = input$log)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      method = input$method, 
+      resolution = input$resolution, 
+      year = input$year, 
+      log = input$log)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method)
-updateSelectInput(session, "resolution", selected = state$resolution)
-updateSelectInput(session, "year", selected = state$year)
-shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "method", selected = state$method) 
+      updateSelectInput(session, "resolution", selected = state$resolution) 
+      updateSelectInput(session, "year", selected = state$year) 
+      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
 })

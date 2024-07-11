@@ -90,17 +90,21 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   # })
 
   return(list(
-    save = function() {
-list(uncertain_n = input$uncertain_n,
-uncertain_ci = input$uncertain_ci,
-uncertain = input$uncertain,
-iid = input$iid)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      uncertain_n = input$uncertain_n, 
+      uncertain_ci = input$uncertain_ci, 
+      uncertain = input$uncertain, 
+      iid = input$iid)
     },
     load = function(state) {
-updateNumericInput(session, "uncertain_n", value = state$uncertain_n)
-updateNumericInput(session, "uncertain_ci", value = state$uncertain_ci)
-shinyWidgets::updateMaterialSwitch(session, "uncertain", value = state$uncertain)
-shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
+      ### Manual load start
+      ### Manual load end
+      updateNumericInput(session, "uncertain_n", value = state$uncertain_n) 
+      updateNumericInput(session, "uncertain_ci", value = state$uncertain_ci) 
+      shinyWidgets::updateMaterialSwitch(session, "uncertain", value = state$uncertain) 
+      shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
     }
   ))
 })

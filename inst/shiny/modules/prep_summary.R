@@ -108,11 +108,17 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   }, server = FALSE)
 
   return(list(
-    save = function() {
-list(remove = input$remove)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      resample_layer = input$resample_layer, 
+      remove = input$remove)
     },
     load = function(state) {
-shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "resample_layer", selected = state$resample_layer) 
+      shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))
 })

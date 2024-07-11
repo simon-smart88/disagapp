@@ -128,15 +128,19 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(spread_area_column = input$spread_area_column,
-spread_response_column = input$spread_response_column,
-shape_area_column = input$shape_area_column)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      spread_area_column = input$spread_area_column, 
+      spread_response_column = input$spread_response_column, 
+      shape_area_column = input$shape_area_column)
     },
     load = function(state) {
-updateSelectInput(session, "spread_area_column", selected = state$spread_area_column)
-updateSelectInput(session, "spread_response_column", selected = state$spread_response_column)
-updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "spread_area_column", selected = state$spread_area_column) 
+      updateSelectInput(session, "spread_response_column", selected = state$spread_response_column) 
+      updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
     }
   ))
 })

@@ -115,17 +115,21 @@ prep_final_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(id_var = input$id_var,
-resp_var = input$resp_var,
-resolution = input$resolution,
-na_action = input$na_action)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      id_var = input$id_var, 
+      resp_var = input$resp_var, 
+      resolution = input$resolution, 
+      na_action = input$na_action)
     },
     load = function(state) {
-updateSelectInput(session, "id_var", selected = state$id_var)
-updateSelectInput(session, "resp_var", selected = state$resp_var)
-updateSelectInput(session, "resolution", selected = state$resolution)
-shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "id_var", selected = state$id_var) 
+      updateSelectInput(session, "resp_var", selected = state$resp_var) 
+      updateSelectInput(session, "resolution", selected = state$resolution) 
+      shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
     }
   ))
 })

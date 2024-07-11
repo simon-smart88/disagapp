@@ -226,41 +226,45 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     })
 
   return(list(
-    save = function() {
-list(mean_intercept = input$mean_intercept,
-sd_intercept = input$sd_intercept,
-mean_slope = input$mean_slope,
-sd_slope = input$sd_slope,
-rho_min = input$rho_min,
-rho_prob = input$rho_prob,
-sigma_max = input$sigma_max,
-sigma_prob = input$sigma_prob,
-iideffect_max = input$iideffect_max,
-iideffect_prob = input$iideffect_prob,
-family = input$family,
-link = input$link,
-field = input$field,
-iterations = input$iterations,
-iid = input$iid,
-priors = input$priors)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      iterations = input$iterations, 
+      mean_intercept = input$mean_intercept, 
+      sd_intercept = input$sd_intercept, 
+      mean_slope = input$mean_slope, 
+      sd_slope = input$sd_slope, 
+      rho_min = input$rho_min, 
+      rho_prob = input$rho_prob, 
+      sigma_max = input$sigma_max, 
+      sigma_prob = input$sigma_prob, 
+      iideffect_max = input$iideffect_max, 
+      iideffect_prob = input$iideffect_prob, 
+      family = input$family, 
+      link = input$link, 
+      field = input$field, 
+      iid = input$iid, 
+      priors = input$priors)
     },
     load = function(state) {
-updateNumericInput(session, "mean_intercept", value = state$mean_intercept)
-updateNumericInput(session, "sd_intercept", value = state$sd_intercept)
-updateNumericInput(session, "mean_slope", value = state$mean_slope)
-updateNumericInput(session, "sd_slope", value = state$sd_slope)
-updateNumericInput(session, "rho_min", value = state$rho_min)
-updateNumericInput(session, "rho_prob", value = state$rho_prob)
-updateNumericInput(session, "sigma_max", value = state$sigma_max)
-updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
-updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
-updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
-updateNumericInput(session, "iterations", value = state$iterations)
-updateRadioButtons(session, "family", selected = state$family)
-updateRadioButtons(session, "link", selected = state$link)
-shinyWidgets::updateMaterialSwitch(session, "field", value = state$field)
-shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
-shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
+      ### Manual load start
+      ### Manual load end
+      updateNumericInput(session, "iterations", value = state$iterations) 
+      updateNumericInput(session, "mean_intercept", value = state$mean_intercept) 
+      updateNumericInput(session, "sd_intercept", value = state$sd_intercept) 
+      updateNumericInput(session, "mean_slope", value = state$mean_slope) 
+      updateNumericInput(session, "sd_slope", value = state$sd_slope) 
+      updateNumericInput(session, "rho_min", value = state$rho_min) 
+      updateNumericInput(session, "rho_prob", value = state$rho_prob) 
+      updateNumericInput(session, "sigma_max", value = state$sigma_max) 
+      updateNumericInput(session, "sigma_prob", value = state$sigma_prob) 
+      updateNumericInput(session, "iideffect_max", value = state$iideffect_max) 
+      updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob) 
+      updateRadioButtons(session, "family", selected = state$family) 
+      updateRadioButtons(session, "link", selected = state$link) 
+      shinyWidgets::updateMaterialSwitch(session, "field", value = state$field) 
+      shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid) 
+      shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
     }
   ))
 })
