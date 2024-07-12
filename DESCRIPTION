@@ -36,6 +36,7 @@ Imports:
     R6,
     RColorBrewer,
     renv,
+    rintrojs,
     rlang,
     rmarkdown,
     sf,

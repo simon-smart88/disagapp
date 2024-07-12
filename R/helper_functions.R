@@ -55,6 +55,7 @@ spurious <- function(x) {
   plotly::plot_ly(x)
   promises::promise(x)
   renv::activate(x)
+  rintrojs::introjs(x)
   rmarkdown::github_document(x)
   shinyWidgets::pickerInput(x)
   shinyjs::disable(x)
