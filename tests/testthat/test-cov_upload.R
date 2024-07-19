@@ -1,6 +1,6 @@
 
 mad_shape <- resp_shape(shpdf)
-lie_shape <- resp_download(df, area_column, resp_column, country_code, admin_level)
+lie_shape <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
 
 test_that("Check cov_upload function works as expected", {
   result <- cov_upload(covdf, mad_shape)
