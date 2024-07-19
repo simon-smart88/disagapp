@@ -10,6 +10,14 @@
 #' shiny, otherwise leave the default NULL
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' path <- list.files(system.file("extdata/aggregation",
+#'         package="disagapp"), full.names = TRUE)
+#' shp_file <- list.files(system.file("extdata/shapes",
+#'         package="disagapp"), pattern = ".shp", full.names = TRUE)
+#' shape <- sf::st_read(shp_file, quiet = TRUE)
+#' raster <- agg_upload(path = path, shape = shape)
+#'
 #' @export
 
 agg_upload <- function(path, shape, logger = NULL) {
@@ -20,7 +28,7 @@ agg_upload <- function(path, shape, logger = NULL) {
 
   if (is.na(ras_crs$code)){
     logger |> writeLog(type = "error", "The uploaded file does not have a coordinate reference system")
-    return(NULL)
+    return()
   }
 
   if (ras_crs$code != "4326"){
@@ -31,7 +39,7 @@ agg_upload <- function(path, shape, logger = NULL) {
   check_overlap <- terra::is.related(agg, terra::vect(shape), "intersects")
   if (check_overlap == FALSE){
     logger |> writeLog(type = "error", "The uploaded file does not overlap with the response data")
-    return(NULL)
+    return()
   }
 
   # crop and mask

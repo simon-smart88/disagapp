@@ -21,6 +21,20 @@
 #' objects when `async` is `FALSE` or PackedSpatRaster objects when `async` is
 #' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' x_min <- 9.47
+#' x_max <- 9.63
+#' y_min <- 47.05
+#' y_max <- 47.27
+#' poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+#'                         y_min, y_max, y_max, y_min, y_min), ncol = 2)
+#' poly <- sf::st_polygon(list(poly_matrix))
+#' shape <- sf::st_sf(1, geometry = list(poly))
+#' sf::st_crs(shape) = 4326
+#' raster <- cov_bioclim(country_code = "LIE",
+#'                       variables = c("Mean temperature", "Mean diurnal range"),
+#'                       shape = shape)
+#'
 #' @export
 
 cov_bioclim <- function(country_code, variables, shape, async = FALSE) {

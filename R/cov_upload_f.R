@@ -13,13 +13,40 @@
 #' shiny, otherwise leave the default NULL
 #' @return a list containing SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' cov_df <- data.frame(datapath = list.files(system.file("extdata/covariates",
+#'                                 package="disagapp"), full.names = TRUE),
+#'                     name = list.files(system.file("extdata/covariates",
+#'                            package="disagapp")))
+#' shp_file <- list.files(system.file("extdata/shapes", package="disagapp"),
+#'                        pattern = ".shp", full.names = TRUE)
+#' shape <- sf::st_read(shp_file, quiet = TRUE)
+#' rasters <- cov_upload(path_df = cov_df, shape = shape)
 #' @export
 
  cov_upload <- function(path_df, shape, logger = NULL) {
+
+   # check inputs
+   if (!("data.frame" %in% class(path_df))){
+     logger |> writeLog(type = "error", "path_df must be a data.frame")
+   }
+
+   df_columns <- c("datapath", "name")
+   if (!all(df_columns %in% colnames(path_df))){
+     missing_column <- df_columns[!(df_columns %in% colnames(path_df))]
+     missing_column <- paste(missing_column, collapse = ",")
+     logger |> writeLog(type = "error", glue::glue("path_df must contain the column(s): {missing_column}"))
+   }
+
+   if (!("sf" %in% class(shape))){
+     logger |> writeLog(type = "error", "Shape must be an sf object")
+   }
+
+  # load the data
   covs <- lapply(path_df$datapath, terra::rast)
   names(covs) <- as.vector(path_df$name)
 
-  #check crs and reproject if necessary
+  # check crs and reproject if necessary
   ras_crs <- lapply(covs, terra::crs, describe = TRUE)
   ras_crs <- dplyr::bind_rows(ras_crs, .id = "column_label")
 
@@ -38,7 +65,7 @@
     }
   }
 
-  #check that rasters overlap with shape
+  # check that rasters overlap with shape
   check_overlap <- as.vector(unlist(lapply(covs, terra::is.related, terra::vect(shape), "intersects")))
   if (any(check_overlap) == FALSE){
     logger |> writeLog(type = "error", "Some files do not overlap with the response data")

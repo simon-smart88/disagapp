@@ -4,12 +4,27 @@
 #'
 #' @param covs list. List of SpatRasters
 #' @param remove logical. Whether to remove columns where all values are equal
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
 #' @return a dataframe containing columns for the resolution, origin, min and
 #' max coordinates, coordinate reference system and number of cells.
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' covariate_files <- list.files(system.file("extdata/covariates",
+#'                               package = "disagapp"), full.names = TRUE)
+#' covariate_list <- lapply(covariate_files, terra::rast)
+#' covariates <- terra::rast(covariate_list)
+#' covariate_summary <- prep_summary(covs = covariates)
 #' @export
 
-prep_summary <- function(covs, remove = FALSE){
+prep_summary <- function(covs, remove = FALSE, logger = NULL){
+
+  if (!("SpatRaster" %in% class(covs))){
+    logger |> writeLog(type = "error", "covs must be a SpatRaster")
+    return()
+  }
+
   cov_res <- lapply(covs, terra::res)
   x_res <- unlist(cov_res)[seq(1,length(covs)*2, 2)]
   y_res <- unlist(cov_res)[seq(2,length(covs)*2, 2)]

@@ -13,6 +13,11 @@
 #'   shiny, otherwise leave the default NULL
 #' @return an sf object
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
+#'                             "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
+#'                              "Planken","Vaduz"), "response" = 1:11)
+#' shape <- resp_download(df, "area", "response", "LIE", "ADM1")
 #' @export
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {

@@ -5,7 +5,7 @@
 #'
 #' @param shape sf. The sf object to be edited
 #' @param poly matrix. Containing latitude and longitude columns
-#' @param type character. Either inside or outside to determine whether the
+#' @param type character. Either `inside` or `outside` to determine whether the
 #' polygons to keep are those inside or outside of the polygon
 #' @param logger Stores all notification messages to be displayed in the Log
 #'   Window. Insert the logger reactive list here for running in
