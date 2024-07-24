@@ -22,6 +22,42 @@
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
+  # check inputs
+  if (!inherits(df, "data.frame")){
+    logger |> writeLog(type = "error", "df must be a data.frame")
+    return()
+  }
+
+  character_variables = list("area_column" = area_column,
+                             "resp_column" = resp_column,
+                             "country_code" = country_code,
+                             "admin_level" = admin_level)
+  for (i in names(character_variables)){
+    if (!inherits(character_variables[[i]], "character")){
+      logger |> writeLog(type = "error", glue::glue("{i} must be a character string"))
+      return()
+    }
+  }
+
+  df_columns <- c(area_column, resp_column)
+  if (!all(df_columns %in% colnames(df))){
+    missing_column <- df_columns[!(df_columns %in% colnames(df))]
+    missing_column <- paste(missing_column, collapse = ",")
+    logger |> writeLog(type = "error", glue::glue("df does not contain the column(s): {missing_column}"))
+  }
+
+  valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
+  invalid_countries <- country_code[(!country_code %in% valid_countries)]
+  if (length(invalid_countries) > 0){
+    logger |> writeLog(type = "error", glue::glue("{invalid_countries} is not a valid IS03 country code"))
+    return()
+  }
+
+  if (!(admin_level %in% c("ADM1", "ADM2"))){
+    logger |> writeLog(type = "error", "admin_level must be either ADM1 or ADM2")
+    return()
+  }
+
   shape <- NULL
 
   for (c in country_code){
@@ -34,7 +70,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
     )
 
     if (is.null(resp) || resp$status_code != 200){
-      logger |> writeLog(type = "error", "The requested boundaries could not be downloaded")
+      logger |> writeLog(type = "error", "The requested boundaries could not be downloaded, the requested admin level may be unavailable")
       return()
     } else {
       cont <- httr2::resp_body_json(resp)

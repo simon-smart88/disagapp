@@ -10,6 +10,16 @@ test_that("Check resp_download function works as expected for multiple countries
   expect_equal(nrow(result), 37)
 })
 
+test_that("Check resp_download returns errors with faulty inputs", {
+  expect_error(resp_download(df, 1, resp_column, "LIE", "ADM1"), "area_column must be a character string")
+  expect_error(resp_download(df, area_column, 1, "LIE", "ADM1"), "resp_column must be a character string")
+  expect_error(resp_download(df, area_column, resp_column, 1, "ADM1"), "country_code must be a character string")
+  expect_error(resp_download(df, area_column, resp_column, "LIE", 1), "admin_level must be a character string")
+  expect_error(resp_download(df, "a", resp_column, "LIE", "ADM1"), "df does not contain the column\\(s\\): a")
+  expect_error(resp_download(df, area_column, "a", "LIE", "ADM1"), "df does not contain the column\\(s\\): a")
+  expect_error(resp_download(df, area_column, resp_column, "LIE", "a"), "admin_level must be either ADM1 or ADM2")
+  expect_error(resp_download(df, area_column, resp_column, "ZZZ", "ADM1"), "ZZZ is not a valid IS03 country code")
+})
 
 test_that("Check resp_download reports errors when data cannot be merged", {
   tdf <- df

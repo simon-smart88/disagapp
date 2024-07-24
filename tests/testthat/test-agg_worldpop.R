@@ -34,7 +34,7 @@ expect_error(agg_worldpop(lie_shape, country_code[1], "aaaa", "1km", 2012), "Met
 expect_error(agg_worldpop(lie_shape, country_code[1], "Constrained", "aaaa", 2020),"Resolution must be either \"100m\" or \"1km\"")
 expect_error(agg_worldpop(lie_shape, country_code[1], "Constrained", "1km", 2012), "Constrained population data is only available for 2020")
 expect_error(agg_worldpop(lie_shape, country_code[1], "Unconstrained", "1km", 1999), "Unconstrained data is only available between 2000 and 2020")
-expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "The requested data could not be found")
+expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "ZZZ is not a valid IS03 country code.")
 })
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {

@@ -35,6 +35,12 @@ agg_worldpop <- function(shape, country_code, method, resolution, year, async = 
 message <- NULL
 pop_ras <- NULL
 
+valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
+invalid_countries <- country_code[(!country_code %in% valid_countries)]
+if (length(invalid_countries) > 0){
+  message <- glue::glue("{invalid_countries} is not a valid IS03 country code.")
+}
+
 if (!(method %in% c("Unconstrained", "Constrained"))){
   message <-"Method must be either \"Constrained\" or \"Unconstrained\""
 }

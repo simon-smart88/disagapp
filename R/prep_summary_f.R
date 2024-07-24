@@ -59,7 +59,7 @@ prep_summary <- function(covs, remove = FALSE, logger = NULL){
                         "Y minimum", "Y maximum"
                         )
 
-  if (remove == TRUE){
+  if (remove){
     # remove columns with the same values
     cov_df <- cov_df[vapply(cov_df, function(x) length(unique(x)) > 1, logical(1L))]
   }

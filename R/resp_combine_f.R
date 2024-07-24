@@ -38,7 +38,7 @@
 resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_column, logger = NULL) {
 
   # check inputs
-  if (!("data.frame" %in% class(df))){
+  if (!inherits(df, "data.frame")){
     logger |> writeLog(type = "error", "df must be a data.frame")
   }
 
@@ -49,7 +49,7 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
     logger |> writeLog(type = "error", glue::glue("df does not contain the column(s): {missing_column}"))
   }
 
-  if (!("sf" %in% class(shape))){
+  if (!inherits(shape, "sf")){
     logger |> writeLog(type = "error", "shape must be an sf object")
   }
 
