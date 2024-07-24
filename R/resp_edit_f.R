@@ -29,7 +29,8 @@
 #' x_max <- 7
 #' y_min <- -1
 #' y_max <- 3
-#' crop_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min, y_min, y_max, y_max, y_min, y_min), ncol = 2)
+#' crop_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+#'                         y_min, y_max, y_max, y_min, y_min), ncol = 2)
 #'
 #' sf::st_crs(shape) <- 4326
 #' outside_shape <- resp_edit(shape, crop_matrix, "outside")

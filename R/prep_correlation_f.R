@@ -9,7 +9,7 @@
 #' @return a matrix containing correlation coefficients
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' covariate_files <- list.files(system.file("extdata/covariates",
+#' covariate_files <- list.files(system.file("extdata", "covariates",
 #'                               package = "disagapp"), full.names = TRUE)
 #' covariate_list <- lapply(covariate_files, terra::rast)
 #' covariates <- terra::rast(covariate_list)

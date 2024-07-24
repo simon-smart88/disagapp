@@ -75,11 +75,11 @@ test_that("{shinytest2} recording: e2e_markdown_from_uploads", {
   lines <- readLines(sess_file)
 
   target_line <- grep("shapefile_directory <- ", lines)
-  lines[target_line] <- 'shapefile_directory <- system.file("extdata/shapes", package="disagapp")'
+  lines[target_line] <- 'shapefile_directory <- system.file("extdata", "shapes", package="disagapp")'
   target_line <- grep("covariate_directory <- ", lines)
-  lines[target_line] <- 'covariate_directory <- system.file("extdata/covariates", package="disagapp")'
+  lines[target_line] <- 'covariate_directory <- system.file("extdata", "covariates", package="disagapp")'
   target_line <- grep("aggregation_directory <- ", lines)
-  lines[target_line] <- 'aggregation_directory <- system.file("extdata/aggregation", package="disagapp")'
+  lines[target_line] <- 'aggregation_directory <- system.file("extdata", "aggregation", package="disagapp")'
 
   writeLines(lines, sess_file)
   rmarkdown::render(sess_file)

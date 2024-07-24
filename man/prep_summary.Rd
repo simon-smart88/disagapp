@@ -23,7 +23,7 @@ max coordinates, coordinate reference system and number of cells.
 Summarises the properties of a list of SpatRasters
 }
 \examples{
-covariate_files <- list.files(system.file("extdata/covariates",
+covariate_files <- list.files(system.file("extdata", "covariates",
                               package = "disagapp"), full.names = TRUE)
 covariate_list <- lapply(covariate_files, terra::rast)
 covariates <- terra::rast(covariate_list)

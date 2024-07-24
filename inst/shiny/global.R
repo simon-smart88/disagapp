@@ -144,7 +144,7 @@ for (module_config_file in all_module_configs) {
 }
 
 #load core modules
-core_modules <- paste0("modules/",list.files(system.file("shiny/modules", package="disagapp"), pattern="core_*"))
+core_modules <- paste0("modules/", list.files(system.file("shiny", "modules", package="disagapp"), pattern="core_*"))
 for (module in core_modules){
   source(module, local = TRUE)
 }

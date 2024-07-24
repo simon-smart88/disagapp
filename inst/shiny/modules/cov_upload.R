@@ -35,8 +35,8 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     }
 
     if (is.null(input$example) || (input$example == TRUE)){
-      covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
-                          name = list.files(system.file("extdata/covariates", package="disagapp")))
+      covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package="disagapp"), full.names = TRUE),
+                          name = list.files(system.file("extdata", "covariates", package="disagapp")))
     }
 
     # FUNCTION CALL ####

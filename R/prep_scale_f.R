@@ -9,11 +9,12 @@
 #' parameters used for scaling
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' covariate_files <- list.files(system.file("extdata/covariates",
+#' covariate_files <- list.files(system.file("extdata", "covariates",
 #'                               package = "disagapp"), full.names = TRUE)
 #' covariate_list <- lapply(covariate_files, terra::rast)
 #' covariates <- terra::rast(covariate_list)
-#' scaled_covariates <- prep_correlation(covariates = covariates)$covariates
+#' result <- prep_scale(covs = covariates)
+#' scaled_covariates <- result$covariates
 #' @export
 
 prep_scale <- function(covs, logger = NULL){

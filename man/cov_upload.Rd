@@ -26,11 +26,11 @@ overlap with the area of interest and crops and masks them to the area of
 interest.
 }
 \examples{
-cov_df <- data.frame(datapath = list.files(system.file("extdata/covariates",
+cov_df <- data.frame(datapath = list.files(system.file("extdata", "covariates",
                                 package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/covariates",
+                    name = list.files(system.file("extdata", "covariates",
                            package="disagapp")))
-shp_file <- list.files(system.file("extdata/shapes", package="disagapp"),
+shp_file <- list.files(system.file("extdata", "shapes", package="disagapp"),
                        pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp_file, quiet = TRUE)
 rasters <- cov_upload(path_df = cov_df, shape = shape)

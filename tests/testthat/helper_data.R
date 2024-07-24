@@ -1,13 +1,13 @@
 is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
 
-covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/covariates", package="disagapp")))
+covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "covariates", package = "disagapp")))
 
-shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/shapes", package="disagapp")))
+shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "shapes", package = "disagapp")))
 
-aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/aggregation", package="disagapp")))
+aggdf <- data.frame(datapath = list.files(system.file("extdata", "aggregation", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "aggregation", package = "disagapp")))
 
 
 df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
@@ -31,7 +31,7 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
-shp <- list.files(system.file("extdata/shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
+shp <- list.files(system.file("extdata", "shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp, quiet = TRUE)
 shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 

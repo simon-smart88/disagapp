@@ -5,7 +5,7 @@ function(input, output, session) {
   ########################## #
   # LOAD COMMON ####
   ########################## #
-  source(system.file("shiny/common.R", package = "disagapp"))
+  source(system.file("shiny", "common.R", package = "disagapp"))
   common <- common_class$new()
 
   common$seed <- sample.int(n = 1000, size = 1)

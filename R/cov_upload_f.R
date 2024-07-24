@@ -14,11 +14,11 @@
 #' @return a list containing SpatRaster objects
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' cov_df <- data.frame(datapath = list.files(system.file("extdata/covariates",
+#' cov_df <- data.frame(datapath = list.files(system.file("extdata", "covariates",
 #'                                 package="disagapp"), full.names = TRUE),
-#'                     name = list.files(system.file("extdata/covariates",
+#'                     name = list.files(system.file("extdata", "covariates",
 #'                            package="disagapp")))
-#' shp_file <- list.files(system.file("extdata/shapes", package="disagapp"),
+#' shp_file <- list.files(system.file("extdata", "shapes", package="disagapp"),
 #'                        pattern = ".shp", full.names = TRUE)
 #' shape <- sf::st_read(shp_file, quiet = TRUE)
 #' rasters <- cov_upload(path_df = cov_df, shape = shape)
@@ -29,6 +29,7 @@
    # check inputs
    if (!("data.frame" %in% class(path_df))){
      logger |> writeLog(type = "error", "path_df must be a data.frame")
+     return()
    }
 
    df_columns <- c("datapath", "name")
@@ -36,10 +37,12 @@
      missing_column <- df_columns[!(df_columns %in% colnames(path_df))]
      missing_column <- paste(missing_column, collapse = ",")
      logger |> writeLog(type = "error", glue::glue("path_df must contain the column(s): {missing_column}"))
+     return()
    }
 
    if (!("sf" %in% class(shape))){
      logger |> writeLog(type = "error", "Shape must be an sf object")
+     return()
    }
 
   # load the data

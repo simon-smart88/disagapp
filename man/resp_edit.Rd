@@ -25,6 +25,31 @@ an sf object
 This function is called by the resp_edit module and merges response data
 from a spreadsheet with boundary data into an sf object
 }
+\examples{
+polygons <- list()
+for(i in 1:3) {
+  row <- ceiling(i/10)
+  col <- ifelse(i \%\% 10 != 0, i \%\% 10, 10)
+  xmin = 2*(col - 1); xmax = 2*col; ymin = 2*(row - 1); ymax = 2*row
+  polygons[[i]] <- list(cbind(c(xmin, xmax, xmax, xmin, xmin),
+                             c(ymax, ymax, ymin, ymin, ymax)))
+}
+
+polys <- lapply(polygons, sf::st_polygon)
+shape <- sf::st_sf(data.frame(area = c("A", "B", "C")), geometry = polys)
+
+x_min <- 3
+x_max <- 7
+y_min <- -1
+y_max <- 3
+crop_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+                        y_min, y_max, y_max, y_min, y_min), ncol = 2)
+
+sf::st_crs(shape) <- 4326
+outside_shape <- resp_edit(shape, crop_matrix, "outside")
+inside_shape <- resp_edit(shape, crop_matrix, "inside")
+
+}
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
 }

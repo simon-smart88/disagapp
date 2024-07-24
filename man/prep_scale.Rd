@@ -22,11 +22,11 @@ This function is called by the prep_scale module and scales
 the values of a SpatRaster using a method equivalent to \code{terra::scale}
 }
 \examples{
-covariate_files <- list.files(system.file("extdata/covariates",
+covariate_files <- list.files(system.file("extdata", "covariates",
                               package = "disagapp"), full.names = TRUE)
 covariate_list <- lapply(covariate_files, terra::rast)
 covariates <- terra::rast(covariate_list)
-scaled_covariates <- prep_correlation(covariates = covariates)$covariates
+scaled_covariates <- prep_scale(covariates = covariates)$covariates
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

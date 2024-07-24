@@ -11,7 +11,7 @@
 #' max coordinates, coordinate reference system and number of cells.
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
-#' covariate_files <- list.files(system.file("extdata/covariates",
+#' covariate_files <- list.files(system.file("extdata", "covariates",
 #'                               package = "disagapp"), full.names = TRUE)
 #' covariate_list <- lapply(covariate_files, terra::rast)
 #' covariates <- terra::rast(covariate_list)
@@ -26,21 +26,21 @@ prep_summary <- function(covs, remove = FALSE, logger = NULL){
   }
 
   cov_res <- lapply(covs, terra::res)
-  x_res <- unlist(cov_res)[seq(1,length(covs)*2, 2)]
-  y_res <- unlist(cov_res)[seq(2,length(covs)*2, 2)]
+  x_res <- unlist(cov_res)[seq(1, length(covs) * 2, 2)]
+  y_res <- unlist(cov_res)[seq(2, length(covs )* 2, 2)]
 
   cov_ext <- lapply(covs, terra::ext)
-  cov_ext <- lapply(cov_ext,as.vector)
-  cov_ext <- lapply(cov_ext,unlist)
+  cov_ext <- lapply(cov_ext, as.vector)
+  cov_ext <- lapply(cov_ext, unlist)
   cov_ext <- as.data.frame(t(as.data.frame(cov_ext)))
 
   cov_origin <- lapply(covs, terra::origin)
-  x_origin <- format(unlist(cov_origin)[seq(1, length(covs)*2, 2)], scientific = TRUE)
-  y_origin <- format(unlist(cov_origin)[seq(2, length(covs)*2, 2)], scientific = TRUE)
+  x_origin <- format(unlist(cov_origin)[seq(1, length(covs) * 2, 2)], scientific = TRUE)
+  y_origin <- format(unlist(cov_origin)[seq(2, length(covs) * 2, 2)], scientific = TRUE)
 
   cov_crs <- unlist(lapply(covs, terra::crs, proj = TRUE))
-  crs_proj <- sub("^.*\\bproj=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
-  crs_datum <- sub("^.*\\bdatum=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
+  crs_proj <- sub("^.*\\bproj=([^\\s]+).*", "\\1", cov_crs, perl = TRUE)
+  crs_datum <- sub("^.*\\bdatum=([^\\s]+).*", "\\1", cov_crs, perl = TRUE)
 
   cov_ncell <- lapply(covs, terra::ncell)
 

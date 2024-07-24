@@ -39,7 +39,7 @@
 
 cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
 
-  valid_countries <- readRDS(system.file("ex/countries.rds", package = "geodata"))$ISO3
+  valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
 
   invalid_countries <- country_code[(!country_code %in% valid_countries)]
   if (length(invalid_countries) > 0){

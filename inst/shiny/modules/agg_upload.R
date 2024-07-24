@@ -41,8 +41,8 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     # check all files are .tif(?)
 
     if (is.null(input$example) || (input$example == TRUE)){
-    aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="disagapp"), full.names = TRUE),
-                        name = list.files(system.file("extdata/aggregation", package="disagapp")))
+    aggdf <- data.frame(datapath = list.files(system.file("extdata", "aggregation", package="disagapp"), full.names = TRUE),
+                        name = list.files(system.file("extdata", "aggregation", package="disagapp")))
     }
     # FUNCTION CALL ####
     agg_raster <- agg_upload(aggdf$datapath, common$shape, common$logger)
@@ -70,15 +70,15 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      name = input$name, 
-      log = input$log, 
+      name = input$name,
+      log = input$log,
       example = input$example)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateTextInput(session, "name", value = state$name) 
-      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log) 
+      updateTextInput(session, "name", value = state$name)
+      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
       shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))

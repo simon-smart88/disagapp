@@ -16,8 +16,8 @@ resp_example_module_server <- function(id, common, parent_session, map) {
 
     switch(input$dataset,
            "mad" = {
-             shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                                 name = list.files(system.file("extdata/shapes", package="disagapp")))
+             shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
+                                 name = list.files(system.file("extdata", "shapes", package="disagapp")))
              shape <- resp_shape(shpdf)
              },
            "nys" = {

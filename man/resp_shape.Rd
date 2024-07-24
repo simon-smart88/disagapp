@@ -4,11 +4,15 @@
 \alias{resp_shape}
 \title{resp_shape}
 \usage{
-resp_shape(shpdf)
+resp_shape(shpdf, logger = NULL)
 }
 \arguments{
 \item{shpdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
 \code{datapath} columns}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 an sf object
@@ -17,6 +21,12 @@ an sf object
 This function is called by the resp_shape module and loads a
 shapefile into an sf object. Inspired by a function written by Paula Moraga
 here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
+}
+\examples{
+shpdf <- data.frame(
+datapath = list.files(system.file("extdata", "shapes", package = "disagapp"), full.names = TRUE),
+name = list.files(system.file("extdata", "shapes", package = "disagapp")))
+shape <- resp_shape(shpdf)
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

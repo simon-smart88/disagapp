@@ -4,12 +4,16 @@
 \alias{resp_simplify}
 \title{resp_simplify}
 \usage{
-resp_simplify(shape, distance)
+resp_simplify(shape, distance, logger = NULL)
 }
 \arguments{
 \item{shape}{sf. The sf object to be simplified}
 
-\item{distance}{numeric. The distance}
+\item{distance}{numeric. The distance in meters to simplify the geometry by}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 an sf object
@@ -17,6 +21,17 @@ an sf object
 \description{
 This function is called by the resp_simplify module and simplifies the
 geometry data in an sf object
+}
+\examples{
+poly <- sf::st_polygon(list(rbind(
+        c(0, 0), c(1, 0.25),
+        c(2, 0), c(2.25, 1),
+        c(2, 2), c(1, 2.25),
+        c(0, 2), c(0.25, 1),
+        c(0, 0))))
+shape <- sf::st_sf(geometry = sf::st_sfc(poly))
+simplified_shape <- resp_simplify(shape, 0.5)
+
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
