@@ -1,7 +1,7 @@
 resp_edit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside", "Inside")),
+    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside" = "outside", "Inside" = "inside")),
     actionButton(ns("run"), "Edit shapefile")
   )
 }
@@ -42,6 +42,7 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
     common$meta$resp_edit$used <- TRUE
     # TRIGGER
     gargoyle::trigger("resp_edit")
+    do.call("resp_edit_module_map", list(map, common))
   })
 
   return(list(
