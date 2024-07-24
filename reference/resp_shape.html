@@ -48,7 +48,7 @@ here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploadin
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resp_shape</span><span class="op">(</span><span class="va">shpdf</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resp_shape</span><span class="op">(</span><span class="va">shpdf</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -58,6 +58,12 @@ here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploadin
 <dl><dt id="arg-shpdf">shpdf<a class="anchor" aria-label="anchor" href="#arg-shpdf"></a></dt>
 <dd><p>dataframe. As produced by <code><a href="https://rdrr.io/pkg/shiny/man/fileInput.html" class="external-link">shiny::fileInput</a></code>, containing <code>name</code> and
 <code>datapath</code> columns</p></dd>
+
+
+<dt id="arg-logger">logger<a class="anchor" aria-label="anchor" href="#arg-logger"></a></dt>
+<dd><p>Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL</p></dd>
 
 </dl></div>
     <div id="value">
@@ -70,6 +76,14 @@ here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploadin
 <p>Paula Moraga</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">shpdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>datapath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"shapes"</span>, package <span class="op">=</span> <span class="st">"disagapp"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"shapes"</span>, package <span class="op">=</span> <span class="st">"disagapp"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">shape</span> <span class="op">&lt;-</span> <span class="fu">resp_shape</span><span class="op">(</span><span class="va">shpdf</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
