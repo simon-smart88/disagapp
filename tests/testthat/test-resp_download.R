@@ -53,6 +53,12 @@ test_that("{shinytest2} recording: e2e_resp_download", {
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
 
+  if (is_ci){
+    save_path <- tempfile(fileext = ".rds")
+  } else {
+    save_path <- "~/temprds/saved_file.rds"
+  }
+
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
