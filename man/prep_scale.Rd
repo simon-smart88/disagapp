@@ -26,7 +26,8 @@ covariate_files <- list.files(system.file("extdata", "covariates",
                               package = "disagapp"), full.names = TRUE)
 covariate_list <- lapply(covariate_files, terra::rast)
 covariates <- terra::rast(covariate_list)
-scaled_covariates <- prep_scale(covariates = covariates)$covariates
+result <- prep_scale(covs = covariates)
+scaled_covariates <- result$covariates
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
