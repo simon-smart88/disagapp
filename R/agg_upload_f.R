@@ -21,6 +21,22 @@
 #' @export
 
 agg_upload <- function(path, shape, logger = NULL) {
+
+  if (!inherits(path, "character")){
+    logger |> writeLog(type = "error", "path must be a character string")
+    return()
+  }
+
+  if (!(tools::file_ext(path) %in% c("tif", "tiff"))){
+    logger |> writeLog(type = "error", "path must a tif or tiff file")
+    return()
+  }
+
+  if (!inherits(shape, "sf")){
+    logger |> writeLog(type = "error", "shape must be an sf object")
+    return()
+  }
+
   agg <- terra::rast(path)
 
   #check crs and reproject if necessary

@@ -19,11 +19,11 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    common$shape <- resp_simplify(common$shape, input$distance)
+    common$shape <- resp_simplify(common$shape, as.numeric(input$distance))
 
     # METADATA ####
     common$meta$resp_simplify$used <- TRUE
-    common$meta$resp_simplify$distance <- input$distance
+    common$meta$resp_simplify$distance <- as.numeric(input$distance)
 
     # TRIGGER
     gargoyle::trigger("resp_simplify")
@@ -45,7 +45,7 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      distance = input$distance)
+      distance = as.numeric(input$distance))
     },
     load = function(state) {
       ### Manual load start

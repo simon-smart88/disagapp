@@ -35,41 +35,60 @@ agg_worldpop <- function(shape, country_code, method, resolution, year, async = 
 message <- NULL
 pop_ras <- NULL
 
+if (!inherits(shape, "sf")){
+  message <- "shape must be an sf object"
+}
+
+character_variables = list("country_code" = country_code,
+                           "method" = method,
+                           "resolution" = resolution)
+for (i in names(character_variables)){
+  if (!inherits(character_variables[[i]], "character")){
+    message <- glue::glue("{i} must be a character string")
+  }
+}
+
+if (!inherits(year, "numeric")){
+  message <- "year must be numeric"
+}
+
 valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
 invalid_countries <- country_code[(!country_code %in% valid_countries)]
 if (length(invalid_countries) > 0){
   message <- glue::glue("{invalid_countries} is not a valid IS03 country code.")
 }
 
-if (!(method %in% c("Unconstrained", "Constrained"))){
-  message <-"Method must be either \"Constrained\" or \"Unconstrained\""
-}
+if (is.null(message)){
+  if (!(method %in% c("Unconstrained", "Constrained"))){
+    message <-"Method must be either \"Constrained\" or \"Unconstrained\""
+  }
 
-if (!(resolution %in% c("100m", "1km"))){
-  message <- "Resolution must be either \"100m\" or \"1km\""
-}
+  if (!(resolution %in% c("100m", "1km"))){
+    message <- "Resolution must be either \"100m\" or \"1km\""
+  }
 
-if (method == "Unconstrained" & (year > 2020| year < 2000)){
-  message <- "Unconstrained data is only available between 2000 and 2020"
-}
+  if (method == "Unconstrained" & (year > 2020| year < 2000)){
+    message <- "Unconstrained data is only available between 2000 and 2020"
+  }
 
-if (method == "Constrained" & year != 2020){
-  message <- "Constrained population data is only available for 2020"
+  if (method == "Constrained" & year != 2020){
+    message <- "Constrained population data is only available for 2020"
+  }
 }
 
 if (is.null(message)){
-base_url <- "https://hub.worldpop.org/rest/data/pop/"
+  base_url <- "https://hub.worldpop.org/rest/data/pop/"
 
-# select the product url
-if (method == "Unconstrained" & resolution == "1km"){
-  product <- "wpic1km"
-}
-if (method == "Unconstrained" & resolution == "100m"){
-  product <- "wpgp"
-}
-if (method == "Constrained"){
-  product <- "cic2020_100m"
-}
+  # select the product url
+  if (method == "Unconstrained" & resolution == "1km"){
+    product <- "wpic1km"
+  }
+  if (method == "Unconstrained" & resolution == "100m"){
+    product <- "wpgp"
+  }
+  if (method == "Constrained"){
+    product <- "cic2020_100m"
+  }
 }
 
 if (is.null(message)){

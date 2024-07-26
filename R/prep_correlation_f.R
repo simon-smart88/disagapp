@@ -19,7 +19,7 @@
 
 prep_correlation <- function(covariates, logger = NULL){
 
-  if (!("SpatRaster" %in% class(covariates))){
+  if (!inherits(covariates, "SpatRaster")){
     logger |> writeLog(type = "error", "covariates must be a SpatRaster")
     return()
   }

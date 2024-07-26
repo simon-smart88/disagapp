@@ -20,8 +20,13 @@
 
 prep_summary <- function(covs, remove = FALSE, logger = NULL){
 
-  if (!("SpatRaster" %in% class(covs))){
-    logger |> writeLog(type = "error", "covs must be a SpatRaster")
+  if (!inherits(covs, "list")){
+    logger |> writeLog(type = "error", "covs must be a list")
+    return()
+  }
+
+  if (!all(lapply(covs, inherits, "SpatRaster"))){
+    logger |> writeLog(type = "error", "All objects in covs must be SpatRasters")
     return()
   }
 

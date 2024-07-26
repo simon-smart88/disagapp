@@ -29,8 +29,17 @@ cov_access <- function(shape, layer, async = FALSE) {
 
   message <- NULL
 
-  if (!("sf" %in% class(shape))){
+  if (!inherits(shape, "sf")){
     message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
+  if (!inherits(layer, "character")){
+    message <- "layer must be a character string"
     if (async){
       return(message)
     } else {

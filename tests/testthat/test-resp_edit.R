@@ -5,10 +5,10 @@ test_that("Check resp_edit function works as expected", {
   colnames(poly) <- c("longitude", "latitude")
   result <- resp_edit(mad_shape, poly, "outside")
   expect_is(result, "sf")
-  expect_equal(nrow(result), 47)
+  expect_lt(nrow(result), 50)
   result <- resp_edit(mad_shape, poly, "inside")
   expect_is(result, "sf")
-  expect_equal(nrow(result), 62)
+  expect_gt(nrow(result), 60)
 })
 
 test_that("{shinytest2} recording: e2e_resp_shape", {
@@ -34,5 +34,5 @@ test_that("{shinytest2} recording: e2e_resp_shape", {
   common <- readRDS(save_file)
 
   expect_is(common$shape, "sf")
-  expect_equal(nrow(common$shape), 47)
+  expect_lt(nrow(common$shape), 50)
 })

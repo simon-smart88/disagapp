@@ -45,7 +45,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
-    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
+    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, as.numeric(input$year), TRUE)
     results$resume()
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
@@ -54,7 +54,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_worldpop$country <- country_code
     common$meta$agg_worldpop$method <- input$method
     common$meta$agg_worldpop$resolution <- input$resolution
-    common$meta$agg_worldpop$year <- input$year
+    common$meta$agg_worldpop$year <- as.numeric(input$year)
 
     common$selected_country <- input$country
     gargoyle::trigger("country_out")
@@ -82,17 +82,17 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      method = input$method, 
-      resolution = input$resolution, 
-      year = input$year, 
+      method = input$method,
+      resolution = input$resolution,
+      year = as.numeric(input$year),
       log = input$log)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "method", selected = state$method) 
-      updateSelectInput(session, "resolution", selected = state$resolution) 
-      updateSelectInput(session, "year", selected = state$year) 
+      updateSelectInput(session, "method", selected = state$method)
+      updateSelectInput(session, "resolution", selected = state$resolution)
+      updateSelectInput(session, "year", selected = state$year)
       shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))

@@ -40,6 +40,7 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
   # check inputs
   if (!inherits(df, "data.frame")){
     logger |> writeLog(type = "error", "df must be a data.frame")
+    return()
   }
 
   df_columns <- c(df_area_column, df_resp_column)
@@ -47,14 +48,17 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
     missing_column <- df_columns[!(df_columns %in% colnames(df))]
     missing_column <- paste(missing_column, collapse = ",")
     logger |> writeLog(type = "error", glue::glue("df does not contain the column(s): {missing_column}"))
+    return()
   }
 
   if (!inherits(shape, "sf")){
     logger |> writeLog(type = "error", "shape must be an sf object")
+    return()
   }
 
   if (!(shape_area_column %in% colnames(shape))){
     logger |> writeLog(type = "error", glue::glue("shape does not contain a {shape_area_column} column"))
+    return()
   }
 
   # ensure columns to merge on are both characters

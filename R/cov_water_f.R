@@ -34,7 +34,7 @@ cov_water <- function(shape, token, async = FALSE) {
 
   message <- NULL
 
-  if (!("sf" %in% class(shape))){
+  if (!inherits(shape, "sf")){
     message <- "Shape must be an sf object"
     if (async){
       return(message)
@@ -43,7 +43,7 @@ cov_water <- function(shape, token, async = FALSE) {
     }
   }
 
-  if (!("httr2_token" %in% class(token))){
+  if (!inherits(token, "httr2_token")){
     message <- "Token must be an httr2_token"
     if (async){
       return(message)

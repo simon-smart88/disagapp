@@ -19,7 +19,7 @@
 
 prep_scale <- function(covs, logger = NULL){
 
-  if (!("SpatRaster" %in% class(covs))){
+  if (!inherits(covs, "SpatRaster")){
     logger |> writeLog(type = "error", "covs must be a SpatRaster")
     return()
   }
