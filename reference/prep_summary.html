@@ -82,6 +82,7 @@ max coordinates, coordinate reference system and number of cells.</p>
 <span class="r-in"><span><span class="va">covariate_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">covariate_files</span>, <span class="fu">terra</span><span class="fu">::</span><span class="va"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">covariates</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">covariate_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">covariate_summary</span> <span class="op">&lt;-</span> <span class="fu">prep_summary</span><span class="op">(</span>covs <span class="op">=</span> <span class="va">covariates</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> covs must be a list</span>
 </code></pre></div>
     </div>
   </div>
