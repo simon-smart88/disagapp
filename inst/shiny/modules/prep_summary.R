@@ -65,12 +65,14 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       }
 
       # FUNCTION CALL ####
-      common$covs$Aggregation <- common$agg
+      # c
       common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$resample_layer]])
+      common$agg_prep <- terra::resample(common$agg,  common$covs[[input$resample_layer]], method = "sum")
+
+      common$covs_prep$Aggregation <- common$agg_prep
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
-      common$covs$Aggregation <- NULL
-      common$agg_prep <- common$covs_prep$Aggregation
       common$covs_prep$Aggregation <- NULL
+
       common$logger |> writeLog(type = "complete", "Covariates have been resampled")
       # stack the rasters
       common$covs_prep <- terra::rast(common$covs_prep)
@@ -111,13 +113,13 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      resample_layer = input$resample_layer, 
+      resample_layer = input$resample_layer,
       remove = input$remove)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "resample_layer", selected = state$resample_layer) 
+      updateSelectInput(session, "resample_layer", selected = state$resample_layer)
       shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))

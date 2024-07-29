@@ -25,7 +25,7 @@ prep_summary <- function(covs, remove = FALSE, logger = NULL){
     return()
   }
 
-  if (!all(lapply(covs, inherits, "SpatRaster"))){
+  if (!all(unlist(lapply(covs, inherits, "SpatRaster")))){
     logger |> writeLog(type = "error", "All objects in covs must be SpatRasters")
     return()
   }
