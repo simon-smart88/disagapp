@@ -4,7 +4,9 @@ pred_pred_module_ui <- function(id) {
     uiOutput(ns("iid_out")),
     shinyWidgets::materialSwitch(ns("uncertain"), "Include uncertainty?", FALSE, status = "success"),
     uiOutput(ns("uncertain_parameters")),
-    actionButton(ns("run"), "Produce model predictions")
+    actionButton(ns("run"), "Produce model predictions"),
+    tags$br(),
+    uiOutput(ns("dl_out"))
   )
 }
 
@@ -34,6 +36,13 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     }
     out
   })
+
+  output$dl_out <- renderUI({
+    gargoyle::watch("pred_pred")
+    req(common$pred)
+    downloadButton(session$ns("download"), "Download model predictions")
+  })
+
 
   observeEvent(input$run, {
     # WARNING ####
@@ -65,6 +74,13 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Model predictions are available")
     # LOAD INTO COMMON ####
     common$pred <- prediction
+
+    if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
+      common$pred$cases <- common$pred$prediction * common$agg_prep
+    } else {
+      common$pred$cases <- common$pred$prediction * common$agg_prep_lores
+    }
+
     if (input$uncertain){
       common$pred$uncertainty <- uncertainty
     }
@@ -79,11 +95,44 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
       common$meta$pred_pred$uncertain_n <- input$uncertain_n
       common$meta$pred_pred$uncertain_ci <- input$uncertain_ci
     }
+
+    names(common$pred)[which(names(common$pred) == "prediction")] <- "prediction (rate)"
+    names(common$pred)[which(names(common$pred) == "cases")] <- "prediction (cases)"
+
     # TRIGGER
     gargoyle::trigger("pred_pred")
     do.call("pred_pred_module_map", list(map, common))
     show_map(parent_session)
   })
+
+  output$download <- downloadHandler(
+    filename = function() {
+      paste0("disagapp-predictions-", Sys.Date(), ".zip")
+    },
+    content = function(file) {
+      directory <- tempdir()
+      dir.create(file.path(directory, "pred_pred"))
+
+      lapply(names(common$pred), function(x){
+        if (inherits(common$pred[[x]], "SpatRaster")){
+          terra::writeRaster(common$pred[[x]], overwrite = TRUE,
+                             filename = file.path(directory, "pred_pred", paste0(x, ".tif")))
+        }
+      })
+
+      owd <- setwd(file.path(directory, "pred_pred"))
+      on.exit(setwd(owd))
+
+      files <- list.files(".")
+
+      zip::zipr(zipfile = file,
+                files = files,
+                mode = "mirror",
+                include_directories = FALSE)
+
+    }
+  )
+
 
   # output$result <- renderText({
   #   # Result
@@ -93,17 +142,17 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      uncertain_n = input$uncertain_n, 
-      uncertain_ci = input$uncertain_ci, 
-      uncertain = input$uncertain, 
+      uncertain_n = input$uncertain_n,
+      uncertain_ci = input$uncertain_ci,
+      uncertain = input$uncertain,
       iid = input$iid)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateNumericInput(session, "uncertain_n", value = state$uncertain_n) 
-      updateNumericInput(session, "uncertain_ci", value = state$uncertain_ci) 
-      shinyWidgets::updateMaterialSwitch(session, "uncertain", value = state$uncertain) 
+      updateNumericInput(session, "uncertain_n", value = state$uncertain_n)
+      updateNumericInput(session, "uncertain_ci", value = state$uncertain_ci)
+      shinyWidgets::updateMaterialSwitch(session, "uncertain", value = state$uncertain)
       shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
     }
   ))
@@ -118,7 +167,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
 # }
 
 pred_pred_module_map <- function(map, common) {
-  for (variable in c("Field", "Prediction", "IID")){
+  for (variable in c("Field", "Prediction (rate)", "Prediction (cases)", "IID")){
     if (!is.null(common$pred[[tolower(variable)]])){
       raster_map(map, common, common$pred[[tolower(variable)]], variable)
     }

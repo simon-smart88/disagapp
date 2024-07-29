@@ -85,7 +85,7 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
-  common$pred$prediction <- unwrap_terra(common$pred$prediction)
-  expect_is(common$pred$prediction, "SpatRaster")
+  common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
+  expect_is(common$pred$`prediction (rate)`, "SpatRaster")
 
 })

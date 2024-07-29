@@ -7,6 +7,10 @@ prediction <- disaggregation::predict_model(fitted_model, predict_iid = {{pred_i
 
 plot(prediction$prediction)
 
+prediction$cases <- prediction$prediction * aggregation_prepared
+
+plot(prediction$cases)
+
 if (!is.null(prediction$field)){
   terra::crs(prediction$field) <- terra::crs(prepared_data$covariate_rasters[[1]])
   prediction$field <- terra::mask(prediction$field, prepared_data$covariate_rasters[[1]])
