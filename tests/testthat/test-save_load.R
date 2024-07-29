@@ -83,8 +83,7 @@ test_that("{shinytest2} recording: e2e_settings_save", {
   expect_equal(common$state$cov_access$layer, "Motorized Travel Time to Healthcare (2020)")
   expect_equal(common$state$cov_landuse$uses, c("Crops", "PermanentWater", "SeasonalWater"))
   expect_equal(common$state$cov_landuse$year, "2017")
-  #expect_equal(common$state$agg_worldpop$country, "Liechtenstein")
-  #need to add lines to manually export
+  expect_equal(common$state$agg_worldpop$country, "Liechtenstein")
   expect_equal(common$state$agg_worldpop$resolution, "100m")
 
 })
@@ -99,7 +98,7 @@ test_that("{shinytest2} recording: e2e_settings_load", {
   expect_equal(app$get_value(input = "cov_access-layer"), "Motorized Travel Time to Healthcare (2020)")
   expect_equal(app$get_value(input = "cov_landuse-uses"), c("Crops", "PermanentWater", "SeasonalWater"))
   expect_equal(app$get_value(input = "cov_landuse-year"), "2017")
-  #expect_equal(app$get_value(input = "agg_worldpop-country", "Liechtenstein"))
+  expect_equal(app$get_value(input = "agg_worldpop-country"), "Liechtenstein")
   expect_equal(app$get_value(input = "agg_worldpop-resolution"), "100m")
 
 })

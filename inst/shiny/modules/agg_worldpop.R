@@ -81,6 +81,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
   return(list(
     save = function() {list(
       ### Manual save start
+      country = input$country,
       ### Manual save end
       method = input$method,
       resolution = input$resolution,
@@ -89,6 +90,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     },
     load = function(state) {
       ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
       ### Manual load end
       updateSelectInput(session, "method", selected = state$method)
       updateSelectInput(session, "resolution", selected = state$resolution)

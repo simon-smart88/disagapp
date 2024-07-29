@@ -92,11 +92,13 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
   return(list(
     save = function() {list(
       ### Manual save start
+      country = input$country,
       ### Manual save end
       variables = input$variables)
     },
     load = function(state) {
       ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
       ### Manual load end
       updateSelectInput(session, "variables", selected = state$variables)
     }
