@@ -65,9 +65,6 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Covariate data has been uploaded")
   })
 
-  output$result <- renderPlot({
-    plot(common$covs)
-  })
 
   return(list(
     save = function() {list(
@@ -84,12 +81,6 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 })
 }
 
-cov_upload_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  plotOutput(ns("result"))
-}
 
 cov_upload_module_map <- function(map, common) {
   for (variable in common$meta$cov_upload$path){
