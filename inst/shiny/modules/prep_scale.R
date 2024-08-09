@@ -19,7 +19,6 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Covariates have been scaled")
 
     # LOAD INTO COMMON ####
-    print(names(scaled_covariates[["covariates"]]))
     common$covs_prep <- scaled_covariates[["covariates"]]
 
     # METADATA ####
