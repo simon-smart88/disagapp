@@ -80,10 +80,8 @@ if ("agg_uniform" %in% agg_modules){
 }
 
 # resample
-covs[["agg"]] <- agg
 covs_prep <- lapply(covs, terra::resample, covs[[common$meta$prep_summary$resample_target]])
-agg <- covs_prep[["agg"]]
-covs_prep[["agg"]] <- NULL
+agg <- terra::resample(agg, covs[[common$meta$prep_summary$resample_target]], method = "sum")
 
 # scale covariates using original parameters
 cov_names <- names(covs_prep)
