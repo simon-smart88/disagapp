@@ -62,33 +62,35 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     }
   }
 
-ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
-                        product_id = "VNP46A4",
-                        date = year,
-                        bearer = bearer,
-                        quiet = TRUE)},
-                error = function(x){
-                message <- paste0("An error occurred whilst trying to download night light data: ", x)
-                NULL},
-                warning = function(x){
-                message <- paste0("An error occurred whilst trying to download night light data: ", x)
-                NULL})
+  shape <- sf::st_buffer(shape, 0.001)
+  shape <- sf::st_as_sf(sf::st_union(shape))
 
-if (is.null(ras)){
-  if (is.null(message)){
-    message <- paste0("An error occurred whilst trying to download night light data")
-  }
-  if (async){
-    return(message)
+  ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
+                          product_id = "VNP46A4",
+                          date = year,
+                          bearer = bearer,
+                          quiet = TRUE)},
+                  error = function(x){
+                  message <- paste0("An error occurred whilst trying to download night light data: ", x)
+                  NULL},
+                  warning = function(x){
+                  message <- paste0("An error occurred whilst trying to download night light data: ", x)
+                  NULL})
+
+  if (is.null(ras)){
+    if (is.null(message)){
+      message <- paste0("An error occurred whilst trying to download night light data")
+    }
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   } else {
-    stop(message)
-  }
-} else {
-  ras <- terra::rast(ras)
-  names(ras) <- "Nighttime light"
-  ras <- terra::crop(ras, shape, mask = TRUE )
-  if (async){ ras <- terra::wrap(ras) }
-  return(ras)
+    names(ras) <- "Nighttime light"
+    ras <- terra::crop(ras, shape, mask = TRUE )
+    if (async){ ras <- terra::wrap(ras) }
+    return(ras)
 }
 
 
