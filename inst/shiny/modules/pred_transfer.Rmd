@@ -1,7 +1,152 @@
 ```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
-Transfer the model to a different country
-
+Transfer the model to a different country. Download boundary of the transferred country and create list for storing covariates.
 ```
 
 ```{r, echo = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+transfer_country <- "{{pred_transfer_country}}"
+
+boundary_url <- glue::glue("https://www.geoboundaries.org/api/current/gbOpen/{transfer_country}/ADM1/")
+boundary_req <- httr2::request(url) |> httr2::req_perform()
+boundary_cont <- httr2::resp_body_json(req)
+transfer_shape <- sf::st_read(cont$gjDownloadURL, quiet = TRUE)
+
+transfer_covariates <- list()
+```
+
+```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+Download the covariates for the transfer area
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_access$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_access$used)))}}}
+transfer_covariates[["{{meta$cov_access$layer}}"]] <- cov_access(transfer_shape, "{{meta$cov_access$layer}}")
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_bioclim$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_bioclim$used)))}}}
+transfer_covariates <- append(transfer_covariates, cov_bioclim(transfer_country, "{{meta$cov_bioclim$variables}}", transfer_shape))
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}}
+transfer_covariates <- append(transfer_covariates, cov_landuse(transfer_shape, {{meta$cov_landuse$year}}, "{{meta$cov_landuse$uses}}"))
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}}
+  if (Sys.getenv("NASA_bearer") != ""){
+    nasa_bearer = Sys.getenv("NASA_bearer")
+  } else {
+    nasa_bearer = "{{meta$cov_nightlight$bearer}}"
+  }
+transfer_covariates[["Nighttime light"]] <- cov_nightlight(new_shape, {{meta$cov_nightlight$year}}, nasa_bearer)
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_water$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_water$used)))}}}
+
+if (Sys.getenv("ARCGIS_CLIENT") != ""){
+  arcgis_token <- arcgisutils::auth_client()
+} else {
+  arcgis_token <- httr2::oauth_token("{{meta$cov_water$token}}", arcgis_host = arcgisutils::arc_host())
+}
+transfer_covariates[["Distance to water"]] <-  cov_water(transfer_shape, token)
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_upload$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_upload$used)))}}}
+
+transfer_covariate_directory <- ""
+transfer_covariate_files <- "{{pred_transfer_cov}}"
+transfer_covariate_file_paths <- file.path(transfer_covariate_directory, transfer_covariate_files)
+transfer_covariate_file_df <- data.frame(datapath = transfer_covariate_file_paths, name = transfer_covariate_files)
+
+transfer_covariates <- append(transfer_covariates, cov_upload(transfer_covariate_file_df, transfer_shape))
+```
+
+```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+Load the aggregration raster for the transfer area
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$agg_worldpop$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$agg_worldpop$used)))}}}
+transfer_aggregation <- agg_worldpop(transfer_shape, transfer_country, "{{meta$agg_worldpop$method}}",
+                      "{{meta$agg_worldpop$resolution}}",
+                      "{{meta$agg_worldpop$year}}")
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$agg_upload$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$agg_upload$used)))}}}
+
+transfer_aggregation_directory <- ""
+transfer_aggregation_files <- "{{pred_transfer_agg}}"
+transfer_aggregation_file_path <- file.path(transfer_aggregation_directory, transfer_aggregation_files)
+transfer_aggregation <- disagapp::agg_upload(transfer_aggregation_file_path)
+names(transfer_aggregation) <- "{{meta$agg_upload$name}}"
+
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$agg_uniform$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$agg_uniform$used)))}}}
+transfer_aggregation <- agg_uniform(transfer_covariates[[1]])
+```
+
+```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+Resample the covariates and aggregation raster for the transfer area
+```
+
+```{r, echo = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+transfer_covariates_prepared <- lapply(transfer_covariates, terra::resample, transfer_covariates[["{{meta$prep_summary$resample_target}}"]])
+transfer_aggregation_prepared <- terra::resample(transfer_aggregation, transfer_covariates[["{{meta$prep_summary$resample_target}}"]], method = "sum")
+
+```
+
+```{asis, echo = {{all(c(pred_transfer_knit, !is.null(meta$prep_scale$used)))}}, eval = {{all(c(pred_transfer_knit, !is.null(meta$prep_scale$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$prep_scale$used)))}}}
+Scale the covariates for the transfer area
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$prep_scale$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$prep_scale$used)))}}}
+transfer_covariates_names <- names(transfer_covariates)
+transfer_scaling_mean <- {{printVecAsis(meta$prep_scale$parameters$mean)}}
+transfer_scaling_rms <- {{printVecAsis(meta$prep_scale$parameters$rms)}}
+
+transfer_scaling_parameters <- data.frame(transfer_scaling_mean, transfer_scaling_rms)
+rownames(transfer_scaling_parameters) <- {{printVecAsis(rownames(meta$prep_scale$parameters))}}
+colnames(transfer_scaling_parameters) <- c("mean", "rms")
+
+for (transfer_covariate_layer in transfer_covariates_names){
+  layer_mean <- transfer_scaling_parameters$mean[row.names(transfer_scaling_parameters) == transfer_covariate_layer]
+  layer_rms <- transfer_scaling_parameters$rms[row.names(transfer_scaling_parameters) == transfer_covariate_layer]
+  residual <- transfer_covariates_prepared[[transfer_covariate_layer]] - layer_mean
+  transfer_covariates_prepared[[transfer_covariate_layer]] <- residual / layer_rms
+}
+```
+
+```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+Stack the covariates for the transferred area
+```
+
+```{r, echo = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}
+transfer_covariates_prepared <- terra::rast(transfer_covariates_prepared)
+
+plot(transfer_covariates_prepared)
+plot(transfer_aggregation_prepared)
+```
+
+```{asis, echo = {{all(c(pred_transfer_knit, pred_transfer_lores))}}, eval = {{all(c(pred_transfer_knit, pred_transfer_lores))}}, include = {{all(c(pred_transfer_knit, pred_transfer_lores))}}}
+
+Decrease covariate resolution and generate the transferred predictions
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, pred_transfer_lores))}}, include = {{all(c(pred_transfer_knit, pred_transfer_lores))}}}
+transfer_covariates_prepared_lores <- terra::aggregate(transfer_covariates_prepared, fact = {{meta$prep_resolution$factor}}, fun = "mean")
+transfer_aggregation_lores <- terra::aggregate(transfer_aggregation, fact = {{meta$prep_resolution$factor}}, fun = "sum")
+
+transfer_predictions <- disaggregation::predict_model(fitted_model, newdata = transfer_covariates_prepared)
+transfer_predictions$cases <- transfer_predictions$prediction * transfer_aggregation 
+
+plot(transfer_predictions)
+```
+
+```{asis, echo = {{all(c(pred_transfer_knit, pred_transfer_hires))}}, eval = {{all(c(pred_transfer_knit, pred_transfer_hires))}}, include = {{all(c(pred_transfer_knit, pred_transfer_hires))}}}
+
+Generate the transferred predictions
+```
+
+```{r, echo = {{all(c(pred_transfer_knit, pred_transfer_hires))}}, include = {{all(c(pred_transfer_knit, pred_transfer_hires))}}}
+transfer_predictions <- disaggregation::predict_model(fitted_model, newdata = transfer_covariates_prepared)
+transfer_predictions$cases <- transfer_predictions$prediction * transfer_aggregation 
+
+plot(transfer_predictions)
 ```

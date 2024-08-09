@@ -84,14 +84,16 @@ covs_prep <- lapply(covs, terra::resample, covs[[common$meta$prep_summary$resamp
 agg <- terra::resample(agg, covs[[common$meta$prep_summary$resample_target]], method = "sum")
 
 # scale covariates using original parameters
-cov_names <- names(covs_prep)
-scaling_parameters <- common$meta$prep_scale$parameters
+if (!is.null(common$meta$prep_scale$used)){
+  cov_names <- names(covs_prep)
+  scaling_parameters <- common$meta$prep_scale$parameters
 
-for (cov_layer in cov_names){
-  layer_mean <- scaling_parameters$mean[row.names(scaling_parameters) == cov_layer]
-  layer_rms <- scaling_parameters$rms[row.names(scaling_parameters) == cov_layer]
-  residual <- covs_prep[[cov_layer]] - layer_mean
-  covs_prep[[cov_layer]] <- residual / layer_rms
+  for (cov_layer in cov_names){
+    layer_mean <- scaling_parameters$mean[row.names(scaling_parameters) == cov_layer]
+    layer_rms <- scaling_parameters$rms[row.names(scaling_parameters) == cov_layer]
+    residual <- covs_prep[[cov_layer]] - layer_mean
+    covs_prep[[cov_layer]] <- residual / layer_rms
+  }
 }
 
 # list to stack
