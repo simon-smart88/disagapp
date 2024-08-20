@@ -1,13 +1,32 @@
 rep_covs_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    # UI
-    downloadButton(ns("download"), "Download covariates")
+    uiOutput(ns("dlbutton"))
+
   )
 }
 
 rep_covs_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
+
+    output$dlbutton <- renderUI({
+      gargoyle::watch("cov_access")
+      gargoyle::watch("cov_bioclim")
+      gargoyle::watch("cov_landuse")
+      gargoyle::watch("cov_nightlight")
+      gargoyle::watch("cov_water")
+      gargoyle::watch("cov_upload")
+      if (length(common$covs) > 0 ){
+        downloadButton(session$ns("download"), "Download covariates")
+      } else {
+        actionButton(session$ns("dummy"), "Download covariates", icon = icon("download"))
+      }
+    })
+
+    observeEvent(input$dummy, {
+      common$logger |> writeLog(type = "error",
+                                "Please load some covariates first")
+    })
 
     output$download <- downloadHandler(
       filename = function() {
@@ -17,7 +36,7 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
 
         common$meta$rep_covs$used <- TRUE
 
-        directory <- tempdir()
+        directory <- tempfile()
         dir.create(file.path(directory, "rep_cov"))
 
         if (is.null(common$prep)){
