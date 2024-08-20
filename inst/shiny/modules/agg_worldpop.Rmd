@@ -3,5 +3,5 @@ Download population data from worldpop
 ```
 
 ```{r, echo = {{agg_worldpop_knit}}, include = {{agg_worldpop_knit}}}
-aggregation <- disagapp::agg_worldpop({{agg_worldpop_country}}, "{{agg_worldpop_method}}", "{{agg_worldpop_resolution}}", {{agg_worldpop_year}})
+aggregation <- disagapp::agg_worldpop(shape, {{agg_worldpop_country}}, "{{agg_worldpop_method}}", "{{agg_worldpop_resolution}}", {{agg_worldpop_year}})
 ```
