@@ -31,6 +31,8 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
 
+
+
     ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
     ras_running <- length(ras_status[ras_status == "running"])
     if (ras_running != 0) {
@@ -58,14 +60,20 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   })
 
     observeEvent(input$resample, {
-
+      if (length(common$covs) == 0) {
+        common$logger |> writeLog(type = "error", "Please upload covariates")
+        return()
+      }
+      if (is.null(common$agg)) {
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
+        return()
+      }
       if (input$resample_layer == "") {
         common$logger |> writeLog(type = "error", "Please select a covariate to use as a template for resampling")
         return()
       }
 
       # FUNCTION CALL ####
-      # c
       common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$resample_layer]])
       common$agg_prep <- terra::resample(common$agg,  common$covs[[input$resample_layer]], method = "sum")
 
