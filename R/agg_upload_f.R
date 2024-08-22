@@ -3,8 +3,8 @@
 #' This function is called by the agg_upload module and loads a
 #'  raster image.
 #'
-#' @param path character. The location of the file to be loaded.
 #' @param shape sf. sf object containing the area of interest
+#' @param path character. The location of the file to be loaded.
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL
@@ -16,11 +16,11 @@
 #' shp_file <- list.files(system.file("extdata/shapes",
 #'         package="disagapp"), pattern = ".shp", full.names = TRUE)
 #' shape <- sf::st_read(shp_file, quiet = TRUE)
-#' raster <- agg_upload(path = path, shape = shape)
+#' raster <- agg_upload(shape = shape, path = path)
 #'
 #' @export
 
-agg_upload <- function(path, shape, logger = NULL) {
+agg_upload <- function(shape, path, logger = NULL) {
 
   if (!inherits(path, "character")){
     logger |> writeLog(type = "error", "path must be a character string")

@@ -31,9 +31,10 @@
 #' poly <- sf::st_polygon(list(poly_matrix))
 #' shape <- sf::st_sf(1, geometry = list(poly))
 #' sf::st_crs(shape) = 4326
-#' raster <- cov_bioclim(country_code = "LIE",
-#'                       variables = c("Mean temperature", "Mean diurnal range"),
-#'                       shape = shape)
+#' raster <- cov_bioclim(shape = shape,
+#'                       country_code = "LIE",
+#'                       variables = c("Mean temperature", "Mean diurnal range"))
+#'
 #'
 #' @export
 

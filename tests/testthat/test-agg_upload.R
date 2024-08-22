@@ -1,7 +1,7 @@
 
 test_that("Check agg_upload function works as expected", {
   mdg_shape <- resp_shape(shpdf)
-  result <- agg_upload(aggdf$datapath, mdg_shape)
+  result <- agg_upload(mdg_shape, aggdf$datapath)
   expect_is(result, "SpatRaster")
 })
 

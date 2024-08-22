@@ -5,9 +5,9 @@
 #' overlap with the area of interest and crops and masks them to the area of
 #' interest.
 #'
+#' @param shape sf. sf object containing the area of interest
 #' @param path_df data.frame. Containing `datapath` and `name` columns of the
 #' file(s) to be uploaded.
-#' @param shape sf. sf object containing the area of interest
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL
@@ -21,10 +21,10 @@
 #' shp_file <- list.files(system.file("extdata", "shapes", package="disagapp"),
 #'                        pattern = ".shp", full.names = TRUE)
 #' shape <- sf::st_read(shp_file, quiet = TRUE)
-#' rasters <- cov_upload(path_df = cov_df, shape = shape)
+#' rasters <- cov_upload(shape = shape, path_df = cov_df)
 #' @export
 
- cov_upload <- function(path_df, shape, logger = NULL) {
+ cov_upload <- function(shape, path_df, logger = NULL) {
 
    # check inputs
    if (!("data.frame" %in% class(path_df))){

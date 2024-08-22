@@ -41,7 +41,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
 
-    cov_list <- cov_upload(covdf, common$shape, common$logger)
+    cov_list <- cov_upload(common$shape, covdf, common$logger)
 
     if (is.null(cov_list)){
       return()
