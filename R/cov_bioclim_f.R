@@ -4,6 +4,7 @@
 #' data on from Bioclim via geodata. It returns a list of SpatRasters for the
 #' selected variables
 #'
+#' @param shape sf. sf object containing the area of interest
 #' @param country_code vector. ISO3 code of the country or countries.
 #' @param variables vector. List of the bioclimatic variables to be returned.
 #' Options are: `Mean temperature`, `Mean diurnal range`, `Isothermality`,
@@ -15,7 +16,6 @@
 #' `Precipitation driest month`, `Precipitation seasonality`,
 #' `Precipitation wettest quarter`, `Precipitation driest quarter`,
 #' `Precipitation warmest quarter`, `Precipitation coldest quarter`
-#' @param shape sf. sf object containing the area of interest
 #' @param async logical. Whether or not the function is being used asynchronously
 #' @return a list of containing an item for each variable, either SpatRaster
 #' objects when `async` is `FALSE` or PackedSpatRaster objects when `async` is
@@ -37,7 +37,7 @@
 #'
 #' @export
 
-cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
+cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
 
   valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
 
