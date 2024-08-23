@@ -119,7 +119,9 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     common$meta$fit_fit$iterations <- as.numeric(input$iterations)
     common$meta$fit_fit$field <- input$field
     common$meta$fit_fit$iid <- input$iid
-    common$meta$fit_fit$priors <- input$priors
+    if (input$priors){
+      common$meta$fit_fit$priors <- TRUE
+    }
     common$meta$fit_fit$mean_intercept <- as.numeric(input$mean_intercept)
     common$meta$fit_fit$sd_intercept <- as.numeric(input$sd_intercept)
     common$meta$fit_fit$mean_slope <- as.numeric(input$mean_slope)
@@ -141,16 +143,16 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       req(common$fit$sd_out)
 
       parameter <- sd <- obs <- pred <- NULL
-      posteriors <- as.data.frame(summary(common$fit$sd_out, select = 'fixed'))
+      posteriors <- as.data.frame(summary(common$fit$sd_out, select = "fixed"))
       posteriors <- dplyr::mutate(posteriors, name = rownames(posteriors))
-      names(posteriors) <- c('mean', 'sd', 'parameter')
-      posteriors$fixed <- grepl('slope', posteriors$parameter)
-      posteriors$type <- ifelse(posteriors$fixed, 'Slope', 'Other')
+      names(posteriors) <- c("mean", "sd", "parameter")
+      posteriors$fixed <- grepl("slope", posteriors$parameter)
+      posteriors$type <- ifelse(posteriors$fixed, "Slope", "Other")
 
       # Check name lengths match before substituting.
       lengths_match <- terra::nlyr(common$fit$data$covariate_rasters) == sum(posteriors$fixed)
       if(lengths_match){
-        posteriors$parameter[grepl('slope', posteriors$parameter)] <- names(common$fit$data$covariate_rasters)
+        posteriors$parameter[grepl("slope", posteriors$parameter)] <- names(common$fit$data$covariate_rasters)
       }
 
       # Unique types for faceting
@@ -163,13 +165,13 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
         plotly::plot_ly(subset_data,
                 y = ~parameter,
                 x = ~mean,
-                type = 'scatter',
-                mode = 'markers',
-                marker = list(color = 'black'),
+                type = "scatter",
+                mode = "markers",
+                marker = list(color = "black"),
                 error_x = list(array = ~sd, color = "blue")) |>
           plotly::layout(title = list(text = type, x = 0.5),
-                 xaxis = list(title = 'SD', showline = TRUE, zeroline = FALSE),
-                 yaxis = list(title = 'Parameter', showline = TRUE, zeroline = FALSE,
+                 xaxis = list(title = "SD", showline = TRUE, zeroline = FALSE),
+                 yaxis = list(title = "Parameter", showline = TRUE, zeroline = FALSE,
                               range = c(-1, nrow(subset_data))),
                  margin = list(t = 100))
       })
@@ -190,18 +192,18 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       report <- common$fit$obj$report()
 
       # Form of the observed and predicted results depends on the likelihood function used
-      if( common$fit$model_setup$family == 'gaussian') {
+      if( common$fit$model_setup$family == "gaussian") {
         observed_data = report$polygon_response_data/report$reportnormalisation
         predicted_data = report$reportprediction_rate
-        title <- 'In sample performance: incidence rate'
-      } else if( common$fit$model_setup$family == 'binomial') {
+        title <- "In sample performance: incidence rate"
+      } else if( common$fit$model_setup$family == "binomial") {
         observed_data =  common$fit$data$polygon_data$response / common$fit$data$polygon_data$N
         predicted_data = report$reportprediction_rate
-        title <- 'In sample performance: prevalence rate'
-      } else if( common$fit$model_setup$family == 'poisson') {
+        title <- "In sample performance: prevalence rate"
+      } else if( common$fit$model_setup$family == "poisson") {
         observed_data = report$polygon_response_data/report$reportnormalisation
         predicted_data = report$reportprediction_rate
-        title <- 'In sample performance: incidence rate'
+        title <- "In sample performance: incidence rate"
       }
 
       data <- data.frame(obs = observed_data, pred = predicted_data)
@@ -213,11 +215,11 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       identity_line <- data.frame(x = x_range, y = x_range)
 
       # Create scatter plot and add identity line
-      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') |>
-        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) |>
+      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = "scatter", mode = "markers") |>
+        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = "blue")) |>
         plotly::layout(title = list(text = title, x = 0.5),
-               xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
-               yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),
+               xaxis = list(title = "Observed", showline = TRUE, zeroline = FALSE),
+               yaxis = list(title = "Predicted", showline = TRUE, zeroline = FALSE),
                margin = list(t = 100),
                showlegend = FALSE)
 
@@ -286,7 +288,7 @@ fit_fit_module_rmd <- function(common) {
     fit_iterations = common$meta$fit_fit$iterations,
     fit_field = common$meta$fit_fit$field,
     fit_iid = common$meta$fit_fit$iid,
-    fit_priors_knit = common$meta$fit_fit$priors,
+    fit_priors_knit = !is.null(common$meta$fit_fit$priors),
     fit_priors = common$meta$fit_fit$priors,
     fit_mean_intercept = common$meta$fit_fit$mean_intercept,
     fit_sd_intercept = common$meta$fit_fit$sd_intercept,

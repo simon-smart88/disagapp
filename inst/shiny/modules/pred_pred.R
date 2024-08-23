@@ -86,7 +86,9 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     }
     # METADATA ####
     common$meta$pred_pred$used <- TRUE
-    common$meta$pred_pred$uncertain <- input$uncertain
+    if (input$uncertain){
+      common$meta$pred_pred$uncertain <- input$uncertain
+    }
     if (is.null(input$iid)){
       common$meta$pred_pred$iid <- FALSE
     }
@@ -172,7 +174,7 @@ pred_pred_module_map <- function(map, common) {
       raster_map(map, common, common$pred[[tolower(variable)]], variable)
     }
   }
-  if (common$meta$pred_pred$uncertain){
+  if (!is.null(common$meta$pred_pred$uncertain)){
     raster_map(map, common, common$pred$uncertainty$predictions_ci$`lower CI`, "Lower credible interval")
     raster_map(map, common, common$pred$uncertainty$predictions_ci$`upper CI`, "Upper credible interval")
   }
