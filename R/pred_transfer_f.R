@@ -1,4 +1,4 @@
-#' @title pred_transfer
+#' @title Transfer predictions to a new country
 #' @description
 #' This function is called by the pred_transfer module and can transfer predictions
 #' generated from a model to a new area of interest.

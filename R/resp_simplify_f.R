@@ -1,4 +1,4 @@
-#' @title resp_simplify
+#' @title Simplify geometry of boundary data
 #' @description
 #' This function is called by the resp_simplify module and simplifies the
 #' geometry data in an sf object

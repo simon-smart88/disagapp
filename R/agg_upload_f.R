@@ -1,4 +1,4 @@
-#' @title agg_upload
+#' @title Upload an aggregation raster
 #' @description
 #' This function is called by the agg_upload module and loads a
 #'  raster image.

@@ -1,4 +1,4 @@
-#' @title prep_summary
+#' @title Summarise properties of raster data
 #' @description
 #' Summarises the properties of a list of SpatRasters
 #'

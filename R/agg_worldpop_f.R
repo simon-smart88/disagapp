@@ -1,7 +1,7 @@
-#' @title agg_worldpop
+#' @title Download an aggregation raster from WorldPop
 #' @description
 #' This function is called by the agg_worldpop module and downloads data on
-#' population density for a single country from worldpop
+#' population density for a single country from WorldPop
 #'
 #' @param shape sf. sf object containing the area of interest
 #' @param country_code character. ISO3 code of the country.

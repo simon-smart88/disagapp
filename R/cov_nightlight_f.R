@@ -1,4 +1,4 @@
-#' @title cov_nightlight
+#' @title Download nighttime illumination data from using blackmarbler
 #' @description
 #' This function is called by the cov_nightlight module and downloads annual
 #' data on night time illumination from NASA (product ID VNP46A4) using the

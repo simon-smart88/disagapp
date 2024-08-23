@@ -1,7 +1,7 @@
-#' @title resp_edit
+#' @title Remove polygons from response data
 #' @description
-#' This function is called by the resp_edit module and merges response data
-#'  from a spreadsheet with boundary data into an sf object
+#' This function is called by the resp_edit module and removes polygons from the
+#' response data depending on whether they are inside or outside of a polygon.
 #'
 #' @param shape sf. The sf object to be edited
 #' @param poly matrix. Containing latitude and longitude columns

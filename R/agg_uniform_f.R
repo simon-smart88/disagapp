@@ -1,4 +1,4 @@
-#' @title agg_uniform
+#' @title Create a uniform aggregation raster
 #' @description
 #' This function is called by the agg_uniform module and creates a
 #' uniform aggregation raster.

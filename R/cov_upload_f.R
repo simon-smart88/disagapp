@@ -1,4 +1,4 @@
-#' @title cov_upload
+#' @title Upload covariates
 #' @description
 #' This function is called by the cov_upload module. It loads raster images,
 #' checks their projection and transforms them if necessary, checks that they

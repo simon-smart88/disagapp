@@ -1,4 +1,4 @@
-#' @title cov_bioclim
+#' @title Download bioclimatic data from Bioclim
 #' @description
 #' This function is called by the cov_bioclim module and downloads bioclimatic
 #' data on from Bioclim via geodata. It returns a list of SpatRasters for the

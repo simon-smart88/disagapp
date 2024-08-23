@@ -1,4 +1,4 @@
-#' @title cov_landuse
+#' @title Download land use data from Copernicus Global Land Service
 #' @description
 #' This function is called by the cov_landuse module and downloads data on the
 #' percentage of land used for each category selected. Data is obtained at a

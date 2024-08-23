@@ -1,4 +1,4 @@
-#' @title prep_correlation
+#' @title Produce a correlation matrix of covariates
 #' @description
 #' Produce a correlation matrix of covariates
 #'

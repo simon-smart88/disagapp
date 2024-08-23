@@ -1,4 +1,4 @@
-#' @title cov_access
+#' @title Download accessibility data from Malaria Atlas Project
 #' @description
 #' This function is called by the cov_access module and downloads data on
 #' accessibility using data from the Malaria Atlas Project.

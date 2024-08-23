@@ -1,4 +1,4 @@
-#' @title resp_combine
+#' @title Merge response data with a shapefile
 #' @description
 #' This function is called by the resp_combine module and merges response data
 #'  from a spreadsheet with boundary data from a shapefile into an sf object

@@ -1,4 +1,4 @@
-#' @title resp_shape
+#' @title Upload response data from a shapefile
 #' @description
 #' This function is called by the resp_shape module and loads a
 #'  shapefile into an sf object. Inspired by a function written by Paula Moraga

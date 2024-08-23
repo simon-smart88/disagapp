@@ -1,4 +1,4 @@
-#' @title prep_scale
+#' @title Scale the covariates
 #' @description This function is called by the prep_scale module and scales
 #' the values of a SpatRaster using a method equivalent to `terra::scale`
 #' @param covs SpatRaster. The covariates to be scaled.

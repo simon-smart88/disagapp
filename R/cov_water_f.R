@@ -1,4 +1,4 @@
-#' @title cov_water
+#' @title Download data on the distance to water from ArcGIS
 #' @description
 #' This function is called by the cov_water module and downloads data on the
 #' distance to surface water from ArcGIS

@@ -1,4 +1,4 @@
-#' @title resp_download
+#' @title Merge response data with a downloaded shapefile
 #' @description
 #' This function is called by the resp_download module and merges response data
 #'  from a spreadsheet with boundary data into an sf object
