@@ -5,7 +5,7 @@ function(input, output, session) {
   ########################## #
   # LOAD COMMON ####
   ########################## #
-  source(system.file("shiny/common.R", package = "disagapp"))
+  source(system.file("shiny", "common.R", package = "disagapp"))
   common <- common_class$new()
 
   common$seed <- sample.int(n = 1000, size = 1)
@@ -145,6 +145,7 @@ function(input, output, session) {
   ### SAVE / LOAD  ####
   ################################
 
+  core_intro_module_server("core_intro", common)
   core_save_module_server("core_save", common, modules, COMPONENTS, input)
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
@@ -155,7 +156,7 @@ function(input, output, session) {
   output$debug <- renderPrint({
     #browser()
     #print(pryr::mem_used())
-    }) %>% bindEvent(input$debug_button)
+    }) |> bindEvent(input$debug_button)
 
   ################################
   ### EXPORT TEST VALUES ####

@@ -1,10 +1,11 @@
-#' @title cov_bioclim
+#' @title Download bioclimatic data from Bioclim
 #' @description
 #' This function is called by the cov_bioclim module and downloads bioclimatic
 #' data on from Bioclim via geodata. It returns a list of SpatRasters for the
 #' selected variables
 #'
-#' @param country_code character. ISO3 code of the country.
+#' @param shape sf. sf object containing the area of interest
+#' @param country_code vector. ISO3 code of the country or countries.
 #' @param variables vector. List of the bioclimatic variables to be returned.
 #' Options are: `Mean temperature`, `Mean diurnal range`, `Isothermality`,
 #' `Temperature seasonality`, `Maximum temperature warmest month`,
@@ -15,15 +16,41 @@
 #' `Precipitation driest month`, `Precipitation seasonality`,
 #' `Precipitation wettest quarter`, `Precipitation driest quarter`,
 #' `Precipitation warmest quarter`, `Precipitation coldest quarter`
-#' @param shape sf. sf object containing the area of interest
 #' @param async logical. Whether or not the function is being used asynchronously
 #' @return a list of containing an item for each variable, either SpatRaster
 #' objects when `async` is `FALSE` or PackedSpatRaster objects when `async` is
 #' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' x_min <- 9.47
+#' x_max <- 9.63
+#' y_min <- 47.05
+#' y_max <- 47.27
+#' poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+#'                         y_min, y_max, y_max, y_min, y_min), ncol = 2)
+#' poly <- sf::st_polygon(list(poly_matrix))
+#' shape <- sf::st_sf(1, geometry = list(poly))
+#' sf::st_crs(shape) = 4326
+#' raster <- cov_bioclim(shape = shape,
+#'                       country_code = "LIE",
+#'                       variables = c("Mean temperature", "Mean diurnal range"))
+#'
+#'
 #' @export
 
-cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
+cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
+
+  valid_countries <- readRDS(system.file("ex", "countries.rds", package = "geodata"))$ISO3
+
+  invalid_countries <- country_code[(!country_code %in% valid_countries)]
+  if (length(invalid_countries) > 0){
+    message <- glue::glue("{invalid_countries} is not a valid IS03 country code. ")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
   layers  <-  c("Mean temperature",
                 "Mean diurnal range",
@@ -45,10 +72,24 @@ cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
                 "Precipitation warmest quarter",
                 "Precipitation coldest quarter")
 
-  for (v in variables){
-  if (!(v %in% layers)){
-    stop(glue::glue("{v} is not a valid bioclim variable"))
-  }}
+  invalid_layers <- variables[(!variables %in% layers)]
+  if (length(invalid_layers) > 0){
+    message <- glue::glue("{invalid_layers} is not a valid bioclim variable. ")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
+  if (!("sf" %in% class(shape))){
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
 
   bioclim_ras <- NULL
 
@@ -78,6 +119,18 @@ cov_bioclim <- function(country_code, variables, shape, async = FALSE) {
       stop(message)
     }
   } else {
+
+    #check that raster overlaps with shape
+    check_overlap <- terra::is.related(bioclim_ras, terra::vect(shape), "intersects")
+    if (check_overlap == FALSE){
+      message <- "The downloaded bioclim data does not overlap with the response data - check the selected country"
+      if (async){
+        return(message)
+      } else {
+        stop(message)
+      }
+    }
+
     bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
     names(bioclim_ras) <- layers
     bioclim_ras <- as.list(bioclim_ras[[variables]])

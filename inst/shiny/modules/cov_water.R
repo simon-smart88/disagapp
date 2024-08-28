@@ -33,24 +33,24 @@ cov_water_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
 
     if ((Sys.getenv("ARCGIS_CLIENT") == "") && (input$token == "")){
-      common$logger %>% writeLog(type = "error", "An ArcGIS token is required to use this module.
+      common$logger |> writeLog(type = "error", "An ArcGIS token is required to use this module.
                           See the module guidance for details of how to obtain one.")
       return()
     }
 
     # FUNCTION CALL ####
     common$tasks$cov_water$invoke(common$shape, token(), TRUE)
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download distance to water data"))
+    common$logger |> writeLog(type = "starting", "Starting to download distance to water data")
     # METADATA ####
     common$meta$cov_water$used <- TRUE
     common$meta$cov_water$token <- input$token
@@ -62,13 +62,13 @@ cov_water_module_server <- function(id, common, parent_session, map) {
     results$suspend()
     if (class(result) == "PackedSpatRaster"){
       common$covs[["Distance to water"]] <- unwrap_terra(result)
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Distance to water data has been downloaded"))
+      common$logger |> writeLog(type = "complete", "Distance to water data has been downloaded")
       # TRIGGER
       do.call("cov_water_module_map", list(map, common))
       gargoyle::trigger("cov_water")
       shinyjs::runjs("Shiny.setInputValue('cov_water-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
 
   })

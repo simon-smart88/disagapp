@@ -36,11 +36,11 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to build the mesh"))
+    common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
     common$tasks$prep_mesh$invoke(common$shape, mesh.args = list(max.edge = input$mesh_edge,
                                                               cut = input$mesh_cut,
@@ -58,7 +58,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     result <- common$tasks$prep_mesh$result()
     common$mesh <- result
     results$suspend()
-    common$logger %>% writeLog(paste0(icon("check", class = "task_end")," The mesh has been built"))
+    common$logger |> writeLog(type = "complete", "The mesh has been built")
     # TRIGGER
     gargoyle::trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))
@@ -68,15 +68,19 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
 
 
   return(list(
-    save = function() {
-list(mesh_edge = input$mesh_edge,
-mesh_cut = input$mesh_cut,
-mesh_offset = input$mesh_offset)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      mesh_edge = input$mesh_edge, 
+      mesh_cut = input$mesh_cut, 
+      mesh_offset = input$mesh_offset)
     },
     load = function(state) {
-updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
-updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
-updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
+      ### Manual load start
+      ### Manual load end
+      updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
+      updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
+      updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
     }
   ))
 })

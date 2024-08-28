@@ -34,18 +34,19 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (input$country[1] == "") {
-      common$logger %>% writeLog(type = "error", "Please select a country")
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download Worldpop data"))
-    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, input$year, TRUE)
+    common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
+    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, as.numeric(input$year), TRUE)
+    results$resume()
     # METADATA ####
     common$meta$agg_worldpop$name <- "Population"
     common$meta$agg_worldpop$log <- input$log
@@ -53,7 +54,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_worldpop$country <- country_code
     common$meta$agg_worldpop$method <- input$method
     common$meta$agg_worldpop$resolution <- input$resolution
-    common$meta$agg_worldpop$year <- input$year
+    common$meta$agg_worldpop$year <- as.numeric(input$year)
 
     common$selected_country <- input$country
     gargoyle::trigger("country_out")
@@ -66,29 +67,35 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     if (class(result) == "PackedSpatRaster"){
       result <- unwrap_terra(result)
       common$agg <- result
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Worldpop data has been downloaded"))
+      common$logger |> writeLog(type = "complete", "Worldpop data has been downloaded")
       # TRIGGER
       gargoyle::trigger("agg_worldpop")
       do.call("agg_worldpop_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('agg_worldpop-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
   })
 
 
   return(list(
-    save = function() {
-list(method = input$method,
-resolution = input$resolution,
-year = input$year,
-log = input$log)
+    save = function() {list(
+      ### Manual save start
+      country = input$country,
+      ### Manual save end
+      method = input$method,
+      resolution = input$resolution,
+      year = as.numeric(input$year),
+      log = input$log)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method)
-updateSelectInput(session, "resolution", selected = state$resolution)
-updateSelectInput(session, "year", selected = state$year)
-shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
+      ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
+      ### Manual load end
+      updateSelectInput(session, "method", selected = state$method)
+      updateSelectInput(session, "resolution", selected = state$resolution)
+      updateSelectInput(session, "year", selected = state$year)
+      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
 })

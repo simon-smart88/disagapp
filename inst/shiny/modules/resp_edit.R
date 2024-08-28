@@ -1,7 +1,7 @@
 resp_edit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside", "Inside")),
+    radioButtons(ns("type"), "Polygons to keep", choices = c("Outside" = "outside", "Inside" = "inside")),
     actionButton(ns("run"), "Edit shapefile")
   )
 }
@@ -20,12 +20,12 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
 
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     if (isFALSE(getOption("shiny.testmode"))) {
       if (is.null(common$poly)) {
-        common$logger %>% writeLog(type = "error", "Please draw a shape on the map first")
+        common$logger |> writeLog(type = "error", "Please draw a shape on the map first")
         return()
       }
     }
@@ -42,14 +42,19 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
     common$meta$resp_edit$used <- TRUE
     # TRIGGER
     gargoyle::trigger("resp_edit")
+    do.call("resp_edit_module_map", list(map, common))
   })
 
   return(list(
-    save = function() {
-list(type = input$type)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      type = input$type)
     },
     load = function(state) {
-updateRadioButtons(session, "type", selected = state$type)
+      ### Manual load start
+      ### Manual load end
+      updateRadioButtons(session, "type", selected = state$type)
     }
   ))
 })
@@ -57,11 +62,11 @@ updateRadioButtons(session, "type", selected = state$type)
 
 #initial addition and final removal of the toolbar is handled inside core_mapping_module_server
 resp_edit_module_map <- function(map, common) {
-  map %>%
-    removeControl("Response") %>%
+  map |>
+    removeControl("Response") |>
     removeDrawToolbar(clearFeatures = TRUE)
   shape_map(map, common)
-  map %>%
+  map |>
     addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
                    editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))

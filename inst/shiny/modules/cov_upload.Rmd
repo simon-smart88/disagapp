@@ -7,7 +7,7 @@ covariate_directory <- ""
 covariate_files <- {{cov_upload_path}}
 covariate_file_paths <- file.path(covariate_directory, covariate_files)
 covariate_file_df <- data.frame(datapath = covariate_file_paths, name = covariate_files)
-uploaded_covariates <- disagapp::cov_upload(covariate_file_df)
+uploaded_covariates <- disagapp::cov_upload(shape, covariate_file_df)
 covariates <- append(covariates, uploaded_covariates)
 ```
 

@@ -15,19 +15,20 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
-    common$shape <- resp_simplify(common$shape, input$distance)
+    common$shape <- resp_simplify(common$shape, as.numeric(input$distance))
 
     # METADATA ####
     common$meta$resp_simplify$used <- TRUE
-    common$meta$resp_simplify$distance <- input$distance
+    common$meta$resp_simplify$distance <- as.numeric(input$distance)
 
     # TRIGGER
     gargoyle::trigger("resp_simplify")
     do.call("resp_simplify_module_map", list(map, common))
+    common$logger |> writeLog(type = "complete", "The polygons have been simplified")
   })
 
   output$current_size <- renderText({
@@ -41,11 +42,15 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     glue::glue("{round((object.size(common$shape)/1024^2),2)} Mb")})
 
   return(list(
-    save = function() {
-list(distance = input$distance)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      distance = as.numeric(input$distance))
     },
     load = function(state) {
-updateNumericInput(session, "distance", value = state$distance)
+      ### Manual load start
+      ### Manual load end
+      updateNumericInput(session, "distance", value = state$distance)
     }
   ))
 })

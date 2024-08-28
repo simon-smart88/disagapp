@@ -11,12 +11,12 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$covs_prep)) {
-      common$logger %>% writeLog(type = "error", "Please resample the covariates first")
+      common$logger |> writeLog(type = "error", "Please resample the covariates first")
       return()
     }
     # FUNCTION CALL ####
-    scaled_covariates <- prep_scale(common$covs_prep)
-    common$logger %>% writeLog("Covariates have been scaled")
+    scaled_covariates <- prep_scale(common$covs_prep, common$logger)
+    common$logger |> writeLog(type = "complete", "Covariates have been scaled")
 
     # LOAD INTO COMMON ####
     common$covs_prep <- scaled_covariates[["covariates"]]
@@ -27,9 +27,16 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     gargoyle::trigger("prep_scale")
+    do.call("prep_scale_module_map", list(map, common))
   })
 
 })
+}
+
+prep_scale_module_map <- function(map, common){
+  for (layer in names(common$covs_prep)){
+    raster_map(map, common, common$covs_prep[[layer]], layer)
+  }
 }
 
 prep_scale_module_rmd <- function(common) {

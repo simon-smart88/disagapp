@@ -1,7 +1,7 @@
 
 test_that("Check agg_upload function works as expected", {
   mdg_shape <- resp_shape(shpdf)
-  result <- agg_upload(aggdf$datapath, mdg_shape)
+  result <- agg_upload(mdg_shape, aggdf$datapath)
   expect_is(result, "SpatRaster")
 })
 
@@ -23,6 +23,12 @@ test_that("{shinytest2} recording: e2e_agg_upload", {
   app$set_inputs(aggSel = "agg_upload")
   app$upload_file("agg_upload-agg" = aggdf$datapath)
   app$click("agg_upload-run")
+
+  if (is_ci){
+    save_path <- tempfile(fileext = ".rds")
+  } else {
+    save_path <- "~/temprds/saved_file.rds"
+  }
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)

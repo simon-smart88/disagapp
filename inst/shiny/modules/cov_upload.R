@@ -28,26 +28,25 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     if (is.null(input$example) || (input$example == FALSE)){
       # check a file is selected
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please select a raster file")
+        common$logger |> writeLog(type = "error", "Please select a raster file")
         return()
       }
       covdf <- input$cov
     }
 
     if (is.null(input$example) || (input$example == TRUE)){
-      covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
-                          name = list.files(system.file("extdata/covariates", package="disagapp")))
+      covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package="disagapp"), full.names = TRUE),
+                          name = list.files(system.file("extdata", "covariates", package="disagapp")))
     }
 
     # FUNCTION CALL ####
 
-    cov_list <- cov_upload(covdf, common$shape, common$logger)
+    cov_list <- cov_upload(common$shape, covdf, common$logger)
 
     if (is.null(cov_list)){
       return()
     }
 
-    common$logger %>% writeLog("Covariates uploaded")
     # LOAD INTO COMMON ####
     common$covs <- append(common$covs, cov_list)
 
@@ -63,29 +62,25 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     do.call("cov_upload_module_map", list(map, common))
     gargoyle::trigger("cov_upload")
+    common$logger |> writeLog(type = "complete", "Covariate data has been uploaded")
   })
 
-  output$result <- renderPlot({
-    plot(common$covs)
-  })
 
   return(list(
-    save = function() {
-list(example = input$example)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      example = input$example)
     },
     load = function(state) {
-shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
+      ### Manual load start
+      ### Manual load end
+      shinyWidgets::updateMaterialSwitch(session, "example", value = state$example)
     }
   ))
 })
 }
 
-cov_upload_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  plotOutput(ns("result"))
-}
 
 cov_upload_module_map <- function(map, common) {
   for (variable in common$meta$cov_upload$path){

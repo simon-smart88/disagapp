@@ -1,4 +1,4 @@
-#' @title cov_nightlight
+#' @title Download nighttime illumination data from using blackmarbler
 #' @description
 #' This function is called by the cov_nightlight module and downloads annual
 #' data on night time illumination from NASA (product ID VNP46A4) using the
@@ -15,6 +15,20 @@
 #' @return a SpatRaster object when `async` is `FALSE` or a PackedSpatRaster
 #' when `async` is `TRUE`.
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' \dontrun{
+#' x_min <- 0
+#' x_max <- 0.5
+#' y_min <- 52
+#' y_max <- 52.5
+#' poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+#'                         y_min, y_max, y_max, y_min, y_min), ncol = 2)
+#' poly <- sf::st_polygon(list(poly_matrix))
+#' shape <- sf::st_sf(1, geometry = list(poly))
+#' sf::st_crs(shape) = 4326
+#' raster <- cov_nightlight(shape = shape, year = 2022, bearer = Sys.getenv("NASA_bearer"))
+#' }
+#'
 #' @export
 
 cov_nightlight <- function(shape, year, bearer, async = FALSE) {
@@ -48,33 +62,35 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     }
   }
 
-ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
-                        product_id = "VNP46A4",
-                        date = year,
-                        bearer = bearer,
-                        quiet = TRUE)},
-                error = function(x){
-                message <- paste0("An error occurred whilst trying to download night light data: ", x)
-                NULL},
-                warning = function(x){
-                message <- paste0("An error occurred whilst trying to download night light data: ", x)
-                NULL})
+  shape <- sf::st_buffer(shape, 0.001)
+  shape <- sf::st_as_sf(sf::st_union(shape))
 
-if (is.null(ras)){
-  if (is.null(message)){
-    message <- paste0("An error occurred whilst trying to download night light data")
-  }
-  if (async){
-    return(message)
+  ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
+                          product_id = "VNP46A4",
+                          date = year,
+                          bearer = bearer,
+                          quiet = TRUE)},
+                  error = function(x){
+                  message <- paste0("An error occurred whilst trying to download night light data: ", x)
+                  NULL},
+                  warning = function(x){
+                  message <- paste0("An error occurred whilst trying to download night light data: ", x)
+                  NULL})
+
+  if (is.null(ras)){
+    if (is.null(message)){
+      message <- paste0("An error occurred whilst trying to download night light data")
+    }
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
   } else {
-    stop(message)
-  }
-} else {
-  ras <- terra::rast(ras)
-  names(ras) <- "Nighttime light"
-  ras <- terra::crop(ras, shape, mask = TRUE )
-  if (async){ ras <- terra::wrap(ras) }
-  return(ras)
+    names(ras) <- "Nighttime light"
+    ras <- terra::crop(ras, shape, mask = TRUE )
+    if (async){ ras <- terra::wrap(ras) }
+    return(ras)
 }
 
 

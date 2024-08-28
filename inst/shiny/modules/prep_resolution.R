@@ -50,12 +50,12 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
     output$plot <- plotly::renderPlotly({
       req(common$covs_prep)
       if (is.null(common$covs_prep_lores)){
-        pixels_per_poly <- terra::extract(common$covs_prep, common$shape) %>%
-          dplyr::group_by(ID) %>%
+        pixels_per_poly <- terra::extract(common$covs_prep, common$shape) |>
+          dplyr::group_by(ID) |>
           dplyr::summarise(n_pixels = dplyr::n())
       } else {
-        pixels_per_poly <- terra::extract(common$covs_prep_lores, common$shape) %>%
-          dplyr::group_by(ID) %>%
+        pixels_per_poly <- terra::extract(common$covs_prep_lores, common$shape) |>
+          dplyr::group_by(ID) |>
           dplyr::summarise(n_pixels = dplyr::n())
       }
 
@@ -104,12 +104,12 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
           )
         )
       return(plot)
-    }) %>% bindEvent(input$summarise)
+    }) |> bindEvent(input$summarise)
 
     observeEvent(input$run, {
       # WARNING ####
       if (is.null(common$covs_prep)) {
-        common$logger %>% writeLog(type = "error", "Please resample the rasters first")
+        common$logger |> writeLog(type = "error", "Please resample the rasters first")
         return()
       }
 
@@ -119,21 +119,27 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       common$covs_prep_lores <- terra::aggregate(common$covs_prep, fact = factor, fun = "mean", na.rm = TRUE)
       common$agg_prep_lores <- terra::aggregate(common$agg_prep, fact = factor, fun = "sum", na.rm = TRUE)
 
-      common$logger %>% writeLog("Low resolution covariates have been created")
+      common$logger |> writeLog(type = "complete", "Low resolution covariates have been created")
       common$meta$prep_resolution$used <- TRUE
       common$meta$prep_resolution$factor <- factor
 
+      #TRIGGER
       gargoyle::trigger("prep_resolution")
+      # exceptionally, the mapping for this module is handled in core_mapping
   })
 
   return(list(
-    save = function() {
-list(plot_type = input$plot_type,
-resolution = input$resolution)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      plot_type = input$plot_type, 
+      resolution = input$resolution)
     },
     load = function(state) {
-updateSelectInput(session, "plot_type", selected = state$plot_type)
-updateSelectInput(session, "resolution", selected = state$resolution)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "plot_type", selected = state$plot_type) 
+      updateSelectInput(session, "resolution", selected = state$resolution)
     }
   ))
 })

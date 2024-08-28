@@ -44,28 +44,28 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     mesh_status <- unlist(lapply(common$tasks[grep("^prep_", names(common$tasks), value = TRUE)], function(x){x$status()}))
     mesh_running <- length(mesh_status[mesh_status == "running"])
     if (mesh_running != 0) {
-      common$logger %>% writeLog(type = "error", "Please wait for the mesh to be built")
+      common$logger |> writeLog(type = "error", "Please wait for the mesh to be built")
       return()
     }
 
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     if (is.null(common$covs)) {
-      common$logger %>% writeLog(type = "error", "Please load covariates first")
+      common$logger |> writeLog(type = "error", "Please load covariates first")
       return()
     }
     if (input$id_var == "") {
-      common$logger %>% writeLog(type = "error", "Please select the ID variable")
+      common$logger |> writeLog(type = "error", "Please select the ID variable")
       return()
     }
     if (is.null(common$covs_prep)) {
-      common$logger %>% writeLog(type = "error", "Please prepare the covariates first")
+      common$logger |> writeLog(type = "error", "Please prepare the covariates first")
       return()
     }
     if (is.null(common$mesh)) {
-      common$logger %>% writeLog(type = "error", "Please prepare a mesh first")
+      common$logger |> writeLog(type = "error", "Please prepare a mesh first")
       return()
     }
     # FUNCTION CALL ####
@@ -99,7 +99,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     close_loading_modal()
     if (!is.null(common$prep)){
       common$prep$mesh <- common$mesh
-      common$logger %>% writeLog("Data preparation is complete")
+      common$logger |> writeLog(type = "complete", "Data preparation is complete")
     }
     # LOAD INTO COMMON ####
 
@@ -110,42 +110,49 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     common$meta$prep_final$resolution <- input$resolution
     # TRIGGER
     gargoyle::trigger("prep_final")
-    do.call("prep_final_module_map", list(map, common))
+    # do.call("prep_final_module_map", list(map, common))
     show_map(parent_session)
   })
 
   return(list(
-    save = function() {
-list(id_var = input$id_var,
-resp_var = input$resp_var,
-resolution = input$resolution,
-na_action = input$na_action)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      id_var = input$id_var,
+      resp_var = input$resp_var,
+      resolution = input$resolution,
+      na_action = input$na_action)
     },
     load = function(state) {
-updateSelectInput(session, "id_var", selected = state$id_var)
-updateSelectInput(session, "resp_var", selected = state$resp_var)
-updateSelectInput(session, "resolution", selected = state$resolution)
-shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "id_var", selected = state$id_var)
+      updateSelectInput(session, "resp_var", selected = state$resp_var)
+      updateSelectInput(session, "resolution", selected = state$resolution)
+      shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
     }
   ))
 })
 }
 
-prep_final_module_map <- function(map, common){
-  req(common$prep)
-  shape_map(map, common)
-  for (layer in names(common$prep$covariate_rasters)){
-    raster_map(map, common, common$prep$covariate_rasters[[layer]], layer)
-  }
-  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
-  if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
-    raster_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
-  } else {
-    raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
-  }
-  mesh_map(map, common)
-  map %>% showGroup("Response")
-}
+# prep_final_module_map <- function(map, common){
+#   for (layer in names(common$prep$covariate_rasters)){
+#     raster_map(map, common, common$prep$covariate_rasters[[layer]], layer)
+#   }
+#   agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
+#   if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
+#     raster_map(map, common, common$agg_prep, names(common$agg_prep), agg_log)
+#     if (is.null(common$meta$prep_final$resolution)){
+#       shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Prepared"]\').checked = true;')
+#     } else {
+#       shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="High resolution"]\').checked = true;')
+#     }
+#   } else {
+#     raster_map(map, common, common$agg_prep_lores, names(common$agg_prep_lores), agg_log)
+#     shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Low resolution"]\').checked = true;')
+#   }
+#   map |> showGroup("Response")
+# }
 
 prep_final_module_rmd <- function(common) {
   # Variables used in the module's Rmd code

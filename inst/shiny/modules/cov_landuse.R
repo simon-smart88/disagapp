@@ -23,22 +23,22 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (is.null(input$uses)) {
-      common$logger %>% writeLog(type = "error", "Please select the land use categories to download")
+      common$logger |> writeLog(type = "error", "Please select the land use categories to download")
       return()
     }
 
     if (is.null(common$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload response data first")
+      common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
     # FUNCTION CALL ####
     common$tasks$cov_landuse$invoke(common$shape, input$year, input$uses, TRUE)
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download land use data"))
+    common$logger |> writeLog(type = "starting", "Starting to download land use data")
     results$resume()
     # METADATA ####
     common$meta$cov_landuse$used <- TRUE
@@ -53,24 +53,28 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     if (class(result) == "list"){
       result <- unwrap_terra(result)
       common$covs <- append(common$covs, result)
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Land use data has been downloaded"))
+      common$logger |> writeLog(type = "complete", "Land use data has been downloaded")
       # TRIGGER
       gargoyle::trigger("cov_landuse")
       do.call("cov_landuse_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_landuse-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
   })
 
   return(list(
-    save = function() {
-list(uses = input$uses,
-year = input$year)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      uses = input$uses, 
+      year = input$year)
     },
     load = function(state) {
-updateSelectInput(session, "uses", selected = state$uses)
-updateSelectInput(session, "year", selected = state$year)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "uses", selected = state$uses) 
+      updateSelectInput(session, "year", selected = state$year)
     }
   ))
 })

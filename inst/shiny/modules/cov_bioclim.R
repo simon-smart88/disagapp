@@ -39,24 +39,30 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
+
+    if (is.null(common$shape)) {
+      common$logger |> writeLog(type = "error", "Please upload response data first")
+      return()
+    }
+
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (input$country[1] == "") {
-      common$logger %>% writeLog(type = "error", "Please select a country")
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
 
     if (is.null(input$variables)) {
-      common$logger %>% writeLog(type = "error", "Please select the variables to download")
+      common$logger |> writeLog(type = "error", "Please select the variables to download")
       return()
     }
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
-    common$tasks$cov_bioclim$invoke(country_code, input$variables, common$shape, TRUE)
-    common$logger %>% writeLog(paste0(icon("clock", class = "task_start")," Starting to download bioclim data"))
+    common$tasks$cov_bioclim$invoke(common$shape, country_code, input$variables, TRUE)
+    common$logger |> writeLog(type = "starting", "Starting to download bioclim data")
     results$resume()
 
     # METADATA ####
@@ -73,22 +79,28 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     results$suspend()
     if (class(result) == "list"){
       common$covs <- append(common$covs, unwrap_terra(result))
-      common$logger %>% writeLog(paste0(icon("check", class = "task_end")," Bioclim data has been downloaded"))
+      common$logger |> writeLog(type = "complete", "Bioclim data has been downloaded")
       # TRIGGER
       gargoyle::trigger("cov_bioclim")
       do.call("cov_bioclim_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
     } else {
-      common$logger %>% writeLog(type = "error", result)
+      common$logger |> writeLog(type = "error", result)
     }
   })
 
   return(list(
-    save = function() {
-list(variables = input$variables)
+    save = function() {list(
+      ### Manual save start
+      country = input$country,
+      ### Manual save end
+      variables = input$variables)
     },
     load = function(state) {
-updateSelectInput(session, "variables", selected = state$variables)
+      ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
+      ### Manual load end
+      updateSelectInput(session, "variables", selected = state$variables)
     }
   ))
 })

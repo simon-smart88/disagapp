@@ -15,6 +15,27 @@
   overflow:auto;
   border:1px solid grey;
 }
+
+.log_start{
+  color:#D55E00;
+}
+
+.log_end{
+  color:#0072B2;
+}
+
+.log_info{
+  color:blue;
+}
+
+.log_warn{
+  color:orange;
+}
+
+.log_error{
+  color:red;
+}
+
 hr {
     border: none;
     height: 5px;
@@ -135,12 +156,10 @@ hr {
   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
-.task_start{
-  color:#D55E00;
+.left_panel{
+   max-width: 450px;
 }
 
-.task_end{
-  color:#0072B2;
-
+.inline{
+  display:inline-block
 }
-

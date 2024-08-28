@@ -1,10 +1,14 @@
-#' @title pred_transfer
+#' @title Transfer predictions to a new country
 #' @description
 #' This function is called by the pred_transfer module and can transfer predictions
 #' generated from a model to a new area of interest.
 #'
 #' @param country character. ISO3 code of the country.
 #' @param common The common data structure.
+#' @param covdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' `datapath` columns of covariates
+#' @param aggdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' `datapath` columns of the aggregation raster
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in
 #' shiny, otherwise leave the default NULL
@@ -76,20 +80,20 @@ if ("agg_uniform" %in% agg_modules){
 }
 
 # resample
-covs[["agg"]] <- agg
 covs_prep <- lapply(covs, terra::resample, covs[[common$meta$prep_summary$resample_target]])
-agg <- covs_prep[["agg"]]
-covs_prep[["agg"]] <- NULL
+agg <- terra::resample(agg, covs[[common$meta$prep_summary$resample_target]], method = "sum")
 
 # scale covariates using original parameters
-cov_names <- names(covs_prep)
-scaling_parameters <- common$meta$prep_scale$parameters
+if (!is.null(common$meta$prep_scale$used)){
+  cov_names <- names(covs_prep)
+  scaling_parameters <- common$meta$prep_scale$parameters
 
-for (cov_layer in cov_names){
-  layer_mean <- scaling_parameters$mean[row.names(scaling_parameters) == cov_layer]
-  layer_rms <- scaling_parameters$rms[row.names(scaling_parameters) == cov_layer]
-  residual <- covs_prep[[cov_layer]] - layer_mean
-  covs_prep[[cov_layer]] <- residual / layer_rms
+  for (cov_layer in cov_names){
+    layer_mean <- scaling_parameters$mean[row.names(scaling_parameters) == cov_layer]
+    layer_rms <- scaling_parameters$rms[row.names(scaling_parameters) == cov_layer]
+    residual <- covs_prep[[cov_layer]] - layer_mean
+    covs_prep[[cov_layer]] <- residual / layer_rms
+  }
 }
 
 # list to stack

@@ -16,8 +16,8 @@ resp_example_module_server <- function(id, common, parent_session, map) {
 
     switch(input$dataset,
            "mad" = {
-             shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                                 name = list.files(system.file("extdata/shapes", package="disagapp")))
+             shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
+                                 name = list.files(system.file("extdata", "shapes", package="disagapp")))
              shape <- resp_shape(shpdf)
              },
            "nys" = {
@@ -42,7 +42,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
 
     # WARNING
     if (!is.null(input$reset) && (input$reset == FALSE)){
-      common$logger %>% writeLog(type = "error",
+      common$logger |> writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
       return()
     }
@@ -64,14 +64,19 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_example")
     do.call("resp_example_module_map", list(map, common))
+    common$logger |> writeLog(type = "complete", "Response data has been loaded")
   })
 
   return(list(
-    save = function() {
-list(dataset = input$dataset)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      dataset = input$dataset)
     },
     load = function(state) {
-updateSelectInput(session, "dataset", selected = state$dataset)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "dataset", selected = state$dataset)
     }
   ))
 })

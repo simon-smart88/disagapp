@@ -34,7 +34,7 @@ expect_error(agg_worldpop(lie_shape, country_code[1], "aaaa", "1km", 2012), "Met
 expect_error(agg_worldpop(lie_shape, country_code[1], "Constrained", "aaaa", 2020),"Resolution must be either \"100m\" or \"1km\"")
 expect_error(agg_worldpop(lie_shape, country_code[1], "Constrained", "1km", 2012), "Constrained population data is only available for 2020")
 expect_error(agg_worldpop(lie_shape, country_code[1], "Unconstrained", "1km", 1999), "Unconstrained data is only available between 2000 and 2020")
-expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "The requested data could not be found")
+expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "ZZZ is not a valid IS03 country code.")
 })
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {
@@ -42,7 +42,7 @@ test_that("{shinytest2} recording: e2e_agg_worldpop", {
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
-  app$upload_file("resp_download-spread" = "../../lie.csv")
+  app$upload_file("resp_download-spread" = df_path)
   app$set_inputs("resp_download-response_column" = resp_column)
   app$set_inputs("resp_download-area_column" = area_column)
   app$set_inputs("resp_download-country" = "Liechtenstein")
@@ -55,6 +55,12 @@ test_that("{shinytest2} recording: e2e_agg_worldpop", {
   app$set_inputs("agg_worldpop-country" = "Liechtenstein")
   app$click(selector = "#agg_worldpop-run")
   app$wait_for_value(input = "agg_worldpop-complete")
+
+  if (is_ci){
+    save_path <- tempfile(fileext = ".rds")
+  } else {
+    save_path <- "~/temprds/saved_file.rds"
+  }
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)

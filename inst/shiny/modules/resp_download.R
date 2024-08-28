@@ -27,7 +27,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
     } else if (file_format == "xlsx"){
       df <- openxlsx::read.xlsx(input$spread$datapath[1])
     } else {
-      common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
+      common$logger |> writeLog("The uploaded file was not a .csv or .xlsx")
       return()
     }
     df
@@ -50,32 +50,32 @@ resp_download_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (curl::has_internet() == FALSE){
-      common$logger %>% writeLog(type = "error", "This module requires an internet connection")
+      common$logger |> writeLog(type = "error", "This module requires an internet connection")
       return()
     }
 
     if (!is.null(input$reset) && (input$reset == FALSE)){
-      common$logger %>% writeLog(type = "error",
+      common$logger |> writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
       return()
     }
 
     if (is.null(input$spread)) {
-      common$logger %>% writeLog(type = "error", "Please upload a spreadsheet")
+      common$logger |> writeLog(type = "error", "Please upload a spreadsheet")
       return()
     }
 
     if (input$country[1] == "") {
-      common$logger %>% writeLog(type = "error", "Please select a country")
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
 
     if (input$response_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the response column")
+      common$logger |> writeLog(type = "error", "Please select the response column")
       return()
     }
     if (input$area_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the area column")
+      common$logger |> writeLog(type = "error", "Please select the area column")
       return()
     }
 
@@ -90,36 +90,44 @@ resp_download_module_server <- function(id, common, parent_session, map) {
                          logger = common$logger)
 
     close_loading_modal()
-    # LOAD INTO COMMON ####
-    common$reset()
-    gargoyle::trigger("clear_map")
-    common$shape <- shape
-    common$selected_country <- input$country
-    common$response_name <- input$response_column
-    # METADATA ####
-    common$meta$resp_download$used <- TRUE
-    common$meta$resp_download$datapath <- input$spread$name[1]
-    common$meta$resp_download$response <- input$response_column
-    common$meta$resp_download$area_column <- input$area_column
-    common$meta$resp_download$admin_level <- input$admin
-    common$meta$resp_download$country <- country_code
-    # TRIGGER
-    gargoyle::trigger("resp_download")
-    gargoyle::trigger("country_out")
-    do.call("resp_download_module_map", list(map, common))
-
+    if (!is.null(shape)){
+      # LOAD INTO COMMON ####
+      common$reset()
+      gargoyle::trigger("clear_map")
+      common$shape <- shape
+      common$selected_country <- input$country
+      common$response_name <- input$response_column
+      # METADATA ####
+      common$meta$resp_download$used <- TRUE
+      common$meta$resp_download$datapath <- input$spread$name[1]
+      common$meta$resp_download$response <- input$response_column
+      common$meta$resp_download$area_column <- input$area_column
+      common$meta$resp_download$admin_level <- input$admin
+      common$meta$resp_download$country <- country_code
+      # TRIGGER
+      gargoyle::trigger("resp_download")
+      gargoyle::trigger("country_out")
+      do.call("resp_download_module_map", list(map, common))
+      common$logger |> writeLog(type = "complete", "Response data has been uploaded")
+    }
   })
 
   return(list(
-    save = function() {
-list(admin = input$admin,
-area_column = input$area_column,
-response_column = input$response_column)
+    save = function() {list(
+      ### Manual save start
+      country = input$country,
+      ### Manual save end
+      admin = input$admin,
+      area_column = input$area_column,
+      response_column = input$response_column)
     },
     load = function(state) {
-updateSelectInput(session, "admin", selected = state$admin)
-updateSelectInput(session, "area_column", selected = state$area_column)
-updateSelectInput(session, "response_column", selected = state$response_column)
+      ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
+      ### Manual load end
+      updateSelectInput(session, "admin", selected = state$admin)
+      updateSelectInput(session, "area_column", selected = state$area_column)
+      updateSelectInput(session, "response_column", selected = state$response_column)
     }
   ))
 })

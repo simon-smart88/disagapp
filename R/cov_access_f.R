@@ -1,4 +1,4 @@
-#' @title cov_access
+#' @title Download accessibility data from Malaria Atlas Project
 #' @description
 #' This function is called by the cov_access module and downloads data on
 #' accessibility using data from the Malaria Atlas Project.
@@ -10,11 +10,54 @@
 #' @param async logical. Whether or not the function is being used asynchronously
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' x_min <- 0
+#' x_max <- 0.5
+#' y_min <- 52
+#' y_max <- 52.5
+#' poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
+#'                         y_min, y_max, y_max, y_min, y_min), ncol = 2)
+#' poly <- sf::st_polygon(list(poly_matrix))
+#' shape <- sf::st_sf(1, geometry = list(poly))
+#' sf::st_crs(shape) = 4326
+#' raster <- cov_access(shape = shape,
+#'                      layer = "Travel Time to Cities (2015)")
+#'
 #' @export
 
 cov_access <- function(shape, layer, async = FALSE) {
 
   message <- NULL
+
+  if (!inherits(shape, "sf")){
+    message <- "Shape must be an sf object"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
+  if (!inherits(layer, "character")){
+    message <- "layer must be a character string"
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
+  if (!(layer %in% c("Travel Time to Cities (2015)",
+                     "Motorized Travel Time to Healthcare (2020)",
+                     "Walking Only Travel Time to Healthcare (2020)"))){
+    message <- glue::glue("{layer} is not a valid accessability layer")
+    if (async){
+      return(message)
+    } else {
+      stop(message)
+    }
+  }
+
 
   datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
                    `Motorized Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Motorized_Travel_Time_to_Healthcare",

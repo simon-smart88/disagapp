@@ -31,7 +31,7 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$covs_prep)) {
-      common$logger %>% writeLog(type = "error", "Please resample the rasters first")
+      common$logger |> writeLog(type = "error", "Please resample the rasters first")
       return()
     }
     # FUNCTION CALL ####
@@ -61,7 +61,7 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$remove,{
     # WARNING ####
     if (input$cov_layers == "") {
-      common$logger %>% writeLog(type = "error", "Please select a covariate to remove")
+      common$logger |> writeLog(type = "error", "Please select a covariate to remove")
       return()
     }
     # UPDATE COMMON ####
@@ -77,17 +77,21 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(method = input$method,
-type = input$type,
-cov_layers = input$cov_layers,
-self = input$self)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      method = input$method, 
+      type = input$type, 
+      cov_layers = input$cov_layers, 
+      self = input$self)
     },
     load = function(state) {
-updateSelectInput(session, "method", selected = state$method)
-updateSelectInput(session, "type", selected = state$type)
-updateSelectInput(session, "cov_layers", selected = state$cov_layers)
-shinyWidgets::updateMaterialSwitch(session, "self", value = state$self)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "method", selected = state$method) 
+      updateSelectInput(session, "type", selected = state$type) 
+      updateSelectInput(session, "cov_layers", selected = state$cov_layers) 
+      shinyWidgets::updateMaterialSwitch(session, "self", value = state$self)
     }
   ))
 })

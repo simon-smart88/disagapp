@@ -22,6 +22,12 @@ test_that("{shinytest2} recording: e2e_cov_access", {
   app$click(selector = "#cov_access-run")
   app$wait_for_value(input = "cov_access-complete")
 
+  if (is_ci){
+    save_path <- tempfile(fileext = ".rds")
+  } else {
+    save_path <- "~/temprds/saved_file.rds"
+  }
+
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)

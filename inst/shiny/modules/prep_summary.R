@@ -31,19 +31,21 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
 
+
+
     ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
     ras_running <- length(ras_status[ras_status == "running"])
     if (ras_running != 0) {
-      common$logger %>% writeLog(type = "error", "Please wait for the running tasks to complete")
+      common$logger |> writeLog(type = "error", "Please wait for the running tasks to complete")
       return()
     }
 
     if (length(common$covs) == 0) {
-      common$logger %>% writeLog(type = "error", "Please upload covariates")
+      common$logger |> writeLog(type = "error", "Please upload covariates")
       return()
     }
     if (is.null(common$agg)) {
-      common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+      common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
       return()
     }
     # FUNCTION CALL ####
@@ -58,20 +60,28 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   })
 
     observeEvent(input$resample, {
-
+      if (length(common$covs) == 0) {
+        common$logger |> writeLog(type = "error", "Please upload covariates")
+        return()
+      }
+      if (is.null(common$agg)) {
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
+        return()
+      }
       if (input$resample_layer == "") {
-        common$logger %>% writeLog(type = "error", "Please select a covariate to use as a template for resampling")
+        common$logger |> writeLog(type = "error", "Please select a covariate to use as a template for resampling")
         return()
       }
 
       # FUNCTION CALL ####
-      common$covs$Aggregation <- common$agg
       common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$resample_layer]])
+      common$agg_prep <- terra::resample(common$agg,  common$covs[[input$resample_layer]], method = "sum")
+
+      common$covs_prep$Aggregation <- common$agg_prep
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)
-      common$covs$Aggregation <- NULL
-      common$agg_prep <- common$covs_prep$Aggregation
       common$covs_prep$Aggregation <- NULL
-      common$logger %>% writeLog("Covariates have been resampled")
+
+      common$logger |> writeLog(type = "complete", "Covariates have been resampled")
       # stack the rasters
       common$covs_prep <- terra::rast(common$covs_prep)
       # LOAD INTO COMMON ####
@@ -83,6 +93,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       gargoyle::trigger("prep_summary")
       show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
+      do.call("prep_summary_module_map", list(map, common))
     })
 
     output$cov_table <- DT::renderDataTable({
@@ -91,7 +102,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       req(common$covs_summary$original)
       out <- DT::datatable(common$covs_summary$original, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) |>
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
@@ -99,7 +110,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       req(common$covs_summary$resampled)
       out <- DT::datatable(common$covs_summary$resampled, selection = "none", autoHideNavigation = TRUE,
                            options = list(pageLength = 11,
-                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) %>%
+                                          columnDefs = list(list(className = 'dt-center', targets = 0:(length(common$covs)+1))))) |>
         DT::formatSignif(columns = 1:(length(common$covs)+1), rows = c(1:4, 8:11), digits = 3)
     }
 
@@ -107,14 +118,28 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   }, server = FALSE)
 
   return(list(
-    save = function() {
-list(remove = input$remove)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      resample_layer = input$resample_layer,
+      remove = input$remove)
     },
     load = function(state) {
-shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "resample_layer", selected = state$resample_layer)
+      shinyWidgets::updateMaterialSwitch(session, "remove", value = state$remove)
     }
   ))
 })
+}
+
+prep_summary_module_map <- function(map, common){
+  for (layer in names(common$covs_prep)){
+    raster_map(map, common, common$covs_prep[[layer]], layer)
+  }
+  raster_map(map, common, common$agg_prep, names(common$agg_prep))
+  shinyjs::runjs('document.querySelector(\'input[name="core_mapping-covariates"][value="Prepared"]\').checked = true;')
 }
 
 prep_summary_module_result <- function(id) {

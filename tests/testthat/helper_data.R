@@ -1,17 +1,26 @@
-covdf <- data.frame(datapath = list.files(system.file("extdata/covariates", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/covariates", package="disagapp")))
+is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
 
-shpdf <- data.frame(datapath = list.files(system.file("extdata/shapes", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/shapes", package="disagapp")))
+covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "covariates", package = "disagapp")))
 
-aggdf <- data.frame(datapath = list.files(system.file("extdata/aggregation", package="disagapp"), full.names = TRUE),
-                    name = list.files(system.file("extdata/aggregation", package="disagapp")))
+shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "shapes", package = "disagapp")))
+
+aggdf <- data.frame(datapath = list.files(system.file("extdata", "aggregation", package = "disagapp"), full.names = TRUE),
+                    name = list.files(system.file("extdata", "aggregation", package = "disagapp")))
 
 
 df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
                             "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
                             "Planken","Vaduz"),
                  "response" = 1:11)
+
+if (is_ci){
+  df_path <- tempfile(fileext = ".csv")
+  write.csv(df, df_path)
+} else {
+  df_path <- "../../lie.csv"
+}
 
 ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden',
            'Basel-Landschaft', 'Basel-Stadt', 'Bern', 'Fribourg', 'Genève',
@@ -22,9 +31,7 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
-save_path <- "~/temprds/saved_file.rds"
-
-shp <- list.files(system.file("extdata/shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
+shp <- list.files(system.file("extdata", "shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp, quiet = TRUE)
 shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
 
@@ -37,3 +44,9 @@ country_code <- c("LIE", "CHE")
 area_column <- "area"
 resp_column <- "response"
 admin_level <- "ADM1"
+
+if (is_ci){
+  save_path <- tempfile(fileext = ".rds")
+} else {
+  save_path <- "~/temprds/saved_file.rds"
+}

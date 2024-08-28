@@ -10,6 +10,16 @@ test_that("Check resp_download function works as expected for multiple countries
   expect_equal(nrow(result), 37)
 })
 
+test_that("Check resp_download returns errors with faulty inputs", {
+  expect_error(resp_download(df, 1, resp_column, "LIE", "ADM1"), "area_column must be a character string")
+  expect_error(resp_download(df, area_column, 1, "LIE", "ADM1"), "resp_column must be a character string")
+  expect_error(resp_download(df, area_column, resp_column, 1, "ADM1"), "country_code must be a character string")
+  expect_error(resp_download(df, area_column, resp_column, "LIE", 1), "admin_level must be a character string")
+  expect_error(resp_download(df, "a", resp_column, "LIE", "ADM1"), "df does not contain the column\\(s\\): a")
+  expect_error(resp_download(df, area_column, "a", "LIE", "ADM1"), "df does not contain the column\\(s\\): a")
+  expect_error(resp_download(df, area_column, resp_column, "LIE", "a"), "admin_level must be either ADM1 or ADM2")
+  expect_error(resp_download(df, area_column, resp_column, "ZZZ", "ADM1"), "ZZZ is not a valid IS03 country code")
+})
 
 test_that("Check resp_download reports errors when data cannot be merged", {
   tdf <- df
@@ -36,13 +46,18 @@ test_that("{shinytest2} recording: e2e_resp_download", {
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
-  app$upload_file("resp_download-spread" = "../../lie.csv")
   app$upload_file("resp_download-spread" = df_path)
   app$set_inputs("resp_download-response_column" = resp_column)
   app$set_inputs("resp_download-area_column" = area_column)
   app$set_inputs("resp_download-country" = "Liechtenstein")
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
+
+  if (is_ci){
+    save_path <- tempfile(fileext = ".rds")
+  } else {
+    save_path <- "~/temprds/saved_file.rds"
+  }
 
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)

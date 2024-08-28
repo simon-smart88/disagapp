@@ -4,7 +4,7 @@
 \alias{raster_map}
 \title{raster_map}
 \usage{
-raster_map(map, common, raster, name, log = FALSE)
+raster_map(map, common, raster, name, log = FALSE, selected = NULL)
 }
 \arguments{
 \item{map}{The leafletProxy object to add the shape to}
@@ -16,6 +16,8 @@ raster_map(map, common, raster, name, log = FALSE)
 \item{name}{The name of the covariate}
 
 \item{log}{Whether to plot the raster using a log scale}
+
+\item{selected}{The layer to display}
 }
 \description{
 For internal use. Plot covariate data on the leaflet map

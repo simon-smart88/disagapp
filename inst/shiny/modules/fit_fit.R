@@ -88,7 +88,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$prep)) {
-      common$logger %>% writeLog(type = "error", "Please prepare the data first")
+      common$logger |> writeLog(type = "error", "Please prepare the data first")
       return()
     }
 
@@ -101,12 +101,12 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
                                           iterations = as.numeric(input$iterations),
                                           field = input$field,
                                           iid = input$iid)},
-    error = function(x){ common$logger %>% writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
-    warning = function(x){ common$logger %>% writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
+    error = function(x){ common$logger |> writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
+    warning = function(x){ common$logger |> writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
     )
 
     if (!is.null(common$fit)){
-      common$logger %>% writeLog("Model fitting has completed")
+      common$logger |> writeLog(type = "complete", "Model fitting has completed")
     }
 
     close_loading_modal()
@@ -119,7 +119,9 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     common$meta$fit_fit$iterations <- as.numeric(input$iterations)
     common$meta$fit_fit$field <- input$field
     common$meta$fit_fit$iid <- input$iid
-    common$meta$fit_fit$priors <- input$priors
+    if (input$priors){
+      common$meta$fit_fit$priors <- TRUE
+    }
     common$meta$fit_fit$mean_intercept <- as.numeric(input$mean_intercept)
     common$meta$fit_fit$sd_intercept <- as.numeric(input$sd_intercept)
     common$meta$fit_fit$mean_slope <- as.numeric(input$mean_slope)
@@ -155,18 +157,19 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
         plotly::plot_ly(subset_data,
                 y = ~parameter,
                 x = ~mean,
-                type = 'scatter',
-                mode = 'markers',
-                marker = list(color = 'black'),
-                error_x = list(array = ~sd, color = "blue")) %>%
+                type = "scatter",
+                mode = "markers",
+                marker = list(color = "black"),
+                error_x = list(array = ~sd, color = "blue")) |>
           plotly::layout(title = list(text = type, x = 0.5),
-                 xaxis = list(title = 'SD', showline = TRUE, zeroline = FALSE),
-                 yaxis = list(title = 'Parameter', showline = TRUE, zeroline = FALSE,
+                 xaxis = list(title = "SD", showline = TRUE, zeroline = FALSE),
+                 yaxis = list(title = "Parameter", showline = TRUE, zeroline = FALSE,
                               range = c(-1, nrow(subset_data))),
                  margin = list(t = 100))
       })
 
-      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) %>%
+      # Combine subplots into a single plot
+      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) |>
         plotly::layout(title = "Model parameters (excluding random effects)",
                showlegend = FALSE)
 
@@ -185,9 +188,10 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
 
       obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
         plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
+
         plotly::layout(title = list(text = title, x = 0.5),
-               xaxis = list(title = 'Observed', showline = TRUE, zeroline = FALSE),
-               yaxis = list(title = 'Predicted', showline = TRUE, zeroline = FALSE),
+               xaxis = list(title = "Observed", showline = TRUE, zeroline = FALSE),
+               yaxis = list(title = "Predicted", showline = TRUE, zeroline = FALSE),
                margin = list(t = 100),
                showlegend = FALSE)
 
@@ -195,41 +199,45 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     })
 
   return(list(
-    save = function() {
-list(mean_intercept = input$mean_intercept,
-sd_intercept = input$sd_intercept,
-mean_slope = input$mean_slope,
-sd_slope = input$sd_slope,
-rho_min = input$rho_min,
-rho_prob = input$rho_prob,
-sigma_max = input$sigma_max,
-sigma_prob = input$sigma_prob,
-iideffect_max = input$iideffect_max,
-iideffect_prob = input$iideffect_prob,
-family = input$family,
-link = input$link,
-field = input$field,
-iterations = input$iterations,
-iid = input$iid,
-priors = input$priors)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      iterations = input$iterations,
+      mean_intercept = input$mean_intercept,
+      sd_intercept = input$sd_intercept,
+      mean_slope = input$mean_slope,
+      sd_slope = input$sd_slope,
+      rho_min = input$rho_min,
+      rho_prob = input$rho_prob,
+      sigma_max = input$sigma_max,
+      sigma_prob = input$sigma_prob,
+      iideffect_max = input$iideffect_max,
+      iideffect_prob = input$iideffect_prob,
+      family = input$family,
+      link = input$link,
+      field = input$field,
+      iid = input$iid,
+      priors = input$priors)
     },
     load = function(state) {
-updateNumericInput(session, "mean_intercept", value = state$mean_intercept)
-updateNumericInput(session, "sd_intercept", value = state$sd_intercept)
-updateNumericInput(session, "mean_slope", value = state$mean_slope)
-updateNumericInput(session, "sd_slope", value = state$sd_slope)
-updateNumericInput(session, "rho_min", value = state$rho_min)
-updateNumericInput(session, "rho_prob", value = state$rho_prob)
-updateNumericInput(session, "sigma_max", value = state$sigma_max)
-updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
-updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
-updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
-updateNumericInput(session, "iterations", value = state$iterations)
-updateRadioButtons(session, "family", selected = state$family)
-updateRadioButtons(session, "link", selected = state$link)
-shinyWidgets::updateMaterialSwitch(session, "field", value = state$field)
-shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
-shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
+      ### Manual load start
+      ### Manual load end
+      updateNumericInput(session, "iterations", value = state$iterations)
+      updateNumericInput(session, "mean_intercept", value = state$mean_intercept)
+      updateNumericInput(session, "sd_intercept", value = state$sd_intercept)
+      updateNumericInput(session, "mean_slope", value = state$mean_slope)
+      updateNumericInput(session, "sd_slope", value = state$sd_slope)
+      updateNumericInput(session, "rho_min", value = state$rho_min)
+      updateNumericInput(session, "rho_prob", value = state$rho_prob)
+      updateNumericInput(session, "sigma_max", value = state$sigma_max)
+      updateNumericInput(session, "sigma_prob", value = state$sigma_prob)
+      updateNumericInput(session, "iideffect_max", value = state$iideffect_max)
+      updateNumericInput(session, "iideffect_prob", value = state$iideffect_prob)
+      updateRadioButtons(session, "family", selected = state$family)
+      updateRadioButtons(session, "link", selected = state$link)
+      shinyWidgets::updateMaterialSwitch(session, "field", value = state$field)
+      shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
+      shinyWidgets::updateMaterialSwitch(session, "priors", value = state$priors)
     }
   ))
 })

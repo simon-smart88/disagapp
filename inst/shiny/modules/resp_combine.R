@@ -28,13 +28,13 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
       } else if (file_format == "xlsx"){
         df <- openxlsx::read.xlsx(input$spread$datapath[1])
       } else {
-        common$logger %>% writeLog("The uploaded file was not a .csv or .xlsx")
+        common$logger |> writeLog(type = "error", "The uploaded file was not a .csv or .xlsx")
         return()
       }
       common$meta$resp_combine$spread_path <- input$spread$name[1]
 
       df
-    }) %>% bindEvent(input$spread)
+    }) |> bindEvent(input$spread)
 
     output$spread_area_column_out <- renderUI({
       req(df())
@@ -57,7 +57,7 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
 
       # WARNING ####
       if (nrow(shpdf) != 4) {
-        common$logger %>% writeLog(type = "error", "Please upload four files")
+        common$logger |> writeLog(type = "error", "Please upload four files")
         return()
       }
 
@@ -69,7 +69,7 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
       common$meta$resp_combine$shape_path <- shape_file_path
 
       return(shape)
-    }) %>% bindEvent(input$shape)
+    }) |> bindEvent(input$shape)
 
     output$shape_area_column_out <- renderUI({
       req(shape())
@@ -80,31 +80,31 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
     if (!is.null(input$reset) && (input$reset == FALSE)){
-      common$logger %>% writeLog(type = "error",
+      common$logger |> writeLog(type = "error",
                                  "Uploading new response data will delete all the existing data - toggle the switch and press the button again to continue")
       return()
     }
 
     if (is.null(input$shape)) {
-      common$logger %>% writeLog(type = "error", "Please upload a shapefile")
+      common$logger |> writeLog(type = "error", "Please upload a shapefile")
       return()
     }
 
     if (is.null(input$spread)) {
-      common$logger %>% writeLog(type = "error", "Please upload a spreadsheet")
+      common$logger |> writeLog(type = "error", "Please upload a spreadsheet")
       return()
     }
 
     if (input$spread_response_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the spreadsheet response column")
+      common$logger |> writeLog(type = "error", "Please select the spreadsheet response column")
       return()
     }
     if (input$spread_area_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the spreadsheet area column")
+      common$logger |> writeLog(type = "error", "Please select the spreadsheet area column")
       return()
     }
     if (input$shape_area_column == "") {
-      common$logger %>% writeLog(type = "error", "Please select the shapefile area column")
+      common$logger |> writeLog(type = "error", "Please select the shapefile area column")
       return()
     }
 
@@ -124,19 +124,23 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_combine")
     do.call("resp_combine_module_map", list(map, common))
-
+    common$logger |> writeLog(type = "complete", "Response data has been uploaded")
   })
 
   return(list(
-    save = function() {
-list(spread_area_column = input$spread_area_column,
-spread_response_column = input$spread_response_column,
-shape_area_column = input$shape_area_column)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      spread_area_column = input$spread_area_column, 
+      spread_response_column = input$spread_response_column, 
+      shape_area_column = input$shape_area_column)
     },
     load = function(state) {
-updateSelectInput(session, "spread_area_column", selected = state$spread_area_column)
-updateSelectInput(session, "spread_response_column", selected = state$spread_response_column)
-updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "spread_area_column", selected = state$spread_area_column) 
+      updateSelectInput(session, "spread_response_column", selected = state$spread_response_column) 
+      updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
     }
   ))
 })

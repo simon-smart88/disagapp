@@ -34,6 +34,16 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
 
+    if (is.null(common$fit)) {
+      common$logger |> writeLog(type = "error", "Please fit a model first")
+      return()
+    }
+
+    if (is.null(input$country)) {
+      common$logger |> writeLog(type = "error", "Please choose a country to transfer the model to")
+      return()
+    }
+
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
 
     # FUNCTION CALL ####
@@ -45,7 +55,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (!is.null(common$meta$cov_upload$used) & is.null(common$meta$agg_upload$used)){
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please upload covariates")
+        common$logger |> writeLog(type = "error", "Please upload covariates")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
@@ -55,7 +65,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
       if (is.null(input$agg)) {
-        common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
@@ -65,11 +75,11 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     if (!is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
       if (is.null(input$cov)) {
-        common$logger %>% writeLog(type = "error", "Please upload covariates")
+        common$logger |> writeLog(type = "error", "Please upload covariates")
         return()
       }
       if (is.null(input$agg)) {
-        common$logger %>% writeLog(type = "error", "Please upload an aggregation raster")
+        common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
       show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
@@ -80,6 +90,16 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
     # METADATA ####
     common$meta$pred_transfer$used <- TRUE
     common$meta$pred_transfer$country <- country_code
+    common$meta$pred_transfer$cov <- as.vector(input$cov$name)
+    common$meta$pred_transfer$agg <- as.vector(input$agg$name)
+    if (common$meta$prep_final$resolution == "High resolution"){
+      common$meta$pred_transfer$hires <- TRUE
+      common$meta$pred_transfer$lores <- FALSE
+    }
+    if (common$meta$prep_final$resolution == "Low resolution"){
+      common$meta$pred_transfer$hires <- FALSE
+      common$meta$pred_transfer$lores <- TRUE
+    }
 
     # TRIGGER
     gargoyle::trigger("pred_transfer")
@@ -88,28 +108,39 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
   })
 
   return(list(
-    save = function() {
-list(country = input$country)
+    save = function() {list(
+      ### Manual save start
+      ### Manual save end
+      country = input$country)
     },
     load = function(state) {
-updateSelectInput(session, "country", selected = state$country)
+      ### Manual load start
+      ### Manual load end
+      updateSelectInput(session, "country", selected = state$country)
     }
   ))
 })
 }
 
 pred_transfer_module_map <- function(map, common) {
+  ex <- as.vector(terra::ext(common$transfer$prediction))
+  map |> fitBounds(lng1 = ex[[1]], lng2 = ex[[2]], lat1 = ex[[3]], lat2 = ex[[4]])
   raster_map(map, common, common$transfer$prediction, "Transferred prediction (rate)")
   raster_map(map, common, common$transfer$cases, "Transferred prediction (cases)")
   for (layer in names(common$transfer$covariates)){
-    raster_map(map, common, common$prep$covariate_rasters[[layer]], paste0(layer, " (transferred)"))
+    raster_map(map, common, common$transfer$covariates[[layer]], paste0(layer, " (transferred)"))
   }
 }
 
 pred_transfer_module_rmd <- function(common) {
   list(
     pred_transfer_knit = !is.null(common$meta$pred_transfer$used),
-    pred_transfer_country = common$meta$pred_transfer$country
+    pred_transfer_country = common$meta$pred_transfer$country,
+    pred_transfer_cov = common$meta$pred_transfer$cov,
+    pred_transfer_agg = common$meta$pred_transfer$agg,
+    pred_transfer_hires = common$meta$pred_transfer$hires,
+    pred_transfer_lores = common$meta$pred_transfer$lores,
+    meta = common$meta
   )
 }
 

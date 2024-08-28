@@ -3,6 +3,6 @@ Download bioclim data and add to covariates list
 ```
 
 ```{r, echo = {{cov_bioclim_knit}}, include = {{cov_bioclim_knit}}}
-bioclim <- disagapp::cov_bioclim("{{cov_bioclim_country}}", {{cov_bioclim_variables}}, shape)
+bioclim <- disagapp::cov_bioclim(shape, {{cov_bioclim_country}}, {{cov_bioclim_variables}})
 covariates <- append(covariates, bioclim)
 ```

@@ -15,12 +15,11 @@ DT::datatable(covariate_summary)
 ```
 
 ```{r, echo = {{prep_summary_knit}}, include = {{prep_summary_knit}}}
+covariates$aggregation <- NULL
 covariates_prepared <- lapply(covariates, terra::resample, covariates[["{{prep_summary_resample_target}}"]])
 
 #store and then remove the prepared aggregation raster
-aggregation_prepared <- covariates_prepared$aggregation
-covariates$aggregation <- NULL
-covariates_prepared$aggregation <- NULL
+aggregation_prepared <- terra::resample(aggregation, covariates[["{{prep_summary_resample_target}}"]], method = "sum")
 
 #convert the list of SpatRasters into a multi-layered SpatRaster
 covariates_prepared <- terra::rast(covariates_prepared)

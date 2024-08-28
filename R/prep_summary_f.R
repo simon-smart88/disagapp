@@ -1,31 +1,51 @@
-#' @title prep_summary
+#' @title Summarise properties of raster data
 #' @description
 #' Summarises the properties of a list of SpatRasters
 #'
 #' @param covs list. List of SpatRasters
 #' @param remove logical. Whether to remove columns where all values are equal
+#' @param logger Stores all notification messages to be displayed in the Log
+#'   Window. Insert the logger reactive list here for running in
+#'   shiny, otherwise leave the default NULL
 #' @return a dataframe containing columns for the resolution, origin, min and
 #' max coordinates, coordinate reference system and number of cells.
 #' @author Simon Smart <simon.smart@@cantab.net>
+#' @examples
+#' covariate_files <- list.files(system.file("extdata", "covariates",
+#'                               package = "disagapp"), full.names = TRUE)
+#' covariate_list <- lapply(covariate_files, terra::rast)
+#' covariates <- terra::rast(covariate_list)
+#' covariate_summary <- prep_summary(covs = covariates)
 #' @export
 
-prep_summary <- function(covs, remove = FALSE){
+prep_summary <- function(covs, remove = FALSE, logger = NULL){
+
+  if (!inherits(covs, "list")){
+    logger |> writeLog(type = "error", "covs must be a list")
+    return()
+  }
+
+  if (!all(unlist(lapply(covs, inherits, "SpatRaster")))){
+    logger |> writeLog(type = "error", "All objects in covs must be SpatRasters")
+    return()
+  }
+
   cov_res <- lapply(covs, terra::res)
-  x_res <- unlist(cov_res)[seq(1,length(covs)*2, 2)]
-  y_res <- unlist(cov_res)[seq(2,length(covs)*2, 2)]
+  x_res <- unlist(cov_res)[seq(1, length(covs) * 2, 2)]
+  y_res <- unlist(cov_res)[seq(2, length(covs )* 2, 2)]
 
   cov_ext <- lapply(covs, terra::ext)
-  cov_ext <- lapply(cov_ext,as.vector)
-  cov_ext <- lapply(cov_ext,unlist)
+  cov_ext <- lapply(cov_ext, as.vector)
+  cov_ext <- lapply(cov_ext, unlist)
   cov_ext <- as.data.frame(t(as.data.frame(cov_ext)))
 
   cov_origin <- lapply(covs, terra::origin)
-  x_origin <- format(unlist(cov_origin)[seq(1, length(covs)*2, 2)], scientific = TRUE)
-  y_origin <- format(unlist(cov_origin)[seq(2, length(covs)*2, 2)], scientific = TRUE)
+  x_origin <- format(unlist(cov_origin)[seq(1, length(covs) * 2, 2)], scientific = TRUE)
+  y_origin <- format(unlist(cov_origin)[seq(2, length(covs) * 2, 2)], scientific = TRUE)
 
   cov_crs <- unlist(lapply(covs, terra::crs, proj = TRUE))
-  crs_proj <- sub("^.*\\bproj=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
-  crs_datum <- sub("^.*\\bdatum=([^\\s]+).*", "\\1", cov_crs, perl=TRUE)
+  crs_proj <- sub("^.*\\bproj=([^\\s]+).*", "\\1", cov_crs, perl = TRUE)
+  crs_datum <- sub("^.*\\bdatum=([^\\s]+).*", "\\1", cov_crs, perl = TRUE)
 
   cov_ncell <- lapply(covs, terra::ncell)
 
@@ -44,7 +64,7 @@ prep_summary <- function(covs, remove = FALSE){
                         "Y minimum", "Y maximum"
                         )
 
-  if (remove == TRUE){
+  if (remove){
     # remove columns with the same values
     cov_df <- cov_df[vapply(cov_df, function(x) length(unique(x)) > 1, logical(1L))]
   }

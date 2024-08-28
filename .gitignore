@@ -33,7 +33,5 @@ inst/shiny/install*
 _modules
 _shiny
 .Renviron
-lie.csv
-lie_che.csv
-lie_data.rds
+lie*.rds
 .httr-oauth
