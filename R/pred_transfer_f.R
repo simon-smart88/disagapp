@@ -102,7 +102,7 @@ covs_prep <- terra::rast(covs_prep)
 if (common$meta$prep_final$resolution == "High resolution"){
 
   # generate the prediction
-  transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep)
+  transfer <- disaggregation::predict_model(common$fit, new_data = covs_prep)
 
   # convert to cases
   transfer$agg <- agg
@@ -117,7 +117,7 @@ if (common$meta$prep_final$resolution == "Low resolution"){
   agg_lores <- terra::aggregate(agg, fact = common$meta$prep_resolution$factor, fun = "sum")
 
   # generate the prediction
-  transfer <- disaggregation::predict_model(common$fit, newdata = covs_prep_lores)
+  transfer <- disaggregation::predict_model(common$fit, new_data = covs_prep_lores)
 
   # convert to cases
   transfer$agg <- agg_lores
