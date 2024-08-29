@@ -69,7 +69,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     result <- common$tasks$prep_mesh$result()
     common$mesh <- result
     results$suspend()
-    common$logger |> writeLog(type = "complete", "The mesh has been built")
+    common$logger |> writeLog(type = "complete", glue::glue("The mesh has been built and has {common$mesh$n} nodes"))
     # TRIGGER
     gargoyle::trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))
