@@ -3,7 +3,13 @@ Build the spatial mesh
 ```
 
 ```{r, echo = {{prep_mesh_knit}}, include = {{prep_mesh_knit}}}
-mesh <- disaggregation::build_mesh(shape, mesh_args = list(max.edge = {{prep_mesh_edge}}, 
-                                                      cut = {{prep_mesh_cut}},
-                                                      offset = {{prep_mesh_offset}}))
+mesh <- disaggregation::build_mesh(shape, 
+                                   mesh_args = list(
+                                    convex = {{prep_mesh_convex}},
+                                    concave = {{prep_mesh_concave}},
+                                    resolution = {{prep_mesh_resolution}},
+                                    max.edge = {{prep_mesh_edge}}, 
+                                    cut = {{prep_mesh_cut}},
+                                    offset = {{prep_mesh_offset}}))
+    
 ```

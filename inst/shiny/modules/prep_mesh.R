@@ -1,6 +1,9 @@
 prep_mesh_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
+    sliderInput(ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
+    sliderInput(ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
+    sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10),
     sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
     sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
     sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
@@ -42,12 +45,20 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
-    common$tasks$prep_mesh$invoke(common$shape, mesh_args = list(max.edge = input$mesh_edge,
-                                                              cut = input$mesh_cut,
-                                                              offset = input$offset))
+    common$tasks$prep_mesh$invoke(common$shape,
+                                  mesh_args = list(
+                                    convex = input$convex,
+                                    concave = input$concave,
+                                    resolution = input$resolution,
+                                    max.edge = input$mesh_edge,
+                                    cut = input$mesh_cut,
+                                    offset = input$offset))
 
     # METADATA ####
     common$meta$prep_mesh$used <- TRUE
+    common$meta$prep_mesh$convex  <- input$convex
+    common$meta$prep_mesh$concave  <- input$concave
+    common$meta$prep_mesh$resolution  <- input$resolution
     common$meta$prep_mesh$mesh_edge <- input$mesh_edge
     common$meta$prep_mesh$mesh_cut <- input$mesh_cut
     common$meta$prep_mesh$mesh_offset <- input$mesh_offset
@@ -71,6 +82,9 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
+      convex = input$convex,
+      concave = input$concave,
+      resolution = input$resolution,
       mesh_edge = input$mesh_edge,
       mesh_cut = input$mesh_cut,
       mesh_offset = input$mesh_offset)
@@ -78,6 +92,9 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     load = function(state) {
       ### Manual load start
       ### Manual load end
+      updateSliderInput(session, "convex", value = state$convex)
+      updateSliderInput(session, "concave", value = state$concave)
+      updateSliderInput(session, "resolution", value = state$resolution)
       updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
       updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
       updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
@@ -94,6 +111,9 @@ prep_mesh_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     prep_mesh_knit = !is.null(common$meta$prep_mesh$used),
+    prep_mesh_convex = common$meta$prep_mesh$convex,
+    prep_mesh_concave = common$meta$prep_mesh$concave,
+    prep_mesh_resolution = common$meta$prep_mesh$resolution,
     prep_mesh_edge = printVecAsis(common$meta$prep_mesh$mesh_edge),
     prep_mesh_cut = common$meta$prep_mesh$mesh_cut,
     prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset)
