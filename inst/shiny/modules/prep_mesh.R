@@ -42,7 +42,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
-    common$tasks$prep_mesh$invoke(common$shape, mesh.args = list(max.edge = input$mesh_edge,
+    common$tasks$prep_mesh$invoke(common$shape, mesh_args = list(max.edge = input$mesh_edge,
                                                               cut = input$mesh_cut,
                                                               offset = input$offset))
 
@@ -71,15 +71,15 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      mesh_edge = input$mesh_edge, 
-      mesh_cut = input$mesh_cut, 
+      mesh_edge = input$mesh_edge,
+      mesh_cut = input$mesh_cut,
       mesh_offset = input$mesh_offset)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSliderInput(session, "mesh_edge", value = state$mesh_edge) 
-      updateSliderInput(session, "mesh_cut", value = state$mesh_cut) 
+      updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
+      updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
       updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
     }
   ))
