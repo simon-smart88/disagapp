@@ -81,7 +81,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                  response_var = as.character(input$resp_var),
                                                  na_action = input$na_action,
                                                  make_mesh = FALSE)},
-                             error = function(x){ common$logger %>% writeLog(type = "error",
+                             error = function(x){ common$logger |> writeLog(type = "error",
                                paste0("An error occurred whilst preparing the data: ", x))})
     } else {
      common$prep <- tryCatch({disaggregation::prepare_data(polygon_shapefile = common$shape,
@@ -91,7 +91,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                   response_var = as.character(input$resp_var),
                                                   na_action = input$na_action,
                                                   make_mesh = FALSE)},
-                             error = function(x){ common$logger %>% writeLog(type = "error",
+                             error = function(x){ common$logger |> writeLog(type = "error",
                                 paste0("An error occurred whilst preparing the data: ", x))})
     }
 
