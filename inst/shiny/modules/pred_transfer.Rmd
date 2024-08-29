@@ -133,7 +133,7 @@ Decrease covariate resolution and generate the transferred predictions
 transfer_covariates_prepared_lores <- terra::aggregate(transfer_covariates_prepared, fact = {{meta$prep_resolution$factor}}, fun = "mean")
 transfer_aggregation_lores <- terra::aggregate(transfer_aggregation, fact = {{meta$prep_resolution$factor}}, fun = "sum")
 
-transfer_predictions <- disaggregation::predict_model(fitted_model, newdata = transfer_covariates_prepared)
+transfer_predictions <- disaggregation::predict_model(fitted_model, new_data = transfer_covariates_prepared)
 transfer_predictions$cases <- transfer_predictions$prediction * transfer_aggregation 
 
 plot(transfer_predictions)
@@ -145,7 +145,7 @@ Generate the transferred predictions
 ```
 
 ```{r, echo = {{all(c(pred_transfer_knit, pred_transfer_hires))}}, include = {{all(c(pred_transfer_knit, pred_transfer_hires))}}}
-transfer_predictions <- disaggregation::predict_model(fitted_model, newdata = transfer_covariates_prepared)
+transfer_predictions <- disaggregation::predict_model(fitted_model, new_data = transfer_covariates_prepared)
 transfer_predictions$cases <- transfer_predictions$prediction * transfer_aggregation 
 
 plot(transfer_predictions)

@@ -79,8 +79,8 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                  aggregation_raster = common$agg_prep,
                                                  id_var = as.character(input$id_var),
                                                  response_var = as.character(input$resp_var),
-                                                 na.action = input$na_action,
-                                                 makeMesh = FALSE)},
+                                                 na_action = input$na_action,
+                                                 make_mesh = FALSE)},
                              error = function(x){ common$logger |> writeLog(type = "error",
                                paste0("An error occurred whilst preparing the data: ", x))})
     } else {
@@ -89,8 +89,8 @@ prep_final_module_server <- function(id, common, parent_session, map) {
                                                   aggregation_raster = common$agg_prep_lores,
                                                   id_var = as.character(input$id_var),
                                                   response_var = as.character(input$resp_var),
-                                                  na.action = input$na_action,
-                                                  makeMesh = FALSE)},
+                                                  na_action = input$na_action,
+                                                  make_mesh = FALSE)},
                              error = function(x){ common$logger |> writeLog(type = "error",
                                 paste0("An error occurred whilst preparing the data: ", x))})
     }
@@ -118,17 +118,17 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      id_var = input$id_var, 
-      resp_var = input$resp_var, 
-      resolution = input$resolution, 
+      id_var = input$id_var,
+      resp_var = input$resp_var,
+      resolution = input$resolution,
       na_action = input$na_action)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "id_var", selected = state$id_var) 
-      updateSelectInput(session, "resp_var", selected = state$resp_var) 
-      updateSelectInput(session, "resolution", selected = state$resolution) 
+      updateSelectInput(session, "id_var", selected = state$id_var)
+      updateSelectInput(session, "resp_var", selected = state$resp_var)
+      updateSelectInput(session, "resolution", selected = state$resolution)
       shinyWidgets::updateMaterialSwitch(session, "na_action", value = state$na_action)
     }
   ))

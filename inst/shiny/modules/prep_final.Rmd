@@ -9,8 +9,8 @@ prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
                                      aggregation_raster = aggregation_prepared,
                                      id_var = "{{prep_id_var}}",
                                      response_var = "{{prep_resp_var}}",
-                                     na.action = {{prep_na_action}},
-                                     makeMesh = FALSE)
+                                     na_action = {{prep_na_action}},
+                                     make_mesh = FALSE)
 
 prepared_data$mesh <- mesh
 
