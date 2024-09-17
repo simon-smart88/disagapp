@@ -1,3 +1,43 @@
+
+#' @title Fetch a token from the NASA API
+#' @description
+#' This function is called by the cov_nightlight module and downloads annual
+#' data on night time illumination from NASA (product ID VNP46A4) using the
+#' blackmarbler package. You must obtain and a token from NASA to use this
+#' function and set an environmental variable called `NASA_bearer` to contain it.
+#' It returns a SpatRaster for the selected area and year.
+#'
+#' @param username character. NASA Earthdata username
+#' @param password character. NASA Earthdata password
+#' @return A character string containing the token
+#' @author Simon Smart <simon.smart@@cantab.net>
+#' @export
+
+get_nasa_token <- function(username, password) {
+
+  token_url <- "https://urs.earthdata.nasa.gov/api/users/find_or_create_token"
+
+  req <- httr2::request(token_url)
+
+  response <- tryCatch(
+    req |>
+      httr2::req_auth_basic(username, password) |>
+      httr2::req_method("POST") |>
+      httr2::req_perform(),
+    httr2_http_401 = function(cnd){NULL}
+  )
+
+  if (response$status_code == 200) {
+    body <- response %>% httr2::resp_body_json()
+    token <- body$access_token
+    return(token)
+  } else {
+    return()
+  }
+
+}
+
+
 #' @title Download nighttime illumination data from using blackmarbler
 #' @description
 #' This function is called by the cov_nightlight module and downloads annual
@@ -62,10 +102,10 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     }
   }
 
-  shape <- sf::st_buffer(shape, 0.001)
+  shape <- sf::st_boundary(shape)
   shape <- sf::st_as_sf(sf::st_union(shape))
 
-  ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
+    ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                           product_id = "VNP46A4",
                           date = year,
                           bearer = bearer,

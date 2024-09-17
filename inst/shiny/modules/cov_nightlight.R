@@ -13,13 +13,13 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
 
   #use the environmental variable if set, if not display box to enter it
   output$bearer_out <- renderUI({
-    if (Sys.getenv("NASA_bearer") == ""){
+    if (Sys.getenv("NASA_username") == ""){
     textInput(session$ns("bearer"), "NASA bearer token")}
   })
 
   bearer <- reactive({
-  if (Sys.getenv("NASA_bearer") != ""){
-    bearer = Sys.getenv("NASA_bearer")
+  if (Sys.getenv("NASA_username") != ""){
+    bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
   } else {
     bearer = input$bearer
   }
@@ -82,13 +82,13 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      year = input$year, 
+      year = input$year,
       bearer = input$bearer)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "year", selected = state$year) 
+      updateSelectInput(session, "year", selected = state$year)
       updateTextInput(session, "bearer", value = state$bearer)
     }
   ))
