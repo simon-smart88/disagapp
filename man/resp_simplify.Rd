@@ -2,7 +2,7 @@
 % Please edit documentation in R/resp_simplify_f.R
 \name{resp_simplify}
 \alias{resp_simplify}
-\title{resp_simplify}
+\title{Simplify geometry of boundary data}
 \usage{
 resp_simplify(shape, distance, logger = NULL)
 }

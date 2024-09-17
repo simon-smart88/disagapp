@@ -2,7 +2,7 @@
 % Please edit documentation in R/cov_access_f.R
 \name{cov_access}
 \alias{cov_access}
-\title{cov_access}
+\title{Download accessibility data from Malaria Atlas Project}
 \usage{
 cov_access(shape, layer, async = FALSE)
 }

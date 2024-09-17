@@ -2,14 +2,14 @@
 % Please edit documentation in R/agg_upload_f.R
 \name{agg_upload}
 \alias{agg_upload}
-\title{agg_upload}
+\title{Upload an aggregation raster}
 \usage{
-agg_upload(path, shape, logger = NULL)
+agg_upload(shape, path, logger = NULL)
 }
 \arguments{
-\item{path}{character. The location of the file to be loaded.}
-
 \item{shape}{sf. sf object containing the area of interest}
+
+\item{path}{character. The location of the file to be loaded.}
 
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
@@ -28,7 +28,7 @@ path <- list.files(system.file("extdata/aggregation",
 shp_file <- list.files(system.file("extdata/shapes",
         package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp_file, quiet = TRUE)
-raster <- agg_upload(path = path, shape = shape)
+raster <- agg_upload(shape = shape, path = path)
 
 }
 \author{

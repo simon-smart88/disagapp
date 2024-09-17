@@ -2,7 +2,7 @@
 % Please edit documentation in R/agg_worldpop_f.R
 \name{agg_worldpop}
 \alias{agg_worldpop}
-\title{agg_worldpop}
+\title{Download an aggregation raster from WorldPop}
 \usage{
 agg_worldpop(shape, country_code, method, resolution, year, async = FALSE)
 }
@@ -25,7 +25,7 @@ when \code{async} is \code{TRUE}.
 }
 \description{
 This function is called by the agg_worldpop module and downloads data on
-population density for a single country from worldpop
+population density for a single country from WorldPop
 }
 \examples{
 x_min <- 9.47

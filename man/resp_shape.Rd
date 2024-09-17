@@ -2,7 +2,7 @@
 % Please edit documentation in R/resp_shape_f.R
 \name{resp_shape}
 \alias{resp_shape}
-\title{resp_shape}
+\title{Upload response data from a shapefile}
 \usage{
 resp_shape(shpdf, logger = NULL)
 }

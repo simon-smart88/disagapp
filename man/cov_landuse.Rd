@@ -2,7 +2,7 @@
 % Please edit documentation in R/cov_landuse_f.R
 \name{cov_landuse}
 \alias{cov_landuse}
-\title{cov_landuse}
+\title{Download land use data from Copernicus Global Land Service}
 \usage{
 cov_landuse(shape, year, landuses, async = FALSE)
 }

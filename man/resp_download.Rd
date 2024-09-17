@@ -2,7 +2,7 @@
 % Please edit documentation in R/resp_download_f.R
 \name{resp_download}
 \alias{resp_download}
-\title{resp_download}
+\title{Merge response data with a downloaded shapefile}
 \usage{
 resp_download(
   df,

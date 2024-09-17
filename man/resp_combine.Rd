@@ -2,7 +2,7 @@
 % Please edit documentation in R/resp_combine_f.R
 \name{resp_combine}
 \alias{resp_combine}
-\title{resp_combine}
+\title{Merge response data with a shapefile}
 \usage{
 resp_combine(
   df,

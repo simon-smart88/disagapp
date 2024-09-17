@@ -2,7 +2,7 @@
 % Please edit documentation in R/resp_edit_f.R
 \name{resp_edit}
 \alias{resp_edit}
-\title{resp_edit}
+\title{Remove polygons from response data}
 \usage{
 resp_edit(shape, poly, type, logger = NULL)
 }
@@ -22,8 +22,8 @@ shiny, otherwise leave the default NULL}
 an sf object
 }
 \description{
-This function is called by the resp_edit module and merges response data
-from a spreadsheet with boundary data into an sf object
+This function is called by the resp_edit module and removes polygons from the
+response data depending on whether they are inside or outside of a polygon.
 }
 \examples{
 polygons <- list()

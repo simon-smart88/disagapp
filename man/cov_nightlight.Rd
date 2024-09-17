@@ -2,7 +2,7 @@
 % Please edit documentation in R/cov_nightlight_f.R
 \name{cov_nightlight}
 \alias{cov_nightlight}
-\title{cov_nightlight}
+\title{Download nighttime illumination data from using blackmarbler}
 \usage{
 cov_nightlight(shape, year, bearer, async = FALSE)
 }

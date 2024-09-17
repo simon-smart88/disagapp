@@ -2,7 +2,7 @@
 % Please edit documentation in R/cov_water_f.R
 \name{cov_water}
 \alias{cov_water}
-\title{cov_water}
+\title{Download data on the distance to water from ArcGIS}
 \usage{
 cov_water(shape, token, async = FALSE)
 }

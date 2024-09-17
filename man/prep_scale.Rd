@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_scale_f.R
 \name{prep_scale}
 \alias{prep_scale}
-\title{prep_scale}
+\title{Scale the covariates}
 \usage{
 prep_scale(covs, logger = NULL)
 }

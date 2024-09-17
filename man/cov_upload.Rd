@@ -2,15 +2,15 @@
 % Please edit documentation in R/cov_upload_f.R
 \name{cov_upload}
 \alias{cov_upload}
-\title{cov_upload}
+\title{Upload covariates}
 \usage{
-cov_upload(path_df, shape, logger = NULL)
+cov_upload(shape, path_df, logger = NULL)
 }
 \arguments{
+\item{shape}{sf. sf object containing the area of interest}
+
 \item{path_df}{data.frame. Containing \code{datapath} and \code{name} columns of the
 file(s) to be uploaded.}
-
-\item{shape}{sf. sf object containing the area of interest}
 
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
@@ -33,7 +33,7 @@ cov_df <- data.frame(datapath = list.files(system.file("extdata", "covariates",
 shp_file <- list.files(system.file("extdata", "shapes", package="disagapp"),
                        pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp_file, quiet = TRUE)
-rasters <- cov_upload(path_df = cov_df, shape = shape)
+rasters <- cov_upload(shape = shape, path_df = cov_df)
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

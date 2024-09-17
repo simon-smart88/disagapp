@@ -2,7 +2,7 @@
 % Please edit documentation in R/pred_transfer_f.R
 \name{pred_transfer}
 \alias{pred_transfer}
-\title{pred_transfer}
+\title{Transfer predictions to a new country}
 \usage{
 pred_transfer(country, common, covdf = NULL, aggdf = NULL, logger = NULL)
 }

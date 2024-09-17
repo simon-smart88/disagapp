@@ -2,11 +2,13 @@
 % Please edit documentation in R/cov_bioclim_f.R
 \name{cov_bioclim}
 \alias{cov_bioclim}
-\title{cov_bioclim}
+\title{Download bioclimatic data from Bioclim}
 \usage{
-cov_bioclim(country_code, variables, shape, async = FALSE)
+cov_bioclim(shape, country_code, variables, async = FALSE)
 }
 \arguments{
+\item{shape}{sf. sf object containing the area of interest}
+
 \item{country_code}{vector. ISO3 code of the country or countries.}
 
 \item{variables}{vector. List of the bioclimatic variables to be returned.
@@ -19,8 +21,6 @@ Options are: \verb{Mean temperature}, \verb{Mean diurnal range}, \code{Isotherma
 \verb{Precipitation driest month}, \verb{Precipitation seasonality},
 \verb{Precipitation wettest quarter}, \verb{Precipitation driest quarter},
 \verb{Precipitation warmest quarter}, \verb{Precipitation coldest quarter}}
-
-\item{shape}{sf. sf object containing the area of interest}
 
 \item{async}{logical. Whether or not the function is being used asynchronously}
 }
@@ -44,9 +44,10 @@ poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
 poly <- sf::st_polygon(list(poly_matrix))
 shape <- sf::st_sf(1, geometry = list(poly))
 sf::st_crs(shape) = 4326
-raster <- cov_bioclim(country_code = "LIE",
-                      variables = c("Mean temperature", "Mean diurnal range"),
-                      shape = shape)
+raster <- cov_bioclim(shape = shape,
+                      country_code = "LIE",
+                      variables = c("Mean temperature", "Mean diurnal range"))
+
 
 }
 \author{

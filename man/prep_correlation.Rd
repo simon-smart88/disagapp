@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_correlation_f.R
 \name{prep_correlation}
 \alias{prep_correlation}
-\title{prep_correlation}
+\title{Produce a correlation matrix of covariates}
 \usage{
 prep_correlation(covariates, logger = NULL)
 }

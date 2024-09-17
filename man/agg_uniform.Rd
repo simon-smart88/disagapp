@@ -2,12 +2,16 @@
 % Please edit documentation in R/agg_uniform_f.R
 \name{agg_uniform}
 \alias{agg_uniform}
-\title{agg_uniform}
+\title{Create a uniform aggregation raster}
 \usage{
-agg_uniform(template)
+agg_uniform(template, logger = NULL)
 }
 \arguments{
 \item{template}{SpatRaster. Raster image to use as a template}
+
+\item{logger}{Stores all notification messages to be displayed in the Log
+Window. Insert the logger reactive list here for running in
+shiny, otherwise leave the default NULL}
 }
 \value{
 a SpatRaster object

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prep_summary_f.R
 \name{prep_summary}
 \alias{prep_summary}
-\title{prep_summary}
+\title{Summarise properties of raster data}
 \usage{
 prep_summary(covs, remove = FALSE, logger = NULL)
 }
