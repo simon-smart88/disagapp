@@ -102,8 +102,8 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     }
   }
 
-  shape <- sf::st_boundary(shape)
-  shape <- sf::st_as_sf(sf::st_union(shape))
+  req_shape <- sf::st_boundary(shape)
+  req_shape <- sf::st_as_sf(sf::st_union(req_shape))
 
     ras <- tryCatch({blackmarbler::bm_raster(roi_sf = shape,
                           product_id = "VNP46A4",
