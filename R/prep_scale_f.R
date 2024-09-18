@@ -25,7 +25,7 @@ prep_scale <- function(covs, logger = NULL){
   }
 
   if (terra::nlyr(covs) < 2){
-    logger |> writeLog(type = "error", "You must have more than one covariate to plot a correlation matrix")
+    logger |> writeLog(type = "error", "You must have more than one covariate to scale them")
     return()
   }
 

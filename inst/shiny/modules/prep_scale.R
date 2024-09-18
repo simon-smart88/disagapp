@@ -16,18 +16,22 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
     }
     # FUNCTION CALL ####
     scaled_covariates <- prep_scale(common$covs_prep, common$logger)
-    common$logger |> writeLog(type = "complete", "Covariates have been scaled")
 
-    # LOAD INTO COMMON ####
-    common$covs_prep <- scaled_covariates[["covariates"]]
+    if (!is.null(scaled_covariates)){
+      common$logger |> writeLog(type = "complete", "Covariates have been scaled")
 
-    # METADATA ####
-    common$meta$prep_scale$used <- TRUE
-    common$meta$prep_scale$parameters <- scaled_covariates[["parameters"]]
+      # LOAD INTO COMMON ####
+      common$covs_prep <- scaled_covariates[["covariates"]]
 
-    # TRIGGER
-    gargoyle::trigger("prep_scale")
-    do.call("prep_scale_module_map", list(map, common))
+      # METADATA ####
+      common$meta$prep_scale$used <- TRUE
+      common$meta$prep_scale$parameters <- scaled_covariates[["parameters"]]
+
+      # TRIGGER
+      gargoyle::trigger("prep_scale")
+      do.call("prep_scale_module_map", list(map, common))
+    }
+
   })
 
 })
