@@ -24,5 +24,8 @@ Satellite imagery of the intensity of nighttime lights. Provided by NASA via `{b
 #### <span class="module_choice">Distance to water</span>
 The distance to surface water. Provided by ESRI using data from USGS and ESA.
 
+#### <span class="module_choice">Population density</span>
+Human population density, provided by Worldpop.
+
 #### <span class="module_choice">Upload</span>
 Upload your own covariates in the `.tif` format.

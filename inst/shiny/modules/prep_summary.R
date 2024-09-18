@@ -20,7 +20,9 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       gargoyle::watch("cov_nightlight")
       gargoyle::watch("cov_water")
       gargoyle::watch("cov_upload")
+      gargoyle::watch("cov_worldpop")
       gargoyle::watch("agg_worldpop")
+      gargoyle::watch("agg_landuse")
       gargoyle::watch("agg_upload")
       gargoyle::watch("agg_uniform")
       req(length(common$covs) > 0)
@@ -74,8 +76,19 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       }
 
       # FUNCTION CALL ####
-      common$covs_prep <- lapply(common$covs, terra::resample, common$covs[[input$resample_layer]])
-      common$agg_prep <- terra::resample(common$agg,  common$covs[[input$resample_layer]], method = "sum")
+
+      if (input$resample_layer %in% names(common$covs)){
+        resample_template <- common$covs[[input$resample_layer]]
+      } else {
+        resample_template <- common$agg
+      }
+
+      common$covs_prep <- lapply(common$covs, terra::resample, resample_template)
+      if (names(common$agg) == "Population"){
+        common$agg_prep <- terra::resample(common$agg, resample_template, method = "sum")
+      } else {
+        common$agg_prep <- terra::resample(common$agg, resample_template)
+      }
 
       common$covs_prep$Aggregation <- common$agg_prep
       common$covs_summary$resampled <- prep_summary(common$covs_prep, remove = input$remove)

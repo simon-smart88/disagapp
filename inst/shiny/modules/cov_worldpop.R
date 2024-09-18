@@ -1,4 +1,4 @@
-agg_worldpop_module_ui <- function(id) {
+cov_worldpop_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
@@ -11,7 +11,7 @@ agg_worldpop_module_ui <- function(id) {
   )
 }
 
-agg_worldpop_module_server <- function(id, common, parent_session, map) {
+cov_worldpop_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$country_out <- country_out(session, common)
@@ -25,7 +25,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     }
   })
 
-  common$tasks$agg_worldpop <- ExtendedTask$new(function(...) {
+  common$tasks$cov_worldpop <- ExtendedTask$new(function(...) {
     promises::future_promise({
       agg_worldpop(...)
     }, seed = TRUE)
@@ -42,42 +42,43 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
+
     # FUNCTION CALL ####
     country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
     common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
-    common$tasks$agg_worldpop$invoke(common$shape, country_code, input$method, input$resolution, as.numeric(input$year), TRUE)
+    common$tasks$cov_worldpop$invoke(common$shape, country_code, input$method, input$resolution, as.numeric(input$year), TRUE)
     results$resume()
-    # METADATA ####
-    common$meta$agg_worldpop$name <- "Population"
-    common$meta$agg_worldpop$log <- input$log
-    common$meta$agg_worldpop$used <- TRUE
-    common$meta$agg_worldpop$country <- country_code
-    common$meta$agg_worldpop$method <- input$method
-    common$meta$agg_worldpop$resolution <- input$resolution
-    common$meta$agg_worldpop$year <- as.numeric(input$year)
 
-    common$selected_country <- input$country
-    gargoyle::trigger("country_out")
+    # METADATA ####
+    common$meta$cov_worldpop$name <- "Population density"
+    common$meta$cov_worldpop$log <- input$log
+    common$meta$cov_worldpop$used <- TRUE
+    common$meta$cov_worldpop$country <- country_code
+    common$meta$cov_worldpop$method <- input$method
+    common$meta$cov_worldpop$resolution <- input$resolution
+    common$meta$cov_worldpop$year <- as.numeric(input$year)
+
+    # TRIGGER
+    gargoyle::trigger("cov_worldpop")
   })
 
   results <- observe({
     # LOAD INTO COMMON ####
-    result <- common$tasks$agg_worldpop$result()
+    result <- common$tasks$cov_worldpop$result()
     results$suspend()
     if (class(result) == "PackedSpatRaster"){
       result <- unwrap_terra(result)
-      common$agg <- result
-      names(common$agg) <- "Population"
+      # convert from count to density in km2
+      common$covs[["Population density"]] <- result / terra::cellSize(result, unit = "km")
       common$logger |> writeLog(type = "complete", "Worldpop data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("agg_worldpop")
-      do.call("agg_worldpop_module_map", list(map, common))
-      shinyjs::runjs("Shiny.setInputValue('agg_worldpop-complete', 'complete');")
+      gargoyle::trigger("cov_worldpop")
+      do.call("cov_worldpop_module_map", list(map, common))
+      shinyjs::runjs("Shiny.setInputValue('cov_worldpop-complete', 'complete');")
     } else {
       common$logger |> writeLog(type = "error", result)
     }
   })
-
 
   return(list(
     save = function() {list(
@@ -102,18 +103,18 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
 })
 }
 
-agg_worldpop_module_map <- function(map, common) {
-  raster_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
+cov_worldpop_module_map <- function(map, common) {
+  raster_map(map, common, common$covs[["Population density"]], "Population density", common$meta$cov_worldpop$log)
 }
 
-agg_worldpop_module_rmd <- function(common) {
+cov_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
-    agg_worldpop_knit = !is.null(common$meta$agg_worldpop$used),
-    agg_worldpop_country = printVecAsis(common$meta$agg_worldpop$country),
-    agg_worldpop_method = common$meta$agg_worldpop$method,
-    agg_worldpop_resolution = common$meta$agg_worldpop$resolution,
-    agg_worldpop_year = common$meta$agg_worldpop$year
+    cov_worldpop_knit = !is.null(common$meta$cov_worldpop$used),
+    cov_worldpop_country = printVecAsis(common$meta$cov_worldpop$country),
+    cov_worldpop_method = common$meta$cov_worldpop$method,
+    cov_worldpop_resolution = common$meta$cov_worldpop$resolution,
+    cov_worldpop_year = common$meta$cov_worldpop$year
   )
 }
 

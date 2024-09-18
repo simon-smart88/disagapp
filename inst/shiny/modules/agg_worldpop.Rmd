@@ -1,5 +1,5 @@
 ```{asis, echo = {{agg_worldpop_knit}}, eval = {{agg_worldpop_knit}}, include = {{agg_worldpop_knit}}}
-Download population data from worldpop
+Download population count data from Worldpop
 ```
 
 ```{r, echo = {{agg_worldpop_knit}}, include = {{agg_worldpop_knit}}}

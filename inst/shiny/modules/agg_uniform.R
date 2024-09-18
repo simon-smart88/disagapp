@@ -23,6 +23,7 @@ agg_uniform_module_server <- function(id, common, parent_session, map) {
 
     # METADATA ####
     common$meta$agg_uniform$used <- TRUE
+    common$meta$agg_uniform$log <- FALSE
 
     # TRIGGER
     gargoyle::trigger("agg_uniform")

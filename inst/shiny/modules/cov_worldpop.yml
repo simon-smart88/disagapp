@@ -1,0 +1,6 @@
+component: "cov"
+short_name: "Population density"
+long_name: "Download population density from Worldpop"
+authors: "Simon E H Smart"
+package: [terra, httr2]
+class: choice

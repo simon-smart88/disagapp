@@ -1,6 +1,6 @@
 component: "agg"
 short_name: "Worldpop"
-long_name: "Download population density from Worldpop"
+long_name: "Download population counts from Worldpop"
 authors: "Simon E H Smart"
-package: [terra]
+package: [terra, httr2]
 class: choice

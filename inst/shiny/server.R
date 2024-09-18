@@ -1,7 +1,5 @@
 function(input, output, session) {
 
-
-
   ########################## #
   # LOAD COMMON ####
   ########################## #
@@ -138,8 +136,6 @@ function(input, output, session) {
       }
     })
   })
-
-
 
   ################################
   ### SAVE / LOAD  ####

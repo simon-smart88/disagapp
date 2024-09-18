@@ -7,10 +7,15 @@ output: html_document
 
 **ORIENTATION**
 
-This component loads the aggregation data. This is typically population count data. You must use at least one module before proceeding to the next component. 
+This component loads the aggregation data which can be thought of as a weighting factor in the model. For human disease modelling the aggregation raster is typically population count data because pixels that contain more people are expected to have a higher incidence of disease than pixels that contain fewer people. For other forms of response data, land use data may be more appropriate as the aggregation raster - for example if the response data was the incidence of a tree disease, then the tree land cover is equivalent to population. In other circumstances, it may be appropriate to not include an aggregation raster in which case a uniform raster should be selected - for example if the response data was average air pollution within the polygon, there may be no way of knowing where in the polygon the pollution was generated.
+
+You must use at least one module before proceeding to the next component. 
 
 #### <span class="module_choice">Worldpop</span>
 Population count data provided by Worldpop.
+
+#### <span class="module_choice">Land use</span>
+The percentage of land covered by different classes of land use. Provided by the Copernicus programme.
 
 #### <span class="module_choice">Upload aggregation</span>
 Upload your own aggregation raster.

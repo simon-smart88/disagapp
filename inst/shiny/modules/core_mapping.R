@@ -104,7 +104,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     observe({
       req(input$covariates)
       current_layer <- isolate(input$map_groups)
-      agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log)
+      agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_landuse$log, common$meta$agg_upload$log, common$meta$agg_uniform$log)
       if (input$covariates == "Original"){
         agg_layer <- names(common$agg)
         for (layer in names(common$covs)){
