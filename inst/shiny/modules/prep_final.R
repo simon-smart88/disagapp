@@ -38,6 +38,12 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       selectInput(session$ns("resolution"), "Select covariate resolution", c("Low resolution", "High resolution"))
     })
 
+    output$mesh_out <- renderUI({
+      gargoyle::watch("prep_mesh")
+      req(common$mesh)
+      selectInput(session$ns("resolution"), "Select mesh", names(common$mesh))
+    })
+
   observeEvent(input$run, {
     # WARNING ####
 
@@ -64,7 +70,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please prepare the covariates first")
       return()
     }
-    if (is.null(common$mesh)) {
+    if (length(common$mesh) == 0) {
       common$logger |> writeLog(type = "error", "Please prepare a mesh first")
       return()
     }

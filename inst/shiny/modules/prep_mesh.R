@@ -1,9 +1,10 @@
 prep_mesh_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    sliderInput(ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
-    sliderInput(ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
-    sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10),
+    tags$h4("Boundary of outer mesh"),
+    shinyWidgets::materialSwitch(ns("outer"), "Change boundary parameters", FALSE, status = "success"),
+    uiOutput(ns("outer_parameters")),
+    tags$h4("Internal mesh"),
     sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
     sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
     sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
@@ -28,6 +29,16 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     maxedge <- as.numeric(hypotenuse/10)
     updateSliderInput(session, "mesh_edge", value = c(maxedge, maxedge * 2))
     updateSliderInput(session, "mesh_offset", value = c(maxedge, maxedge * 2))
+  })
+
+  output$outer_parameters <- renderUI({
+    if (input$outer){
+      tagList(
+        sliderInput(session$ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
+        sliderInput(session$ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
+        sliderInput(session$ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10),
+      )
+    }
   })
 
     common$tasks$prep_mesh <- ExtendedTask$new(function(...) {
@@ -76,7 +87,6 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('prep_mesh-complete', 'complete');")
   })
-
 
   return(list(
     save = function() {list(

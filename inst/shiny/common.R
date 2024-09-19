@@ -11,7 +11,7 @@ common_class <- R6::R6Class(
     covs_prep_lores = NULL,
     covs_matrix = NULL,
     covs_summary = NULL,
-    mesh = NULL,
+    mesh = list(),
     prep = NULL,
     fit = NULL,
     pred = NULL,
