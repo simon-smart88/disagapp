@@ -8,7 +8,8 @@ prep_mesh_module_ui <- function(id) {
     sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
     sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
     sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
-    bslib::input_task_button(ns("run"), "Make mesh")
+    bslib::input_task_button(ns("run"), "Make mesh"),
+    uiOutput(ns("choice_out"))
   )
 }
 
@@ -41,6 +42,18 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$choice_out <- renderUI({
+    gargoyle::watch("prep_mesh")
+    req(length(common$mesh) > 0)
+    selectInput(session$ns("choice"), "Selected mesh", choices = names(common$mesh), selected = names(common$mesh)[length(common$mesh)])
+  })
+
+  observe({
+    req(input$choice)
+    common$meta$prep_mesh$selected <- input$choice
+    do.call("prep_mesh_module_map", list(map, common))
+  })
+
     common$tasks$prep_mesh <- ExtendedTask$new(function(...) {
       promises::future_promise({
         disaggregation::build_mesh(...)
@@ -56,20 +69,29 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
-    common$tasks$prep_mesh$invoke(common$shape,
-                                  mesh_args = list(
-                                    convex = input$convex,
-                                    concave = input$concave,
-                                    resolution = input$resolution,
-                                    max.edge = input$mesh_edge,
-                                    cut = input$mesh_cut,
-                                    offset = input$offset))
+
+    if (input$outer){
+      common$tasks$prep_mesh$invoke(common$shape,
+                                    mesh_args = list(
+                                      convex = input$convex,
+                                      concave = input$concave,
+                                      resolution = input$resolution,
+                                      max.edge = input$mesh_edge,
+                                      cut = input$mesh_cut,
+                                      offset = input$offset))
+    } else {
+      common$tasks$prep_mesh$invoke(common$shape,
+                                    mesh_args = list(
+                                      max.edge = input$mesh_edge,
+                                      cut = input$mesh_cut,
+                                      offset = input$offset))
+    }
 
     # METADATA ####
     common$meta$prep_mesh$used <- TRUE
-    common$meta$prep_mesh$convex  <- input$convex
-    common$meta$prep_mesh$concave  <- input$concave
-    common$meta$prep_mesh$resolution  <- input$resolution
+    common$meta$prep_mesh$convex <- input$convex
+    common$meta$prep_mesh$concave <- input$concave
+    common$meta$prep_mesh$resolution <- input$resolution
     common$meta$prep_mesh$mesh_edge <- input$mesh_edge
     common$meta$prep_mesh$mesh_cut <- input$mesh_cut
     common$meta$prep_mesh$mesh_offset <- input$mesh_offset
@@ -78,14 +100,23 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
     result <- common$tasks$prep_mesh$result()
-    common$mesh <- result
+    mesh_name <- glue::glue("Mesh {length(common$mesh) + 1} - {result$n} nodes")
+    common$mesh[[mesh_name]] <- result
+    common$meta$prep_mesh$selected <- mesh_name
     results$suspend()
-    common$logger |> writeLog(type = "complete", glue::glue("The mesh has been built and has {common$mesh$n} nodes"))
+    common$logger |> writeLog(type = "complete", glue::glue("Mesh {length(common$mesh)} has been built and has {result$n} nodes"))
     # TRIGGER
     gargoyle::trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))
-    show_map(parent_session)
+    show_results(parent_session)
     shinyjs::runjs("Shiny.setInputValue('prep_mesh-complete', 'complete');")
+  })
+
+  output$plot <- renderPlot({
+    gargoyle::watch("prep_mesh")
+    plot_list <- lapply(seq_along(common$mesh), function(x) plot_mesh(common$mesh[[x]], names(common$mesh)[x]))
+    nrows <- ceiling(length(plot_list) / 3)
+    cowplot::plot_grid(plotlist = plot_list, nrow = nrows)
   })
 
   return(list(
@@ -111,6 +142,11 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     }
   ))
 })
+}
+
+prep_mesh_module_result <- function(id){
+  ns <- shiny::NS(id)
+  plotOutput(ns("plot"), height = "800px")
 }
 
 prep_mesh_module_map <- function(map, common) {

@@ -275,22 +275,162 @@ raster_map <- function(map, common, raster, name, log = FALSE, selected = NULL){
 #' @keywords internal
 #' @export
 mesh_map <- function(map, common){
-#convert the inla mesh to a format which leaflet can handle
-sf_mesh <- common$mesh |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
-bbox <- sf::st_bbox(sf_mesh)
 
-common$add_map_layer("Mesh")
+  choice <- common$meta$prep_mesh$selected
 
-map |>
-  clearControls() |>
-  removeLayersControl() |>
-  clearGroup("Mesh") |>
-  addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") |>
-  fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) |>
-  addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) |>
-  hideGroup(common$map_layers) |>
-  showGroup("Mesh")
+  #convert the inla mesh to a format which leaflet can handle
+  sf_mesh <- common$mesh[[choice]] |> fmesher::fm_as_sfc() |>  sf::st_as_sf() |> sf::st_zm()
+  bbox <- sf::st_bbox(sf_mesh)
+
+  common$add_map_layer("Mesh")
+
+  map |>
+    clearControls() |>
+    removeLayersControl() |>
+    clearGroup("Mesh") |>
+    addPolylines(data = sf_mesh, stroke = "black", weight = 2 , fill = FALSE, group = "Mesh") |>
+    fitBounds(lng1 = bbox[[1]], lng2 = bbox[[3]], lat1 = bbox[[2]], lat2 = bbox[[4]]) |>
+    addLayersControl(overlayGroups = common$map_layers, options = layersControlOptions(collapsed = FALSE)) |>
+    hideGroup(common$map_layers) |>
+    showGroup("Mesh")
+  }
+
+####################### #
+# PLOTTING #
+####################### #
+
+#' @title plot_mesh
+#' @description For internal use. Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
+#' https://github.com/inlabru-org/inlabru/blob/53ac741a5dba72c2bd33706fda48a149f0d8d9a9/R/ggplot.R#L750
+#' @param data An `fm_mesh_2d` object.
+#' @param title Character to describe the plot
+#' @param color A vector of scalar values to fill the mesh with colors.
+#' The length of the vector mus correspond to the number of mesh vertices.
+#' The alternative name `colour` is also recognised.
+#' @param alpha A vector of scalar values setting the alpha value of the colors provided.
+#' @param edge.color Color of the regular mesh edges.
+#' @param edge.linewidth Line width for the regular mesh edges. Default 0.25
+#' @param interior If TRUE, plot the interior boundaries of the mesh.
+#' @param int.color Color used to plot the interior constraint edges.
+#' @param int.linewidth Line width for the interior constraint edges. Default 0.5
+#' @param exterior If TRUE, plot the exterior boundaries of the mesh.
+#' @param ext.color Color used to plot the exterior boundary edges.
+#' @param ext.linewidth Line width for the exterior boundary edges. Default 1
+#' @param crs A CRS object supported by [fm_transform()] defining the coordinate
+#' system to project the mesh to before plotting.
+#' @param nx Number of pixels in x direction (when plotting using the color parameter).
+#' @param ny Number of pixels in y direction (when plotting using the color parameter).
+#' @param mask A `SpatialPolygon` or `sf` polygon defining the region that is plotted.
+#' @param ... ignored arguments (S3 generic compatibility).
+#' @keywords internal
+#' @export
+
+plot_mesh <- function(data, title,
+                      color = NULL,
+                      alpha = NULL,
+                      edge.color = "darkgrey",
+                      edge.linewidth = 0.25,
+                      interior = TRUE,
+                      int.color = "blue",
+                      int.linewidth = 0.5,
+                      exterior = TRUE,
+                      ext.color = "black",
+                      ext.linewidth = 1,
+                      crs = NULL,
+                      mask = NULL,
+                      nx = 500, ny = 500,
+                      ...) {
+
+  if (is.null(color) && ("colour" %in% names(list(...)))) {
+    color <- list(...)[["colour"]]
+  }
+  if (!is.null(color)) {
+    px <- fmesher::fm_pixels(data, dims = c(nx, ny), mask = mask, format = "sf")
+    proj <- fmesher::fm_evaluator(data, px)
+    px$color <- fmesher::fm_evaluate(proj, field = color)
+    if (!is.null(alpha)) {
+      if (length(alpha) == 1) {
+        px$alpha <- alpha
+      } else {
+        px$alpha <- fmesher::fm_evaluate(proj, field = alpha)
+      }
+      gg <- gg(px,
+               ggplot2::aes(fill = .data[["color"]]),
+               alpha = px[["alpha"]],
+               geom = "tile"
+      )
+    } else {
+      gg <- gg(px,
+               ggplot2::aes(fill = .data[["color"]]),
+               geom = "tile"
+      )
+    }
+
+    return(gg)
+  }
+
+  if (data$manifold == "S2") {
+    stop("Geom not implemented for spherical meshes (manifold = S2)")
+  }
+  if (!is.null(crs)) {
+    data <- fmesher::fm_transform(data, crs = crs)
+  }
+
+  df <- rbind(
+    data.frame(a = data$loc[data$graph$tv[, 1], c(1, 2)], b = data$loc[data$graph$tv[, 2], c(1, 2)]),
+    data.frame(a = data$loc[data$graph$tv[, 2], c(1, 2)], b = data$loc[data$graph$tv[, 3], c(1, 2)]),
+    data.frame(a = data$loc[data$graph$tv[, 1], c(1, 2)], b = data$loc[data$graph$tv[, 3], c(1, 2)])
+  )
+
+  colnames(df) <- c("x", "y", "xend", "yend")
+  mp <- ggplot2::aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)
+  msh <- ggplot2::geom_segment(data = df, mapping = mp, color = edge.color, linewidth = edge.linewidth)
+
+  # Outer boundary
+  if (exterior) {
+    df <- data.frame(
+      data$loc[data$segm$bnd$idx[, 1], 1:2],
+      data$loc[data$segm$bnd$idx[, 2], 1:2]
+    )
+    colnames(df) <- c("x", "y", "xend", "yend")
+    bnd <- ggplot2::geom_segment(data = df, mapping = mp, color = ext.color, linewidth = ext.linewidth)
+    centre_x <- mean(range(df$x))
+    max_y <- max(df$y)
+    if (max_y > 0){
+      max_y <- max_y * 1.1
+    } else {
+      max_y <- max_y * 0.9
+    }
+  } else {
+    bnd <- NULL
+  }
+
+  if (interior) {
+    # Interior boundary
+    df <- data.frame(
+      data$loc[data$segm$int$idx[, 1], 1:2],
+      data$loc[data$segm$int$idx[, 2], 1:2]
+    )
+    colnames(df) <- c("x", "y", "xend", "yend")
+    if (nrow(df) == 0) {
+      int <- NULL
+    } else {
+      int <- ggplot2::geom_segment(data = df, mapping = mp, color = int.color, linewidth = int.linewidth)
+    }
+  } else {
+    int <- NULL
+  }
+
+  # Return combined geomes
+  combined_plot <- c(msh, bnd, int)
+
+  ggplot2::ggplot() +
+    combined_plot +
+    ggplot2::coord_fixed() +
+    ggplot2::theme_void() +
+    ggplot2::annotate("text", x = centre_x, y = max_y, label = title, size = 6, hjust = 0.5)
 }
+
 
 
 ####################### #
