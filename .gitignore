@@ -35,3 +35,4 @@ _shiny
 .Renviron
 lie*.rds
 .httr-oauth
+/lie*.csv
