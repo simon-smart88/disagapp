@@ -3,12 +3,17 @@ prep_mesh_module_ui <- function(id) {
   tagList(
     tags$h4("Boundary of outer mesh"),
     shinyWidgets::materialSwitch(ns("outer"), "Change boundary parameters", FALSE, status = "success"),
-    uiOutput(ns("outer_parameters")),
+    conditionalPanel("input.outer === true", ns = ns,
+      sliderInput(ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
+      sliderInput(ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
+      sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10)
+    ),
     tags$h4("Internal mesh"),
     sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
     sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
     sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
     bslib::input_task_button(ns("run"), "Make mesh"),
+    tags$br(),
     uiOutput(ns("choice_out"))
   )
 }
@@ -30,16 +35,6 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     maxedge <- as.numeric(hypotenuse/10)
     updateSliderInput(session, "mesh_edge", value = c(maxedge, maxedge * 2))
     updateSliderInput(session, "mesh_offset", value = c(maxedge, maxedge * 2))
-  })
-
-  output$outer_parameters <- renderUI({
-    if (input$outer){
-      tagList(
-        sliderInput(session$ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
-        sliderInput(session$ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
-        sliderInput(session$ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10),
-      )
-    }
   })
 
   output$choice_out <- renderUI({
@@ -70,31 +65,34 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "starting", "Starting to build the mesh")
     results$resume()
 
-    if (input$outer){
-      common$tasks$prep_mesh$invoke(common$shape,
-                                    mesh_args = list(
-                                      convex = input$convex,
-                                      concave = input$concave,
-                                      resolution = input$resolution,
-                                      max.edge = input$mesh_edge,
-                                      cut = input$mesh_cut,
-                                      offset = input$offset))
-    } else {
-      common$tasks$prep_mesh$invoke(common$shape,
-                                    mesh_args = list(
-                                      max.edge = input$mesh_edge,
-                                      cut = input$mesh_cut,
-                                      offset = input$offset))
-    }
+    common$tasks$prep_mesh$invoke(common$shape,
+                                  mesh_args = list(
+                                    convex = input$convex,
+                                    concave = input$concave,
+                                    resolution = input$resolution,
+                                    max.edge = input$mesh_edge,
+                                    cut = input$mesh_cut,
+                                    offset = input$offset))
 
     # METADATA ####
     common$meta$prep_mesh$used <- TRUE
-    common$meta$prep_mesh$convex <- input$convex
-    common$meta$prep_mesh$concave <- input$concave
-    common$meta$prep_mesh$resolution <- input$resolution
-    common$meta$prep_mesh$mesh_edge <- input$mesh_edge
-    common$meta$prep_mesh$mesh_cut <- input$mesh_cut
-    common$meta$prep_mesh$mesh_offset <- input$mesh_offset
+
+    # create empty lists on first use
+    if (is.null(common$meta$prep_mesh$convex)){
+      common$meta$prep_mesh$convex <- list()
+      common$meta$prep_mesh$concave <- list()
+      common$meta$prep_mesh$resolution <- list()
+      common$meta$prep_mesh$mesh_edge <- list()
+      common$meta$prep_mesh$mesh_cut <- list()
+      common$meta$prep_mesh$mesh_offset <- list()
+    }
+
+    common$meta$prep_mesh$convex <- append(common$meta$prep_mesh$convex, input$convex)
+    common$meta$prep_mesh$concave <- append(common$meta$prep_mesh$concave, input$concave)
+    common$meta$prep_mesh$resolution <- append(common$meta$prep_mesh$resolution, input$resolution)
+    common$meta$prep_mesh$mesh_edge <- append(common$meta$prep_mesh$mesh_edge, list(input$mesh_edge))
+    common$meta$prep_mesh$mesh_cut <- append(common$meta$prep_mesh$mesh_cut, input$mesh_cut)
+    common$meta$prep_mesh$mesh_offset <- append(common$meta$prep_mesh$mesh_offset, list(input$mesh_offset))
   })
 
   results <- observe({
@@ -154,15 +152,15 @@ prep_mesh_module_map <- function(map, common) {
 }
 
 prep_mesh_module_rmd <- function(common) {
-  # Variables used in the module's Rmd code
-  list(
+  selected <- which(names(common$mesh) == common$meta$prep_mesh$selected)
+    list(
     prep_mesh_knit = !is.null(common$meta$prep_mesh$used),
-    prep_mesh_convex = common$meta$prep_mesh$convex,
-    prep_mesh_concave = common$meta$prep_mesh$concave,
-    prep_mesh_resolution = common$meta$prep_mesh$resolution,
-    prep_mesh_edge = printVecAsis(common$meta$prep_mesh$mesh_edge),
-    prep_mesh_cut = common$meta$prep_mesh$mesh_cut,
-    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset)
+    prep_mesh_convex = common$meta$prep_mesh$convex[[selected]],
+    prep_mesh_concave = common$meta$prep_mesh$concave[[selected]],
+    prep_mesh_resolution = common$meta$prep_mesh$resolution[[selected]],
+    prep_mesh_edge = printVecAsis(common$meta$prep_mesh$mesh_edge[[selected]]),
+    prep_mesh_cut = common$meta$prep_mesh$mesh_cut[[selected]],
+    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset[[selected]])
   )
 }
 

@@ -33,8 +33,6 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   observeEvent(input$run, {
     # WARNING ####
 
-
-
     ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
     ras_running <- length(ras_status[ras_status == "running"])
     if (ras_running != 0) {

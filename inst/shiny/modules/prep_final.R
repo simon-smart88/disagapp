@@ -38,12 +38,6 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       selectInput(session$ns("resolution"), "Select covariate resolution", c("Low resolution", "High resolution"))
     })
 
-    output$mesh_out <- renderUI({
-      gargoyle::watch("prep_mesh")
-      req(common$mesh)
-      selectInput(session$ns("resolution"), "Select mesh", names(common$mesh))
-    })
-
   observeEvent(input$run, {
     # WARNING ####
 
@@ -104,7 +98,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
 
     close_loading_modal()
     if (!is.null(common$prep)){
-      common$prep$mesh <- common$mesh
+      common$prep$mesh <- common$mesh[[common$meta$prep_mesh$selected]]
       common$logger |> writeLog(type = "complete", "Data preparation is complete")
     }
     # LOAD INTO COMMON ####
