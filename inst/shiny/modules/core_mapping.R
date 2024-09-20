@@ -87,7 +87,8 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
         label = "Covariates",
         choices = c("Original", "Prepared"),
         selected = "Prepared",
-        size = "normal"
+        size = "normal",
+        status = "switch_button"
       )
     })
 

@@ -163,3 +163,20 @@ hr {
 .inline{
   display:inline-block
 }
+
+.btn-switch_button {
+  background-color: #C8C8C8;
+  border-color: #C8C8C8;
+}
+
+.btn-check:checked + .btn-switch_button {
+  background-color: #699FA1;
+  border-color: #699FA1;
+}
+
+.btn-check:hover + .btn-switch_button {
+  background-color: #a2dee0;
+  border-color: #a2dee0;
+  }
+
+

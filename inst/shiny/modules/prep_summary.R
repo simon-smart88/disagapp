@@ -4,7 +4,7 @@ prep_summary_module_ui <- function(id) {
     # UI
     actionButton(ns("run"), "Prepare covariate summary"),
     shinyWidgets::materialSwitch(ns("remove"), "Remove identical rows?", FALSE, status = "success"),
-    shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE),
+    shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE, status = "switch_button"),
     uiOutput(ns("resample_layer_out")),
     actionButton(ns("resample"), "Resample covariates")
   )
