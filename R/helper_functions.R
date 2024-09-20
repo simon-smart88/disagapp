@@ -395,12 +395,8 @@ plot_mesh <- function(data, title,
     colnames(df) <- c("x", "y", "xend", "yend")
     bnd <- ggplot2::geom_segment(data = df, mapping = mp, color = ext.color, linewidth = ext.linewidth)
     centre_x <- mean(range(df$x))
-    max_y <- max(df$y)
-    if (max_y > 0){
-      max_y <- max_y * 1.1
-    } else {
-      max_y <- max_y * 0.9
-    }
+    y_range <- diff(range(df$y))
+    max_y <- max(df$y) + (y_range * 0.1)
   } else {
     bnd <- NULL
   }
