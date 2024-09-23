@@ -41,7 +41,9 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
           selected_module = sapply(COMPONENTS, function(x) main_input[[glue("{x}Sel")]], simplify = FALSE)
         )
 
-        # Ask each module to save whatever data it wants
+        common$state$main$version <- as.character(packageVersion("disagapp"))
+
+        # Save module state
         for (module_id in names(modules)) {
           common$state[[module_id]] <- modules[[module_id]]$save()
         }

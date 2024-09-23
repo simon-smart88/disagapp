@@ -17,7 +17,20 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
     observeEvent(input$goLoad_session, {
       show_loading_modal("Please wait while the session is restored")
-      temp <- temp <- readRDS(input$load_session$datapath)
+      temp <- readRDS(input$load_session$datapath)
+
+      if (!("common" %in% class(temp))){
+        close_loading_modal()
+        common$logger |> writeLog(type = "error", "That is not a valid Disagapp save file")
+        return()
+      }
+
+      if (temp$state$main$version != as.character(packageVersion("disagapp"))){
+        new_version <- as.character(packageVersion("disagapp"))
+        common$logger |> writeLog(type = "warning",
+            glue::glue("The save file was created using Disagapp v{temp$state$main$version}, but you are using Disagapp v{new_version}"))
+      }
+
       temp_names <- names(temp)
       #exclude the non-public and function objects
       temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers", "reset", "tasks")]
@@ -28,6 +41,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       #blank map
       gargoyle::trigger("clear_map")
       common$map_layers = NULL
+
 
       # Ask each module to load its own data
       for (module_id in names(common$state)) {
