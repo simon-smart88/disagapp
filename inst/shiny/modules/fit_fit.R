@@ -10,7 +10,7 @@ fit_fit_module_ui <- function(id) {
     conditionalPanel("input.priors === true", uiOutput(ns("priors_out")), ns = ns),
     conditionalPanel("input.priors === true && input.field === true", uiOutput(ns("field_out")), ns = ns),
     conditionalPanel("input.priors === true && input.iid === true", uiOutput(ns("iid_out")), ns = ns),
-    actionButton(ns("run"), "Fit model")
+    bslib::input_task_button(ns("run"), "Fit model")
   )
 }
 
@@ -83,6 +83,11 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       out
     })
 
+    common$tasks$fit_fit <- ExtendedTask$new(function(...) {
+      promises::future_promise({
+        fit_fit(...)
+      }, seed = TRUE)
+    }) |> bslib::bind_task_button("run")
 
 
   observeEvent(input$run, {
@@ -94,24 +99,28 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the model is fitted")
-    common$fit <- tryCatch({disaggregation::disag_model(data = common$prep,
-                                          priors = priors(),
-                                          family = input$family,
-                                          link = input$link,
-                                          iterations = as.numeric(input$iterations),
-                                          field = input$field,
-                                          iid = input$iid)},
-    error = function(x){ common$logger |> writeLog(type = "error", paste0("An error occurred whilst fitting the model: ", x))},
-    warning = function(x){ common$logger |> writeLog(type = "warning", paste0("An error occurred whilst fitting the model: ", x))}
-    )
 
-    if (!is.null(common$fit)){
-      common$logger |> writeLog(type = "complete", "Model fitting has completed")
-    }
 
-    close_loading_modal()
+    # common$fit <- fit_fit(data = common$prep,
+    #                        priors = priors(),
+    #                        family = input$family,
+    #                        link = input$link,
+    #                        iterations = as.numeric(input$iterations),
+    #                        field = input$field,
+    #                        iid = input$iid)
+    # browser()
+    common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
 
-    # LOAD INTO COMMON ####
+    common$tasks$fit_fit$invoke(data = common$prep,
+                                priors = priors(),
+                                family = input$family,
+                                link = input$link,
+                                iterations = as.numeric(input$iterations),
+                                field = input$field,
+                                iid = input$iid)
+
+    common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
+    results$resume()
 
     # METADATA ####
     common$meta$fit_fit$family <- input$family
@@ -132,14 +141,30 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     common$meta$fit_fit$sigma_prob <- as.numeric(input$sigma_prob)
     common$meta$fit_fit$iideffect_sd_max <- as.numeric(input$iideffect_max)
     common$meta$fit_fit$iideffect_sd_prob <- as.numeric(input$iideffect_prob)
-    # TRIGGER
-    gargoyle::trigger("fit_fit")
-    show_results(parent_session)
+
   })
 
+  results <- observe({
+    # LOAD INTO COMMON ####
+    result <- common$tasks$fit_fit$result()
+    results$suspend()
+    if ("disag_model" %in% class(result)){
+      common$fit <- result
+      common$logger |> writeLog(type = "complete", "Model fitting has completed")
+      # TRIGGER
+      gargoyle::trigger("fit_fit")
+      show_results(parent_session)
+      shinyjs::runjs("Shiny.setInputValue('fit_fit-complete', 'complete');")
+      close_loading_modal()
+    } else {
+      common$logger |> writeLog(type = "error", result)
+      close_loading_modal()
+    }
+  })
 
   plot_data <- reactive({
     gargoyle::watch("fit_fit")
+    req(common$fit)
     disaggregation::plot_disag_model_data(common$fit)
     })
 
