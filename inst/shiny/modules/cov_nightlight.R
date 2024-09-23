@@ -4,6 +4,7 @@ cov_nightlight_module_ui <- function(id) {
     # UI
     selectInput(ns("year"), "Year", choices = c(2022:2012)),
     uiOutput(ns("bearer_out")),
+    shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
     bslib::input_task_button(ns("run"), "Download data")
   )
 }
@@ -59,6 +60,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     # METADATA ####
     common$meta$cov_nightlight$used <- TRUE
     common$meta$cov_nightlight$year <- input$year
+    common$meta$cov_nightlight$log <- input$log
     common$meta$cov_nightlight$bearer <- input$bearer
   })
 
@@ -83,20 +85,23 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
       ### Manual save start
       ### Manual save end
       year = input$year,
-      bearer = input$bearer)
+      bearer = input$bearer,
+      log = input$log)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
       updateSelectInput(session, "year", selected = state$year)
       updateTextInput(session, "bearer", value = state$bearer)
+      updateSelectInput(session, "year", selected = state$year)
+      shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
   ))
 })
 }
 
 cov_nightlight_module_map <- function(map, common) {
-  raster_map(map, common, common$covs[["Nighttime light"]], "Nighttime light")
+  raster_map(map, common, common$covs[["Nighttime light"]], "Nighttime light", common$meta$cov_nightlight$log)
 }
 
 cov_nightlight_module_rmd <- function(common) {
@@ -104,7 +109,8 @@ cov_nightlight_module_rmd <- function(common) {
   list(
     cov_nightlight_knit = !is.null(common$meta$cov_nightlight$used),
     cov_nightlight_year = common$meta$cov_nightlight$year,
-    cov_nightlight_bearer = common$meta$cov_nightlight$bearer
+    cov_nightlight_bearer = common$meta$cov_nightlight$bearer,
+    cov_nightlight_log = common$meta$cov_nightlight$log
   )
 }
 
