@@ -97,7 +97,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
       input$covariates_load #required to force update on load
       if (!is.null(common$covs_prep_lores)){
         choices <- c("Original", "High resolution", "Low resolution")
-        shinyWidgets::updateRadioGroupButtons(session, "covariates", choices = choices, selected = "Low resolution")
+        shinyWidgets::updateRadioGroupButtons(session, "covariates", choices = choices, selected = "Low resolution", status = "switch_button")
       }
     })
 
