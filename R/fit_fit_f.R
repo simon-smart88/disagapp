@@ -2,8 +2,8 @@
 #' @description
 #' This function is called by the fit_fit module and calls
 #' disaggregation::disag_model() with the only difference being that covariates
-#' are removed from the returned object to enable asynchronous operation and
-#' any errors are returned as a character
+#' are wrapped to enable asynchronous operation and any errors are returned as
+#' a character
 #'
 #' @param data disag_data.  Object returned by prepare_data function that
 #' contains all the necessary objects for the model fitting
@@ -13,11 +13,12 @@
 #' @param iterations numeric. Number of iterations
 #' @param field logical. Whether to include a spatial field
 #' @param iid  logical. Whether to include an iid effect
-#' @return a list of class `disag_model`
+#' @param async logical. Whether or not the function is being used asynchronously
+#' @return a list of class `disag_model` or a character string if an error occurs
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-fit_fit <- function(data, priors, family, link, iterations, field, iid){
+fit_fit <- function(data, priors, family, link, iterations, field, iid, async = FALSE){
   data$covariate_rasters <- unwrap_terra(data$covariate_rasters)
 
   result <- tryCatch({disaggregation::disag_model(data = data,
@@ -30,15 +31,14 @@ fit_fit <- function(data, priors, family, link, iterations, field, iid){
     },
                      error = function(x){paste0("An error occurred whilst fitting the model: ", x)},
                      warning = function(x){paste0("An error occurred whilst fitting the model: ", x)}
-
   )
 
   if (is.character(result)){
     return(result)
   }
 
-  if ("disag_model" %in% class(result)){
-    result$data$covariate_rasters <- NULL
+  if (async){
+    result$data$covariate_rasters <- wrap_terra(result$data$covariate_rasters)
   }
 
   result

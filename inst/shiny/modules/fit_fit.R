@@ -117,7 +117,8 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
                                 link = input$link,
                                 iterations = as.numeric(input$iterations),
                                 field = input$field,
-                                iid = input$iid)
+                                iid = input$iid,
+                                async = TRUE)
 
     common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
     results$resume()
@@ -149,6 +150,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     result <- common$tasks$fit_fit$result()
     results$suspend()
     if ("disag_model" %in% class(result)){
+      result$data$covariate_rasters <- unwrap_terra(result$data$covariate_rasters)
       common$fit <- result
       common$logger |> writeLog(type = "complete", "Model fitting has completed")
       # TRIGGER
