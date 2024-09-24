@@ -225,11 +225,11 @@ shape_map <- function(map, common){
 }
 
 #' @title raster_map
-#' @description For internal use. Plot covariate data on the leaflet map
-#' @param map The leafletProxy object to add the shape to
+#' @description For internal use. Plot raster data on the leaflet map
+#' @param map The leafletProxy object to add the raster to
 #' @param common The common data structure
 #' @param raster The SpatRaster to plot
-#' @param name The name of the covariate
+#' @param name The name of the raster
 #' @param log Whether to plot the raster using a log scale
 #' @param selected The layer to display
 #' @keywords internal
@@ -267,6 +267,34 @@ raster_map <- function(map, common, raster, name, log = FALSE, selected = NULL){
     }
 }
 
+#' @title replot_raster_map
+#' @description For internal use. Replot covariate data on the leaflet map after
+#' changes in the selected set
+#' @param map The leafletProxy object to replot the rasters on
+#' @param common The common data structure
+#' @param covariates character. The name of the item in common containing
+#'  the covariates to replot
+#' @param aggregation character. The name of the item in common containing
+#'  the aggregation raster to replot
+#' @param selected_layer character. The currently selected layer
+#' @keywords internal
+#' @export
+replot_raster_map <- function(map, common, covariates, aggregation, selected_layer){
+  for (layer in names(common[[covariates]])){
+    if (layer == "Nighttime light"){module <- "cov_nightlight"}
+    else if (layer == "Population density"){module <- "cov_worldpop"}
+    else {module <- "NULL"}
+    if (!is.null(common$meta[[module]]$log)){log <-  common$meta[[module]]$log} else {log = FALSE}
+    raster_map(map, common, common[[covariates]][[layer]], layer, log = log, selected = selected_layer)
+  }
+  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_landuse$log, common$meta$agg_upload$log, common$meta$agg_uniform$log)
+  agg_layer <- names(common[[aggregation]])
+  raster_map(map, common, common[[aggregation]], agg_layer, agg_log, selected = selected_layer)
+  if (!(agg_layer %in% selected_layer)){
+    map |>
+      removeControl(agg_layer)
+  }
+}
 
 #' @title mesh_map
 #' @description For internal use. Plot spatial mesh on the leaflet map

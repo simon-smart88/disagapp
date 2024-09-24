@@ -105,37 +105,15 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     observe({
       req(input$covariates)
       current_layer <- isolate(input$map_groups)
-      agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_landuse$log, common$meta$agg_upload$log, common$meta$agg_uniform$log)
       if (input$covariates == "Original"){
-        agg_layer <- names(common$agg)
-        for (layer in names(common$covs)){
-          if (!is.null(common$meta[[layer]]$log)){log <-  common$meta[[layer]]$log} else {log = FALSE}
-          raster_map(map, common, common$covs[[layer]], layer, log = log, selected = current_layer)
-        }
-        raster_map(map, common, common$agg, agg_layer, agg_log, selected = current_layer)
+        replot_raster_map(map, common, "covs", "agg", current_layer)
       }
       if (input$covariates == "Low resolution"){
-        agg_layer <- names(common$agg_prep_lores)
-        for (layer in names(common$covs_prep_lores)){
-          if (!is.null(common$meta[[layer]]$log)){log <-  common$meta[[layer]]$log} else {log = FALSE}
-          raster_map(map, common, common$covs_prep_lores[[layer]], layer, log = log, selected = current_layer)
-        }
-        raster_map(map, common, common$agg_prep_lores, agg_layer, agg_log, selected = current_layer)
-
+        replot_raster_map(map, common, "covs_prep_lores", "agg_prep_lores", current_layer)
       }
       if (input$covariates == "High resolution" || input$covariates == "Prepared"){
-        agg_layer <- names(common$agg_prep)
-        for (layer in names(common$covs_prep)){
-          if (!is.null(common$meta[[layer]]$log)){log <-  common$meta[[layer]]$log} else {log = FALSE}
-          raster_map(map, common, common$covs_prep[[layer]], layer, log = log, selected = current_layer)
-        }
-        raster_map(map, common, common$agg_prep, agg_layer, agg_log, selected = current_layer)
+        replot_raster_map(map, common, "covs_prep", "agg_prep", current_layer)
       }
-      if (!(agg_layer %in% current_layer)){
-        map |>
-          removeControl(agg_layer)
-      }
-
     })
 
     return(map)

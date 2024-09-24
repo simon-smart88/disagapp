@@ -7,19 +7,19 @@
 raster_map(map, common, raster, name, log = FALSE, selected = NULL)
 }
 \arguments{
-\item{map}{The leafletProxy object to add the shape to}
+\item{map}{The leafletProxy object to add the raster to}
 
 \item{common}{The common data structure}
 
 \item{raster}{The SpatRaster to plot}
 
-\item{name}{The name of the covariate}
+\item{name}{The name of the raster}
 
 \item{log}{Whether to plot the raster using a log scale}
 
 \item{selected}{The layer to display}
 }
 \description{
-For internal use. Plot covariate data on the leaflet map
+For internal use. Plot raster data on the leaflet map
 }
 \keyword{internal}

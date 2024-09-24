@@ -4,7 +4,7 @@
 \alias{fit_fit}
 \title{Fit a disaggregation model}
 \usage{
-fit_fit(data, priors, family, link, iterations, field, iid)
+fit_fit(data, priors, family, link, iterations, field, iid, async = FALSE)
 }
 \arguments{
 \item{data}{disag_data.  Object returned by prepare_data function that
@@ -21,15 +21,17 @@ contains all the necessary objects for the model fitting}
 \item{field}{logical. Whether to include a spatial field}
 
 \item{iid}{logical. Whether to include an iid effect}
+
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
-a list of class \code{disag_model}
+a list of class \code{disag_model} or a character string if an error occurs
 }
 \description{
 This function is called by the fit_fit module and calls
 disaggregation::disag_model() with the only difference being that covariates
-are removed from the returned object to enable asynchronous operation and
-any errors are returned as a character
+are wrapped to enable asynchronous operation and any errors are returned as
+a character
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
