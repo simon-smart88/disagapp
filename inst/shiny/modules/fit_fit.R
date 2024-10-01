@@ -100,15 +100,6 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the model is fitted")
 
-
-    # common$fit <- fit_fit(data = common$prep,
-    #                        priors = priors(),
-    #                        family = input$family,
-    #                        link = input$link,
-    #                        iterations = as.numeric(input$iterations),
-    #                        field = input$field,
-    #                        iid = input$iid)
-    # browser()
     common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
 
     common$tasks$fit_fit$invoke(data = common$prep,
