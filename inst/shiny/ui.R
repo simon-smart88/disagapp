@@ -45,8 +45,7 @@ tagList(
           conditionalPanel(
             "input.tabs == 'intro'",
             #actionButton("debug_button", "debug"),
-            core_intro_module_ui("core_intro"),
-            textOutput("debug"),
+            #textOutput("debug"),
             includeMarkdown("Rmd/text_intro_tab.Rmd")
           ),
           # INCIDENCE DATA ####
@@ -235,6 +234,11 @@ tagList(
             id = "introTabs",
             tabPanel(
               "About",
+              br(),
+              tags$div(
+                style="text-align: center;",
+                core_intro_module_ui("core_intro")
+              ),
               br(),
               includeMarkdown("Rmd/text_about.Rmd")
             ),
