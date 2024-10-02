@@ -8,8 +8,8 @@ mesh <- disaggregation::build_mesh(shape,
                                     convex = {{prep_mesh_convex}},
                                     concave = {{prep_mesh_concave}},
                                     resolution = {{prep_mesh_resolution}},
-                                    max.edge = {{prep_mesh_edge}}, 
-                                    cut = {{prep_mesh_cut}},
+                                    max.edge = {{prep_mesh_max_edge}}, 
+                                    cutoff = {{prep_mesh_cutoff}},
                                     offset = {{prep_mesh_offset}}))
     
 ```

@@ -1,19 +1,20 @@
 prep_mesh_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    tags$h4("Boundary of outer mesh"),
+
+    tags$h4("Mesh size"),
+    sliderInput(ns("max_edge"), "Max edge (degrees)", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
+    sliderInput(ns("offset"), "Offset (degrees)", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
+    sliderInput(ns("cutoff"), "Cutoff (degrees)", min = 0.01, max = 1, value = 0.05, step = 0.01),
+    tags$h4("Mesh boundary"),
     shinyWidgets::materialSwitch(ns("outer"), "Change boundary parameters", FALSE, status = "success"),
     conditionalPanel("input.outer === true", ns = ns,
-      sliderInput(ns("convex"), "Convex", min = -0.05, max = 0.05, value = -0.01, step = 0.01),
-      sliderInput(ns("concave"), "Concave", min = -1, max = 1, value = -0.5, step = 0.1),
-      sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10)
+     sliderInput(ns("convex"), "Convex", min = -0.1, max = -0.01, value = -0.01, step = 0.01),
+     sliderInput(ns("concave"), "Concave", min = -1, max = -0.1, value = -0.5, step = 0.1),
+     sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10)
     ),
-    tags$h4("Internal mesh"),
-    sliderInput(ns("mesh_edge"), "Max edge", min = 0.1, max = 10, value = c(0.7, 8), step = 0.1),
-    sliderInput(ns("mesh_cut"), "Cut", min = 0.01, max = 1, value = 0.05, step = 0.01),
-    sliderInput(ns("mesh_offset"), "Offset", min = 0.1, max = 10, value = c(1, 2), step = 0.1),
     bslib::input_task_button(ns("run"), "Make mesh"),
-    tags$br(),
+    tags$hr(),
     uiOutput(ns("choice_out"))
   )
 }
@@ -32,9 +33,9 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
 
     limits <- sf::st_bbox(common$shape)
     hypotenuse <- sqrt((limits$xmax - limits$xmin)^2 + (limits$ymax - limits$ymin)^2)
-    maxedge <- as.numeric(hypotenuse/10)
-    updateSliderInput(session, "mesh_edge", value = c(maxedge, maxedge * 2))
-    updateSliderInput(session, "mesh_offset", value = c(maxedge, maxedge * 2))
+    max_edge <- as.numeric(hypotenuse/10)
+    updateSliderInput(session, "max_edge", value = c(max_edge, max_edge * 2))
+    updateSliderInput(session, "offset", value = c(max_edge, max_edge * 2))
   })
 
   output$choice_out <- renderUI({
@@ -42,6 +43,8 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     req(length(common$mesh) > 0)
     selectInput(session$ns("choice"), "Selected mesh", choices = names(common$mesh), selected = names(common$mesh)[length(common$mesh)])
   })
+
+  outputOptions(output, "choice_out", suspendWhenHidden = FALSE)
 
   observe({
     req(input$choice)
@@ -70,8 +73,8 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
                                     convex = input$convex,
                                     concave = input$concave,
                                     resolution = input$resolution,
-                                    max.edge = input$mesh_edge,
-                                    cut = input$mesh_cut,
+                                    max.edge = input$max_edge,
+                                    cutoff = input$cutoff,
                                     offset = input$offset))
 
     # METADATA ####
@@ -82,17 +85,17 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_mesh$convex <- list()
       common$meta$prep_mesh$concave <- list()
       common$meta$prep_mesh$resolution <- list()
-      common$meta$prep_mesh$mesh_edge <- list()
-      common$meta$prep_mesh$mesh_cut <- list()
-      common$meta$prep_mesh$mesh_offset <- list()
+      common$meta$prep_mesh$max_edge <- list()
+      common$meta$prep_mesh$cutoff <- list()
+      common$meta$prep_mesh$offset <- list()
     }
 
     common$meta$prep_mesh$convex <- append(common$meta$prep_mesh$convex, input$convex)
     common$meta$prep_mesh$concave <- append(common$meta$prep_mesh$concave, input$concave)
     common$meta$prep_mesh$resolution <- append(common$meta$prep_mesh$resolution, input$resolution)
-    common$meta$prep_mesh$mesh_edge <- append(common$meta$prep_mesh$mesh_edge, list(input$mesh_edge))
-    common$meta$prep_mesh$mesh_cut <- append(common$meta$prep_mesh$mesh_cut, input$mesh_cut)
-    common$meta$prep_mesh$mesh_offset <- append(common$meta$prep_mesh$mesh_offset, list(input$mesh_offset))
+    common$meta$prep_mesh$max_edge <- append(common$meta$prep_mesh$max_edge, list(input$max_edge))
+    common$meta$prep_mesh$cutoff <- append(common$meta$prep_mesh$cutoff, input$cutoff)
+    common$meta$prep_mesh$offset <- append(common$meta$prep_mesh$offset, list(input$offset))
   })
 
   results <- observe({
@@ -106,7 +109,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))
-    show_results(parent_session)
+    show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('prep_mesh-complete', 'complete');")
   })
 
@@ -124,9 +127,10 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
       convex = input$convex,
       concave = input$concave,
       resolution = input$resolution,
-      mesh_edge = input$mesh_edge,
-      mesh_cut = input$mesh_cut,
-      mesh_offset = input$mesh_offset)
+      max_edge = input$max_edge,
+      cutoff = input$cutoff,
+      offset = input$offset,
+      selected = input$selected)
     },
     load = function(state) {
       ### Manual load start
@@ -134,9 +138,10 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
       updateSliderInput(session, "convex", value = state$convex)
       updateSliderInput(session, "concave", value = state$concave)
       updateSliderInput(session, "resolution", value = state$resolution)
-      updateSliderInput(session, "mesh_edge", value = state$mesh_edge)
-      updateSliderInput(session, "mesh_cut", value = state$mesh_cut)
-      updateSliderInput(session, "mesh_offset", value = state$mesh_offset)
+      updateSliderInput(session, "max_edge", value = state$max_edge)
+      updateSliderInput(session, "cutoff", value = state$cutoff)
+      updateSliderInput(session, "offset", value = state$offset)
+      updateSelectInput(session, "selected", value = state$selected)
     }
   ))
 })
@@ -158,9 +163,9 @@ prep_mesh_module_rmd <- function(common) {
     prep_mesh_convex = common$meta$prep_mesh$convex[[selected]],
     prep_mesh_concave = common$meta$prep_mesh$concave[[selected]],
     prep_mesh_resolution = common$meta$prep_mesh$resolution[[selected]],
-    prep_mesh_edge = printVecAsis(common$meta$prep_mesh$mesh_edge[[selected]]),
-    prep_mesh_cut = common$meta$prep_mesh$mesh_cut[[selected]],
-    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$mesh_offset[[selected]])
+    prep_mesh_max_edge = printVecAsis(common$meta$prep_mesh$max_edge[[selected]]),
+    prep_mesh_cutoff = common$meta$prep_mesh$cutoff[[selected]],
+    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$offset[[selected]])
   )
 }
 
