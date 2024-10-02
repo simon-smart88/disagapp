@@ -15,7 +15,7 @@ prep_mesh_module_ui <- function(id) {
     ),
     bslib::input_task_button(ns("run"), "Make mesh"),
     tags$hr(),
-    uiOutput(ns("choice_out"))
+    uiOutput(ns("selected_out"))
   )
 }
 
@@ -38,17 +38,17 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     updateSliderInput(session, "offset", value = c(max_edge, max_edge * 2))
   })
 
-  output$choice_out <- renderUI({
+  output$selected_out <- renderUI({
     gargoyle::watch("prep_mesh")
     req(length(common$mesh) > 0)
-    selectInput(session$ns("choice"), "Selected mesh", choices = names(common$mesh), selected = names(common$mesh)[length(common$mesh)])
+    selectInput(session$ns("selected"), "Selected mesh", choices = names(common$mesh), selected = names(common$mesh)[length(common$mesh)])
   })
 
-  outputOptions(output, "choice_out", suspendWhenHidden = FALSE)
+  outputOptions(output, "selected_out", suspendWhenHidden = FALSE)
 
   observe({
-    req(input$choice)
-    common$meta$prep_mesh$selected <- input$choice
+    req(input$selected)
+    common$meta$prep_mesh$selected <- input$selected
     do.call("prep_mesh_module_map", list(map, common))
   })
 
@@ -141,7 +141,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
       updateSliderInput(session, "max_edge", value = state$max_edge)
       updateSliderInput(session, "cutoff", value = state$cutoff)
       updateSliderInput(session, "offset", value = state$offset)
-      updateSelectInput(session, "selected", value = state$selected)
+      updateSelectInput(session, "selected", selected = state$selected)
     }
   ))
 })
