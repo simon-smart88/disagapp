@@ -3,8 +3,12 @@ pred_pred_module_ui <- function(id) {
   tagList(
     uiOutput(ns("iid_out")),
     shinyWidgets::materialSwitch(ns("uncertain"), "Include uncertainty?", FALSE, status = "success"),
-    uiOutput(ns("uncertain_parameters")),
-    actionButton(ns("run"), "Produce model predictions"),
+    conditionalPanel("input.uncertain === true", ns = ns,
+       tags$label("Uncertainty parameters"),
+       numericInput(ns("uncertain_n"), "Number of realisations", value = 100, step = 1),
+       numericInput(ns("uncertain_ci"), "Credible interval", value = 0.95, step = 0.01, max = 1, min = 0)
+    ),
+    bslib::input_task_button(ns("run"), "Produce model predictions"),
     tags$br(),
     uiOutput(ns("dl_out"))
   )
@@ -24,24 +28,17 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     out
   })
 
-  output$uncertain_parameters <- renderUI({
-    if (input$uncertain){
-      out <- tagList(
-        tags$label("Uncertainty parameters"),
-        numericInput(session$ns("uncertain_n"), "Number of realisations", value = 100, step = 1),
-        numericInput(session$ns("uncertain_ci"), "Credible interval", value = 0.95, step = 0.01, max = 1, min = 0),
-      )
-    } else {
-      out <- NULL
-    }
-    out
-  })
-
   output$dl_out <- renderUI({
     gargoyle::watch("pred_pred")
     req(common$pred)
     downloadButton(session$ns("download"), "Download model predictions")
   })
+
+  common$tasks$pred_pred <- ExtendedTask$new(function(...) {
+    promises::future_promise({
+      pred_pred(...)
+    }, seed = TRUE)
+  }) |> bslib::bind_task_button("run")
 
 
   observeEvent(input$run, {
@@ -59,31 +56,33 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
       predict_iid <- input$iid
     }
 
-    prediction <- disaggregation::predict_model(common$fit, predict_iid = predict_iid)
-    if (!is.null(prediction$field)){
-      terra::crs(prediction$field) <- terra::crs(common$prep$covariate_rasters[[1]])
-      prediction$field <- terra::mask(prediction$field, common$prep$covariate_rasters[[1]])
-    }
-    if (input$uncertain){
-      uncertainty <- disaggregation::predict_uncertainty(common$fit,
-                                                         predict_iid = predict_iid,
-                                                         N = input$uncertain_n,
-                                                         CI = input$uncertain_ci)
-    }
-    close_loading_modal()
-    common$logger |> writeLog(type = "complete", "Model predictions are available")
-    # LOAD INTO COMMON ####
-    common$pred <- prediction
-
     if (is.null(common$meta$prep_final$resolution) || common$meta$prep_final$resolution == "High resolution"){
-      common$pred$cases <- common$pred$prediction * common$agg_prep
+      aggregation <- "agg_prep"
     } else {
-      common$pred$cases <- common$pred$prediction * common$agg_prep_lores
+      aggregation <- "agg_prep_lores"
     }
 
-    if (input$uncertain){
-      common$pred$uncertainty <- uncertainty
+    common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
+    common[[aggregation]] <- wrap_terra(common[[aggregation]])
+
+    if (!input$uncertain){
+      common$tasks$pred_pred$invoke(fit = common$fit,
+                                    aggregation = common[[aggregation]],
+                                    predict_iid = predict_iid,
+                                    async = TRUE)
+    } else {
+      common$tasks$pred_pred$invoke(fit = common$fit,
+                                    aggregation = common[[aggregation]],
+                                    predict_iid = predict_iid,
+                                    N = input$uncertain_n,
+                                    CI = input$uncertain_ci,
+                                    async = TRUE)
     }
+
+    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+    common[[aggregation]]<- unwrap_terra(common[[aggregation]])
+    results$resume()
+
     # METADATA ####
     common$meta$pred_pred$used <- TRUE
     if (input$uncertain){
@@ -98,13 +97,29 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
       common$meta$pred_pred$uncertain_ci <- input$uncertain_ci
     }
 
-    names(common$pred)[which(names(common$pred) == "prediction")] <- "prediction (rate)"
-    names(common$pred)[which(names(common$pred) == "cases")] <- "prediction (cases)"
+  })
 
+  results <- observe({
+    # LOAD INTO COMMON ####
+    results$suspend()
+    common$pred <- common$tasks$pred_pred$result()
+
+    common$pred$field <- unwrap_terra(common$pred$field)
+    common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
+    common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
+    common$pred$covariates <- unwrap_terra(common$pred$covariates)
+    common$pred$iid <- unwrap_terra(common$pred$iid)
+    common$pred$uncertainty$predictions_ci$`lower CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
+    common$pred$uncertainty$predictions_ci$`upper CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
+
+    common$logger |> writeLog(type = "complete", "Model predictions are available")
     # TRIGGER
     gargoyle::trigger("pred_pred")
     do.call("pred_pred_module_map", list(map, common))
     show_map(parent_session)
+    shinyjs::runjs("Shiny.setInputValue('pred_pred-complete', 'complete');")
+    close_loading_modal()
+
   })
 
   output$download <- downloadHandler(
@@ -135,11 +150,6 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     }
   )
 
-
-  # output$result <- renderText({
-  #   # Result
-  # })
-
   return(list(
     save = function() {list(
       ### Manual save start
@@ -160,13 +170,6 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   ))
 })
 }
-
-# pred_pred_module_result <- function(id) {
-#   ns <- NS(id)
-#
-#   # Result UI
-#   verbatimTextOutput(ns("result"))
-# }
 
 pred_pred_module_map <- function(map, common) {
   for (variable in c("Field", "Prediction (rate)", "Prediction (cases)", "IID")){

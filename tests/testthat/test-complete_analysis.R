@@ -50,7 +50,8 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
-  expect_is(common$mesh, "inla.mesh")
+  expect_is(common$mesh[[1]], "inla.mesh")
+  #app$set_inputs("prep_mesh-choice" = names(common$mesh)[1])
 
   app$set_inputs(tabs = "prep")
   app$set_inputs(prepSel = "prep_summary")
@@ -73,7 +74,8 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
   expect_is(common$prep, "disag_data")
 
   app$set_inputs(tabs = "fit")
-  app$click("fit_fit-run")
+  app$click(selector = "#fit_fit-run")
+  app$wait_for_value(input = "fit_fit-complete")
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
@@ -81,7 +83,8 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
 
   app$set_inputs(tabs = "pred")
   app$set_inputs(predSel = "pred_pred")
-  app$click("pred_pred-run")
+  app$click(selector = "#pred_pred-run")
+  app$wait_for_value(input = "pred_pred-complete")
   app$set_inputs(main = "Save")
   save_file <- app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_file)
