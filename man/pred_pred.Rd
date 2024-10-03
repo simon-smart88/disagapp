@@ -15,31 +15,32 @@ pred_pred(
 )
 }
 \arguments{
-\item{async}{logical. Whether or not the function is being used asynchronously}
-
-\item{data}{disag_data.  Object returned by prepare_data function that
+\item{fit}{disag_model. Object returned by disag_model function that
 contains all the necessary objects for the model fitting}
 
-\item{priors}{list. List of prior values}
+\item{aggregation}{SpatRaster. The aggregation raster}
 
-\item{family}{character. Model family to fit}
+\item{predict_iid}{logical. Whether to generate predictions including the iid effect}
 
-\item{link}{character. Link function to use}
+\item{uncertain}{logical. Whether or not to generate upper and lower credible
+intervals}
 
-\item{iterations}{numeric. Number of iterations}
+\item{CI}{numeric. The credible interval to user when generating uncertainty
+predictions.}
 
-\item{field}{logical. Whether to include a spatial field}
+\item{async}{logical. Whether or not the function is being used asynchronously}
 
-\item{iid}{logical. Whether to include an iid effect}
+\item{N.}{numeric. The number of realisations to use when generating uncertainty
+predictions}
 }
 \value{
-a list of class \code{disag_model} or a character string if an error occurs
+a list containing the predictions
 }
 \description{
 This function is called by the pred_pred module and calls
-disaggregation::predict_model() and  with the only difference being that covariates
-are wrapped to enable asynchronous operation and any errors are returned as
-a character
+disaggregation::predict_model() and disaggregation::predict_uncertainty() and
+also generates predicted cases. SpatRasters are wrapped to enable asynchronous
+operation.
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

@@ -40,15 +40,12 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     }, seed = TRUE)
   }) |> bslib::bind_task_button("run")
 
-
   observeEvent(input$run, {
     # WARNING ####
     if (is.null(common$fit)){
       common$logger |> writeLog(type = "error", "Please fit a model first")
       return()
     }
-    # FUNCTION CALL ####
-    show_loading_modal("Please wait while the model predictions are generated")
 
     if (is.null(input$iid)){
       predict_iid <- FALSE
@@ -64,6 +61,8 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
 
     common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
     common[[aggregation]] <- wrap_terra(common[[aggregation]])
+
+    common$logger |> writeLog(type = "starting", "Starting to generate predictions")
 
     if (!input$uncertain){
       common$tasks$pred_pred$invoke(fit = common$fit,
@@ -87,22 +86,22 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     common$meta$pred_pred$used <- TRUE
     if (input$uncertain){
       common$meta$pred_pred$uncertain <- input$uncertain
+      common$meta$pred_pred$uncertain_n <- input$uncertain_n
+      common$meta$pred_pred$uncertain_ci <- input$uncertain_ci
     }
     if (is.null(input$iid)){
       common$meta$pred_pred$iid <- FALSE
-    }
-    common$meta$pred_pred$iid <- input$iid
-    if (input$uncertain){
-      common$meta$pred_pred$uncertain_n <- input$uncertain_n
-      common$meta$pred_pred$uncertain_ci <- input$uncertain_ci
+    } else {
+      common$meta$pred_pred$iid <- input$iid
     }
 
   })
 
   results <- observe({
     # LOAD INTO COMMON ####
+
+    common$pred<- common$tasks$pred_pred$result()
     results$suspend()
-    common$pred <- common$tasks$pred_pred$result()
 
     common$pred$field <- unwrap_terra(common$pred$field)
     common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
@@ -118,7 +117,6 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     do.call("pred_pred_module_map", list(map, common))
     show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('pred_pred-complete', 'complete');")
-    close_loading_modal()
 
   })
 
