@@ -22,7 +22,7 @@ transfer_covariates[["{{meta$cov_access$layer}}"]] <- cov_access(transfer_shape,
 ```
 
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_bioclim$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_bioclim$used)))}}}
-transfer_covariates <- append(transfer_covariates, cov_bioclim(transfer_country, "{{meta$cov_bioclim$variables}}", transfer_shape))
+transfer_covariates <- append(transfer_covariates, cov_bioclim(transfer_shape, transfer_country, "{{meta$cov_bioclim$variables}}"))
 ```
 
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}}
@@ -57,7 +57,7 @@ transfer_covariate_files <- "{{pred_transfer_cov}}"
 transfer_covariate_file_paths <- file.path(transfer_covariate_directory, transfer_covariate_files)
 transfer_covariate_file_df <- data.frame(datapath = transfer_covariate_file_paths, name = transfer_covariate_files)
 
-transfer_covariates <- append(transfer_covariates, cov_upload(transfer_covariate_file_df, transfer_shape))
+transfer_covariates <- append(transfer_covariates, cov_upload(transfer_shape, transfer_covariate_file_df))
 ```
 
 ```{asis, echo = {{pred_transfer_knit}}, eval = {{pred_transfer_knit}}, include = {{pred_transfer_knit}}}

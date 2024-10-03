@@ -4,7 +4,7 @@ pred_transfer_module_ui <- function(id) {
     uiOutput(ns("country_out")),
     uiOutput(ns("cov_out")),
     uiOutput(ns("agg_out")),
-    actionButton(ns("run"), "Transfer predictions")
+    bslib::input_task_button(ns("run"), "Transfer predictions")
   )
 }
 
@@ -32,6 +32,12 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
       }
     })
 
+    common$tasks$pred_transfer <- ExtendedTask$new(function(...) {
+      promises::future_promise({
+        pred_transfer(...)
+      }, seed = TRUE)
+    }) |> bslib::bind_task_button("run")
+
   observeEvent(input$run, {
 
     if (is.null(common$fit)) {
@@ -47,10 +53,13 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
     country_code <- common$countries$ISO3[common$countries$NAME == input$country]
 
     # FUNCTION CALL ####
+
+    common$logger |> writeLog(type = "starting", "Starting to transfer the model to the new area - this will take a long time")
+
+    common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
+
     if (is.null(common$meta$cov_upload$used) & is.null(common$meta$agg_upload$used)){
-      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
-      common$transfer <- pred_transfer(country_code, common)
-      close_loading_modal()
+      common$tasks$pred_transfer$invoke(country_code, common$fit, common$meta, async = TRUE)
     }
 
     if (!is.null(common$meta$cov_upload$used) & is.null(common$meta$agg_upload$used)){
@@ -58,9 +67,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
         common$logger |> writeLog(type = "error", "Please upload covariates")
         return()
       }
-      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
-      common$transfer <- pred_transfer(country_code, common, covdf = input$cov)
-      close_loading_modal()
+      common$tasks$pred_transfer$invoke(country_code, common$fit, common$meta, covdf = input$cov, async = TRUE)
     }
 
     if (is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
@@ -68,9 +75,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
         common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
-      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
-      common$transfer <- pred_transfer(country_code, common, covdf = input$cov)
-      close_loading_modal()
+      common$tasks$pred_transfer$invoke(country_code, common$fit, common$meta, aggdf = input$agg, async = TRUE)
     }
 
     if (!is.null(common$meta$cov_upload$used) & !is.null(common$meta$agg_upload$used)){
@@ -82,10 +87,11 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
         common$logger |> writeLog(type = "error", "Please upload an aggregation raster")
         return()
       }
-      show_loading_modal("Please wait while the model is transferred to the new area - this will take a long time")
-      common$transfer <- pred_transfer(country_code, common, covdf = input$cov, aggdf = input$agg$datapath)
-      close_loading_modal()
+      common$tasks$pred_transfer$invoke(country_code, common$fit, common$meta, covdf = input$cov, aggdf = input$agg, async = TRUE)
     }
+
+    common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+    results$resume()
 
     # METADATA ####
     common$meta$pred_transfer$used <- TRUE
@@ -101,10 +107,26 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
       common$meta$pred_transfer$lores <- TRUE
     }
 
+  })
+
+  results <- observe({
+    # LOAD INTO COMMON ####
+
+    common$transfer <- common$tasks$pred_transfer$result()
+    results$suspend()
+    common$transfer$agg <- unwrap_terra(common$transfer$agg)
+    common$transfer$cases <- unwrap_terra(common$transfer$cases)
+    common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
+    common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
+    browser()
+
+    common$logger |> writeLog(type = "complete", "The model has been transferred to the new area")
     # TRIGGER
     gargoyle::trigger("pred_transfer")
     do.call("pred_transfer_module_map", list(map, common))
     show_map(parent_session)
+    shinyjs::runjs("Shiny.setInputValue('pred_transfer-complete', 'complete');")
+
   })
 
   return(list(

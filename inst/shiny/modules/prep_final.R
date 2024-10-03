@@ -107,7 +107,12 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     common$meta$prep_final$id_var <- as.character(input$id_var)
     common$meta$prep_final$resp_var <- as.character(input$resp_var)
     common$meta$prep_final$na_action <- input$na_action
-    common$meta$prep_final$resolution <- input$resolution
+    if (is.null(input$resolution)){
+      common$meta$prep_final$resolution <- "High resolution"
+    } else {
+      common$meta$prep_final$resolution <- input$resolution
+    }
+
     # TRIGGER
     gargoyle::trigger("prep_final")
     # do.call("prep_final_module_map", list(map, common))

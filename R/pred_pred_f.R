@@ -6,12 +6,12 @@
 #' operation.
 #'
 #' @param fit disag_model. Object returned by disag_model function that
-#' contains all the necessary objects for the model fitting
+#' contains all the necessary objects for generating predictions.
 #' @param aggregation SpatRaster. The aggregation raster
 #' @param predict_iid logical. Whether to generate predictions including the iid effect
 #' @param uncertain logical. Whether or not to generate upper and lower credible
 #' intervals
-#' @param N. numeric. The number of realisations to use when generating uncertainty
+#' @param N numeric. The number of realisations to use when generating uncertainty
 #' predictions
 #' @param CI numeric. The credible interval to user when generating uncertainty
 #' predictions.
