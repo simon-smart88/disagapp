@@ -4,9 +4,9 @@ Download nighttime light data and add to covariates list. This module requires a
 
 ```{r, echo = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
 
-#look to see if an environmental variable containing the NASA bearer token is set 
-if (Sys.getenv("NASA_bearer") != ""){
-  bearer = Sys.getenv("NASA_bearer")
+#look to see if an environmental variable containing the NASA credentials is set 
+if (Sys.getenv("NASA_username") != ""){
+  bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
 } else {
   bearer = "{{cov_nightlight_bearer}}"
 }
