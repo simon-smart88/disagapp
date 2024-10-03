@@ -15,8 +15,12 @@
 <url><loc>/reference/cov_water.html</loc></url>
 <url><loc>/reference/create_module.html</loc></url>
 <url><loc>/reference/disagapp-package.html</loc></url>
+<url><loc>/reference/fit_fit.html</loc></url>
+<url><loc>/reference/get_nasa_token.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/mesh_map.html</loc></url>
+<url><loc>/reference/plot_mesh.html</loc></url>
+<url><loc>/reference/pred_pred.html</loc></url>
 <url><loc>/reference/pred_transfer.html</loc></url>
 <url><loc>/reference/prep_correlation.html</loc></url>
 <url><loc>/reference/prep_scale.html</loc></url>
@@ -24,6 +28,7 @@
 <url><loc>/reference/printVecAsis.html</loc></url>
 <url><loc>/reference/raster_map.html</loc></url>
 <url><loc>/reference/register_module.html</loc></url>
+<url><loc>/reference/replot_raster_map.html</loc></url>
 <url><loc>/reference/reset_data_ui.html</loc></url>
 <url><loc>/reference/resp_combine.html</loc></url>
 <url><loc>/reference/resp_download.html</loc></url>
