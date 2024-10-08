@@ -44,8 +44,8 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   app$wait_for_value(input = "cov_bioclim-complete")
 
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   common$covs <- unwrap_terra(common$covs)
   expect_length(common$covs, 2)
 
@@ -57,21 +57,19 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   app$wait_for_value(input = "agg_worldpop-complete")
 
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   common$agg <- unwrap_terra(common$agg)
   expect_is(common$agg, "SpatRaster")
 
   app$set_inputs(tabs = "prep")
   app$set_inputs(prepSel = "prep_mesh")
-  app$set_inputs("prep_mesh-mesh_edge" = c(0.1, 0.3))
-  app$set_inputs("prep_mesh-mesh_offset" = c(0.1, 0.3))
   app$click(selector = "#prep_mesh-run")
   app$wait_for_value(input = "prep_mesh-complete")
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
-  expect_is(common$mesh, "inla.mesh")
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
+  expect_is(common$mesh[[1]], "inla.mesh")
 
   app$set_inputs(tabs = "prep")
   app$set_inputs(prepSel = "prep_summary")
@@ -86,26 +84,29 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   app$click("prep_final-run")
 
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   common$covs_prep <- unwrap_terra(common$covs_prep)
   expect_length(common$covs_prep, 1)
   expect_is(common$covs_prep, "SpatRaster")
   expect_is(common$prep, "disag_data")
 
   app$set_inputs(tabs = "fit")
-  app$click("fit_fit-run")
+  app$click(selector = "#fit_fit-run")
+  app$wait_for_value(input = "fit_fit-complete")
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   expect_is(common$fit, "disag_model")
 
   app$set_inputs(tabs = "pred")
   app$set_inputs(predSel = "pred_pred")
-  app$click("pred_pred-run")
+  app$click(selector = "#pred_pred-run")
+  app$wait_for_value(input = "pred_pred-complete")
+
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
   expect_is(common$pred$`prediction (rate)`, "SpatRaster")
 
@@ -121,6 +122,8 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   rmarkdown::render(sess_file)
   html_file <- gsub("Rmd", "html", sess_file)
   expect_gt(file.info(html_file)$size, 1000)
+
+  app$stop()
 
 })
 #

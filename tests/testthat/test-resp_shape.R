@@ -15,4 +15,5 @@ test_that("{shinytest2} recording: e2e_resp_shape", {
   common <- app$get_value(export = "common")
   expect_is(common$shape, "sf")
   expect_equal(nrow(common$shape), 109)
+  app$stop()
 })

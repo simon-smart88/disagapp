@@ -40,9 +40,6 @@ test_that("Check resp_download reports errors when data cannot be merged", {
 #works using the temp file but only after uploading local first
 test_that("{shinytest2} recording: e2e_resp_download", {
 
-  df_path <- tempfile(fileext = ".csv")
-  write.csv(df, df_path, row.names = FALSE)
-
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -53,18 +50,14 @@ test_that("{shinytest2} recording: e2e_resp_download", {
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
 
-  if (is_ci){
-    save_path <- tempfile(fileext = ".rds")
-  } else {
-    save_path <- "~/temprds/saved_file.rds"
-  }
-
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
 
   expect_is(common$shape, "sf")
   expect_equal(nrow(common$shape), 11)
+
+  app$stop()
 })
 
 

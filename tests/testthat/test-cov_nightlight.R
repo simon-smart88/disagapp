@@ -27,11 +27,12 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
     app$wait_for_value(input = "cov_nightlight-complete")
 
     app$set_inputs(main = "Save")
-    save_file <- app$get_download("core_save-save_session", filename = save_path)
-    common <- readRDS(save_file)
-    common$covs <- unwrap_terra(common$covs)
+    app$get_download("core_save-save_session", filename = save_path)
 
+    common <- readRDS(save_path)
+    common$covs <- unwrap_terra(common$covs)
     expect_is(common$covs[[1]], "SpatRaster")
     expect_equal(length(common$covs), 1)
+    app$stop()
   }
 })

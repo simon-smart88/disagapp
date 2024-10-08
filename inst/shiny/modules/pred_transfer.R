@@ -118,7 +118,6 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
     common$transfer$cases <- unwrap_terra(common$transfer$cases)
     common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
     common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
-    browser()
 
     common$logger |> writeLog(type = "complete", "The model has been transferred to the new area")
     # TRIGGER

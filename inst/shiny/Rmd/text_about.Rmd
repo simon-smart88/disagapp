@@ -38,7 +38,7 @@ Disagapp was developed as part of a project to develop digital tools for modelli
 
 #### **References**
 
-1. Nandi, A. K., Lucas, T. C. D., Arambepola, R., Gething, P., & Weiss, D. J. (2023). disaggregation: An R Package for Bayesian Spatial Disaggregation Modeling. Journal of Statistical Software, 106(11), 1–19. https://doi.org/10.18637/jss.v106.i11
+1. Nandi, A. K., Lucas, T. C. D., Arambepola, R., Gething, P., & Weiss, D. J. (2023). disaggregation: An R Package for Bayesian Spatial Disaggregation Modeling. Journal of Statistical Software, 106(11), 1–19. <a href="https://doi.org/10.18637/jss.v106.i11" target="_blank">DOI: 10.18637/jss.v106.i11</a>
 
 2. Kass J. M., Vilela B., Aiello-Lammens M. E., Muscarella R., Merow C., Anderson R. P. (2018). *Wallace*: A flexible platform for reproducible modeling of species niches and distributions built for community expansion. *Methods in Ecology and Evolution*, 9(4): 1151-1156. <a href="https://doi.org/10.1111/2041-210X.12945" target="_blank">DOI: 10.1111/2041-210X.12945</a>
 

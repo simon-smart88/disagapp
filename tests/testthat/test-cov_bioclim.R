@@ -30,7 +30,7 @@ test_that("Check cov_bioclim function returns errors as expected", {
 
 test_that("{shinytest2} recording: e2e_cov_bioclim", {
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 60000)
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_bioclim", timeout = 60000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -48,17 +48,13 @@ test_that("{shinytest2} recording: e2e_cov_bioclim", {
   app$click(selector = "#cov_bioclim-run")
   app$wait_for_value(input = "cov_bioclim-complete")
 
-  if (is_ci){
-    save_path <- tempfile(fileext = ".rds")
-  } else {
-    save_path <- "~/temprds/saved_file.rds"
-  }
-
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
 
   common$covs <- unwrap_terra(common$covs)
   expect_is(common$covs[[1]], "SpatRaster")
   expect_equal(length(common$covs), 2)
+
+  app$stop()
 })

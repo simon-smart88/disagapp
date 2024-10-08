@@ -15,12 +15,7 @@ df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
                             "Planken","Vaduz"),
                  "response" = 1:11)
 
-if (is_ci){
-  df_path <- tempfile(fileext = ".csv")
-  write.csv(df, df_path)
-} else {
-  df_path <- "../../lie.csv"
-}
+df_path <- system.file("extdata", "test_data", "lie.csv", package = "disagapp")
 
 ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden',
            'Basel-Landschaft', 'Basel-Stadt', 'Bern', 'Fribourg', 'Genève',
@@ -31,14 +26,11 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
-shp <- list.files(system.file("extdata", "shapes", package="disagapp"), pattern = ".shp", full.names = TRUE)
-shape <- sf::st_read(shp, quiet = TRUE)
-shape <- shape[shape$Name_1 == "Alaotra Mangoro",]
+shape <- sf::st_read(list.files(system.file("extdata", "test_data", package="disagapp")
+                                , pattern = ".shp", full.names = TRUE), quiet = TRUE)
 
-temp_shape <- tempfile(fileext = ".shp")
-sf::st_write(shape, temp_shape, quiet = TRUE)
-shpdf_small <- data.frame(datapath = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape)), full.names = TRUE),
-                    name = list.files(path = dirname(temp_shape), pattern = gsub(".shp", "", basename(temp_shape))))
+shpdf_small <- data.frame(datapath = list.files(system.file("extdata", "test_data", package = "disagapp"), pattern = "mdg", full.names = TRUE),
+                    name = list.files(system.file("extdata", "test_data", package = "disagapp"), pattern = "mdg"))
 
 country_code <- c("LIE", "CHE")
 area_column <- "area"

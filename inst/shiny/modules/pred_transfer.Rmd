@@ -35,7 +35,7 @@ transfer_covariates <- append(transfer_covariates, cov_landuse(transfer_shape, {
 if (Sys.getenv("NASA_username") != ""){
   nasa_bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
 } else {
-  nasa_bearer = "{{cov_nightlight_bearer}}"
+  nasa_bearer = "{{meta$cov_nightlight$bearer}}"
 }
 transfer_covariates[["Nighttime light"]] <- cov_nightlight(new_shape, {{meta$cov_nightlight$year}}, nasa_bearer)
 ```

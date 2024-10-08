@@ -56,17 +56,13 @@ test_that("{shinytest2} recording: e2e_agg_worldpop", {
   app$click(selector = "#agg_worldpop-run")
   app$wait_for_value(input = "agg_worldpop-complete")
 
-  if (is_ci){
-    save_path <- tempfile(fileext = ".rds")
-  } else {
-    save_path <- "~/temprds/saved_file.rds"
-  }
-
   app$set_inputs(main = "Save")
-  save_file <- app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_file)
+  app$get_download("core_save-save_session", filename = save_path)
+  common <- readRDS(save_path)
   common$agg <- unwrap_terra(common$agg)
 
   expect_is(common$agg, "SpatRaster")
+
+  app$stop()
 })
 

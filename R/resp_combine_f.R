@@ -71,7 +71,7 @@ resp_combine <- function(df, df_area_column, df_resp_column, shape, shape_area_c
 
   # look for any NA in merged shapes, raise a warning if any found
   if (any(c(any(is.na(shape[[df_resp_column]]))),(any(is.na(shape[[shape_area_column]]))))){
-    logger |> writeLog(type = "warning")
+    logger |> writeLog(type = "warning", "Some data could not be merged - check the log")
     }
 
   # log the individual errors

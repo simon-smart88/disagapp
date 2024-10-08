@@ -61,7 +61,12 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_nightlight$used <- TRUE
     common$meta$cov_nightlight$year <- input$year
     common$meta$cov_nightlight$log <- input$log
-    common$meta$cov_nightlight$bearer <- input$bearer
+    if (is.null(input$bearer)){
+      common$meta$cov_nightlight$bearer <- "this is not a bearer"
+    } else {
+      common$meta$cov_nightlight$bearer <- input$bearer
+    }
+
   })
 
   results <- observe({
