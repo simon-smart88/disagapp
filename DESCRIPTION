@@ -13,6 +13,8 @@ Depends:
     leaflet.extras (>= 1.0.0),
     gargoyle
 Imports:
+    arcgislayers,
+    arcgisutils,
     blackmarbler,
     corrplot,
     curl,
@@ -48,8 +50,6 @@ Imports:
     tools,
     zip
 Suggests: 
-    arcgislayers,
-    arcgisutils,
     shinytest2,
     testthat
 License: GPL-3
