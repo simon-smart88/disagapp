@@ -4,12 +4,15 @@
 \alias{pred_transfer}
 \title{Transfer predictions to a new country}
 \usage{
-pred_transfer(country, common, covdf = NULL, aggdf = NULL, logger = NULL)
+pred_transfer(country, fit, meta, covdf = NULL, aggdf = NULL, async = FALSE)
 }
 \arguments{
 \item{country}{character. ISO3 code of the country.}
 
-\item{common}{The common data structure.}
+\item{fit}{disag_model. Object returned by disag_model function that
+contains all the necessary objects for generating predictions.}
+
+\item{meta}{list. The metadata object}
 
 \item{covdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
 \code{datapath} columns of covariates}
@@ -17,9 +20,7 @@ pred_transfer(country, common, covdf = NULL, aggdf = NULL, logger = NULL)
 \item{aggdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
 \code{datapath} columns of the aggregation raster}
 
-\item{logger}{Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL}
+\item{async}{logical. Whether or not the function is being used asynchronously}
 }
 \value{
 a list of SpatRaster objects

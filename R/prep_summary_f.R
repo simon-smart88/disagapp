@@ -14,8 +14,7 @@
 #' covariate_files <- list.files(system.file("extdata", "covariates",
 #'                               package = "disagapp"), full.names = TRUE)
 #' covariate_list <- lapply(covariate_files, terra::rast)
-#' covariates <- terra::rast(covariate_list)
-#' covariate_summary <- prep_summary(covs = covariates)
+#' covariate_summary <- prep_summary(covs = covariate_list)
 #' @export
 
 prep_summary <- function(covs, remove = FALSE, logger = NULL){

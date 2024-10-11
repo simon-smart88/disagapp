@@ -15,11 +15,8 @@ get_nasa_token(username, password)
 A character string containing the token
 }
 \description{
-This function is called by the cov_nightlight module and downloads annual
-data on night time illumination from NASA (product ID VNP46A4) using the
-blackmarbler package. You must obtain and a token from NASA to use this
-function and set an environmental variable called \code{NASA_bearer} to contain it.
-It returns a SpatRaster for the selected area and year.
+This function obtains a NASA Earthdata token via an API for a given username
+and password
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

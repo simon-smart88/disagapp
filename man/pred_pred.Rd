@@ -16,7 +16,7 @@ pred_pred(
 }
 \arguments{
 \item{fit}{disag_model. Object returned by disag_model function that
-contains all the necessary objects for the model fitting}
+contains all the necessary objects for generating predictions.}
 
 \item{aggregation}{SpatRaster. The aggregation raster}
 
@@ -25,13 +25,13 @@ contains all the necessary objects for the model fitting}
 \item{uncertain}{logical. Whether or not to generate upper and lower credible
 intervals}
 
+\item{N}{numeric. The number of realisations to use when generating uncertainty
+predictions}
+
 \item{CI}{numeric. The credible interval to user when generating uncertainty
 predictions.}
 
 \item{async}{logical. Whether or not the function is being used asynchronously}
-
-\item{N.}{numeric. The number of realisations to use when generating uncertainty
-predictions}
 }
 \value{
 a list containing the predictions

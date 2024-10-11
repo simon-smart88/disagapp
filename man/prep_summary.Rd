@@ -26,8 +26,7 @@ Summarises the properties of a list of SpatRasters
 covariate_files <- list.files(system.file("extdata", "covariates",
                               package = "disagapp"), full.names = TRUE)
 covariate_list <- lapply(covariate_files, terra::rast)
-covariates <- terra::rast(covariate_list)
-covariate_summary <- prep_summary(covs = covariates)
+covariate_summary <- prep_summary(covs = covariate_list)
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}
