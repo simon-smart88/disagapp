@@ -34,7 +34,9 @@ resp_simplify <- function(shape, distance, logger = NULL) {
     return()
   }
 
+  shape <- sf::st_transform(shape, 25832)
   shape <- sf::st_simplify(shape, preserveTopology = TRUE, dTolerance = distance)
+  shape <- sf::st_transform(shape, 4326)
 
   return(shape)
 
