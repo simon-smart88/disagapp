@@ -46,7 +46,7 @@ generated from a model to a new area of interest.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pred_transfer</span><span class="op">(</span><span class="va">country</span>, <span class="va">common</span>, covdf <span class="op">=</span> <span class="cn">NULL</span>, aggdf <span class="op">=</span> <span class="cn">NULL</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pred_transfer</span><span class="op">(</span><span class="va">country</span>, <span class="va">fit</span>, <span class="va">meta</span>, covdf <span class="op">=</span> <span class="cn">NULL</span>, aggdf <span class="op">=</span> <span class="cn">NULL</span>, async <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -57,8 +57,13 @@ generated from a model to a new area of interest.</p>
 <dd><p>character. ISO3 code of the country.</p></dd>
 
 
-<dt id="arg-common">common<a class="anchor" aria-label="anchor" href="#arg-common"></a></dt>
-<dd><p>The common data structure.</p></dd>
+<dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
+<dd><p>disag_model. Object returned by disag_model function that
+contains all the necessary objects for generating predictions.</p></dd>
+
+
+<dt id="arg-meta">meta<a class="anchor" aria-label="anchor" href="#arg-meta"></a></dt>
+<dd><p>list. The metadata object</p></dd>
 
 
 <dt id="arg-covdf">covdf<a class="anchor" aria-label="anchor" href="#arg-covdf"></a></dt>
@@ -71,10 +76,8 @@ generated from a model to a new area of interest.</p>
 <code>datapath</code> columns of the aggregation raster</p></dd>
 
 
-<dt id="arg-logger">logger<a class="anchor" aria-label="anchor" href="#arg-logger"></a></dt>
-<dd><p>Stores all notification messages to be displayed in the Log
-Window. Insert the logger reactive list here for running in
-shiny, otherwise leave the default NULL</p></dd>
+<dt id="arg-async">async<a class="anchor" aria-label="anchor" href="#arg-async"></a></dt>
+<dd><p>logical. Whether or not the function is being used asynchronously</p></dd>
 
 </dl></div>
     <div id="value">
