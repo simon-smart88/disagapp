@@ -17,7 +17,7 @@
 #'         c(2, 2), c(1, 2.25),
 #'         c(0, 2), c(0.25, 1),
 #'         c(0, 0))))
-#' shape <- sf::st_sf(geometry = sf::st_sfc(poly))
+#' shape <- sf::st_sf(geometry = sf::st_sfc(poly), crs = 4326)
 #' simplified_shape <- resp_simplify(shape, 0.5)
 #'
 #' @export
