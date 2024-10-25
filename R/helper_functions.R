@@ -327,6 +327,28 @@ mesh_map <- function(map, common){
 # PLOTTING #
 ####################### #
 
+#' @title plot_response
+#' @description
+#' For internal use. Plot the response data as a histogram
+#' @param response numeric. The response data
+#' @keywords internal
+#' @export
+#'
+
+plot_response <- function(response){
+  pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+  breaks <- base::pretty(response, n = 9)
+  cols <- pal(breaks)
+
+  plotly::plot_ly( x = response,
+                   type = "histogram",
+                   histnorm = "frequency",
+                   xbins = list(start = min(breaks), end = max(breaks), size = diff(breaks)[1]),
+                   marker = list(color = cols)) |>
+    plotly::layout(xaxis = list(title = "Response"),
+                   yaxis = list(title = "Frequency"))
+}
+
 #' @title plot_mesh
 #' @description For internal use. Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
 #' https://github.com/inlabru-org/inlabru/blob/53ac741a5dba72c2bd33706fda48a149f0d8d9a9/R/ggplot.R#L750

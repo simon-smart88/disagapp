@@ -124,26 +124,57 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_combine")
     do.call("resp_combine_module_map", list(map, common))
-    common$logger |> writeLog(type = "complete", "Response data has been uploaded")
+    common$logger |> writeLog(type = "complete", "Response data has been uploaded and is summarised in the results tab")
+
+    response <- common$shape[[common$response_name]]
+    if (!isTRUE(all.equal(response, as.integer(response)))){
+      common$logger |> writeLog(type = "info", "Some response data is not integers")
+    }
+    if (any(response < 0)){
+      common$logger |> writeLog(type = "info", "The response data contains negative values")
+    }
+  })
+
+  output$plot <- plotly::renderPlotly({
+    req(common$shape)
+    gargoyle::watch("resp_combine")
+    gargoyle::watch("resp_edit")
+    response <- common$shape[[common$response_name]]
+    plot_response(response)
+  })
+
+  output$table <- DT::renderDataTable({
+    req(common$shape)
+    gargoyle::watch("resp_combine")
+    gargoyle::watch("resp_edit")
+    common$shape |> sf::st_drop_geometry()
   })
 
   return(list(
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      spread_area_column = input$spread_area_column, 
-      spread_response_column = input$spread_response_column, 
+      spread_area_column = input$spread_area_column,
+      spread_response_column = input$spread_response_column,
       shape_area_column = input$shape_area_column)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "spread_area_column", selected = state$spread_area_column) 
-      updateSelectInput(session, "spread_response_column", selected = state$spread_response_column) 
+      updateSelectInput(session, "spread_area_column", selected = state$spread_area_column)
+      updateSelectInput(session, "spread_response_column", selected = state$spread_response_column)
       updateSelectInput(session, "shape_area_column", selected = state$shape_area_column)
     }
   ))
 })
+}
+
+resp_combine_module_result <- function(id) {
+  ns <- NS(id)
+  tagList(
+    plotly::plotlyOutput(ns("plot")),
+    DT::dataTableOutput(ns("table"))
+  )
 }
 
 resp_combine_module_map <- function(map, common) {

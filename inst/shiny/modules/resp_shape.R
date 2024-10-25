@@ -85,7 +85,30 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     # TRIGGER
     gargoyle::trigger("resp_shape")
     do.call("resp_shape_module_map", list(map, common))
-    common$logger |> writeLog(type = "complete", "Response data has been uploaded")
+    common$logger |> writeLog(type = "complete", "Response data has been uploaded and is summarised in the results tab")
+
+    response <- common$shape[[common$response_name]]
+    if (!isTRUE(all.equal(response, as.integer(response)))){
+      common$logger |> writeLog(type = "info", "Some response data is not integers")
+    }
+    if (any(response < 0)){
+      common$logger |> writeLog(type = "info", "The response data contains negative values")
+    }
+  })
+
+  output$plot <- plotly::renderPlotly({
+    req(common$shape)
+    gargoyle::watch("resp_shape")
+    gargoyle::watch("resp_edit")
+    response <- common$shape[[common$response_name]]
+    plot_response(response)
+  })
+
+  output$table <- DT::renderDataTable({
+    req(common$shape)
+    gargoyle::watch("resp_combine")
+    gargoyle::watch("resp_edit")
+    common$shape |> sf::st_drop_geometry()
   })
 
   return(list(
@@ -101,6 +124,14 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     }
   ))
 })
+}
+
+resp_shape_module_result <- function(id) {
+  ns <- NS(id)
+  tagList(
+    plotly::plotlyOutput(ns("plot")),
+    DT::dataTableOutput(ns("table"))
+  )
 }
 
 resp_shape_module_map <- function(map, common) {
