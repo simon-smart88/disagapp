@@ -113,6 +113,16 @@ function(input, output, session) {
 
   map <- core_mapping_module_server("core_mapping", common, input, COMPONENT_MODULES)
 
+  # required to stop the map being blank if it is loaded whilst another tab is selected
+  observe({
+    if (input$main == "Map"){
+      shinyjs::runjs('setTimeout(function() {
+                var mapObj = HTMLWidgets.find("#core_mapping-map");
+                mapObj.resize();
+            }, 100);')
+    }
+  })
+
   ####################
   ### INITIALISATION ####
   ###################
