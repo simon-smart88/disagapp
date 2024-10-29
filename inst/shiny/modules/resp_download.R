@@ -19,6 +19,20 @@ resp_download_module_server <- function(id, common, parent_session, map) {
 
     output$country_out <- country_out(session, common)
 
+    observe({
+      req(input$country != "")
+      ADM_levels <- c("ADM1", "ADM2", "ADM3", "ADM4", "ADM5")
+      country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
+      boundary_metadata <- rgeoboundaries::gb_metadata(country_code)
+      # -1 to exclude ADM0
+      available_ADM <- boundary_metadata |>
+                          dplyr::group_by(boundaryName) |>
+                          dplyr::summarise(n = dplyr::n() - 1)
+      # only select the highest level available for all countries
+      n_ADM <- min(available_ADM$n)
+      updateSelectInput(session, "admin", choices = ADM_levels[1:n_ADM])
+    })
+
     df <- reactive({
       req(input$spread)
     file_format <- tools::file_ext(input$spread$datapath[1])
