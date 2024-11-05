@@ -13,7 +13,7 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
 
   skip_on_ci()
   if (Sys.getenv("NASA_username") != ""){
-    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 60000)
+    app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 120000)
     app$set_inputs(tabs = "resp")
     app$set_inputs(respSel = "resp_shape")
     app$upload_file("resp_shape-shape" = shpdf$datapath)

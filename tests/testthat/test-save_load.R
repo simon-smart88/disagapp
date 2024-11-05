@@ -5,6 +5,7 @@ test_that("{shinytest2} recording: e2e_empty_save", {
   app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_path)
   expect_length(common$covs, 0)
+  app$stop()
 })
 
 test_that("{shinytest2} recording: e2e_empty_load", {
@@ -15,6 +16,7 @@ test_that("{shinytest2} recording: e2e_empty_load", {
   app$click("core_load-goLoad_session")
   common <- app$get_value(export = "common")
   expect_length(common$covs, 0)
+  app$stop()
 })
 
 test_that("{shinytest2} recording: e2e_shape_save", {
@@ -28,6 +30,7 @@ test_that("{shinytest2} recording: e2e_shape_save", {
   app$get_download("core_save-save_session", filename = save_path)
   common <- readRDS(save_path)
   expect_is(common$shape, "sf")
+  app$stop()
   })
 
 test_that("{shinytest2} recording: e2e_shape_load", {
@@ -38,6 +41,7 @@ test_that("{shinytest2} recording: e2e_shape_load", {
   app$click("core_load-goLoad_session")
   common <- app$get_value(export = "common")
   expect_is(common$shape, "sf")
+  app$stop()
 })
 
 test_that("{shinytest2} recording: e2e_settings_save", {
@@ -67,6 +71,7 @@ test_that("{shinytest2} recording: e2e_settings_save", {
   expect_equal(common$state$agg_worldpop$country, "Liechtenstein")
   expect_equal(common$state$agg_worldpop$resolution, "100m")
 
+  app$stop()
 })
 
 test_that("{shinytest2} recording: e2e_settings_load", {
@@ -82,6 +87,7 @@ test_that("{shinytest2} recording: e2e_settings_load", {
   expect_equal(app$get_value(input = "agg_worldpop-country"), "Liechtenstein")
   expect_equal(app$get_value(input = "agg_worldpop-resolution"), "100m")
 
+  app$stop()
 })
 
 
