@@ -22,7 +22,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
     observe({
       req(input$country != "")
       ADM_levels <- c("ADM1", "ADM2", "ADM3", "ADM4", "ADM5")
-      country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
+      country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
       boundary_metadata <- rgeoboundaries::gb_metadata(country_code)
       # -1 to exclude ADM0
       available_ADM <- boundary_metadata |>
@@ -95,7 +95,7 @@ resp_download_module_server <- function(id, common, parent_session, map) {
 
     # FUNCTION CALL ####
     show_loading_modal("Please wait while the data is loaded")
-    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
+    country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
     shape <- resp_download(df = df(),
                          area_column = input$area_column,
                          resp_column = input$response_column,

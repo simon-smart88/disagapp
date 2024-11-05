@@ -1,3 +1,4 @@
+
 common_class <- R6::R6Class(
   classname = "common",
   public = list(
@@ -23,7 +24,8 @@ common_class <- R6::R6Class(
     state = NULL,
     tasks = list(),
     seed = NULL,
-    countries = readRDS(system.file("ex", "countries.rds", package = "geodata")),
+    countries = rgeoboundaries::gb_metadata("all", adm_lvl = 0) |>
+      dplyr::select(c(boundaryName, boundaryISO)),
     selected_country = NULL,
     add_map_layer = function(new_names) {
       for (new_name in new_names){

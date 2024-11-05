@@ -12,7 +12,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$country_out <- renderUI({
-      selectInput(session$ns("country"), "Select country", choices = c("", common$countries$NAME), multiple = FALSE)
+      selectInput(session$ns("country"), "Select country", choices = c("", common$countries$boundaryName), multiple = FALSE)
     })
 
     output$cov_out <- renderUI({
@@ -50,7 +50,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-    country_code <- common$countries$ISO3[common$countries$NAME == input$country]
+    country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
 
     # FUNCTION CALL ####
 

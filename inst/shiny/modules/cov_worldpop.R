@@ -44,7 +44,7 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
     }
 
     # FUNCTION CALL ####
-    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
+    country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
     common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")
     common$tasks$cov_worldpop$invoke(common$shape, country_code, input$method, input$resolution, as.numeric(input$year), TRUE)
     results$resume()

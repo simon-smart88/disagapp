@@ -60,7 +60,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
       return()
     }
     # FUNCTION CALL ####
-    country_code <- common$countries$ISO3[common$countries$NAME %in% input$country]
+    country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
     common$tasks$cov_bioclim$invoke(common$shape, country_code, input$variables, TRUE)
     common$logger |> writeLog(type = "starting", "Starting to download bioclim data")
     results$resume()
