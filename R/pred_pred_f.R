@@ -45,6 +45,9 @@ pred_pred <- function(fit, aggregation, cases, predict_iid, uncertain = FALSE, N
 
   if (uncertain){
     prediction$uncertainty <- disaggregation::predict_uncertainty(fit, predict_iid = predict_iid, N = N, CI = CI)
+    prediction$uncertainty_lower <- prediction$uncertainty$predictions_ci$`lower CI`
+    prediction$uncertainty_upper <- prediction$uncertainty$predictions_ci$`upper CI`
+    prediction$uncertainty <- NULL
   }
 
   names(prediction)[which(names(prediction) == "prediction")] <- "prediction (rate)"
@@ -67,8 +70,8 @@ pred_pred <- function(fit, aggregation, cases, predict_iid, uncertain = FALSE, N
       prediction$iid <- terra::wrap(prediction$iid)
     }
     if (uncertain){
-      prediction$uncertainty_lower <- terra::wrap(prediction$uncertainty$predictions_ci$`lower CI`)
-      prediction$uncertainty_upper <- terra::wrap(prediction$uncertainty$predictions_ci$`upper CI`)
+      prediction$uncertainty_lower <- terra::wrap(prediction$uncertainty_lower)
+      prediction$uncertainty_upper <- terra::wrap(prediction$uncertainty_upper)
     }
   }
 
