@@ -5,5 +5,4 @@ output: html_document
 
 ### **Component: Fit Model**
 
-**ORIENTATION**
-
+This component fits the model. It contains only one module so please see the module guidance for details.

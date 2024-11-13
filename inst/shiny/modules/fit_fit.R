@@ -1,8 +1,8 @@
 fit_fit_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    radioButtons(ns("family"), "Model family", c("Gaussian" = "gaussian", "Poisson" = "poisson", "Binomial" = "binomial"), selected = "poisson"),
-    radioButtons(ns("link"), "Model link", c("Logit" = "logit", "Log" = "log", "Identity" = "identity"), selected = "log"),
+    radioButtons(ns("family"), "Model family", c("Gaussian" = "gaussian", "Poisson" = "poisson"), selected = "poisson"),
+    radioButtons(ns("link"), "Model link", c("Log" = "log", "Identity" = "identity"), selected = "log"),
     numericInput(ns("iterations"), "Number of iterations", 100, step = 1),
     shinyWidgets::materialSwitch(ns("field"), "Include spatial field", value = TRUE, status = "success"),
     shinyWidgets::materialSwitch(ns("iid"), "Include IID", value = TRUE, status = "success"),
