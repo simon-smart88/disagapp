@@ -19,7 +19,9 @@
 #' @export
 
 fit_fit <- function(data, priors, family, link, iterations, field, iid, async = FALSE){
-  data$covariate_rasters <- unwrap_terra(data$covariate_rasters)
+  if (async){
+    data$covariate_rasters <- terra::unwrap(data$covariate_rasters)
+  }
 
   result <- tryCatch({disaggregation::disag_model(data = data,
                                         priors = priors,
@@ -38,7 +40,7 @@ fit_fit <- function(data, priors, family, link, iterations, field, iid, async = 
   }
 
   if (async){
-    result$data$covariate_rasters <- wrap_terra(result$data$covariate_rasters)
+    result$data$covariate_rasters <- terra::wrap(result$data$covariate_rasters)
   }
 
   result
