@@ -73,8 +73,8 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
       common$transfer$field <- unwrap_terra(common$transfer$field)
       common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
-      common$pred$uncertainty$predictions_ci$`lower CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
-      common$pred$uncertainty$predictions_ci$`upper CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
+      common$pred$uncertainty_lower <- unwrap_terra(common$pred$uncertainty_lower)
+      common$pred$uncertainty_upper <- unwrap_terra(common$pred$uncertainty_upper)
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){

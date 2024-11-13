@@ -8,6 +8,7 @@
 #' @param fit disag_model. Object returned by disag_model function that
 #' contains all the necessary objects for generating predictions.
 #' @param aggregation SpatRaster. The aggregation raster
+#' @param cases logical. Whether to predictions of cases
 #' @param predict_iid logical. Whether to generate predictions including the iid effect
 #' @param uncertain logical. Whether or not to generate upper and lower credible
 #' intervals
@@ -20,7 +21,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 
-pred_pred <- function(fit, aggregation, predict_iid, uncertain = FALSE, N = NULL, CI = NULL, async = FALSE){
+pred_pred <- function(fit, aggregation, cases, predict_iid, uncertain = FALSE, N = NULL, CI = NULL, async = FALSE){
 
   if (async){
     fit$data$covariate_rasters <- terra::unwrap(fit$data$covariate_rasters)
@@ -28,11 +29,18 @@ pred_pred <- function(fit, aggregation, predict_iid, uncertain = FALSE, N = NULL
   }
 
   prediction <- disaggregation::predict_model(fit, predict_iid = predict_iid)
-  prediction$cases <- prediction$prediction * aggregation
+
+  if (cases){
+    prediction$cases <- prediction$prediction * aggregation
+  }
 
   if (!is.null(prediction$field)){
     terra::crs(prediction$field) <- terra::crs(fit$data$covariate_rasters[[1]])
     prediction$field <- terra::mask(prediction$field, fit$data$covariate_rasters[[1]])
+  }
+
+  if (!is.null(prediction$iid)){
+    prediction$iid <- terra::mask(prediction$iid, fit$data$covariate_rasters[[1]])
   }
 
   if (uncertain){
@@ -40,11 +48,16 @@ pred_pred <- function(fit, aggregation, predict_iid, uncertain = FALSE, N = NULL
   }
 
   names(prediction)[which(names(prediction) == "prediction")] <- "prediction (rate)"
-  names(prediction)[which(names(prediction) == "cases")] <- "prediction (cases)"
+  if (cases){
+    names(prediction)[which(names(prediction) == "cases")] <- "prediction (cases)"
+  }
+
 
   if (async){
     prediction$`prediction (rate)` <- terra::wrap(prediction$`prediction (rate)`)
-    prediction$`prediction (cases)` <- terra::wrap(prediction$`prediction (cases)`)
+    if (cases){
+      prediction$`prediction (cases)` <- terra::wrap(prediction$`prediction (cases)`)
+    }
     prediction$covariates <- terra::wrap(prediction$covariates)
 
     if (!is.null(prediction$field)){
@@ -54,8 +67,8 @@ pred_pred <- function(fit, aggregation, predict_iid, uncertain = FALSE, N = NULL
       prediction$iid <- terra::wrap(prediction$iid)
     }
     if (uncertain){
-      prediction$uncertainty$predictions_ci$`lower CI` <- terra::wrap(prediction$uncertainty$predictions_ci$`lower CI`)
-      prediction$uncertainty$predictions_ci$`upper CI` <- terra::wrap(prediction$uncertainty$predictions_ci$`upper CI`)
+      prediction$uncertainty_lower <- terra::wrap(prediction$uncertainty$predictions_ci$`lower CI`)
+      prediction$uncertainty_upper <- terra::wrap(prediction$uncertainty$predictions_ci$`upper CI`)
     }
   }
 

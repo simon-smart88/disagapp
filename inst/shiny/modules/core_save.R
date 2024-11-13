@@ -67,8 +67,8 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         common$transfer$prediction <- wrap_terra(common$transfer$prediction)
         common$transfer$field <- wrap_terra(common$transfer$field)
         common$transfer$covariates <- wrap_terra(common$transfer$covariates)
-        common$pred$uncertainty$predictions_ci$`lower CI` <- wrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
-        common$pred$uncertainty$predictions_ci$`upper CI` <- wrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
+        common$pred$uncertainty_lower <- wrap_terra(common$pred$uncertainty_lower)
+        common$pred$uncertainty_upper <- wrap_terra(common$pred$uncertainty_upper)
 
         #save file
         saveRDS(common, file)
@@ -92,8 +92,8 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
         common$transfer$field <- unwrap_terra(common$transfer$field)
         common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
-        common$pred$uncertainty$predictions_ci$`lower CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
-        common$pred$uncertainty$predictions_ci$`upper CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
+        common$pred$uncertainty_lower <- unwrap_terra(common$pred$uncertainty_lower)
+        common$pred$uncertainty_upper <- unwrap_terra(common$pred$uncertainty_upper)
 
         close_loading_modal()
       }
