@@ -7,6 +7,7 @@
 pred_pred(
   fit,
   aggregation,
+  cases,
   predict_iid,
   uncertain = FALSE,
   N = NULL,
@@ -19,6 +20,8 @@ pred_pred(
 contains all the necessary objects for generating predictions.}
 
 \item{aggregation}{SpatRaster. The aggregation raster}
+
+\item{cases}{logical. Whether to predictions of cases}
 
 \item{predict_iid}{logical. Whether to generate predictions including the iid effect}
 
