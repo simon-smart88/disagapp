@@ -26,8 +26,8 @@ if (!is.null(prediction$iid)){
 }
 
 if (!is.null(prediction$uncertainty)){
-  plot(uncertainty$predictions_ci$`lower CI`)
-  plot(uncertainty$predictions_ci$`upper CI`)
+  plot(prediction$uncertainty_lower)
+  plot(prediction$uncertainty_higher)
 }
 
 ```
