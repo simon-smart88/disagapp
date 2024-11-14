@@ -53,6 +53,7 @@ operation.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pred_pred</span><span class="op">(</span></span>
 <span>  <span class="va">fit</span>,</span>
 <span>  <span class="va">aggregation</span>,</span>
+<span>  <span class="va">cases</span>,</span>
 <span>  <span class="va">predict_iid</span>,</span>
 <span>  uncertain <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  N <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -72,6 +73,10 @@ contains all the necessary objects for generating predictions.</p></dd>
 
 <dt id="arg-aggregation">aggregation<a class="anchor" aria-label="anchor" href="#arg-aggregation"></a></dt>
 <dd><p>SpatRaster. The aggregation raster</p></dd>
+
+
+<dt id="arg-cases">cases<a class="anchor" aria-label="anchor" href="#arg-cases"></a></dt>
+<dd><p>logical. Whether to predictions of cases</p></dd>
 
 
 <dt id="arg-predict-iid">predict_iid<a class="anchor" aria-label="anchor" href="#arg-predict-iid"></a></dt>
