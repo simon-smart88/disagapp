@@ -4,7 +4,7 @@ library(disagapp)
 
 options(shiny.fullstacktrace = TRUE)
 
-future::plan(future::multisession)
+future::plan(future::multisession, workers = 4)
 
 MB <- 1024^2
 UPLOAD_SIZE_MB <- 5000

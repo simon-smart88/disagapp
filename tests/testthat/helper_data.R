@@ -43,7 +43,6 @@ if (is_ci){
   save_path <- "~/temprds/saved_file.rds"
 }
 
-
 polygons <- list()
 n_polygon_per_side <- 10
 n_polygons <- n_polygon_per_side * n_polygon_per_side
@@ -97,4 +96,17 @@ if (is_ci){
 }
 saveRDS(test_common, test_common_path)
 
+
+rerun_test_setup <- function(test_function, args){
+  attempt <- 0
+  while(attempt < 5){
+    x = try(do.call(test_function, args))
+    if ("try-error" %in% class(x)) {
+      attempt <- attempt + 1
+      print(paste0(test_function, " setup failed - retrying"))
+    } else {
+      break
+    }
+  }
+}
 
