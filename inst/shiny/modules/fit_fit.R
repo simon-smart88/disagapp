@@ -166,6 +166,9 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       req(plot_data())
 
       posteriors <- plot_data()$posteriors
+      covariates <- names(common$covs_prep)
+      posteriors <- posteriors %>%
+                      dplyr::mutate(type = ifelse(parameter %in% covariates, "Slope", type))
 
       unique_types <- unique(posteriors$type)
 
@@ -204,14 +207,15 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       x_range <- range(data$obs, data$pred)
       identity_line <- data.frame(x = x_range, y = x_range)
 
-      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers') %>%
-        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = 'blue')) %>%
-
+      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers', name = "Including IID") |>
+        plotly::add_trace(data = data, x = ~obs, y = ~pred_no_iid, type = 'scatter', mode = 'markers', name = "Excluding IID",
+                          marker = list(color = "red")) |>
+        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = "blue"), name = "1:1 line") |>
         plotly::layout(title = list(text = title, x = 0.5),
                xaxis = list(title = "Observed", showline = TRUE, zeroline = FALSE),
                yaxis = list(title = "Predicted", showline = TRUE, zeroline = FALSE),
                margin = list(t = 100),
-               showlegend = FALSE)
+               showlegend = TRUE)
 
       obspred_plot
     })
