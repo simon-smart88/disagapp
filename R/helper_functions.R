@@ -50,7 +50,6 @@ spurious <- function(x) {
   geodata::worldclim_country(x)
   geosphere::centroid(x)
   leaflet.extras::removeDrawToolbar(x)
-  leafem::addMouseCoordinates(x)
   markdown::html_format(x)
   openxlsx::read.xlsx(x)
   plotly::plot_ly(x)

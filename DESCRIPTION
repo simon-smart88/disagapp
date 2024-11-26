@@ -28,7 +28,6 @@ Imports:
     ggplot2,
     httr2,
     knitcitations,
-    leafem,
     malariaAtlas,
     markdown,
     openxlsx,
