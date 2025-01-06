@@ -37,27 +37,11 @@ test_that("Check resp_download reports errors when data cannot be merged", {
   expect_equal(messages[1], "Response data for aaa could not be matched with an area\n")
 })
 
-#works using the temp file but only after uploading local first
 test_that("{shinytest2} recording: e2e_resp_download", {
-
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
-  app$set_inputs(tabs = "resp")
-  app$set_inputs(respSel = "resp_download")
-  app$upload_file("resp_download-spread" = df_path)
-  app$set_inputs("resp_download-response_column" = resp_column)
-  app$set_inputs("resp_download-area_column" = area_column)
-  app$set_inputs("resp_download-country" = "Liechtenstein")
-  app$set_inputs("resp_download-admin" = "ADM1")
-  app$click("resp_download-run")
-
-  app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
+  rerun_test_setup("resp_download_test", list(df_path, resp_column, area_column, save_path))
   common <- readRDS(save_path)
-
   expect_is(common$shape, "sf")
   expect_equal(nrow(common$shape), 11)
-
-  app$stop()
 })
 
 

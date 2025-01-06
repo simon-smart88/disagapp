@@ -1,32 +1,33 @@
 ```{asis, echo = {{pred_knit}}, eval = {{pred_knit}}, include = {{pred_knit}}}
-Generate predictions from the model
+Generate predictions from the model and plot the generated rasters
 ```
 
 ```{r, echo = {{pred_knit}}, include = {{pred_knit}}}
-prediction <- disaggregation::predict_model(fitted_model, predict_iid = {{pred_iid}})
+prediction <- disagapp::pred_pred(fitted_model, 
+                                  aggregation_prepared, 
+                                  cases = {{pred_cases}}, 
+                                  predict_iid = {{pred_iid}}, 
+                                  uncertain = {{pred_uncertain}}, 
+                                  N = {{pred_uncertain_n}}, 
+                                  CI = {{pred_uncertain_ci}})
 
-plot(prediction$prediction)
+plot(prediction$`prediction (rate)`)
 
-prediction$cases <- prediction$prediction * aggregation_prepared
-
-plot(prediction$cases)
+if (!is.null(prediction$`prediction (cases)`)){
+  plot(prediction$`prediction (cases)`)
+}
 
 if (!is.null(prediction$field)){
-  terra::crs(prediction$field) <- terra::crs(prepared_data$covariate_rasters[[1]])
-  prediction$field <- terra::mask(prediction$field, prepared_data$covariate_rasters[[1]])
   plot(prediction$field)  
 }
 
 if (!is.null(prediction$iid)){
   plot(prediction$iid)  
 }
+
+if (!is.null(prediction$uncertainty)){
+  plot(prediction$uncertainty_lower)
+  plot(prediction$uncertainty_higher)
+}
+
 ```
-
-```{r, echo = {{pred_uncertain_knit}}, include = {{pred_uncertain_knit}}}
-
-uncertainty <- disaggregation::predict_uncertainty(fitted_model, predict_iid = {{pred_iid}}, N = {{pred_uncertain_n}}, CI =  {{pred_uncertain_ci}})
-
-plot(uncertainty$predictions_ci$`lower CI`)
-plot(uncertainty$predictions_ci$`upper CI`)
-```
-

@@ -63,18 +63,19 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       common$agg_prep <- unwrap_terra(common$agg_prep)
       common$agg_prep_lores <- unwrap_terra(common$agg_prep_lores)
       common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
-      common$pred$field <- unwrap_terra(common$pred$field)
+      common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
       common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
       common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
+      common$pred$covariates <- unwrap_terra(common$pred$covariates)
       common$pred$iid <- unwrap_terra(common$pred$iid)
-      common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+      common$pred$field <- unwrap_terra(common$pred$field)
+      common$pred$uncertainty_lower <- unwrap_terra(common$pred$uncertainty_lower)
+      common$pred$uncertainty_upper <- unwrap_terra(common$pred$uncertainty_upper)
       common$transfer$agg <- unwrap_terra(common$transfer$agg)
       common$transfer$cases <- unwrap_terra(common$transfer$cases)
       common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
       common$transfer$field <- unwrap_terra(common$transfer$field)
       common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
-      common$pred$uncertainty$predictions_ci$`lower CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
-      common$pred$uncertainty$predictions_ci$`upper CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
@@ -106,7 +107,9 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       }
 
       close_loading_modal()
-      common$logger |> writeLog(type = "info", "The previous session has been loaded successfully")
+      if (isFALSE(getOption("shiny.testmode"))) {
+        common$logger |> writeLog(type = "info", "The previous session has been loaded successfully")
+      }
     })
 
   }

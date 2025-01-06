@@ -7,7 +7,7 @@
 show_loading_modal(message)
 }
 \arguments{
-\item{type}{One of "data", "fitting"}
+\item{message}{character. The message to display to the user.}
 }
 \description{
 For internal use. Show a modal when something is loading

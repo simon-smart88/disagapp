@@ -80,6 +80,9 @@ test_that("{shinytest2} recording: e2e_complete_analysis", {
 
   app$set_inputs(tabs = "pred")
   app$set_inputs(predSel = "pred_pred")
+  app$set_inputs("pred_pred-cases" = TRUE)
+  app$set_inputs("pred_pred-iid" = TRUE)
+  app$set_inputs("pred_pred-uncertain" = TRUE)
   app$click(selector = "#pred_pred-run")
   app$wait_for_value(input = "pred_pred-complete")
   app$set_inputs(main = "Save")

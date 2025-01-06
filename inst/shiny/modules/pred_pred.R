@@ -2,6 +2,7 @@ pred_pred_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     uiOutput(ns("iid_out")),
+    shinyWidgets::materialSwitch(ns("cases"), "Include cases?", FALSE, status = "success"),
     shinyWidgets::materialSwitch(ns("uncertain"), "Include uncertainty?", FALSE, status = "success"),
     conditionalPanel("input.uncertain === true", ns = ns,
        tags$label("Uncertainty parameters"),
@@ -67,12 +68,15 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     if (!input$uncertain){
       common$tasks$pred_pred$invoke(fit = common$fit,
                                     aggregation = common[[aggregation]],
+                                    cases = input$cases,
                                     predict_iid = predict_iid,
                                     async = TRUE)
     } else {
       common$tasks$pred_pred$invoke(fit = common$fit,
                                     aggregation = common[[aggregation]],
+                                    cases = input$cases,
                                     predict_iid = predict_iid,
+                                    uncertain = input$uncertain,
                                     N = input$uncertain_n,
                                     CI = input$uncertain_ci,
                                     async = TRUE)
@@ -84,6 +88,8 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
 
     # METADATA ####
     common$meta$pred_pred$used <- TRUE
+    common$meta$pred_pred$cases <- input$cases
+
     if (input$uncertain){
       common$meta$pred_pred$uncertain <- input$uncertain
       common$meta$pred_pred$uncertain_n <- input$uncertain_n
@@ -100,16 +106,15 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   results <- observe({
     # LOAD INTO COMMON ####
 
-    common$pred<- common$tasks$pred_pred$result()
+    common$pred <- common$tasks$pred_pred$result()
     results$suspend()
-
     common$pred$field <- unwrap_terra(common$pred$field)
     common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
     common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
     common$pred$covariates <- unwrap_terra(common$pred$covariates)
     common$pred$iid <- unwrap_terra(common$pred$iid)
-    common$pred$uncertainty$predictions_ci$`lower CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`lower CI`)
-    common$pred$uncertainty$predictions_ci$`upper CI` <- unwrap_terra(common$pred$uncertainty$predictions_ci$`upper CI`)
+    common$pred$uncertainty_lower <- unwrap_terra(common$pred$uncertainty_lower)
+    common$pred$uncertainty_upper <- unwrap_terra(common$pred$uncertainty_upper)
 
     common$logger |> writeLog(type = "complete", "Model predictions are available")
     # TRIGGER
@@ -152,6 +157,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
+      cases = input$cases,
       uncertain_n = input$uncertain_n,
       uncertain_ci = input$uncertain_ci,
       uncertain = input$uncertain,
@@ -164,6 +170,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
       updateNumericInput(session, "uncertain_ci", value = state$uncertain_ci)
       shinyWidgets::updateMaterialSwitch(session, "uncertain", value = state$uncertain)
       shinyWidgets::updateMaterialSwitch(session, "iid", value = state$iid)
+      shinyWidgets::updateMaterialSwitch(session, "cases", value = state$cases)
     }
   ))
 })
@@ -176,8 +183,8 @@ pred_pred_module_map <- function(map, common) {
     }
   }
   if (!is.null(common$meta$pred_pred$uncertain)){
-    raster_map(map, common, common$pred$uncertainty$predictions_ci$`lower CI`, "Lower credible interval")
-    raster_map(map, common, common$pred$uncertainty$predictions_ci$`upper CI`, "Upper credible interval")
+    raster_map(map, common, common$pred$uncertainty_lower, "Lower credible interval")
+    raster_map(map, common, common$pred$uncertainty_upper, "Upper credible interval")
   }
 }
 
@@ -186,7 +193,7 @@ pred_pred_module_rmd <- function(common) {
   list(
     pred_knit = !is.null(common$meta$pred_pred$used),
     pred_iid = common$meta$pred_pred$iid,
-    pred_uncertain_knit = !is.null(common$meta$pred_pred$uncertain),
+    pred_cases = common$meta$pred_pred$cases,
     pred_uncertain = common$meta$pred_pred$uncertain,
     pred_uncertain_n = common$meta$pred_pred$uncertain_n,
     pred_uncertain_ci = common$meta$pred_pred$uncertain_ci

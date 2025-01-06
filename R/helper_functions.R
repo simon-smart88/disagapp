@@ -151,7 +151,7 @@ writeLog <- function(logger, ..., type = "default") {
 
 #' @title show_loading_modal
 #' @description For internal use. Show a modal when something is loading
-#' @param type One of "data", "fitting"
+#' @param message character. The message to display to the user.
 #' @keywords internal
 #' @export
 
@@ -366,7 +366,7 @@ plot_response <- function(response){
 #' @param exterior If TRUE, plot the exterior boundaries of the mesh.
 #' @param ext.color Color used to plot the exterior boundary edges.
 #' @param ext.linewidth Line width for the exterior boundary edges. Default 1
-#' @param crs A CRS object supported by [fm_transform()] defining the coordinate
+#' @param crs A CRS object supported by [fmesher::fm_transform()] defining the coordinate
 #' system to project the mesh to before plotting.
 #' @param nx Number of pixels in x direction (when plotting using the color parameter).
 #' @param ny Number of pixels in y direction (when plotting using the color parameter).
