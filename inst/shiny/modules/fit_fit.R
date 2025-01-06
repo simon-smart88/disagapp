@@ -143,6 +143,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     if ("disag_model" %in% class(result)){
       result$data$covariate_rasters <- unwrap_terra(result$data$covariate_rasters)
       common$fit <- result
+      common$fit_plot <- disaggregation::plot_disag_model_data(common$fit)
       common$logger |> writeLog(type = "complete", "Model fitting has completed")
       # TRIGGER
       gargoyle::trigger("fit_fit")
@@ -155,17 +156,11 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     }
   })
 
-  plot_data <- reactive({
-    gargoyle::watch("fit_fit")
-    req(common$fit)
-    disaggregation::plot_disag_model_data(common$fit)
-    })
-
-
     output$model_plot <- plotly::renderPlotly({
-      req(plot_data())
+      gargoyle::watch("fit_fit")
+      req(common$fit_plot)
 
-      posteriors <- plot_data()$posteriors
+      posteriors <- common$fit_plot$posteriors
       covariates <- names(common$covs_prep)
       posteriors <- posteriors %>%
                       dplyr::mutate(type = ifelse(parameter %in% covariates, "Slope", type))
@@ -200,9 +195,10 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
 
 
     output$obs_pred_plot <- plotly::renderPlotly({
-      req(plot_data())
-      data <- plot_data()$data
-      title <- plot_data()$title
+      gargoyle::watch("fit_fit")
+      req(common$fit_plot)
+      data <- common$fit_plot$data
+      title <- common$fit_plot$title
 
       x_range <- range(data$obs, data$pred)
       identity_line <- data.frame(x = x_range, y = x_range)

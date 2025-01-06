@@ -15,6 +15,7 @@ common_class <- R6::R6Class(
     mesh = list(),
     prep = NULL,
     fit = NULL,
+    fit_plot = NULL,
     pred = NULL,
     transfer = NULL,
     map_layers = NULL,
