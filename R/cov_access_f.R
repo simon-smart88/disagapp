@@ -30,34 +30,17 @@ cov_access <- function(shape, layer, async = FALSE) {
   message <- NULL
 
   if (!inherits(shape, "sf")){
-    message <- "Shape must be an sf object"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
-
   if (!inherits(layer, "character")){
-    message <- "layer must be a character string"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "layer must be a character string"))
   }
 
   if (!(layer %in% c("Travel Time to Cities (2015)",
                      "Motorized Travel Time to Healthcare (2020)",
                      "Walking Only Travel Time to Healthcare (2020)"))){
-    message <- glue::glue("{layer} is not a valid accessability layer")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", glue::glue("{layer} is not a valid accessability layer")))
   }
-
 
   datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
                    `Motorized Travel Time to Healthcare (2020)` = "Accessibility__202001_Global_Motorized_Travel_Time_to_Healthcare",
@@ -72,16 +55,11 @@ cov_access <- function(shape, layer, async = FALSE) {
                   NULL}
   )
 
-
   if (is.null(acc)){
     if (is.null(message)){
-      message <- paste0("An error occurred whilst trying to download accessibility data")
+      message <- "An error occurred whilst trying to download accessibility data"
     }
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
   }
 
   if (async){

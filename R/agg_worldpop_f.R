@@ -128,11 +128,7 @@ if (is.null(message)){
 }
 
 if (is.null(pop_ras)){
-  if (async){
-    return(message)
-  } else {
-    stop(message)
-  }
+  return(async %>% asyncLog(type = "error", message))
 } else {
   # aggregate unconstrained as only available at 100m
   if (method == "Constrained" & resolution == "1km"){
@@ -143,11 +139,7 @@ if (is.null(pop_ras)){
   check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
   if (check_overlap == FALSE){
     message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
   }
 
   # convert NAs to zero

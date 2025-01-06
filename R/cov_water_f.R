@@ -35,21 +35,11 @@ cov_water <- function(shape, token, async = FALSE) {
   message <- NULL
 
   if (!inherits(shape, "sf")){
-    message <- "Shape must be an sf object"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (!inherits(token, "httr2_token")){
-    message <- "Token must be an httr2_token"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Token must be an httr2_token"))
   }
 
   arcgisutils::set_arc_token(token)
@@ -66,11 +56,7 @@ cov_water <- function(shape, token, async = FALSE) {
                      )
 
   if (is.null(flayer)){
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
   }
 
   if (!is.null(flayer)){

@@ -73,30 +73,15 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
   message <- NULL
 
   if (!("sf" %in% class(shape))){
-    message <- "Shape must be an sf object"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (year > 2022 | year < 2012){
-    message <- "Nighttime data is only available between 2012 and 2022"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Nighttime data is only available between 2012 and 2022"))
   }
 
   if (nchar(bearer) < 200){
-    message <- "That doesn't look like a valid NASA bearer token"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "That doesn't look like a valid NASA bearer token"))
   }
 
   req_shape <- sf::st_boundary(shape)
@@ -116,17 +101,16 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
 
   if (is.null(ras)){
     if (is.null(message)){
-      message <- paste0("An error occurred whilst trying to download night light data")
+      message <- "An error occurred whilst trying to download night light data"
     }
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
+
   } else {
     names(ras) <- "Nighttime light"
     ras <- terra::crop(ras, shape, mask = TRUE )
-    if (async){ ras <- terra::wrap(ras) }
+    if (async){
+      ras <- terra::wrap(ras)
+    }
     return(ras)
 }
 

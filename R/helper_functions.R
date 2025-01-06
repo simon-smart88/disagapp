@@ -144,6 +144,29 @@ writeLog <- function(logger, ..., type = "default") {
   invisible()
 }
 
+#' @title asyncLog
+#' @description For internal use. Similar to writeLog but for use inside async
+#' functions
+#' @param async Whether the function is being used asynchronously
+#' @param ... Messages to write to the logger
+#' @param type One of `default`, `info`, `error`, `warning`
+#' @returns No return value, called for side effects
+#' @keywords internal
+#' @export
+asyncLog <- function(async, ..., type = "default"){
+  if (!async) {
+    if (type == "error") {
+      stop(paste0(..., collapse = ""), call. = FALSE)
+    } else if (type == "warning") {
+      warning(paste0(..., collapse = ""), call. = FALSE)
+    } else {
+      message(paste0(..., collapse = ""))
+    }
+  } else {
+    return(as.character(...))
+  }
+}
+
 ####################### #
 # LOADING MODAL #
 ####################### #

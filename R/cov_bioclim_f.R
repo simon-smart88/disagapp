@@ -44,12 +44,7 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
 
   invalid_countries <- country_code[(!country_code %in% valid_countries)]
   if (length(invalid_countries) > 0){
-    message <- glue::glue("{invalid_countries} is not a valid IS03 country code. ")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", glue::glue("{invalid_countries} is not a valid IS03 country code. ")))
   }
 
   layers  <-  c("Mean temperature",
@@ -74,21 +69,11 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
 
   invalid_layers <- variables[(!variables %in% layers)]
   if (length(invalid_layers) > 0){
-    message <- glue::glue("{invalid_layers} is not a valid bioclim variable. ")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", glue::glue("{invalid_layers} is not a valid bioclim variable. ")))
   }
 
   if (!("sf" %in% class(shape))){
-    message <- "Shape must be an sf object"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   bioclim_ras <- NULL
@@ -113,22 +98,13 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
 
 
   if (is.null(bioclim_ras)){
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
   } else {
 
-    #check that raster overlaps with shape
+    # check that raster overlaps with shape
     check_overlap <- terra::is.related(bioclim_ras, terra::vect(shape), "intersects")
     if (check_overlap == FALSE){
-      message <- "The downloaded bioclim data does not overlap with the response data - check the selected country"
-      if (async){
-        return(message)
-      } else {
-        stop(message)
-      }
+      return(async %>% asyncLog(type = "error", "The downloaded bioclim data does not overlap with the response data - check the selected country"))
     }
 
     bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )

@@ -35,36 +35,21 @@
 cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
   if (!("sf" %in% class(shape))){
-    message <- "Shape must be an sf object"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (year > 2019 | year < 2015){
-    message <- "Land use data is only available between 2015 and 2019"
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", "Land use data is only available between 2015 and 2019"))
   }
 
   valid_uses <- c("Bare", "BuiltUp", "Crops", "Grass", "MossLichen",
   "PermanentWater", "SeasonalWater", "Shrub", "Snow", "Tree")
   invalid_uses <- landuses[(!landuses %in% valid_uses)]
   if (length(invalid_uses) > 0){
-    message <- glue::glue("{invalid_uses} is not a valid land use type. ")
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", glue::glue("{invalid_uses} is not a valid land use type. ")))
   }
 
-  #determine 20 degree tiles covering entire shape
+  # determine 20 degree tiles covering entire shape
   bbx <- sf::st_bbox(shape) / 20
   min_x_tile <- floor(bbx["xmin"]) * 20
   max_x_tile <- (ceiling(bbx["xmax"]) * 20) - 20
@@ -82,8 +67,8 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
   tiles$x_str <- gsub("\\+", "E", tiles$x_str)
   tiles$url <- paste0(tiles$x_str, tiles$y_str,"/", tiles$x_str, tiles$y_str)
 
-  #check whether each tile contains part of the region of interest
-  #needed in case of multiple countries / empty tiles
+  # check whether each tile contains part of the region of interest
+  # needed in case of multiple countries / empty tiles
   valid_tiles <- NA
 
   for (r in 1:nrow(tiles)){
@@ -105,7 +90,7 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
   tiles <- tiles[valid_tiles > 0,]
 
-  #request each tile
+  # request each tile
   raster_layers <- list()
 
   tryCatch({
@@ -137,11 +122,7 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
   )
 
   if (length(raster_layers) != length(landuses)){
-    if (async){
-      return(message)
-    } else {
-      stop(message)
-    }
+    return(async %>% asyncLog(type = "error", message))
   } else {
   if (async){
     raster_layers <- wrap_terra(raster_layers)
