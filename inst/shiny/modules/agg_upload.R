@@ -85,13 +85,6 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
 })
 }
 
-agg_upload_module_result <- function(id) {
-  ns <- NS(id)
-
-  # Result UI
-  verbatimTextOutput(ns("result"))
-}
-
 agg_upload_module_map <- function(map, common) {
   raster_map(map, common, common$agg, common$meta$agg_upload$name, common$meta$agg_upload$log)
 }
