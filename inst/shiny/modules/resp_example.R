@@ -75,6 +75,28 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  gargoyle::on("resp_example", {
+    if (input$dataset == "mad"){
+      shinyalert::shinyalert(title = "Load more example data?",
+                             type = "info",
+                            "Would you like to load the example covariates and aggregation raster as well?",
+                            confirmButtonText = "Yes",
+                            showCancelButton = TRUE,
+                            cancelButtonText = "No",
+                            immediate = TRUE,
+                            inputId = "load_more")
+    }
+  })
+
+  observeEvent(input$load_more, {
+    if(input$load_more){
+      shinyjs::runjs("Shiny.setInputValue('cov_upload-example', 'TRUE');
+                      document.getElementById('cov_upload-run').click();
+                      Shiny.setInputValue('agg_upload-example', 'TRUE');
+                      document.getElementById('agg_upload-run').click();")
+    }
+  })
+
   output$plot <- plotly::renderPlotly({
     req(common$shape)
     gargoyle::watch("resp_example")
