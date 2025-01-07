@@ -19,6 +19,12 @@
 
 prep_correlation <- function(covariates, logger = NULL){
 
+  # strictly speaking, not required here, but used downstream
+  if (!requireNamespace("corrplot", quietly = TRUE)){
+    logger |> writeLog(type = "error", 'This module requires the corrplot package to be installed. Close the app, run install.packages("corrplot") and try again')
+    return()
+  }
+
   if (!inherits(covariates, "SpatRaster")){
     logger |> writeLog(type = "error", "covariates must be a SpatRaster")
     return()

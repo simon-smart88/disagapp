@@ -22,6 +22,11 @@
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
+  if (!requireNamespace("rgeoboundaries", quietly = TRUE)){
+    logger |> writeLog(type = "error", 'This module requires the rgeoboundaries package to be installed. Close the app, run install.packages("rgeoboundaries") and try again')
+    return()
+  }
+
   # check inputs
   if (!inherits(df, "data.frame")){
     logger |> writeLog(type = "error", "df must be a data.frame")

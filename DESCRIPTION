@@ -13,22 +13,16 @@ Depends:
     leaflet.extras (>= 1.0.0),
     gargoyle
 Imports:
-    arcgislayers,
-    arcgisutils,
-    blackmarbler,
-    corrplot,
     curl,
     disaggregation,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     fmesher,
-    geosphere,
     geodata,
     glue,
     ggplot2,
     httr2,
     knitcitations,
-    malariaAtlas,
     markdown,
     openxlsx,
     promises,
@@ -36,7 +30,6 @@ Imports:
     R6,
     RColorBrewer,
     renv,
-    rgeoboundaries,
     rintrojs,
     rlang,
     rmarkdown,
@@ -46,12 +39,19 @@ Imports:
     shinyjs,
     shinyWidgets (>= 0.6.0),
     stats,
-    SpatialEpi,
     terra,
     tools,
     zip
 Suggests: 
+    arcgislayers,
+    arcgisutils,
+    blackmarbler,
+    corrplot,
+    geosphere,
+    malariaAtlas,
+    rgeoboundaries,
     shinytest2,
+    SpatialEpi,
     testthat
 License: GPL-3
 URL: 

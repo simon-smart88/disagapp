@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 # install R packages
 RUN R -e "install.packages('devtools')"
 ARG DISAGAPP_VER=unknown
-RUN R -e "devtools::install_github('simon-smart88/disagapp')"
+RUN R -e "devtools::install_github('simon-smart88/disagapp', dependencies = TRUE)"
 
 # copy app files
 COPY ./inst/shiny/ /srv/shiny-server/disagapp

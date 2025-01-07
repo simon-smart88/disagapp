@@ -16,20 +16,24 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
     gargoyle::init("prep_resolution_current")
     gargoyle::on("prep_summary", {
-      req(common$covs_summary$resampled)
-      #calculate coordinates of top left pixel using minimum and resolution rows
-      lng1 <- as.numeric(common$covs_summary$resampled[8, 1])
-      lng2 <- as.numeric(common$covs_summary$resampled[8, 1]) + as.numeric(common$covs_summary$resampled[1, 1])
-      lat1 <- as.numeric(common$covs_summary$resampled[10, 1])
-      lat2 <- as.numeric(common$covs_summary$resampled[10, 1]) + as.numeric(common$covs_summary$resampled[2, 1])
+      if (requireNamespace("geosphere", quietly = TRUE)){
+        req(common$covs_summary$resampled)
+        #calculate coordinates of top left pixel using minimum and resolution rows
+        lng1 <- as.numeric(common$covs_summary$resampled[8, 1])
+        lng2 <- as.numeric(common$covs_summary$resampled[8, 1]) + as.numeric(common$covs_summary$resampled[1, 1])
+        lat1 <- as.numeric(common$covs_summary$resampled[10, 1])
+        lat2 <- as.numeric(common$covs_summary$resampled[10, 1]) + as.numeric(common$covs_summary$resampled[2, 1])
 
-      top_left <- c(lng1, lat1)
-      top_right <- c(lng2, lat1)
-      bottom_left <- c(lng1, lat2)
+        top_left <- c(lng1, lat1)
+        top_right <- c(lng2, lat1)
+        bottom_left <- c(lng1, lat2)
 
-      original_resolution$width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
-      original_resolution$height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
-      gargoyle::trigger("prep_resolution_current")
+        original_resolution$width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
+        original_resolution$height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
+        gargoyle::trigger("prep_resolution_current")
+      } else {
+        logger |> writeLog(type = "error", 'This module requires the geosphere package to be installed. Close the app, run install.packages("geosphere") and try again')
+      }
     })
 
 
@@ -132,13 +136,13 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      plot_type = input$plot_type, 
+      plot_type = input$plot_type,
       resolution = input$resolution)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "plot_type", selected = state$plot_type) 
+      updateSelectInput(session, "plot_type", selected = state$plot_type)
       updateSelectInput(session, "resolution", selected = state$resolution)
     }
   ))

@@ -12,28 +12,6 @@ resp_example_module_ui <- function(id) {
 resp_example_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  shape <- reactive({
-
-    switch(input$dataset,
-           "mad" = {
-             shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
-                                 name = list.files(system.file("extdata", "shapes", package="disagapp")))
-             shape <- resp_shape(shpdf)
-             },
-           "nys" = {
-             shape <- SpatialEpi::NYleukemia_sf
-           },
-           "scot" = {
-             shape <- SpatialEpi::scotland_sf
-             shape$geometry <- shape$geometry * 1000
-             shape <- sf::st_set_crs(shape, 27700)
-             shape <- sf::st_transform(shape, crs = 4326)
-           }
-    )
-
-  shape
-  })
-
   output$reset_out <- renderUI({
     reset_data_ui(session, common)
   })
@@ -47,10 +25,34 @@ resp_example_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
+    if (input$dataset != "mad" && !requireNamespace("SpatialEpi", quietly = TRUE)){
+      common$logger |> writeLog(type = "error",
+                              'This dataset requires the SpatialEpi package to be installed. Close the app, run install.packages("SpatialEpi") and try again')
+      return()
+    }
+
     # LOAD INTO COMMON ####
     common$reset()
     gargoyle::trigger("clear_map")
-    common$shape <- shape()
+
+    switch(input$dataset,
+           "mad" = {
+             shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
+                                 name = list.files(system.file("extdata", "shapes", package="disagapp")))
+             shape <- resp_shape(shpdf)
+           },
+           "nys" = {
+             shape <- SpatialEpi::NYleukemia_sf
+           },
+           "scot" = {
+             shape <- SpatialEpi::scotland_sf
+             shape$geometry <- shape$geometry * 1000
+             shape <- sf::st_set_crs(shape, 27700)
+             shape <- sf::st_transform(shape, crs = 4326)
+           }
+    )
+
+    common$shape <- shape
     switch(input$dataset,
            "mad" = {common$response_name <- "inc"},
            "nys" = {common$response_name <- "cases"},

@@ -34,6 +34,10 @@ cov_water <- function(shape, token, async = FALSE) {
 
   message <- NULL
 
+  if (!requireNamespace("arcgislayers", quietly = TRUE)){
+    return(async %>% asyncLog(type = "error", 'This module requires the arcgislayers package to be installed. Close the app, run install.packages("arcgislayers") and try again'))
+  }
+
   if (!inherits(shape, "sf")){
     return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }

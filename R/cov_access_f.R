@@ -29,9 +29,14 @@ cov_access <- function(shape, layer, async = FALSE) {
 
   message <- NULL
 
+  if (!requireNamespace("malariaAtlas", quietly = TRUE)){
+    return(async %>% asyncLog(type = "error", 'This module requires the malariaAtlas package to be installed. Close the app, run install.packages("malariaAtlas") and try again'))
+  }
+
   if (!inherits(shape, "sf")){
     return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
+
   if (!inherits(layer, "character")){
     return(async %>% asyncLog(type = "error", "layer must be a character string"))
   }
