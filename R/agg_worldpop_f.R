@@ -130,7 +130,7 @@ if (is.null(message)){
 if (is.null(pop_ras)){
   return(async %>% asyncLog(type = "error", message))
 } else {
-  # aggregate unconstrained as only available at 100m
+  # aggregate constrained as only available at 100m
   if (method == "Constrained" & resolution == "1km"){
     pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
   }
