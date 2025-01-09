@@ -1,4 +1,4 @@
-### **Module: Finalise**
+### **Module:** ***Finalise data preparation***
 
 **BACKGROUND**
 
@@ -16,4 +16,4 @@ Prior to fitting the model, all of the data needs to be combined into one object
 
 - Choose whether you wish to handle missing data - you most likely want to do this, or the function will return an error if there is any missing data.
 
-- Click "Prepare data"
+- Click *Prepare data*

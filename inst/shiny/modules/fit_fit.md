@@ -1,4 +1,4 @@
-### **Module: Fit model**
+### **Module:** ***Fit model***
 
 This module fits the model using the `disaggregation::disag_model()` function. Several choices need to be made depending on the type of model to be fitted. These are explained below.
 

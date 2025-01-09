@@ -82,7 +82,7 @@ function(input, output, session) {
   output$gtext_component <- renderUI({
     file <- file.path("Rmd", glue("gtext_{component()}.Rmd"))
     if (!file.exists(file)) return()
-    includeMarkdown(file)
+    div(class = "markdown", includeMarkdown(file))
   })
 
   # UI for module guidance text
@@ -90,7 +90,7 @@ function(input, output, session) {
     req(module())
     file <- COMPONENT_MODULES[[component()]][[module()]]$instructions
     if (is.null(file)) return()
-    includeMarkdown(file)
+    div(class = "markdown", includeMarkdown(file))
   })
 
   # Help Component

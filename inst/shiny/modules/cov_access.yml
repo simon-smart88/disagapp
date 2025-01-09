@@ -1,6 +1,6 @@
 component: "cov"
-short_name: "Accessibility data"
-long_name: "Download accessibility to city data from Malaria Atlas"
+short_name: "Accessibility"
+long_name: "Download accessibility data from Malaria Atlas"
 authors: "Simon E H Smart"
 package: [malariaAtlas]
 class: choice

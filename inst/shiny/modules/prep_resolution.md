@@ -1,4 +1,4 @@
-### **Module: Decrease resolution**
+### **Module:** ***Decrease resolution***
 
 **BACKGROUND**
 
@@ -6,9 +6,9 @@ The time required to fit the model increases with the number of cells present in
 
 **IMPLEMENTATION**
 
-This module uses the `terra::aggregate()` function. Covariates are aggregated using the mean of the cells. The aggregation raster is aggregated using the sum of the cells. 
+- This module uses the `terra::aggregate()` function. Covariates are aggregated using the mean of the cells. The aggregation raster is aggregated using the sum of the cells. 
 
-Before decreasing the resolution you can choose to summarise the number of cells in each polygon, using either a histogram or boxplot.
+- Before decreasing the resolution you can choose to summarise the number of cells in each polygon, using either a histogram or boxplot.
 
-Choose a new cell width from the dropdown list - these are multiples of the existing width of the cells - and then click "Decrease resolution".
+- Choose a new cell width from the dropdown list - these are multiples of the existing width of the cells - and then click *Decrease resolution*.
 

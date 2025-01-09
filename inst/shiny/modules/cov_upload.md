@@ -1,4 +1,4 @@
-### **Module: Upload covariates**
+### **Module:** ***Upload covariates***
 
 **BACKGROUND**
 

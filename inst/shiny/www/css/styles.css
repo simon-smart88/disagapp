@@ -179,4 +179,7 @@ hr {
   border-color: #a2dee0;
   }
 
-
+/* Fix bullet formatting */
+.markdown ul > li + li {
+    margin-top: 1em;
+}
