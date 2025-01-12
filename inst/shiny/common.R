@@ -25,7 +25,7 @@ common_class <- R6::R6Class(
     state = NULL,
     tasks = list(),
     seed = NULL,
-    countries = read.csv(system.file("extdata", "countries.csv")),
+    countries = read.csv(system.file("extdata", "countries.csv", package = "disagapp")),
     selected_country = NULL,
     add_map_layer = function(new_names) {
       for (new_name in new_names){
