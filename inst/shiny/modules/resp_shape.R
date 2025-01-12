@@ -106,7 +106,7 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
 
   output$table <- DT::renderDataTable({
     req(common$shape)
-    gargoyle::watch("resp_combine")
+    gargoyle::watch("resp_shape")
     gargoyle::watch("resp_edit")
     common$shape |> sf::st_drop_geometry()
   })
