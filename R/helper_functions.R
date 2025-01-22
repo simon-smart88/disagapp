@@ -80,6 +80,19 @@ reset_data_ui <- function(session, common){
   }
 }
 
+#' @title reset_data
+#' @description For internal use. Clears the common structure of data, resets the map and any plots
+#' @keywords internal
+#' @param common The common data structure
+#' @export
+reset_data <- function(common){
+  modules <- names(common$meta)
+  common$reset()
+  gargoyle::trigger("clear_map")
+  for (module in modules){
+    gargoyle::trigger(module)
+  }
+}
 
 ####################### #
 # SHINY LOG #

@@ -32,8 +32,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     }
 
     # LOAD INTO COMMON ####
-    common$reset()
-    gargoyle::trigger("clear_map")
+    reset_data(common)
 
     switch(input$dataset,
            "mad" = {
