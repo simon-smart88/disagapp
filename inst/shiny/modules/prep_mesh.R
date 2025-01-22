@@ -115,6 +115,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
 
   output$plot <- renderPlot({
     gargoyle::watch("prep_mesh")
+    req(length(common$mesh) > 0)
     plot_list <- lapply(seq_along(common$mesh), function(x) plot_mesh(common$mesh[[x]], names(common$mesh)[x]))
     nrows <- ceiling(length(plot_list) / 3)
     cowplot::plot_grid(plotlist = plot_list, nrow = nrows)

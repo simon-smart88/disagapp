@@ -46,7 +46,7 @@ common_class <- R6::R6Class(
       self$covs_prep_lores <- NULL
       self$covs_matrix <- NULL
       self$covs_summary <- NULL
-      self$mesh <- NULL
+      self$mesh <- list()
       self$prep <- NULL
       self$fit <- NULL
       self$pred <- NULL
