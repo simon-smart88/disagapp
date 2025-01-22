@@ -3,8 +3,8 @@ core_load_module_ui <- function(id) {
   tagList(
   h4("Load session"),
   includeMarkdown("Rmd/text_loadsesh.Rmd"),
-  fileInput(ns("load_session"), "", accept = ".rds"),
-  actionButton(ns("goLoad_session"), "Load RDS")
+  fileInput(ns("file"), "", accept = ".rds"),
+  actionButton(ns("run"), "Load RDS")
   )
   }
 
@@ -12,12 +12,11 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
   moduleServer(id, function(input, output, session) {
 
     observe({
-      shinyjs::toggleState("goLoad_session", !is.null(input$load_session$datapath))
+      shinyjs::toggleState("run", !is.null(input$file$datapath))
     })
 
-    observeEvent(input$goLoad_session, {
-      show_loading_modal("Please wait while the session is restored")
-      temp <- readRDS(input$load_session$datapath)
+    load_session <- function(path){
+      temp <- readRDS(path)
 
       if (!("common" %in% class(temp))){
         close_loading_modal()
@@ -28,7 +27,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       if (temp$state$main$version != as.character(packageVersion("disagapp"))){
         new_version <- as.character(packageVersion("disagapp"))
         common$logger |> writeLog(type = "warning",
-            glue::glue("The save file was created using Disagapp v{temp$state$main$version}, but you are using Disagapp v{new_version}"))
+                                  glue::glue("The save file was created using Disagapp v{temp$state$main$version}, but you are using Disagapp v{new_version}"))
       }
 
       temp_names <- names(temp)
@@ -41,7 +40,6 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       #blank map
       gargoyle::trigger("clear_map")
       common$map_layers = NULL
-
 
       # Ask each module to load its own data
       for (module_id in names(common$state)) {
@@ -105,11 +103,31 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
           }
         }
       }
+    }
 
+    observeEvent(input$run, {
+      show_loading_modal("Please wait while the session is restored")
+      load_session(input$file$datapath)
       close_loading_modal()
       if (isFALSE(getOption("shiny.testmode"))) {
         common$logger |> writeLog(type = "info", "The previous session has been loaded successfully")
       }
+    })
+
+    # load file if run_disagapp has a load_file parameter
+    load_file_path <- reactive({if (exists("load_file_path", envir = .GlobalEnv)) {
+      get("load_file_path", envir = .GlobalEnv)
+    } else {
+      NULL
+    }})
+
+    load_on_start <- observe({
+      req(load_file_path())
+      show_loading_modal("Loading previous session")
+      load_session(load_file_path())
+      close_loading_modal()
+      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      load_on_start$destroy()
     })
 
   }
