@@ -34,8 +34,8 @@
 
 cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
-  if (!("sf" %in% class(shape))){
-    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
+  if (!inherits(shape, "sf")){
+    return(async %>% asyncLog(type = "error", "shape must be an sf object"))
   }
 
   if (year > 2019 | year < 2015){

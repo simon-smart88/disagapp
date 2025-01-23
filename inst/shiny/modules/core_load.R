@@ -18,7 +18,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
     load_session <- function(path){
       temp <- readRDS(path)
 
-      if (!("common" %in% class(temp))){
+      if (!inherits(temp, "common")){
         close_loading_modal()
         common$logger |> writeLog(type = "error", "That is not a valid Disagapp save file")
         return()

@@ -72,7 +72,7 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
     return(async %>% asyncLog(type = "error", glue::glue("{invalid_layers} is not a valid bioclim variable. ")))
   }
 
-  if (!("sf" %in% class(shape))){
+  if (!inherits(shape, "sf")){
     return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 

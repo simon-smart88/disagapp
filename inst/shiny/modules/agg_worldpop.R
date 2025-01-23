@@ -64,7 +64,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$agg_worldpop$result()
     results$suspend()
-    if (class(result) == "PackedSpatRaster"){
+    if (inherits(result, "PackedSpatRaster")){
       result <- unwrap_terra(result)
       common$agg <- result
       names(common$agg) <- "Population"

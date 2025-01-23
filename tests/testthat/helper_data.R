@@ -104,7 +104,7 @@ rerun_test_setup <- function(test_function, args){
   attempt <- 0
   while(attempt < 5){
     x = try(do.call(test_function, args))
-    if ("try-error" %in% class(x)) {
+    if (inherits(x, "try-error")){
       attempt <- attempt + 1
       print(paste0(test_function, " setup failed - retrying"))
     } else {

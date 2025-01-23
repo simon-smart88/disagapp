@@ -76,7 +76,7 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     return(async %>% asyncLog(type = "error", 'This module requires the blackmarbler package to be installed. Close the app, run install.packages("blackmarbler") and try again'))
   }
 
-  if (!("sf" %in% class(shape))){
+  if (!inherits(shape, "sf")){
     return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 

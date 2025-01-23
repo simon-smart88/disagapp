@@ -60,7 +60,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_water$result()
     results$suspend()
-    if (class(result) == "PackedSpatRaster"){
+    if (inherits(result, "PackedSpatRaster")){
       common$covs[["Distance to water"]] <- unwrap_terra(result)
       common$logger |> writeLog(type = "complete", "Distance to water data has been downloaded")
       # TRIGGER

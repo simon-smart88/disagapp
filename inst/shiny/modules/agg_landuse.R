@@ -51,7 +51,7 @@ agg_landuse_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$agg_landuse$result()
     results$suspend()
-    if (class(result) == "list"){
+    if (inherits(result, "list")){
       result <- unwrap_terra(result)
       common$agg <- result[[1]]
       names(common$agg) <- paste0(common$meta$agg_landuse$uses, " land use aggregation")

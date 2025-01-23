@@ -77,7 +77,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_bioclim$result()
     results$suspend()
-    if (class(result) == "list"){
+    if (inherits(result, "list")){
       common$covs <- append(common$covs, unwrap_terra(result))
       common$logger |> writeLog(type = "complete", "Bioclim data has been downloaded")
       # TRIGGER

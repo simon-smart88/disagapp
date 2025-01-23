@@ -27,7 +27,7 @@
  cov_upload <- function(shape, path_df, logger = NULL) {
 
    # check inputs
-   if (!("data.frame" %in% class(path_df))){
+   if (!inherits(path_df, "data.frame")){
      logger |> writeLog(type = "error", "path_df must be a data.frame")
      return()
    }
@@ -40,7 +40,7 @@
      return()
    }
 
-   if (!("sf" %in% class(shape))){
+   if (!inherits(shape, "sf")){
      logger |> writeLog(type = "error", "Shape must be an sf object")
      return()
    }

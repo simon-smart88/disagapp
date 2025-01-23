@@ -140,7 +140,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$fit_fit$result()
     results$suspend()
-    if ("disag_model" %in% class(result)){
+    if (inherits(result, "disag_model")){
       result$data$covariate_rasters <- unwrap_terra(result$data$covariate_rasters)
       common$fit <- result
       common$fit_plot <- disaggregation::plot_disag_model_data(common$fit)

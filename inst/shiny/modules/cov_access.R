@@ -42,7 +42,7 @@ cov_access_module_server <- function(id, common, parent_session, map) {
       # LOAD INTO COMMON ####
       result <- common$tasks$cov_access$result()
       results$suspend()
-      if (class(result) == "PackedSpatRaster"){
+      if (inherits(result, "PackedSpatRaster")){
         common$covs[[common$meta$cov_access$layer]] <- unwrap_terra(result)
         common$logger |> writeLog(type = "complete", "Accessibility data has been downloaded")
         # TRIGGER

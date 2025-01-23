@@ -66,7 +66,7 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_worldpop$result()
     results$suspend()
-    if (class(result) == "PackedSpatRaster"){
+    if (inherits(result, "PackedSpatRaster")){
       result <- unwrap_terra(result)
       # convert from count to density in km2
       common$covs[["Population density"]] <- result / terra::cellSize(result, unit = "km")

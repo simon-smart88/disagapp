@@ -50,7 +50,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_landuse$result()
     results$suspend()
-    if (class(result) == "list"){
+    if (inherits(result, "list")){
       result <- unwrap_terra(result)
       common$covs <- append(common$covs, result)
       common$logger |> writeLog(type = "complete", "Land use data has been downloaded")
@@ -67,13 +67,13 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      uses = input$uses, 
+      uses = input$uses,
       year = input$year)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "uses", selected = state$uses) 
+      updateSelectInput(session, "uses", selected = state$uses)
       updateSelectInput(session, "year", selected = state$year)
     }
   ))

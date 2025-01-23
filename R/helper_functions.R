@@ -548,12 +548,12 @@ show_results <- function(parent_session){
 #' @keywords internal
 #' @export
 wrap_terra <- function(object){
-  if (!is.null(object) & (length(object) > 0)){
-    if (class(object)[1] == "list") {
-      if (class(object[[1]])[1] == "SpatRaster"){
+  if (!is.null(object) && (length(object) > 0)){
+    if (inherits(object, "list")) {
+      if (inherits(object[[1]], "SpatRaster")){
         object <- lapply(object, terra::wrap)
     }}
-    if (class(object)[1] == "SpatRaster"){
+    if (inherits(object, "SpatRaster")){
       object <- terra::wrap(object)
     }
   }
@@ -567,12 +567,12 @@ wrap_terra <- function(object){
 #' @keywords internal
 #' @export
 unwrap_terra <- function(object){
-  if (!is.null(object) & (length(object) > 0)){
-    if (class(object)[1] == "list"){
-      if (class(object[[1]])[1] == "PackedSpatRaster"){
+  if (!is.null(object) && (length(object) > 0)){
+    if (inherits(object, "list")) {
+      if (inherits(object[[1]], "PackedSpatRaster")){
         object <- lapply(object, terra::unwrap)
     }}
-    if (class(object)[1] == "PackedSpatRaster"){
+    if (inherits(object, "PackedSpatRaster")){
       object <- terra::unwrap(object)
     }
   }

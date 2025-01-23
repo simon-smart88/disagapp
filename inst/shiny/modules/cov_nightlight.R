@@ -73,7 +73,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     # LOAD INTO COMMON ####
     result <- common$tasks$cov_nightlight$result()
     results$suspend()
-    if (class(result) == "PackedSpatRaster"){
+    if (inherits(result, "PackedSpatRaster")){
       common$covs[["Nighttime light"]] <- unwrap_terra(result)
       common$logger |> writeLog(type = "complete", "Nighttime light data has been downloaded")
       # TRIGGER
