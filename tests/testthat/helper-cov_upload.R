@@ -8,6 +8,6 @@ cov_upload_test <- function(shpdf, covdf, save_path){
   app$upload_file("cov_upload-cov" = covdf$datapath)
   app$click("cov_upload-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

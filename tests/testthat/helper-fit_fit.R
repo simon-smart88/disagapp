@@ -9,5 +9,6 @@ fit_fit_test <- function(test_common_path, save_path){
   app$click(selector = "#fit_fit-run")
   app$wait_for_value(input = "fit_fit-complete")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

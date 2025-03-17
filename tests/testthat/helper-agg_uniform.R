@@ -9,6 +9,6 @@ agg_uniform_test <- function(shpdf, covdf, save_path){
   app$click("cov_upload-run")
   app$click("agg_uniform-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

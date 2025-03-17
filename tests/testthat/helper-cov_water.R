@@ -10,6 +10,6 @@ cov_water_test <- function(shpdf, save_path){
   app$click(selector = "#cov_water-run")
   app$wait_for_value(input = "cov_water-complete")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

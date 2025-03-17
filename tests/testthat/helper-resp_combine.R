@@ -9,6 +9,6 @@ resp_combine_test <- function(shpdf_small, cdf_path, cdf_resp_column, cdf_area_c
   app$set_inputs("resp_combine-shape_area_column" = shape_area_column)
   app$click("resp_combine-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

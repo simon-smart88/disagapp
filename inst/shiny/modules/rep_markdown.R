@@ -6,12 +6,24 @@ rep_markdown_module_ui <- function(id) {
     selectInput(ns("rmdFileType"), label = "",
                 choices = c("Rmd" = ".Rmd", "PDF" = ".pdf", "HTML" = ".html", "Word" = ".docx")),
     uiOutput(ns("cov_chunks_out")),
-    downloadButton(ns("dlRMD"), "Download Session Code")
+    downloadButton(ns("dlRMD"), "Download Session Code"),
+    downloadButton(ns("report"), 'Download report')
   )
 }
 
 rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
+
+    output$report <- downloadHandler(
+      filename = function() {
+        paste0("disagapp-session-report.html")
+      },
+      content = function(file) {
+        rmarkdown::render("Rmd/test_report.Rmd",
+                          # rmarkdown::pdf_document(),
+                          output_file = file)
+      }
+    )
 
     output$cov_chunks_out <- renderUI({
       gargoyle::watch("rep_covs")

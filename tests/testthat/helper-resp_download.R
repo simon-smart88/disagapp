@@ -9,6 +9,6 @@ resp_download_test <- function(df_path, resp_column, area_column, save_path){
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

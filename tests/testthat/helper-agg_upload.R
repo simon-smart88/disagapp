@@ -18,6 +18,6 @@ agg_upload_test <- function(shpdf, covdf, aggdf, save_path){
   app$click("agg_upload-run")
 
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }
