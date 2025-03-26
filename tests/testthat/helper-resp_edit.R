@@ -9,6 +9,6 @@ resp_edit_test <- function(shpdf, save_path){
   app$set_inputs("resp_edit-type" = "outside")
   app$click("resp_edit-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

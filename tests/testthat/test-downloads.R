@@ -17,6 +17,8 @@ test_that("{shinytest2} recording: e2e_empty_markdown", {
   app$set_inputs(refFileType = "HTML")
   ref_file <- app$get_download("dlrefPackages")
   expect_gt(file.info(ref_file)$size, 10000)
+
+  app$stop()
   })
 
 # this is very temperamental

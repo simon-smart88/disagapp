@@ -13,6 +13,6 @@ pred_pred_test <- function(test_common_path, save_path){
   app$click(selector = "#pred_pred-run")
   app$wait_for_value(input = "pred_pred-complete")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

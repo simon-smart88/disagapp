@@ -9,6 +9,6 @@ resp_simplify_test <- function(shpdf, save_path){
   app$set_inputs("resp_simplify-distance" = 1000)
   app$click("resp_simplify-run")
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }

@@ -25,6 +25,6 @@ cov_landuse_test <- function(df_path, resp_column, area_column, save_path){
   # expect_is(common$shape, "sf")
 
   app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  app$stop()
+  tryCatch({app$get_download("core_save-save_session", filename = save_path)},
+           finally = app$stop())
 }
