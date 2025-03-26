@@ -98,9 +98,6 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
                           quiet = TRUE)},
                   error = function(x){
                   message <- paste0("An error occurred whilst trying to download night light data: ", x)
-                  NULL},
-                  warning = function(x){
-                  message <- paste0("An error occurred whilst trying to download night light data: ", x)
                   NULL})
 
   if (is.null(ras)){
