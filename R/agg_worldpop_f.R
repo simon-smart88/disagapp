@@ -108,7 +108,8 @@ if (is.null(message)){
     # select the file_url and download the raster
     data <- dplyr::bind_rows(cont$data) |> dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |> dplyr::select("files")
     tryCatch({
-      ras_file <- download.file(data$files[[1]], tempfile(fileext = ".tif"))
+      ras_file <- tempfile(fileext = ".tif")
+      download.file(data$files[[1]], ras_file)
       country_ras <- terra::rast(ras_file)
     },
     error = function(x){
