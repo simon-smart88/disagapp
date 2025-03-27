@@ -91,6 +91,7 @@ shinyscholar::create_module(
   result = TRUE,
   rmd = TRUE,
   save = TRUE,
+  download = TRUE,
   async = TRUE)`
 ```
 
