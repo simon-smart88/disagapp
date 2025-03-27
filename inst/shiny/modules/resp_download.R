@@ -23,11 +23,11 @@ resp_download_module_server <- function(id, common, parent_session, map) {
       req(input$country != "")
       ADM_levels <- c("ADM1", "ADM2", "ADM3", "ADM4", "ADM5")
       country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
-      boundary_metadata <- rgeoboundaries::gb_metadata(country_code)
+      boundary_metadata <- read.csv(system.file("extdata", "boundary_data.csv", package = "disagapp"))
       # -1 to exclude ADM0
-      available_ADM <- boundary_metadata |>
-                          dplyr::group_by(boundaryName) |>
-                          dplyr::summarise(n = dplyr::n() - 1)
+      available_ADM <- boundary_metadata[boundary_metadata$boundaryISO %in% country_code,] |>
+         dplyr::group_by(boundaryISO) |>
+         dplyr::summarise(n = dplyr::n() - 1)
       # only select the highest level available for all countries
       n_ADM <- min(available_ADM$n)
       updateSelectInput(session, "admin", choices = ADM_levels[1:n_ADM])

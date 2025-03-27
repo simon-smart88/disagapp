@@ -55,7 +55,6 @@ Suggests:
     corrplot,
     geosphere,
     malariaAtlas,
-    rgeoboundaries,
     shinytest2,
     SpatialEpi,
     testthat

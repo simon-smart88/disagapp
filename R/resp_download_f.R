@@ -22,11 +22,6 @@
 #'
 resp_download <- function(df, area_column, resp_column, country_code, admin_level, logger = NULL) {
 
-  if (!requireNamespace("rgeoboundaries", quietly = TRUE)){
-    logger |> writeLog(type = "error", 'This module requires the rgeoboundaries package to be installed. Close the app, run install.packages("rgeoboundaries") and try again')
-    return()
-  }
-
   # check inputs
   if (!inherits(df, "data.frame")){
     logger |> writeLog(type = "error", "df must be a data.frame")
@@ -51,7 +46,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
     logger |> writeLog(type = "error", glue::glue("df does not contain the column(s): {missing_column}"))
   }
 
-  valid_countries <- rgeoboundaries::gb_metadata("all", adm_lvl = 0)$boundaryISO
+  valid_countries <- read.csv(system.file("extdata", "boundary_data.csv", package = "disagapp"))$boundaryISO
   invalid_countries <- country_code[(!country_code %in% valid_countries)]
   if (length(invalid_countries) > 0){
     logger |> writeLog(type = "error", glue::glue("{invalid_countries} is not a valid IS03 country code"))
@@ -60,6 +55,11 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
 
   if (!(admin_level %in% c("ADM1", "ADM2"))){
     logger |> writeLog(type = "error", "admin_level must be either ADM1 or ADM2")
+    return()
+  }
+
+  if (!check_url("https://www.geoboundaries.org/api")){
+    logger |> writeLog(type = "error", "Sorry the boundary data source is currently offline")
     return()
   }
 
