@@ -4,7 +4,11 @@
 \alias{run_disagapp}
 \title{Run \emph{disagapp} Application}
 \usage{
-run_disagapp(launch.browser = TRUE, port = getOption("shiny.port"))
+run_disagapp(
+  launch.browser = TRUE,
+  port = getOption("shiny.port"),
+  load_file = NULL
+)
 }
 \arguments{
 \item{launch.browser}{Whether or not to launch a new browser window.}
