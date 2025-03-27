@@ -11,11 +11,6 @@ test_that("Check cov_upload function works as expected", {
 
 test_that("Check cov_upload handles CRS issues", {
 
-  covdf_nocrs <- data.frame(datapath = system.file("extdata", "test_data", "no_crs.tif", package="disagapp"),
-                      name = "no_crs.tif")
-
-  expect_error(cov_upload(mad_shape, covdf_nocrs), "Some files do not have a coordinate reference system")
-
   covdf_difcrs <- data.frame(datapath = system.file("extdata", "test_data", "different_projection.tif", package="disagapp"),
                             name = "different_projection.tif")
 

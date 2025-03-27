@@ -53,14 +53,6 @@
   ras_crs <- lapply(covs, terra::crs, describe = TRUE)
   ras_crs <- dplyr::bind_rows(ras_crs, .id = "column_label")
 
-  no_crs <- ras_crs[is.na(ras_crs$code),]
-  if (nrow(no_crs) > 0){
-    logger |> writeLog(type = "error", "Some files do not have a coordinate reference system")
-    for (file in not_overlapping$column_label){
-      logger |> writeLog(glue::glue("{file} does not have a coordinate reference system"))
-    }
-  }
-
   require_transform <- ras_crs[ras_crs$code != "4326",]
   if (nrow(require_transform) > 0){
     for (file in require_transform$column_label){
