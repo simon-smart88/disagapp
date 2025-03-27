@@ -42,6 +42,7 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         )
 
         common$state$main$version <- as.character(packageVersion("disagapp"))
+        common$state$main$app <- "disagapp"
 
         # Save module state
         for (module_id in names(modules)) {

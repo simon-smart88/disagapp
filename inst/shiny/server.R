@@ -167,5 +167,6 @@ function(input, output, session) {
   ################################
   ### EXPORT TEST VALUES ####
   ################################
-  exportTestValues(common = common)
+  exportTestValues(common = common,
+                   logger = common$logger())
 }
