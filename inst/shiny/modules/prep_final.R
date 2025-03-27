@@ -14,26 +14,26 @@ prep_final_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$id_var_out <- renderUI({
-      gargoyle::watch("resp_shape")
-      gargoyle::watch("resp_download")
-      gargoyle::watch("resp_combine")
-      gargoyle::watch("resp_example")
+      watch("resp_shape")
+      watch("resp_download")
+      watch("resp_combine")
+      watch("resp_example")
       req(common$shape)
       selectInput(session$ns("id_var"), "Select ID variable", c("",names(common$shape)))
     })
 
     output$resp_var_out <- renderUI({
       #would this be better as an updateSelectInput?
-      gargoyle::watch("resp_shape")
-      gargoyle::watch("resp_download")
-      gargoyle::watch("resp_combine")
-      gargoyle::watch("resp_example")
+      watch("resp_shape")
+      watch("resp_download")
+      watch("resp_combine")
+      watch("resp_example")
       req(common$shape)
       selectInput(session$ns("resp_var"), "Select response variable", names(common$shape), selected = common$response_name)
     })
 
     output$resolution_out <- renderUI({
-      gargoyle::watch("prep_resolution")
+      watch("prep_resolution")
       req(common$covs_prep_lores)
       selectInput(session$ns("resolution"), "Select covariate resolution", c("Low resolution", "High resolution"))
     })
@@ -114,7 +114,7 @@ prep_final_module_server <- function(id, common, parent_session, map) {
     }
 
     # TRIGGER
-    gargoyle::trigger("prep_final")
+    trigger("prep_final")
     # do.call("prep_final_module_map", list(map, common))
     show_map(parent_session)
   })

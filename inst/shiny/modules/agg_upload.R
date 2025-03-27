@@ -21,7 +21,7 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$example_out <- renderUI({
-    gargoyle::watch("resp_example")
+    watch("resp_example")
     if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
       shinyWidgets::materialSwitch(session$ns("example"), "Use example data", value = TRUE, status = "success")
     }
@@ -60,7 +60,7 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_upload$log <- input$log
     common$meta$agg_upload$used <- TRUE
     # TRIGGER
-    gargoyle::trigger("agg_upload")
+    trigger("agg_upload")
     do.call("agg_upload_module_map", list(map, common))
     common$logger |> writeLog(type = "complete", "Aggregation data has been uploaded")
   })

@@ -121,7 +121,7 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
     common$meta$resp_combine$shape_area <- input$shape_area_column
 
     # TRIGGER
-    gargoyle::trigger("resp_combine")
+    trigger("resp_combine")
     do.call("resp_combine_module_map", list(map, common))
     common$logger |> writeLog(type = "complete", "Response data has been uploaded and is summarised in the results tab")
 
@@ -136,16 +136,16 @@ resp_combine_module_server <- function(id, common, parent_session, map) {
 
   output$plot <- plotly::renderPlotly({
     req(common$shape)
-    gargoyle::watch("resp_combine")
-    gargoyle::watch("resp_edit")
+    watch("resp_combine")
+    watch("resp_edit")
     response <- common$shape[[common$response_name]]
     plot_response(response)
   })
 
   output$table <- DT::renderDataTable({
     req(common$shape)
-    gargoyle::watch("resp_combine")
-    gargoyle::watch("resp_edit")
+    watch("resp_combine")
+    watch("resp_edit")
     common$shape |> sf::st_drop_geometry()
   })
 

@@ -41,7 +41,7 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
     common$meta$resp_edit$type <- input$type
     common$meta$resp_edit$used <- TRUE
     # TRIGGER
-    gargoyle::trigger("resp_edit")
+    trigger("resp_edit")
     do.call("resp_edit_module_map", list(map, common))
   })
 

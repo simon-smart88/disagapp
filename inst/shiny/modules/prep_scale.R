@@ -28,7 +28,7 @@ prep_scale_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_scale$parameters <- scaled_covariates[["parameters"]]
 
       # TRIGGER
-      gargoyle::trigger("prep_scale")
+      trigger("prep_scale")
       do.call("prep_scale_module_map", list(map, common))
     }
 

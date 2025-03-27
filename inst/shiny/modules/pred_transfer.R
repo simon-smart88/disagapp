@@ -121,7 +121,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
 
     common$logger |> writeLog(type = "complete", "The model has been transferred to the new area")
     # TRIGGER
-    gargoyle::trigger("pred_transfer")
+    trigger("pred_transfer")
     do.call("pred_transfer_module_map", list(map, common))
     show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('pred_transfer-complete', 'complete');")

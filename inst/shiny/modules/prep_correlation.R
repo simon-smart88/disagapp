@@ -25,7 +25,7 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$cov_layers_out <- renderUI({
-    gargoyle::watch("prep_correlation")
+    watch("prep_correlation")
     selectInput(session$ns("cov_layers"), "Covariate layers to remove", choices = c("", names(common$covs_prep)), multiple = TRUE)})
 
   observeEvent(input$run, {
@@ -44,12 +44,12 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
     common$meta$prep_correlation$type <- input$type
     common$meta$prep_correlation$self <- input$self
     # TRIGGER
-    gargoyle::trigger("prep_correlation")
+    trigger("prep_correlation")
     updateTabsetPanel(parent_session, "main", selected = "Results")
   })
 
   output$corr_plot <- renderPlot({
-    gargoyle::watch("prep_correlation")
+    watch("prep_correlation")
     req(common$covs_matrix)
     corrplot::corrplot(common$covs_matrix,
                        method = common$meta$prep_correlation$method,

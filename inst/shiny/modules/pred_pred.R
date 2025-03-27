@@ -19,7 +19,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$iid_out <- renderUI({
-    gargoyle::watch("fit_fit")
+    watch("fit_fit")
     req(common$fit)
     if (common$meta$fit_fit$iid){
       out <- shinyWidgets::materialSwitch(session$ns("iid"), "Include IID effect?", FALSE, status = "success")
@@ -30,7 +30,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
   })
 
   output$dl_out <- renderUI({
-    gargoyle::watch("pred_pred")
+    watch("pred_pred")
     req(common$pred)
     downloadButton(session$ns("download"), "Download model predictions")
   })
@@ -118,7 +118,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
 
     common$logger |> writeLog(type = "complete", "Model predictions are available")
     # TRIGGER
-    gargoyle::trigger("pred_pred")
+    trigger("pred_pred")
     do.call("pred_pred_module_map", list(map, common))
     show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('pred_pred-complete', 'complete');")

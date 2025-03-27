@@ -26,18 +26,18 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     common$meta$resp_simplify$distance <- as.numeric(input$distance)
 
     # TRIGGER
-    gargoyle::trigger("resp_simplify")
+    trigger("resp_simplify")
     do.call("resp_simplify_module_map", list(map, common))
     common$logger |> writeLog(type = "complete", "The polygons have been simplified")
   })
 
   output$current_size <- renderText({
-    gargoyle::watch("resp_shape")
-    gargoyle::watch("resp_combine")
-    gargoyle::watch("resp_download")
-    gargoyle::watch("resp_example")
-    gargoyle::watch("resp_edit")
-    gargoyle::watch("resp_simplify")
+    watch("resp_shape")
+    watch("resp_combine")
+    watch("resp_download")
+    watch("resp_example")
+    watch("resp_edit")
+    watch("resp_simplify")
     req(common$shape)
     glue::glue("{round((object.size(common$shape)/1024^2),2)} Mb")})
 

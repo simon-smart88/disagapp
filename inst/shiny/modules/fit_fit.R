@@ -18,7 +18,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$priors_out <- renderUI({
-      gargoyle::watch("prep_final")
+      watch("prep_final")
       validate(need(common$prep, "You need to prepare the data before setting priors"))
 
       agg_name <- names(common$agg_prep)
@@ -39,7 +39,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     })
 
     output$field_out <- renderUI({
-      gargoyle::watch("prep_final")
+      watch("prep_final")
       req(common$prep)
 
       limits <- sf::st_bbox(common$shape)
@@ -56,7 +56,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     })
 
     output$iid_out <- renderUI({
-      gargoyle::watch("prep_final")
+      watch("prep_final")
       req(common$prep)
       tagList(
         numericInput(session$ns("iideffect_max"), "Maximum IID effect", value = 1, step = 0.1),
@@ -146,7 +146,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       common$fit_plot <- disaggregation::plot_disag_model_data(common$fit)
       common$logger |> writeLog(type = "complete", "Model fitting has completed")
       # TRIGGER
-      gargoyle::trigger("fit_fit")
+      trigger("fit_fit")
       show_results(parent_session)
       shinyjs::runjs("Shiny.setInputValue('fit_fit-complete', 'complete');")
       close_loading_modal()
@@ -157,7 +157,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
   })
 
     output$model_plot <- plotly::renderPlotly({
-      gargoyle::watch("fit_fit")
+      watch("fit_fit")
       req(common$fit_plot)
 
       posteriors <- common$fit_plot$posteriors
@@ -195,7 +195,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
 
 
     output$obs_pred_plot <- plotly::renderPlotly({
-      gargoyle::watch("fit_fit")
+      watch("fit_fit")
       req(common$fit_plot)
       data <- common$fit_plot$data
       title <- common$fit_plot$title

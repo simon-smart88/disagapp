@@ -70,7 +70,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_bioclim$country <- country_code
     common$meta$cov_bioclim$variables <- input$variables
     common$selected_country <- input$country
-    gargoyle::trigger("country_out")
+    trigger("country_out")
   })
 
   results <- observe({
@@ -81,7 +81,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
       common$covs <- append(common$covs, unwrap_terra(result))
       common$logger |> writeLog(type = "complete", "Bioclim data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("cov_bioclim")
+      trigger("cov_bioclim")
       do.call("cov_bioclim_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_bioclim-complete', 'complete');")
     } else {

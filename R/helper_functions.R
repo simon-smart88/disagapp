@@ -75,10 +75,10 @@ spurious <- function(x) {
 #' @param common The common data structure
 #' @export
 reset_data_ui <- function(session, common){
-  gargoyle::watch("resp_shape")
-  gargoyle::watch("resp_combine")
-  gargoyle::watch("resp_download")
-  gargoyle::watch("resp_example")
+  watch("resp_shape")
+  watch("resp_combine")
+  watch("resp_download")
+  watch("resp_example")
   if (!is.null(common$shape)){
     shinyWidgets::materialSwitch(session$ns("reset"), "Delete existing data?", FALSE, status = "success")
   }
@@ -92,9 +92,9 @@ reset_data_ui <- function(session, common){
 reset_data <- function(common){
   modules <- names(common$meta)
   common$reset()
-  gargoyle::trigger("clear_map")
+  trigger("clear_map")
   for (module in modules){
-    gargoyle::trigger(module)
+    trigger(module)
   }
 }
 
@@ -224,9 +224,9 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 #' @keywords internal
 #' @export
 country_out <- function(session, common){
-  gargoyle::init("country_out")
+  init("country_out")
   renderUI({
-    gargoyle::watch("country_out")
+    watch("country_out")
     if (is.null(common$selected_country)){
       selectInput(session$ns("country"), "Select country", c("", common$countries$boundaryName), multiple = TRUE)
     } else {

@@ -14,7 +14,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
   output$example_out <- renderUI({
-    gargoyle::watch("resp_example")
+    watch("resp_example")
     if (!is.null(common$meta$resp_example$dataset) && (common$meta$resp_example$dataset == "mad")){
       shinyWidgets::materialSwitch(session$ns("example"), "Use example data", value = TRUE, status = "success")
     }
@@ -61,7 +61,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     do.call("cov_upload_module_map", list(map, common))
-    gargoyle::trigger("cov_upload")
+    trigger("cov_upload")
     common$logger |> writeLog(type = "complete", "Covariate data has been uploaded")
   })
 

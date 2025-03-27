@@ -24,11 +24,11 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
 
   #update default mesh arguments
   observe({
-    gargoyle::watch("resp_shape")
-    gargoyle::watch("resp_download")
-    gargoyle::watch("resp_combine")
-    gargoyle::watch("resp_example")
-    gargoyle::watch("resp_edit")
+    watch("resp_shape")
+    watch("resp_download")
+    watch("resp_combine")
+    watch("resp_example")
+    watch("resp_edit")
     req(common$shape)
 
     limits <- sf::st_bbox(common$shape)
@@ -39,7 +39,7 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
   })
 
   output$selected_out <- renderUI({
-    gargoyle::watch("prep_mesh")
+    watch("prep_mesh")
     req(length(common$mesh) > 0)
     selectInput(session$ns("selected"), "Selected mesh", choices = names(common$mesh), selected = names(common$mesh)[length(common$mesh)])
   })
@@ -107,14 +107,14 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     results$suspend()
     common$logger |> writeLog(type = "complete", glue::glue("Mesh {length(common$mesh)} has been built and has {result$n} nodes"))
     # TRIGGER
-    gargoyle::trigger("prep_mesh")
+    trigger("prep_mesh")
     do.call("prep_mesh_module_map", list(map, common))
     show_map(parent_session)
     shinyjs::runjs("Shiny.setInputValue('prep_mesh-complete', 'complete');")
   })
 
   output$plot <- renderPlot({
-    gargoyle::watch("prep_mesh")
+    watch("prep_mesh")
     req(length(common$mesh) > 0)
     plot_list <- lapply(seq_along(common$mesh), function(x) plot_mesh(common$mesh[[x]], names(common$mesh)[x]))
     nrows <- ceiling(length(plot_list) / 3)

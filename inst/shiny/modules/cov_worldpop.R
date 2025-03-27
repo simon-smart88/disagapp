@@ -59,7 +59,7 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_worldpop$year <- as.numeric(input$year)
 
     # TRIGGER
-    gargoyle::trigger("cov_worldpop")
+    trigger("cov_worldpop")
   })
 
   results <- observe({
@@ -72,7 +72,7 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
       common$covs[["Population density"]] <- result / terra::cellSize(result, unit = "km")
       common$logger |> writeLog(type = "complete", "Worldpop data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("cov_worldpop")
+      trigger("cov_worldpop")
       do.call("cov_worldpop_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_worldpop-complete', 'complete');")
     } else {

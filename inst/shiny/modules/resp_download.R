@@ -118,8 +118,8 @@ resp_download_module_server <- function(id, common, parent_session, map) {
       common$meta$resp_download$admin_level <- input$admin
       common$meta$resp_download$country <- country_code
       # TRIGGER
-      gargoyle::trigger("resp_download")
-      gargoyle::trigger("country_out")
+      trigger("resp_download")
+      trigger("country_out")
       do.call("resp_download_module_map", list(map, common))
       common$logger |> writeLog(type = "complete", "Response data has been uploaded and is summarised in the results tab")
 
@@ -136,16 +136,16 @@ resp_download_module_server <- function(id, common, parent_session, map) {
 
   output$plot <- plotly::renderPlotly({
     req(common$shape)
-    gargoyle::watch("resp_download")
-    gargoyle::watch("resp_edit")
+    watch("resp_download")
+    watch("resp_edit")
     response <- common$shape[[common$response_name]]
     plot_response(response)
   })
 
   output$table <- DT::renderDataTable({
     req(common$shape)
-    gargoyle::watch("resp_download")
-    gargoyle::watch("resp_edit")
+    watch("resp_download")
+    watch("resp_edit")
     common$shape |> sf::st_drop_geometry()
   })
 

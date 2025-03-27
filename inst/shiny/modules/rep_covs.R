@@ -10,12 +10,12 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$dlbutton <- renderUI({
-      gargoyle::watch("cov_access")
-      gargoyle::watch("cov_bioclim")
-      gargoyle::watch("cov_landuse")
-      gargoyle::watch("cov_nightlight")
-      gargoyle::watch("cov_water")
-      gargoyle::watch("cov_upload")
+      watch("cov_access")
+      watch("cov_bioclim")
+      watch("cov_landuse")
+      watch("cov_nightlight")
+      watch("cov_water")
+      watch("cov_upload")
       if (length(common$covs) > 0 ){
         downloadButton(session$ns("download"), "Download covariates")
       } else {
@@ -71,7 +71,7 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
 
         files <- list.files(".")
 
-        gargoyle::trigger("rep_covs")
+        trigger("rep_covs")
 
         zip::zipr(zipfile = file,
                   files = files,

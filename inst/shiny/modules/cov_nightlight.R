@@ -77,7 +77,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
       common$covs[["Nighttime light"]] <- unwrap_terra(result)
       common$logger |> writeLog(type = "complete", "Nighttime light data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("cov_nightlight")
+      trigger("cov_nightlight")
       do.call("cov_nightlight_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_nightlight-complete', 'complete');")
     } else {

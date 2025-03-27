@@ -55,7 +55,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
       common$covs <- append(common$covs, result)
       common$logger |> writeLog(type = "complete", "Land use data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("cov_landuse")
+      trigger("cov_landuse")
       do.call("cov_landuse_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('cov_landuse-complete', 'complete');")
     } else {

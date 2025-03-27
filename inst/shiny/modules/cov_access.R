@@ -46,7 +46,7 @@ cov_access_module_server <- function(id, common, parent_session, map) {
         common$covs[[common$meta$cov_access$layer]] <- unwrap_terra(result)
         common$logger |> writeLog(type = "complete", "Accessibility data has been downloaded")
         # TRIGGER
-        gargoyle::trigger("cov_access")
+        trigger("cov_access")
         do.call("cov_access_module_map", list(map, common))
         shinyjs::runjs("Shiny.setInputValue('cov_access-complete', 'complete');")
       } else {

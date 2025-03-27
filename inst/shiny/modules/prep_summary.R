@@ -14,17 +14,17 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
     output$resample_layer_out <- renderUI({
-      gargoyle::watch("cov_access")
-      gargoyle::watch("cov_bioclim")
-      gargoyle::watch("cov_landuse")
-      gargoyle::watch("cov_nightlight")
-      gargoyle::watch("cov_water")
-      gargoyle::watch("cov_upload")
-      gargoyle::watch("cov_worldpop")
-      gargoyle::watch("agg_worldpop")
-      gargoyle::watch("agg_landuse")
-      gargoyle::watch("agg_upload")
-      gargoyle::watch("agg_uniform")
+      watch("cov_access")
+      watch("cov_bioclim")
+      watch("cov_landuse")
+      watch("cov_nightlight")
+      watch("cov_water")
+      watch("cov_upload")
+      watch("cov_worldpop")
+      watch("agg_worldpop")
+      watch("agg_landuse")
+      watch("agg_upload")
+      watch("agg_uniform")
       req(length(common$covs) > 0)
       selectInput(session$ns("resample_layer"), "Covariate to use as template", choices = c("", names(common$covs), names(common$agg)), multiple = FALSE)
     })
@@ -55,7 +55,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     common$covs$Aggregation <- NULL
 
     # TRIGGER
-    gargoyle::trigger("prep_summary")
+    trigger("prep_summary")
     show_results(parent_session)
   })
 
@@ -101,14 +101,14 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_summary$used <- TRUE
       common$meta$prep_summary$resample_target <- input$resample_layer
       # TRIGGER
-      gargoyle::trigger("prep_summary")
+      trigger("prep_summary")
       show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
       do.call("prep_summary_module_map", list(map, common))
     })
 
     output$cov_table <- DT::renderDataTable({
-    gargoyle::watch("prep_summary")
+    watch("prep_summary")
     if (input$table == "Original"){
       req(common$covs_summary$original)
       out <- DT::datatable(common$covs_summary$original, selection = "none", autoHideNavigation = TRUE,

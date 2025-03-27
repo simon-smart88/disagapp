@@ -46,7 +46,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       }
 
       #blank map
-      gargoyle::trigger("clear_map")
+      trigger("clear_map")
       common$map_layers = NULL
 
       # Ask each module to load its own data
@@ -85,7 +85,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       #restore map and results for used modules
       for (used_module in names(common$meta)){
-        gargoyle::trigger(used_module) # to replot results
+        trigger(used_module) # to replot results
       }
 
       if (!("prep_summary" %in% names(common$meta))){

@@ -57,7 +57,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     common$meta$agg_worldpop$year <- as.numeric(input$year)
 
     common$selected_country <- input$country
-    gargoyle::trigger("country_out")
+    trigger("country_out")
   })
 
   results <- observe({
@@ -70,7 +70,7 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
       names(common$agg) <- "Population"
       common$logger |> writeLog(type = "complete", "Worldpop data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("agg_worldpop")
+      trigger("agg_worldpop")
       do.call("agg_worldpop_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('agg_worldpop-complete', 'complete');")
     } else {

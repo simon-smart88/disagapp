@@ -26,7 +26,7 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
     )
 
     output$cov_chunks_out <- renderUI({
-      gargoyle::watch("rep_covs")
+      watch("rep_covs")
       if (!is.null(common$meta$rep_covs$used)){
         shinyWidgets::materialSwitch(session$ns("cov_chunks"), "Include covariate chunks?", FALSE, status = "success")
       }

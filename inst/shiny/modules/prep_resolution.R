@@ -14,8 +14,8 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
     original_resolution <- reactiveValues()
 
-    gargoyle::init("prep_resolution_current")
-    gargoyle::on("prep_summary", {
+    init("prep_resolution_current")
+    on("prep_summary", {
       if (requireNamespace("geosphere", quietly = TRUE)){
         req(common$covs_summary$resampled)
         #calculate coordinates of top left pixel using minimum and resolution rows
@@ -30,7 +30,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
         original_resolution$width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
         original_resolution$height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
-        gargoyle::trigger("prep_resolution_current")
+        trigger("prep_resolution_current")
       } else {
         logger |> writeLog(type = "error", 'This module requires the geosphere package to be installed. Close the app, run install.packages("geosphere") and try again')
       }
@@ -38,7 +38,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
 
     output$resolution_out <- renderUI({
-      gargoyle::watch("prep_resolution_current")
+      watch("prep_resolution_current")
       req(original_resolution$width)
 
       factors <- 2:20
@@ -128,7 +128,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_resolution$factor <- factor
 
       #TRIGGER
-      gargoyle::trigger("prep_resolution")
+      trigger("prep_resolution")
       # exceptionally, the mapping for this module is handled in core_mapping
   })
 

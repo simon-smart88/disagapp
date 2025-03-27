@@ -157,9 +157,9 @@ and `common$covs` respectively.
     - In the *function call* block, pass the inputs to the module function.
     - In the *load into common* block, store the result(s) of the function call in the relevant `common` object.
     - The *metadata* block can be left blank for now.
-    - In the *trigger* block, `gargoyle::trigger()` is called which can be used to trigger actions elsewhere in the module or app using `gargoyle::watch()`. This should not need editing.
+    - In the *trigger* block, `trigger()` is called which can be used to trigger actions elsewhere in the module or app using `watch()`. This should not need editing.
     - In the *result* block, use the relevant `common` objects to produce outputs like plots using `render*` objects which will be passed to the `_module_result` function. Inside each `render*` function you should 
-    add a `req()` containing the common object created by the module to stop it executing before the object exists and a `gargoyle::watch()` to trigger the execution once the object is created.
+    add a `req()` containing the common object created by the module to stop it executing before the object exists and a `watch()` to trigger the execution once the object is created.
     - The *return* block, block can be left blank for now.
   - For asynchronous modules, the principles are the same but the button only triggers the function to start and a separate `results` section waits for the results and processes them. Much of the setup is handled automatically in the template module.
     - Add checks in the *warning* block as before
@@ -186,8 +186,8 @@ and `common$covs` respectively.
 
 ### Changes to other files
 
-- If you have added a `resp`, `cov` or `agg` module, some other modules need updating to listen for changes made by the module by adding e.g. `gargoyle::watch("fit_improved")`. Modules to update are as follows:
-  - For `resp` modules update `resp_simplify.R`, `prep_mesh.R` and `prep_final.R`. You should also add `gargoyle::watch("resp_edit")` to your own module underneath the existing `gargoyle::watch()` line.
+- If you have added a `resp`, `cov` or `agg` module, some other modules need updating to listen for changes made by the module by adding e.g. `watch("fit_improved")`. Modules to update are as follows:
+  - For `resp` modules update `resp_simplify.R`, `prep_mesh.R` and `prep_final.R`. You should also add `watch("resp_edit")` to your own module underneath the existing `watch()` line.
   - For `cov` modules update `prep_summary.R` and `rep_covs.R`.
   - For `agg` modules update `prep_summary.R` and `rep_covs.R`. 
 - Open the `global.R` file in the `inst/shiny/` directory and navigate to the line that creates `base_module_configs`. Add a new line to the object in the relevant position to load the new module. 

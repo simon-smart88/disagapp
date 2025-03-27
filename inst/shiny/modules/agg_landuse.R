@@ -57,7 +57,7 @@ agg_landuse_module_server <- function(id, common, parent_session, map) {
       names(common$agg) <- paste0(common$meta$agg_landuse$uses, " land use aggregation")
       common$logger |>  writeLog(type = "complete", "Land use data has been downloaded")
       # TRIGGER
-      gargoyle::trigger("agg_landuse")
+      trigger("agg_landuse")
       do.call("agg_landuse_module_map", list(map, common))
       shinyjs::runjs("Shiny.setInputValue('agg_landuse-complete', 'complete');")
     } else {

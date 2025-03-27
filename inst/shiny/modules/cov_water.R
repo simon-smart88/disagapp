@@ -65,7 +65,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "complete", "Distance to water data has been downloaded")
       # TRIGGER
       do.call("cov_water_module_map", list(map, common))
-      gargoyle::trigger("cov_water")
+      trigger("cov_water")
       shinyjs::runjs("Shiny.setInputValue('cov_water-complete', 'complete');")
     } else {
       common$logger |> writeLog(type = "error", result)

@@ -20,12 +20,12 @@ core_mapping_module_ui <- function(id) {
 core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
   moduleServer(id, function(input, output, session) {
 
-    gargoyle::init("clear_map")
+    init("clear_map")
 
     # create map
     output$map <- renderLeaflet({
       #reset if a new dataset is loaded
-      gargoyle::watch("clear_map")
+      watch("clear_map")
       leaflet() |>
         setView(0, 0, zoom = 2) |>
         addProviderTiles(isolate(input$bmap))
@@ -43,13 +43,13 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     })
 
     # Capture coordinates of polygons
-    gargoyle::init("change_poly")
+    init("change_poly")
     observe({
       coords <- unlist(input$map_draw_new_feature$geometry$coordinates)
       xy <- matrix(c(coords[c(TRUE, FALSE)], coords[c(FALSE, TRUE)]), ncol = 2)
       colnames(xy) <- c("longitude", "latitude")
       common$poly <- xy
-      gargoyle::trigger("change_poly")
+      trigger("change_poly")
     }) |> bindEvent(input$map_draw_new_feature)
 
     component <- reactive({
@@ -79,7 +79,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
 
     #buttons to switch between covariate states
     output$covariates_out <- renderUI({
-      gargoyle::watch("prep_summary")
+      watch("prep_summary")
       req(common$covs_prep)
       shinyjs::runjs("Shiny.setInputValue('core_mapping-covariates_load', 'complete');") #required to force update on load
       shinyWidgets::radioGroupButtons(
@@ -93,7 +93,7 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     })
 
     observe({
-      gargoyle::watch("prep_resolution")
+      watch("prep_resolution")
       input$covariates_load #required to force update on load
       if (!is.null(common$covs_prep_lores)){
         choices <- c("Original", "High resolution", "Low resolution")
