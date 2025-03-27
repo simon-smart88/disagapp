@@ -35,6 +35,8 @@ agg_worldpop <- function(shape, country_code, method, resolution, year, async = 
 message <- NULL
 pop_ras <- NULL
 
+base_url <- "https://hub.worldpop.org/rest/data/pop/"
+
 if (!inherits(shape, "sf")){
   message <- "shape must be an sf object"
 }
@@ -74,11 +76,14 @@ if (is.null(message)){
   if (method == "Constrained" & year != 2020){
     message <- "Constrained population data is only available for 2020"
   }
+
+  if (!check_url(base_url)){
+    message <- "Sorry the Worldpop data source is currently offline"
+  }
+
 }
 
 if (is.null(message)){
-  base_url <- "https://hub.worldpop.org/rest/data/pop/"
-
   # select the product url
   if (method == "Unconstrained" & resolution == "1km"){
     product <- "wpic1km"
@@ -130,7 +135,7 @@ if (is.null(message)){
 }
 
 if (is.null(pop_ras)){
-  return(async %>% asyncLog(type = "error", message))
+  return(async |> asyncLog(type = "error", message))
 } else {
   # aggregate constrained as only available at 100m
   if (method == "Constrained" & resolution == "1km"){
@@ -141,7 +146,7 @@ if (is.null(pop_ras)){
   check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
   if (check_overlap == FALSE){
     message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
-    return(async %>% asyncLog(type = "error", message))
+    return(async |> asyncLog(type = "error", message))
   }
 
   # convert NAs to zero

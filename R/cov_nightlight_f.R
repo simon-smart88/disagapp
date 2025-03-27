@@ -88,6 +88,10 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     return(async %>% asyncLog(type = "error", "That doesn't look like a valid NASA bearer token"))
   }
 
+  if (!check_url("https://ladsweb.modaps.eosdis.nasa.gov")){
+    return(async %>% asyncLog(type = "error", "Sorry the nighttime light data source is currently offline"))
+  }
+
   req_shape <- sf::st_boundary(shape)
   req_shape <- sf::st_as_sf(sf::st_union(req_shape))
 

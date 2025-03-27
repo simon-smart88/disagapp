@@ -35,15 +35,19 @@ cov_water <- function(shape, token, async = FALSE) {
   message <- NULL
 
   if (!requireNamespace("arcgislayers", quietly = TRUE)){
-    return(async %>% asyncLog(type = "error", 'This module requires the arcgislayers package to be installed. Close the app, run install.packages("arcgislayers") and try again'))
+    return(async |> asyncLog(type = "error", 'This module requires the arcgislayers package to be installed. Close the app, run install.packages("arcgislayers") and try again'))
   }
 
   if (!inherits(shape, "sf")){
-    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
+    return(async |> asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (!inherits(token, "httr2_token")){
-    return(async %>% asyncLog(type = "error", "Token must be an httr2_token"))
+    return(async |> asyncLog(type = "error", "Token must be an httr2_token"))
+  }
+
+  if (!check_url("https://landscape6.arcgis.com")){
+    return(async |> asyncLog(type = "error", "Sorry the distance to water data source is currently offline"))
   }
 
   arcgisutils::set_arc_token(token)
@@ -60,7 +64,7 @@ cov_water <- function(shape, token, async = FALSE) {
                      )
 
   if (is.null(flayer)){
-    return(async %>% asyncLog(type = "error", message))
+    return(async |> asyncLog(type = "error", message))
   }
 
   if (!is.null(flayer)){

@@ -35,18 +35,22 @@
 cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
   if (!inherits(shape, "sf")){
-    return(async %>% asyncLog(type = "error", "shape must be an sf object"))
+    return(async |> asyncLog(type = "error", "shape must be an sf object"))
   }
 
   if (year > 2019 | year < 2015){
-    return(async %>% asyncLog(type = "error", "Land use data is only available between 2015 and 2019"))
+    return(async |> asyncLog(type = "error", "Land use data is only available between 2015 and 2019"))
   }
 
   valid_uses <- c("Bare", "BuiltUp", "Crops", "Grass", "MossLichen",
   "PermanentWater", "SeasonalWater", "Shrub", "Snow", "Tree")
   invalid_uses <- landuses[(!landuses %in% valid_uses)]
   if (length(invalid_uses) > 0){
-    return(async %>% asyncLog(type = "error", glue::glue("{invalid_uses} is not a valid land use type. ")))
+    return(async |> asyncLog(type = "error", glue::glue("{invalid_uses} is not a valid land use type. ")))
+  }
+
+  if (!check_url("https://s3-eu-west-1.amazonaws.com/vito.landcover.global")){
+    return(async |> asyncLog(type = "error", "Sorry the land use data source is currently offline"))
   }
 
   # determine 20 degree tiles covering entire shape

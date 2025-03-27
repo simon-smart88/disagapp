@@ -76,6 +76,10 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
     return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
   }
 
+  if (!check_url("https://geodata.ucdavis.edu/climate/worldclim")){
+    return(async %>% asyncLog(type = "error", "Sorry the bioclim data source is currently offline"))
+  }
+
   bioclim_ras <- NULL
 
   for (c in country_code){

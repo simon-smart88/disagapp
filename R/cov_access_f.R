@@ -30,21 +30,25 @@ cov_access <- function(shape, layer, async = FALSE) {
   message <- NULL
 
   if (!requireNamespace("malariaAtlas", quietly = TRUE)){
-    return(async %>% asyncLog(type = "error", 'This module requires the malariaAtlas package to be installed. Close the app, run install.packages("malariaAtlas") and try again'))
+    return(async |> asyncLog(type = "error", 'This module requires the malariaAtlas package to be installed. Close the app, run install.packages("malariaAtlas") and try again'))
   }
 
   if (!inherits(shape, "sf")){
-    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
+    return(async |> asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (!inherits(layer, "character")){
-    return(async %>% asyncLog(type = "error", "layer must be a character string"))
+    return(async |> asyncLog(type = "error", "layer must be a character string"))
   }
 
   if (!(layer %in% c("Travel Time to Cities (2015)",
                      "Motorized Travel Time to Healthcare (2020)",
                      "Walking Only Travel Time to Healthcare (2020)"))){
-    return(async %>% asyncLog(type = "error", glue::glue("{layer} is not a valid accessability layer")))
+    return(async |> asyncLog(type = "error", glue::glue("{layer} is not a valid accessibility layer")))
+  }
+
+  if (!check_url("https://data.malariaatlas.org/")){
+    return(async |> asyncLog(type = "error", "Sorry the accessibility data source is currently offline"))
   }
 
   datasets <- list(`Travel Time to Cities (2015)` = "Accessibility__201501_Global_Travel_Time_to_Cities",
@@ -64,7 +68,7 @@ cov_access <- function(shape, layer, async = FALSE) {
     if (is.null(message)){
       message <- "An error occurred whilst trying to download accessibility data"
     }
-    return(async %>% asyncLog(type = "error", message))
+    return(async |> asyncLog(type = "error", message))
   }
 
   if (async){
