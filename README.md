@@ -1,12 +1,10 @@
-# disagapp 
+# disagapp v0.0.1
 
 <img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
-Disagapp is an application written in R that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation). 
+Disagapp is an application written in R that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation). A version is deployed to https://disagapp.le.ac.uk/ 
 
 Disagapp was built using the [{shinyscholar}](https://github.com/simon-smart88/shinyscholar) template which was itself forked from {wallace} v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html))
-
-It is currently in pre-alpha.
 
 Install *disagapp* via Github and run the application with the following R code.
 
@@ -34,10 +32,12 @@ The application is divided in components that are steps in the analysis and modu
 - Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme
 - Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via `{blackmarbler}` developed by the World Bank
 - Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA
+- Population density: Population density provided by Worldpop
 - Upload covariates: Upload your own covariates in the `.tif` format
 
 ### Aggregation - load an aggregation raster (`agg`)
-- Population density: Population data provided by Worldpop
+- Population count: Population counts provided by Worldpop
+- Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme
 - Upload aggregation: Upload your own aggregation raster in the `.tif` format
 - Uniform: Generate a uniform aggregation raster
 
@@ -73,11 +73,12 @@ The application is divided in components that are steps in the analysis and modu
 - Determine which component the module will be added to - the shorthand in the section titles above forms the first part of the module's identifier.
 - Use `shinyscholar::create_module()` to create the module files:
   - `id` is the module identifier formed from the component identifier (listed above) and a single word identifier for the module. We will use `fit_improved` as the identifier in this example.
-  - `dir` is where the module files should be created - this should be in the `inst/shiny/modules` folder.
+  - `dir` is the root directory of the application.
   - `map` should be set to `TRUE` if the results of the module need to be plotted on the map.
   - `result` should be set to `TRUE` if the module produces graphs to be presented in the Results tab.
   - `rmd` should be set to `TRUE` if the module should be included in the reproducible Rmarkdown.
   - `save` should be set to `TRUE` if the module has inputs that should be saved and loaded when the app is saved.
+  - `download` should be set to `TRUE` if the module will produce an output that you want the user to be able to download.
   - `async` should be set to `TRUE` if the the module takes more than a few seconds to run so that it operates asynchronously. 
   - `init` should be left set as `FALSE`.
   - e.g. assuming you are in the root directory run: 
@@ -85,7 +86,7 @@ The application is divided in components that are steps in the analysis and modu
 ```R
 shinyscholar::create_module(
   id = "fit_improved", 
-  dir = "inst/shiny/modules", 
+  dir = ".", 
   map = FALSE,
   result = TRUE,
   rmd = TRUE,
@@ -96,7 +97,7 @@ shinyscholar::create_module(
 ### Developing the function
 
 - Develop the new functionality outside of Shiny first e.g. in an Rmarkdown file using example data.
-- Create a file called `fit_improved_f.R` in the `R/` directory and create a function called `fit_improved` inside it and copy the code you have developed into the function.
+- Open `fit_improved_f.R` in the `R/` directory and copy the code you have developed into the `fit_improved` function.
 - If the function will run synchronously:
   - Add a `logger` parameter as the last parameter that is set to `NULL` by default.
 - If the function will run asynchronously:
@@ -119,7 +120,7 @@ shinyscholar::create_module(
 ```
 
 - Document the function using `{roxygen2}` tags - see other functions in the `R/` directory for examples.
-- Create a test file in the `tests/testthat/` directory called `test-fit_improved.R` and add tests that check the error handling checks function correctly and that the function produces the desired results. 
+- Open the `test-fit_improved.R` file in the `tests/testthat/` directory and add tests that check the error handling checks function correctly and that the function produces the desired results. 
 - You can find various example data objects in `tests/testthat/helper_data.R` that may help to test the function. 
 - Document the package using `devtools::document()` and then install with `devtools::install()`
 - Open the test file and click the "Run Tests" in the top right of the window pane.
@@ -221,3 +222,29 @@ module runs asynchronously you need to wait for it to complete by adding `app$wa
 
 ### Finally
 - Commit your changes, push to Github and create a pull request to add the module.
+
+## Updating deployments
+
+To update deployments running on shinyserver it is necessary to update the package and also copy the contents of `/inst` into the `/apps` directory.
+
+### Install the updated version package
+
+```bash
+R -e "remotes::install_github('simon-smart88/disagapp')"
+```
+
+### Update the app directory
+
+Because the repository contains the package files as well as the app, we need to update the local copy of the package and then update the app files.
+
+```bash
+cd /local/disagapp
+git pull
+cp -rf inst/shiny/. /local/shiny/apps/disagapp
+```
+
+### Restart shinyserver
+
+```bash
+sudo systemctl restart shiny-server
+```
