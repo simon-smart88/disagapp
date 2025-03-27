@@ -1,5 +1,5 @@
 component: "pred"
-short_name: "Transfer model"
+short_name: "Transfer predictions"
 long_name: "Make predictions over a new area"
 authors: "Simon E H Smart"
 package: [disaggregation]

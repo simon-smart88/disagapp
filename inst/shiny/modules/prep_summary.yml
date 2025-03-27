@@ -1,6 +1,6 @@
 component: "prep"
-short_name: "Prepare rasters"
-long_name: "Prepare rasters"
+short_name: "Summarise and resample covariates"
+long_name: "Summarise and resample covariates"
 authors: "Simon E H Smart"
 package: [terra]
 class: mandatory

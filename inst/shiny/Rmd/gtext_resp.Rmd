@@ -6,6 +6,7 @@ output: html_document
 ### **Component: Response Data**
 
 **ORIENTATION**
+
 This component loads the response data - that is the data that you wish to fit the model to and obtain a high resolution map of. There are two parts to the response data - the numeric values of the response and the boundaries of the administrative areas that the response data corresponds to. The component has different modules to use, depending on the state that your data is currently in:
 
 #### <span class="module_choice">Upload shapefile</span>
