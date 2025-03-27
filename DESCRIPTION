@@ -1,17 +1,23 @@
 Package: disagapp
 Version: 0.0.1
-Date: 2023-12-05
-Title: Disaggregation regression application
-Description: disagapp is a shiny application for performing disaggregation 
-    regression analyses. 
+Title: A 'shiny' Application for Disaggregation Regression 
+Description: Perform user-friendly disaggregation regression analyses using  
+    'disaggregation'. Multiple options are provided for loading response 
+    data, downloading of covariate data and fitting models. Analyses can be saved 
+    and loaded and an 'rmarkdown' document can be downloaded to reproduce the 
+    analysis. Do enable all functionality install with 
+    install.packages("disagapp", dependencies = TRUE)
+    Disagapp was built using 'shinyscholar'. A version is deployed at
+    https://disagapp.le.ac.uk
 Authors@R: 
-    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut","cre")))
+    c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
+      person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")))
 Depends:
     R (>= 4.2.0),
-    shiny (>= 1.8.1),
     leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
-    gargoyle
+    gargoyle,
+    shiny (>= 1.8.1)
 Imports:
     curl,
     disaggregation,
@@ -53,8 +59,10 @@ Suggests:
     shinytest2,
     SpatialEpi,
     testthat
+SystemRequirements: pandoc is required for generating reproducible reports
 License: GPL-3
-URL: 
+URL: https://simon-smart88.github.io/disagapp/
+BugReports: https://github.com/simon-smart88/disagapp/issues
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
