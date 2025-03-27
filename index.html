@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="A shiny Application for Disaggregation Regression">
-<meta property="og:description" content='Perform user-friendly disaggregation regression analyses using disaggregation. Multiple options are provided for loading response data, downloading of covariate data and fitting models. Analyses can be saved and loaded and an rmarkdown document can be downloaded to reproduce the analysis. Do enable all functionality install with install.packages("disagapp", dependencies = TRUE) Disagapp was built using shinyscholar. A version is deployed at https://disagapp.le.ac.uk'>
+<meta property="og:description" content='Perform user-friendly disaggregation regression analyses using disaggregation. Multiple options are provided for loading response data, downloading of covariate data and fitting models. Analyses can be saved and loaded and an rmarkdown document can be downloaded to reproduce the analysis. To enable all functionality install with install.packages("disagapp", dependencies = TRUE) Disagapp was built using shinyscholar. A version is deployed at https://disagapp.le.ac.uk .'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -63,12 +63,11 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="disagapp">disagapp<a class="anchor" aria-label="anchor" href="#disagapp"></a>
+<div class="page-header"><h1 id="disagapp-v001">disagapp v0.0.1<a class="anchor" aria-label="anchor" href="#disagapp-v001"></a>
 </h1></div>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
-<p>Disagapp is an application written in R that can be used to perform disaggregation regression analyses using <a href="https://cran.r-project.org/package=disaggregation" class="external-link">{disaggregation}</a>.</p>
+<p>Disagapp is an application written in R that can be used to perform disaggregation regression analyses using <a href="https://cran.r-project.org/package=disaggregation" class="external-link">{disaggregation}</a>. A version is deployed to <a href="https://disagapp.le.ac.uk/" class="external-link uri">https://disagapp.le.ac.uk/</a></p>
 <p>Disagapp was built using the <a href="https://github.com/simon-smart88/shinyscholar" class="external-link">{shinyscholar}</a> template which was itself forked from {wallace} v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>)</p>
-<p>It is currently in pre-alpha.</p>
 <p>Install <em>disagapp</em> via Github and run the application with the following R code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
@@ -102,6 +101,7 @@
 <li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme</li>
 <li>Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via <a href="https://worldbank.github.io/blackmarbler/" class="external-link">blackmarbler</a> developed by the World Bank</li>
 <li>Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA</li>
+<li>Population density: Population density provided by Worldpop</li>
 <li>Upload covariates: Upload your own covariates in the <code>.tif</code> format</li>
 </ul>
 </div>
@@ -109,7 +109,8 @@
 <h3 id="aggregation---load-an-aggregation-raster-agg">Aggregation - load an aggregation raster (<code>agg</code>)<a class="anchor" aria-label="anchor" href="#aggregation---load-an-aggregation-raster-agg"></a>
 </h3>
 <ul>
-<li>Population density: Population data provided by Worldpop</li>
+<li>Population count: Population counts provided by Worldpop</li>
+<li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme</li>
 <li>Upload aggregation: Upload your own aggregation raster in the <code>.tif</code> format</li>
 <li>Uniform: Generate a uniform aggregation raster</li>
 </ul>
@@ -172,7 +173,7 @@
 <li>
 <code>id</code> is the module identifier formed from the component identifier (listed above) and a single word identifier for the module. We will use <code>fit_improved</code> as the identifier in this example.</li>
 <li>
-<code>dir</code> is where the module files should be created - this should be in the <code>inst/shiny/modules</code> folder.</li>
+<code>dir</code> is the root directory of the application.</li>
 <li>
 <code>map</code> should be set to <code>TRUE</code> if the results of the module need to be plotted on the map.</li>
 <li>
@@ -181,6 +182,8 @@
 <code>rmd</code> should be set to <code>TRUE</code> if the module should be included in the reproducible Rmarkdown.</li>
 <li>
 <code>save</code> should be set to <code>TRUE</code> if the module has inputs that should be saved and loaded when the app is saved.</li>
+<li>
+<code>download</code> should be set to <code>TRUE</code> if the module will produce an output that you want the user to be able to download.</li>
 <li>
 <code>async</code> should be set to <code>TRUE</code> if the the module takes more than a few seconds to run so that it operates asynchronously.</li>
 <li>
@@ -191,7 +194,7 @@
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>shinyscholar<span class="sc">::</span><span class="fu">create_module</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">"fit_improved"</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"inst/shiny/modules"</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"."</span>, </span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">map =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">result =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">rmd =</span> <span class="cn">TRUE</span>,</span>
@@ -203,7 +206,7 @@
 </h3>
 <ul>
 <li>Develop the new functionality outside of Shiny first e.g. in an Rmarkdown file using example data.</li>
-<li>Create a file called <code>fit_improved_f.R</code> in the <code>R/</code> directory and create a function called <code>fit_improved</code> inside it and copy the code you have developed into the function.</li>
+<li>Open <code>fit_improved_f.R</code> in the <code>R/</code> directory and copy the code you have developed into the <code>fit_improved</code> function.</li>
 <li>If the function will run synchronously:
 <ul>
 <li>Add a <code>logger</code> parameter as the last parameter that is set to <code>NULL</code> by default.</li>
@@ -231,7 +234,7 @@
 <span>  <span class="op">}</span></span></code></pre></div>
 <ul>
 <li>Document the function using <a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a> tags - see other functions in the <code>R/</code> directory for examples.</li>
-<li>Create a test file in the <code>tests/testthat/</code> directory called <code>test-fit_improved.R</code> and add tests that check the error handling checks function correctly and that the function produces the desired results.</li>
+<li>Open the <code>test-fit_improved.R</code> file in the <code>tests/testthat/</code> directory and add tests that check the error handling checks function correctly and that the function produces the desired results.</li>
 <li>You can find various example data objects in <code>tests/testthat/helper_data.R</code> that may help to test the function.</li>
 <li>Document the package using <code>devtools::document()</code> and then install with <code>devtools::install()</code>
 </li>
@@ -374,6 +377,29 @@
 <ul>
 <li>Commit your changes, push to Github and create a pull request to add the module.</li>
 </ul>
+</div>
+</div>
+<div class="section level2">
+<h2 id="updating-deployments">Updating deployments<a class="anchor" aria-label="anchor" href="#updating-deployments"></a>
+</h2>
+<p>To update deployments running on shinyserver it is necessary to update the package and also copy the contents of <code>/inst</code> into the <code>/apps</code> directory.</p>
+<div class="section level3">
+<h3 id="install-the-updated-version-package">Install the updated version package<a class="anchor" aria-label="anchor" href="#install-the-updated-version-package"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">R</span> <span class="at">-e</span> <span class="st">"remotes::install_github('simon-smart88/disagapp')"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="update-the-app-directory">Update the app directory<a class="anchor" aria-label="anchor" href="#update-the-app-directory"></a>
+</h3>
+<p>Because the repository contains the package files as well as the app, we need to update the local copy of the package and then update the app files.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">cd</span> /local/disagapp</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rf</span> inst/shiny/. /local/shiny/apps/disagapp</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="restart-shinyserver">Restart shinyserver<a class="anchor" aria-label="anchor" href="#restart-shinyserver"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart shiny-server</span></code></pre></div>
 </div>
 </div>
 </div>
