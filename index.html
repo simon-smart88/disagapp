@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Disaggregation regression application • disagapp</title>
+<title>A shiny Application for Disaggregation Regression • disagapp</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Disaggregation regression application">
-<meta property="og:description" content="disagapp is a shiny application for performing disaggregation regression analyses.">
+<script src="pkgdown.js"></script><meta property="og:title" content="A shiny Application for Disaggregation Regression">
+<meta property="og:description" content='Perform user-friendly disaggregation regression analyses using disaggregation. Multiple options are provided for loading response data, downloading of covariate data and fitting models. Analyses can be saved and loaded and an rmarkdown document can be downloaded to reproduce the analysis. Do enable all functionality install with install.packages("disagapp", dependencies = TRUE) Disagapp was built using shinyscholar. A version is deployed at https://disagapp.le.ac.uk'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -43,7 +43,14 @@
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/simon-smart88/disagapp/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -66,14 +73,14 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"simon-smart88/disagapp"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">disagapp</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://simon-smart88.github.io/disagapp/" class="external-link">disagapp</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/run_disagapp.html">run_disagapp</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="components-and-modules">Components and modules<a class="anchor" aria-label="anchor" href="#components-and-modules"></a>
 </h2>
 <p>The application is divided in components that are steps in the analysis and modules that are possible options in each step of the analysis. Each of the modules calls a function of the same name, either in this package or in <code>{disaggregation}</code>.</p>
 <div class="section level3">
-<h3 id="response---load-the-response-data">Response - load the response data<a class="anchor" aria-label="anchor" href="#response---load-the-response-data"></a>
+<h3 id="response---load-the-response-data-resp">Response - load the response data (<code>resp</code>)<a class="anchor" aria-label="anchor" href="#response---load-the-response-data-resp"></a>
 </h3>
 <ul>
 <li>Combine spreadsheet and shapefile: upload both files and merge them</li>
@@ -85,7 +92,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="covariates---load-covariates-to-use-in-the-analysis">Covariates - load covariates to use in the analysis<a class="anchor" aria-label="anchor" href="#covariates---load-covariates-to-use-in-the-analysis"></a>
+<h3 id="covariates---load-covariates-to-use-in-the-analysis-cov">Covariates - load covariates to use in the analysis (<code>cov</code>)<a class="anchor" aria-label="anchor" href="#covariates---load-covariates-to-use-in-the-analysis-cov"></a>
 </h3>
 <ul>
 <li>Accessibility: The time required to travel to cities or healthcare. Provided by the Malaria Atlas Project via <a href="https://github.com/malaria-atlas-project/malariaAtlas" class="external-link">malariaAtlas</a>
@@ -99,7 +106,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="aggregation---load-an-aggregation-raster">Aggregation - load an aggregation raster<a class="anchor" aria-label="anchor" href="#aggregation---load-an-aggregation-raster"></a>
+<h3 id="aggregation---load-an-aggregation-raster-agg">Aggregation - load an aggregation raster (<code>agg</code>)<a class="anchor" aria-label="anchor" href="#aggregation---load-an-aggregation-raster-agg"></a>
 </h3>
 <ul>
 <li>Population density: Population data provided by Worldpop</li>
@@ -108,7 +115,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="prepare---prepare-the-data-for-modelling">Prepare - prepare the data for modelling<a class="anchor" aria-label="anchor" href="#prepare---prepare-the-data-for-modelling"></a>
+<h3 id="prepare---prepare-the-data-for-modelling-prep">Prepare - prepare the data for modelling (<code>prep</code>)<a class="anchor" aria-label="anchor" href="#prepare---prepare-the-data-for-modelling-prep"></a>
 </h3>
 <ul>
 <li>Generate mesh: generate a spatial mesh from the response data</li>
@@ -120,14 +127,14 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="fit---fit-a-disaggregation-model">Fit - fit a disaggregation model<a class="anchor" aria-label="anchor" href="#fit---fit-a-disaggregation-model"></a>
+<h3 id="fit---fit-a-disaggregation-model-fit">Fit - fit a disaggregation model (<code>fit</code>)<a class="anchor" aria-label="anchor" href="#fit---fit-a-disaggregation-model-fit"></a>
 </h3>
 <ul>
 <li>Fit model: using either gaussian, binomial or poisson likelihood functions and logit, log or identity link functions</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="predict---make-predictions">Predict - make predictions<a class="anchor" aria-label="anchor" href="#predict---make-predictions"></a>
+<h3 id="predict---make-predictions-pred">Predict - make predictions (<code>pred</code>)<a class="anchor" aria-label="anchor" href="#predict---make-predictions-pred"></a>
 </h3>
 <ul>
 <li>Make predictions: generate predictions from the model</li>
@@ -135,8 +142,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="reproduce">
-<em>Reproduce</em><a class="anchor" aria-label="anchor" href="#reproduce"></a>
+<h3 id="reproduce---reproduce-the-analysis-rep">Reproduce - reproduce the analysis (<code>rep</code>)<a class="anchor" aria-label="anchor" href="#reproduce---reproduce-the-analysis-rep"></a>
 </h3>
 <ul>
 <li>Download session code: download a <code>.Rmd</code> file that completely replicates the analysis</li>
@@ -146,11 +152,243 @@
 </ul>
 </div>
 </div>
+<div class="section level2">
+<h2 id="adding-new-modules">Adding new modules<a class="anchor" aria-label="anchor" href="#adding-new-modules"></a>
+</h2>
+<ul>
+<li>This guide details how to develop a module from scratch, but depending on what the new module does, it may be easier to copy an existing module instead and use this as a guide to refactoring it.</li>
+<li>Install shinyscholar with <code>devtools::install_github("simon-smart88/shinyscholar")</code>
+</li>
+<li>Clone the repository using <code>git clone https://github.com/simon-smart88/disagapp</code>
+</li>
+</ul>
+<div class="section level3">
+<h3 id="create-module-files">Create module files<a class="anchor" aria-label="anchor" href="#create-module-files"></a>
+</h3>
+<ul>
+<li>Determine which component the module will be added to - the shorthand in the section titles above forms the first part of the module’s identifier.</li>
+<li>Use <code>shinyscholar::create_module()</code> to create the module files:
+<ul>
+<li>
+<code>id</code> is the module identifier formed from the component identifier (listed above) and a single word identifier for the module. We will use <code>fit_improved</code> as the identifier in this example.</li>
+<li>
+<code>dir</code> is where the module files should be created - this should be in the <code>inst/shiny/modules</code> folder.</li>
+<li>
+<code>map</code> should be set to <code>TRUE</code> if the results of the module need to be plotted on the map.</li>
+<li>
+<code>result</code> should be set to <code>TRUE</code> if the module produces graphs to be presented in the Results tab.</li>
+<li>
+<code>rmd</code> should be set to <code>TRUE</code> if the module should be included in the reproducible Rmarkdown.</li>
+<li>
+<code>save</code> should be set to <code>TRUE</code> if the module has inputs that should be saved and loaded when the app is saved.</li>
+<li>
+<code>async</code> should be set to <code>TRUE</code> if the the module takes more than a few seconds to run so that it operates asynchronously.</li>
+<li>
+<code>init</code> should be left set as <code>FALSE</code>.</li>
+<li>e.g. assuming you are in the root directory run:</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>shinyscholar<span class="sc">::</span><span class="fu">create_module</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">"fit_improved"</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"inst/shiny/modules"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">map =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">result =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">rmd =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">save =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">async =</span> <span class="cn">TRUE</span>)<span class="st">`</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="developing-the-function">Developing the function<a class="anchor" aria-label="anchor" href="#developing-the-function"></a>
+</h3>
+<ul>
+<li>Develop the new functionality outside of Shiny first e.g. in an Rmarkdown file using example data.</li>
+<li>Create a file called <code>fit_improved_f.R</code> in the <code>R/</code> directory and create a function called <code>fit_improved</code> inside it and copy the code you have developed into the function.</li>
+<li>If the function will run synchronously:
+<ul>
+<li>Add a <code>logger</code> parameter as the last parameter that is set to <code>NULL</code> by default.</li>
+</ul>
+</li>
+<li>If the function will run asynchronously:
+<ul>
+<li>The function will only run asynchronously inside the app, not when used in the Rmarkdown, so the function needs to be flexible to both use cases.</li>
+<li>Add an <code>async</code> parameter as the last parameter that is set to <code>FALSE</code> by default.</li>
+<li>Any rasters used inside the function need to be wrapped before they are passed to the function, unwrapped inside it, wrapped if they are to be returned and then unwrapped inside the app. Use <code>if (async)</code> blocks to unwrap rasters using <code><a href="https://rspatial.github.io/terra/reference/wrap.html" class="external-link">terra::unwrap()</a></code> at the start of the function and wrap them at the end using <code><a href="https://rspatial.github.io/terra/reference/wrap.html" class="external-link">terra::wrap()</a></code>
+</li>
+<li>If there are any messages that you want to pass to the logger when the function runs successfully, these should be stored in a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> along with the main output</li>
+</ul>
+</li>
+<li>Add checks at the start of the function that check that inputs are in the correct format and pass the errors to <code>writeLog</code> or <code>asyncLog</code> depending on whether the function is synchronous or asynchronous respectively e.g.:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">shape</span>, <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">logger</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/writeLog.html">writeLog</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"error"</span>, <span class="st">"shape must be an sf object"</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">shape</span>, <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">async</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/asyncLog.html">asyncLog</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"error"</span>, <span class="st">"shape must be an sf object"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
+<ul>
+<li>Document the function using <a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a> tags - see other functions in the <code>R/</code> directory for examples.</li>
+<li>Create a test file in the <code>tests/testthat/</code> directory called <code>test-fit_improved.R</code> and add tests that check the error handling checks function correctly and that the function produces the desired results.</li>
+<li>You can find various example data objects in <code>tests/testthat/helper_data.R</code> that may help to test the function.</li>
+<li>Document the package using <code>devtools::document()</code> and then install with <code>devtools::install()</code>
+</li>
+<li>Open the test file and click the “Run Tests” in the top right of the window pane.</li>
+<li>Once the tests are all passing you can begin to develop the Shiny module.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="shiny-module">Shiny module<a class="anchor" aria-label="anchor" href="#shiny-module"></a>
+</h3>
+<ul>
+<li>The shiny module consists of four files in the <code>inst/shiny/modules/</code> directory named with the module identifier and ending in <code>.yml</code>, <code>.R</code>, <code>.md</code> and <code>.Rmd</code>
+</li>
+</ul>
+<div class="section level4">
+<h4 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a>
+</h4>
+<ul>
+<li>The <code>.yml</code> file is a configuration file and contains five lines:
+<ul>
+<li>
+<code>component</code> contains the component the module belongs to e.g. <code>"fit"</code>
+</li>
+<li>
+<code>short_name</code> contains a short name for the module and is used in the user interface so should be formatted accordingly e.g. <code>"Fit improved model</code>”</li>
+<li>
+<code>long_name</code> contains a longer name for the module and is also used in the user interface e.g. <code>"Fit an improved model using the new method"</code>
+</li>
+<li>
+<code>authors</code> contains your name: e.g. <code>"Simon E H Smart"</code>
+</li>
+<li>
+<code>package</code> contains a list of packages used in the module inside square brackets and without quotes e.g. <code>[terra, disaggregation]</code>
+</li>
+<li>Add an extra line at the end of the file called <code>class:</code> and then add <code>mandatory</code>, <code>choice</code> or <code>optional</code> after it (without quotes) depending on whether it is mandatory to use the module, it is one of several of choices but one must be used or it is optional. Depending on the function of the module, you may need to update the <code>.yml</code> of other modules in the component, for example currently the <code>fit_fit</code> module is <code>mandatory</code> but if we were to add a new module to the component that could be changed to <code>choice</code>.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="ui-and-server">UI and server<a class="anchor" aria-label="anchor" href="#ui-and-server"></a>
+</h4>
+<ul>
+<li>Data is passed between modules and loaded after being saved through the <code>common</code> object, defined in the <code>common.R</code> file in the <code>inst/shiny/</code> directory. If the module uses data created by previous modules you need to find the name of these objects in that file, for example the response data is stored in <code>common$shape</code> and the unprepared covariates in <code>common$covs</code>. If the module produces a new type of object then you need to add a new object to the <code>common</code> data structure by editing the <code>common.R</code> file. This is not necessary if, for example the module adds a new method for uploading response data or another covariate as these would add their results to <code>common$shape</code> and <code>common$covs</code> respectively.</li>
+<li>The .<code>R</code> file is the main module file and contains several sections:
+<ul>
+<li>The <code>&lt;identifier&gt;_module_ui</code> function contains the *Input elements which should correspond with the parameters of the function. See <a href="https://shiny.posit.co/r/components/" class="external-link uri">https://shiny.posit.co/r/components/</a> for available input widgets you can use. The input ids need wrapping inside <code>ns()</code> to create ids that are unique to the module. The template contains an <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> which when clicked runs the code inside the <code>*_module_server</code> function.</li>
+<li>The <code>&lt;identifier&gt;_module_server</code> function contains an <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">observeEvent()</a></code> which is run when the <code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionButton()</a></code> in the UI is clicked.</li>
+<li>The structure of the code inside the module server differs depending on whether the module runs synchronously or asynchronously. For synchronous modules:
+<ul>
+<li>In the <em>warning</em> block, examine inputs to check that they are as expected and issue warnings if not using <code>common$logger %&gt;% writeLog()</code>. These checks are distinct from those inside the function as they are checking that the state of the app is correct - for example if the module requires the data to have been prepared, you should check that <code>common$prep</code> is not <code>NULL</code>. See the documentation of <code>shinyscholar::writeLog()</code> for more details.</li>
+<li>In the <em>function call</em> block, pass the inputs to the module function.</li>
+<li>In the <em>load into common</em> block, store the result(s) of the function call in the relevant <code>common</code> object.</li>
+<li>The <em>metadata</em> block can be left blank for now.</li>
+<li>In the <em>trigger</em> block, <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">trigger()</a></code> is called which can be used to trigger actions elsewhere in the module or app using <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">watch()</a></code>. This should not need editing.</li>
+<li>In the <em>result</em> block, use the relevant <code>common</code> objects to produce outputs like plots using <code>render*</code> objects which will be passed to the <code>_module_result</code> function. Inside each <code>render*</code> function you should add a <code><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req()</a></code> containing the common object created by the module to stop it executing before the object exists and a <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">watch()</a></code> to trigger the execution once the object is created.</li>
+<li>The <em>return</em> block, block can be left blank for now.</li>
+</ul>
+</li>
+<li>For asynchronous modules, the principles are the same but the button only triggers the function to start and a separate <code>results</code> section waits for the results and processes them. Much of the setup is handled automatically in the template module.
+<ul>
+<li>Add checks in the <em>warning</em> block as before</li>
+<li>Rather than passing the inputs to the function directly, pass them instead to for example <code>common$tasks$fit_improved$invoke()</code>
+</li>
+<li>Wrap any <code>SpatRaster</code> objects are present in the function inputs using <code><a href="https://rspatial.github.io/terra/reference/wrap.html" class="external-link">terra::wrap()</a></code>
+</li>
+<li>Inside the results section, you should check the class of the object returned by the function and only load the result into <code>common</code> if it is the correct type. If an error is returned it will be sent to the logger.</li>
+<li>Unwrap any <code>SpatRaster</code> objects in the returned object using <code><a href="https://rspatial.github.io/terra/reference/wrap.html" class="external-link">terra::unwrap()</a></code>
+</li>
+</ul>
+</li>
+<li>The <code>&lt;identifier&gt;_module_result</code> function contains the <code>*Output()</code> functions that render the results created in the <em>result</em> block of the module server. As in the <code>*_module_ui</code> function, the object ids need wrapping inside <code>ns()</code>.</li>
+<li>The <code>&lt;identifier&gt;_module_map</code> function updates the <a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a> map. <code>map</code> is a <code><a href="https://rstudio.github.io/leaflet/reference/leafletProxy.html" class="external-link">leafletProxy()</a></code> object created in the main server function so leaflet functions can be piped to it e.g. <code>map |&gt; addRasterImage()</code>. There are several functions in the package that facilitate adding objects to the map e.g. <code><a href="reference/raster_map.html">raster_map()</a></code> and <code><a href="reference/shape_map.html">shape_map()</a></code> which you can either use directly or modify to suit your needs. If you are unfamiliar with leaflet, it is probably sensible to develop this function outside of Shiny.</li>
+<li>The <code>*_module_rmd</code> function can be left blank for now.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="guidance">Guidance<a class="anchor" aria-label="anchor" href="#guidance"></a>
+</h4>
+<ul>
+<li>The <code>.md</code> file contains the module guidance.</li>
+<li>The background section should explain what the module does and what the scientific basis for it is.</li>
+<li>The implementation section should explain how the module works (e.g. which functions it uses) and how the user can use it i.e. what do they need to click.</li>
+<li>Add any relevant references in the references section.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+</h4>
+<ul>
+<li>The <code>.Rmd</code> file contains the Rmarkdown required to reproduce the module. Leave this blank for now.</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="changes-to-other-files">Changes to other files<a class="anchor" aria-label="anchor" href="#changes-to-other-files"></a>
+</h3>
+<ul>
+<li>If you have added a <code>resp</code>, <code>cov</code> or <code>agg</code> module, some other modules need updating to listen for changes made by the module by adding e.g. <code>watch("fit_improved")</code>. Modules to update are as follows:
+<ul>
+<li>For <code>resp</code> modules update <code>resp_simplify.R</code>, <code>prep_mesh.R</code> and <code>prep_final.R</code>. You should also add <code>watch("resp_edit")</code> to your own module underneath the existing <code><a href="https://rdrr.io/pkg/gargoyle/man/Event.html" class="external-link">watch()</a></code> line.</li>
+<li>For <code>cov</code> modules update <code>prep_summary.R</code> and <code>rep_covs.R</code>.</li>
+<li>For <code>agg</code> modules update <code>prep_summary.R</code> and <code>rep_covs.R</code>.</li>
+</ul>
+</li>
+<li>Open the <code>global.R</code> file in the <code>inst/shiny/</code> directory and navigate to the line that creates <code>base_module_configs</code>. Add a new line to the object in the relevant position to load the new module. The order of modules is important as this object defines the order of chunks in the Rmarkdown and so modules must be placed after any modules that they use the results of. For example if our <code>fit_improved</code> module used the results of the <code>fit_fit</code> module, it needs to be placed after it in the list.</li>
+<li>If your module created new objects in <code>common</code> that contain a <code>SpatRaster</code>, the <code>core_save.R</code> and <code>core_load.R</code> files need to be edited to wrap and unwrap them. Use <code><a href="reference/wrap_terra.html">wrap_terra()</a></code> and <code><a href="reference/unwrap_terra.html">unwrap_terra()</a></code> for this as they can handle cases where the objects are <code>NULL</code> e.g. when your module has not been used. Objects need wrapping before saving, unwrapping after saving and unwrapping after loading. There are many other lines already doing this for other objects.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="manual-checks">Manual checks<a class="anchor" aria-label="anchor" href="#manual-checks"></a>
+</h3>
+<ul>
+<li>Now you can run the app and check your module works. It may be helpful to create a save file of the app at a stage immediately prior to running your module so that you can reload it quickly if the app crashes. If you create a variable called <code>load_file_path</code> that contains the path to the load file, it will be loaded automatically when the app starts.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="reproducibility-1">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility-1"></a>
+</h3>
+<ul>
+<li>Once the module is running correctly run <code>shinyscholar::save_and_load(".", "fit_improved")</code> to add lines of code to the module that save and load the inputs and then <code>shinyscholar::metadata(".", "fit_improved")</code> to add lines to the <em>metadata</em> block in the module server, the module_rmd function and to the <code>.Rmd</code> file.</li>
+<li>Edit the <code>.Rmd</code> to use the input variables to call the module function. The variables are added automatically by <code>shinyscholar::metadata()</code> and take the form of e.g. <code>{{fit_improved_input1}}</code>. The curly brackets are required for the input values to be transferred when the user reproduces their analysis. The <code>common</code> objects have corresponding variables inside the <code>.Rmd</code> files of the modules and these need to used so that the chunk of the new module can be linked to previous chunks. For example <code>common$prep</code> containing the prepared data is replaced by <code>prepared_data</code> in the <code>.Rmd</code> files.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="end-to-end-tests">End-to-end tests<a class="anchor" aria-label="anchor" href="#end-to-end-tests"></a>
+</h3>
+<ul>
+<li>Create an end-to-end test using <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a>. You are probably best of using an existing test as a template.</li>
+<li>They consist of two files - a helper file e.g. <code>helper-fit_improved.R</code> which runs the app and saves it after running the module and the module test file which you created earlier to test the module’s function. This architecture is necessary because saving the app in tests fails erratically and this setup allows the test to be rerun until it saves successfully.</li>
+<li>In the <code>helper-fit_improved.R</code> you start the app, set any necessary input values and then run the module. Add a section to <code>test-fit_improved.R</code> that calls then function defined in the helper function using e.g. <code>rerun_test_setup("fit_improved_test")</code> and which then reads the saved file and checks that the <code>common</code> object modified or created in the module is in the correct state. Note that if the module runs asynchronously you need to wait for it to complete by adding <code>app$wait_for_value(input = "fit_improved-complete")</code> before saving the app.</li>
+<li>Run all the tests using <code>devtools::test()</code>.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="finally">Finally<a class="anchor" aria-label="anchor" href="#finally"></a>
+</h3>
+<ul>
+<li>Commit your changes, push to Github and create a pull request to add the module.</li>
+</ul>
+</div>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/simon-smart88/disagapp/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/simon-smart88/disagapp/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
@@ -168,7 +406,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Simon E. H. Smart <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
+<li>Tim Lucas <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4694-8107" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -180,7 +419,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Simon E. H. Smart.</p>
+<p>Developed by Simon E. H. Smart, Tim Lucas.</p>
 </div>
 
 <div class="pkgdown">
