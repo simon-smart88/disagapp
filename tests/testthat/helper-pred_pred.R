@@ -2,7 +2,7 @@ pred_pred_test <- function(test_common_path, save_path){
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_fit_fit", timeout = 60000)
   app$set_inputs(tabs = "intro")
   app$set_inputs(introTabs = "Load Prior Session")
-  app$upload_file("core_load-load_session" = test_common_path)
+  app$upload_file("core_load-run" = test_common_path)
   app$click("core_load-goLoad_session")
 
   app$set_inputs(tabs = "pred")
