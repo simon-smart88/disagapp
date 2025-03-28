@@ -56,6 +56,7 @@ spurious <- function(x) {
   leaflet.extras::removeDrawToolbar(x)
   markdown::html_format(x)
   openxlsx::read.xlsx(x)
+  parallelly::as.cluster(x)
   plotly::plot_ly(x)
   promises::promise(x)
   renv::activate(x)

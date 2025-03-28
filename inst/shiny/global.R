@@ -4,8 +4,10 @@ library(disagapp)
 
 options(shiny.fullstacktrace = TRUE)
 
-future::plan(future::multisession, workers = 2)
+# set number of workers for async operations
+future::plan(future::multisession, workers = length(parallelly::availableWorkers()) - 1)
 
+# set maximum upload size
 MB <- 1024^2
 UPLOAD_SIZE_MB <- 5000
 options(shiny.maxRequestSize = UPLOAD_SIZE_MB*MB)
