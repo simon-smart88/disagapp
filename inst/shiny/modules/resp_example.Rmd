@@ -5,20 +5,6 @@ Load the selected example dataset
 ```{r, echo = {{resp_example_knit}}, include = {{resp_example_knit}}}
 
 dataset <- "{{resp_example_dataset}}"
-switch(dataset,
-       "mad" = {
-         shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
-                             name = list.files(system.file("extdata", "shapes", package="disagapp")))
-         shape <- resp_shape(shpdf)
-         },
-       "nys" = {
-         shape <- SpatialEpi::NYleukemia_sf
-       },
-       "scot" = {
-         shape <- SpatialEpi::scotland_sf
-         shape$geometry <- shape$geometry * 1000
-         shape <- sf::st_set_crs(shape, 27700)
-         shape <- sf::st_transform(shape, crs = 4326)
-       }
-)
+
+shape <- resp_example(dataset)
 ```

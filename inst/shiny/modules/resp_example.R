@@ -31,26 +31,11 @@ resp_example_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
+    # FUNCTION CALL ####
+    shape <- resp_example(input$dataset, common$logger)
+
     # LOAD INTO COMMON ####
     reset_data(common)
-
-    switch(input$dataset,
-           "mad" = {
-             shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", package="disagapp"), full.names = TRUE),
-                                 name = list.files(system.file("extdata", "shapes", package="disagapp")))
-             shape <- resp_shape(shpdf)
-           },
-           "nys" = {
-             shape <- SpatialEpi::NYleukemia_sf
-           },
-           "scot" = {
-             shape <- SpatialEpi::scotland_sf
-             shape$geometry <- shape$geometry * 1000
-             shape <- sf::st_set_crs(shape, 27700)
-             shape <- sf::st_transform(shape, crs = 4326)
-           }
-    )
-
     common$shape <- shape
     switch(input$dataset,
            "mad" = {common$response_name <- "inc"},
