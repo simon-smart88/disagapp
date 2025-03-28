@@ -16,6 +16,8 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     reset_data_ui(session, common)
   })
 
+  init("resp_example_data")
+
   observeEvent(input$run, {
 
     # WARNING
@@ -49,6 +51,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
 
     # TRIGGER
     trigger("resp_example")
+    trigger("resp_example_data")
     do.call("resp_example_module_map", list(map, common))
     common$logger |> writeLog(type = "complete", "Response data has been loaded and is summarised in the results tab")
 
@@ -61,7 +64,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     }
   })
 
-  on("resp_example", {
+  on("resp_example_data", {
     if (input$dataset == "mad"){
       shinyalert::shinyalert(title = "Load more example data?",
                              type = "info",
