@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 lie_data.rds
 ^\.httr-oauth$
+.github
+Dockerfile
