@@ -54,7 +54,7 @@ if (!inherits(year, "numeric")){
   message <- "year must be numeric"
 }
 
-valid_countries <- read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
+valid_countries <- utils::read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
 invalid_countries <- country_code[(!country_code %in% valid_countries)]
 if (length(invalid_countries) > 0){
   message <- glue::glue("{invalid_countries} is not a valid IS03 country code.")
@@ -114,7 +114,7 @@ if (is.null(message)){
     data <- dplyr::bind_rows(cont$data) |> dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |> dplyr::select("files")
     tryCatch({
       ras_file <- tempfile(fileext = ".tif")
-      download.file(data$files[[1]], ras_file)
+      utils::download.file(data$files[[1]], ras_file)
       country_ras <- terra::rast(ras_file)
     },
     error = function(x){

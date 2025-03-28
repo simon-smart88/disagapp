@@ -46,7 +46,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
     logger |> writeLog(type = "error", glue::glue("df does not contain the column(s): {missing_column}"))
   }
 
-  valid_countries <- read.csv(system.file("extdata", "boundary_data.csv", package = "disagapp"))$boundaryISO
+  valid_countries <- utils::read.csv(system.file("extdata", "boundary_data.csv", package = "disagapp"))$boundaryISO
   invalid_countries <- country_code[(!country_code %in% valid_countries)]
   if (length(invalid_countries) > 0){
     logger |> writeLog(type = "error", glue::glue("{invalid_countries} is not a valid IS03 country code"))
