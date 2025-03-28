@@ -12,8 +12,6 @@ one or more modules.}
 }
 \description{
 Before running the disagapp application with \code{run_disagapp()}, you can
-register your own modules to be used in disagapp.
-}
-\seealso{
-\code{\link[shinyscholar]{create_module} in shinyscholar}
+register your own modules to be used in disagapp. To create new modules use
+\code{shinyscholar::create_module()}
 }

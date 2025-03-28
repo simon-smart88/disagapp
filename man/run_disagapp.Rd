@@ -15,6 +15,9 @@ run_disagapp(
 
 \item{port}{The port for the shiny server to listen on. Defaults to a
 random available port.}
+
+\item{load_file}{Path to a saved session file which will be loaded when the
+app is opened}
 }
 \description{
 This function runs the \emph{disagapp} application in the user's
