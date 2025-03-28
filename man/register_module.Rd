@@ -11,9 +11,9 @@ register_module(config_file)
 one or more modules.}
 }
 \description{
-Before running the disagapp application with \code{run_smart()}, you can
+Before running the disagapp application with \code{run_disagapp()}, you can
 register your own modules to be used in disagapp.
 }
 \seealso{
-\code{\link[disagapp]{create_module}}
+\code{\link[shinyscholar]{create_module} in shinyscholar}
 }
