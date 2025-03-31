@@ -32,7 +32,7 @@ jobs:
         library(shinytest2)
 
         test_that("Deployed app is reachable", {
-          response <- httr::GET("https://disagapp.le.ac.uk/"))
+          response <- httr::GET("https://disagapp.le.ac.uk/")
           expect_equal(httr::status_code(response), 200)
         })
 
@@ -49,7 +49,7 @@ jobs:
           common <- app$get_value(export = "common")
           expect_is(common$shape, "sf")
           app$stop()
-        })
+        })'
 
     - name: Save test results
       if: always()
