@@ -26,7 +26,6 @@ jobs:
       run: |
         R -e "install.packages(c('httr', 'chromote', 'shinytest2', 'testthat', 'jsonlite', 'processx'), repos = 'https://cloud.r-project.org')"
         R -e "if(!requireNamespace('remotes')) install.packages('remotes')"
-        R -e "remotes::install_deps(dependencies = TRUE)"
 
     - name: Run tests against deployed app
       run: |
