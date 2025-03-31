@@ -39,6 +39,11 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
                           name = list.files(system.file("extdata", "covariates", package="disagapp")))
     }
 
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include the uploaded covariates in the model")
+    }
+
     # FUNCTION CALL ####
 
     cov_list <- cov_upload(common$shape, covdf, common$logger)

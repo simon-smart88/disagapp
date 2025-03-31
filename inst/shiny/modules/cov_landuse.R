@@ -36,6 +36,12 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
+
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include land use data in the model")
+    }
+
     # FUNCTION CALL ####
     common$tasks$cov_landuse$invoke(common$shape, input$year, input$uses, TRUE)
     common$logger |> writeLog(type = "starting", "Starting to download land use data")
