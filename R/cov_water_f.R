@@ -68,14 +68,37 @@ cov_water <- function(shape, token, async = FALSE) {
   }
 
   if (!is.null(flayer)){
-    bbox <- sf::st_bbox(shape)
 
-    ras <- arcgislayers::arc_raster(flayer, xmin = bbox[[1]], xmax = bbox[[3]],
-                                    ymin = bbox[[2]], ymax = bbox[[4]],
-                                    crs = sf::st_crs(shape))
+    # check size of shape and split into tiles if any dimension is over 3000 km
+    contiguous_shape <- shape |> sf::st_union() |> sf::st_sf()
+    shape_metres <- sf::st_transform(contiguous_shape, crs = 5070)
+    bbox_metres <- sf::st_bbox(shape_metres)
+    if (abs(bbox_metres[[1]]-bbox_metres[[3]]) > 3000000 || abs(bbox_metres[[2]]-bbox_metres[[4]]) > 3000000){
+      grid <- sf::st_make_grid(shape_metres, cellsize = c(3000000, 3000000), what = "polygons") |>  sf::st_sf()
+      chunk_metres <- sf::st_intersection(shape_metres, grid)
+      chunks <- sf::st_transform(chunk_metres, crs = 4326)
+    } else {
+      chunks <- contiguous_shape
+    }
+
+    ras <- NULL
+
+    for (i in 1:nrow(chunks)) {
+      current_chunk <- chunks[i, ]
+
+      bbox <- sf::st_bbox(current_chunk)
+      ras_chunk <- arcgislayers::arc_raster(flayer, xmin = bbox[[1]], xmax = bbox[[3]],
+                                      ymin = bbox[[2]], ymax = bbox[[4]],
+                                      crs = sf::st_crs(shape))
+      if (is.null(ras)){
+        ras <- ras_chunk
+      } else {
+        ras <- terra::merge(ras, ras_chunk)
+      }
+    }
 
     ras <- terra::clamp(ras, upper = 60000, value = FALSE)
-    ras <- ras/250 #convert to distance in km
+    ras <- ras / 4 # convert to distance in km
     ras <- terra::project(ras, "+proj=longlat +datum=WGS84")
     ras <- terra::crop(ras, shape, mask = TRUE)
 
