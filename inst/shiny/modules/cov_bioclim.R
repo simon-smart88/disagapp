@@ -59,6 +59,12 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please select the variables to download")
       return()
     }
+
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include climate data in the model")
+    }
+
     # FUNCTION CALL ####
     country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
     common$tasks$cov_bioclim$invoke(common$shape, country_code, input$variables, TRUE)

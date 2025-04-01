@@ -43,6 +43,11 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include population density data in the model")
+    }
+
     # FUNCTION CALL ####
     country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
     common$logger |> writeLog(type = "starting", "Starting to download Worldpop data")

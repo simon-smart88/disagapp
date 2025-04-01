@@ -28,6 +28,12 @@ cov_access_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please upload response data first")
       return()
     }
+
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include accessibility data in the model")
+    }
+
     # FUNCTION CALL ####
     common$tasks$cov_access$invoke(common$shape, input$layer, TRUE)
     common$logger |> writeLog(type = "starting", "Starting to download accessibility data")

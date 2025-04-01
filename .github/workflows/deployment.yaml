@@ -11,8 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
@@ -21,9 +24,8 @@ jobs:
 
     - name: Install required packages
       run: |
-        R -e "install.packages(c('shinytest2', 'testthat', 'httr', 'jsonlite', 'processx'), repos = 'https://cloud.r-project.org')"
+        R -e "install.packages(c('httr', 'chromote', 'shinytest2', 'testthat', 'jsonlite', 'processx'), repos = 'https://cloud.r-project.org')"
         R -e "if(!requireNamespace('remotes')) install.packages('remotes')"
-        R -e "remotes::install_deps(dependencies = TRUE)"
 
     - name: Run tests against deployed app
       run: |
@@ -32,7 +34,7 @@ jobs:
         library(shinytest2)
 
         test_that("Deployed app is reachable", {
-          response <- httr::GET("https://disagapp.le.ac.uk/"))
+          response <- httr::GET("https://disagapp.le.ac.uk/")
           expect_equal(httr::status_code(response), 200)
         })
 
@@ -49,11 +51,11 @@ jobs:
           common <- app$get_value(export = "common")
           expect_is(common$shape, "sf")
           app$stop()
-        })
+        })'
 
     - name: Save test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |

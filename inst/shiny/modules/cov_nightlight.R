@@ -53,6 +53,11 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
+    if (length(common$covs_prep) > 0) {
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data
+                                again to include nighttime light data in the model")
+    }
+
     # FUNCTION CALL ####
     common$tasks$cov_nightlight$invoke(common$shape, input$year, bearer(), TRUE)
     common$logger |> writeLog(type = "starting", "Starting to download nightlight data")
