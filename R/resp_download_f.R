@@ -74,7 +74,7 @@ resp_download <- function(df, area_column, resp_column, country_code, admin_leve
       httr2_http_404 = function(cnd){NULL}
     )
 
-    if (is.null(resp) || resp$status_code != 200){
+    if (is.null(resp) || httr2::resp_status(resp) != 200){
       logger |> writeLog(type = "error", "The requested boundaries could not be downloaded, the requested admin level may be unavailable")
       return()
     } else {

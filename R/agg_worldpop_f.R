@@ -101,7 +101,7 @@ if (is.null(message)){
     # call the API and return error if it doesn't work
     api_url <- glue::glue("{base_url}{product}?iso3={c}")
     req <- httr2::request(api_url) |> httr2::req_perform()
-    if (req$status_code != 200){
+    if (httr2::resp_status(req) != 200){
       message <- "The requested data could not be found"
     }
 
@@ -142,7 +142,7 @@ if (is.null(pop_ras)){
     pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
   }
 
-  #check that raster overlaps with shape
+  # check that raster overlaps with shape
   check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
   if (check_overlap == FALSE){
     message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
