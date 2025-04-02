@@ -111,11 +111,14 @@ if (is.null(message)){
       message <- "The requested data could not be found"
     }
     # select the file_url and download the raster
-    data <- dplyr::bind_rows(cont$data) |> dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |> dplyr::select("files")
-    tryCatch({
-      ras_file <- tempfile(fileext = ".tif")
-      utils::download.file(data$files[[1]], ras_file)
-      country_ras <- terra::rast(ras_file)
+    data <- dplyr::bind_rows(cont$data) |>
+            dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |>
+            dplyr::select("files")
+
+    country_ras <- tryCatch({
+                            ras_file <- tempfile(fileext = ".tif")
+                            utils::download.file(data$files[[1]], ras_file)
+                            terra::rast(ras_file)
     },
     error = function(x){
       message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
@@ -124,7 +127,7 @@ if (is.null(message)){
       message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
       NULL}
     )
-    if (!(is.null(country_ras))){
+    if (is.null(message)){
       if (is.null(pop_ras)){
         pop_ras <- country_ras
       } else {
