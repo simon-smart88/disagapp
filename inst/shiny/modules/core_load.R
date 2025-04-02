@@ -36,7 +36,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       }
 
       temp_names <- names(temp)
-      #exclude the non-public and function objects
+      # exclude the non-public and function objects
       temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers", "reset", "tasks")]
       common_names <- names(common)
       for (name in temp_names){
@@ -45,7 +45,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
         }
       }
 
-      #blank map
+      # blank map
       trigger("clear_map")
       common$map_layers = NULL
 
@@ -60,16 +60,13 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
         updateRadioButtons(session, glue("{component}Sel"), selected = value)
       }
 
-      #required due to terra objects being pointers to c++ objects
-      #unwrap the terra objects
+      # unwrap the terra objects
       common$covs <- unwrap_terra(common$covs)
       common$covs_prep <- unwrap_terra(common$covs_prep)
       common$covs_prep_lores <- unwrap_terra(common$covs_prep_lores)
       common$agg <- unwrap_terra(common$agg)
       common$agg_prep <- unwrap_terra(common$agg_prep)
       common$agg_prep_lores <- unwrap_terra(common$agg_prep_lores)
-      common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
-      common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
       common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
       common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
       common$pred$covariates <- unwrap_terra(common$pred$covariates)
@@ -83,7 +80,24 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       common$transfer$field <- unwrap_terra(common$transfer$field)
       common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
 
-      #restore map and results for used modules
+      # replace duplicate objects
+      if (!is.null(common$fit)){
+        if (is.null(common$covs_prep_lores)){
+          common$fit$data$covariate_rasters <- common$covs_prep
+          common$prep$covariate_rasters <- common$covs_prep
+        } else {
+          common$fit$data$covariate_rasters <- common$covs_prep_lores
+          common$prep$covariate_rasters <- common$covs_prep_lores
+        }
+        common$fit$data$covariate_data <- common$prep$covariate_data
+        common$fit$data$polygon_shapefile <- common$prep$polygon_shapefile
+        common$fit$data$polygon_data <- common$prep$polygon_data
+        common$fit$data$aggregation_pixels <- common$prep$aggregation_pixels
+        common$fit$data$coords_for_fit <- common$prep$coords_for_fit
+        common$fit$data$coords_for_prediction <- common$prep$coords_for_prediction
+      }
+
+      # restore map and results for used modules
       for (used_module in names(common$meta)){
         trigger(used_module) # to replot results
       }

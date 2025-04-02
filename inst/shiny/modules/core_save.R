@@ -56,8 +56,7 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         common$agg <- wrap_terra(common$agg)
         common$agg_prep <- wrap_terra(common$agg_prep)
         common$agg_prep_lores <- wrap_terra(common$agg_prep_lores)
-        common$prep$covariate_rasters <- wrap_terra(common$prep$covariate_rasters)
-        common$fit$data$covariate_rasters <- wrap_terra(common$fit$data$covariate_rasters)
+
         common$pred$`prediction (rate)` <- wrap_terra(common$pred$`prediction (rate)`)
         common$pred$`prediction (cases)` <- wrap_terra(common$pred$`prediction (cases)`)
         common$pred$covariates <- wrap_terra(common$pred$covariates)
@@ -71,19 +70,26 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         common$transfer$field <- wrap_terra(common$transfer$field)
         common$transfer$covariates <- wrap_terra(common$transfer$covariates)
 
+        # remove large duplicate objects
+        common$prep$covariate_rasters <- NULL
+        common$fit$data$covariate_rasters <- NULL
+        common$fit$data$covariate_data <- NULL
+        common$fit$data$polygon_shapefile <- NULL
+        common$fit$data$polygon_data <- NULL
+        common$fit$data$aggregation_pixels <- NULL
+        common$fit$data$coords_for_fit <- NULL
+        common$fit$data$coords_for_prediction <- NULL
 
-        #save file
+        # save file
         saveRDS(common, file)
 
-        #unwrap the terra objects
+        # unwrap the terra objects
         common$covs <- unwrap_terra(common$covs)
         common$covs_prep <- unwrap_terra(common$covs_prep)
         common$covs_prep_lores <- unwrap_terra(common$covs_prep_lores)
         common$agg <- unwrap_terra(common$agg)
         common$agg_prep <- unwrap_terra(common$agg_prep)
         common$agg_prep_lores <- unwrap_terra(common$agg_prep_lores)
-        common$prep$covariate_rasters <- unwrap_terra(common$prep$covariate_rasters)
-        common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
         common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
         common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
         common$pred$covariates <- unwrap_terra(common$pred$covariates)
@@ -96,6 +102,23 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         common$transfer$prediction <- unwrap_terra(common$transfer$prediction)
         common$transfer$field <- unwrap_terra(common$transfer$field)
         common$transfer$covariates <- unwrap_terra(common$transfer$covariates)
+
+        # replace duplicate objects
+        if (!is.null(common$fit)){
+          if (is.null(common$covs_prep_lores)){
+            common$fit$data$covariate_rasters <- common$covs_prep
+            common$prep$covariate_rasters <- common$covs_prep
+          } else {
+            common$fit$data$covariate_rasters <- common$covs_prep_lores
+            common$prep$covariate_rasters <- common$covs_prep_lores
+          }
+          common$fit$data$covariate_data <- common$prep$covariate_data
+          common$fit$data$polygon_shapefile <- common$prep$polygon_shapefile
+          common$fit$data$polygon_data <- common$prep$polygon_data
+          common$fit$data$aggregation_pixels <- common$prep$aggregation_pixels
+          common$fit$data$coords_for_fit <- common$prep$coords_for_fit
+          common$fit$data$coords_for_prediction <- common$prep$coords_for_prediction
+        }
 
 
         close_loading_modal()
