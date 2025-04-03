@@ -5,8 +5,8 @@ Download boundary data and combine with the uploaded response data. You need to 
 ```{r, echo = {{resp_download_knit}}, include = {{resp_download_knit}}}
 response_directory <- ""
 
-#read in the response data
-response_file <- "{{data_path}}"
+# read in the response data
+response_file <- {{resp_download_data_path}}
 response_file_path <- file.path(response_directory, response_file)
 file_format <- tools::file_ext(response_file_path)
 if (file_format == "csv"){
@@ -15,11 +15,15 @@ if (file_format == "csv"){
   response_df <- openxlsx::read.xlsx(response_file_path)
 }
 
-#download the boundary data and merge with the response data
+# download the boundary data and merge with the response data
 shape <- disagapp::resp_download(df = response_df,
-                     area_column = "{{area_column}}",
-                     resp_column = "{{resp_column}}",
-                     country_code = {{country_code}},
-                     admin_level = "{{admin_level}}")
+                     area_column = {{resp_download_area_column}},
+                     resp_column = {{resp_download_resp_column}},
+                     country_code = {{resp_download_country_code}},
+                     admin_level = {{resp_download_admin_level}})
+
+response_name <- {{resp_download_response_name}}
+response_data <- shape[[response_name]]
+plot_response(response_data)
 
 ```

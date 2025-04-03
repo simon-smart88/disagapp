@@ -7,8 +7,8 @@ Upload response data from a spreadsheet and polygon data from a shapefile and me
 response_directory <- ""
 shapefile_directory <- ""
 
-#read in the response data
-response_file <- "{{resp_combine_spread_path}}"
+# read in the response data
+response_file <- {{resp_combine_spread_path}}
 response_file_path <- file.path(response_directory, response_file)
 file_format <- tools::file_ext(response_file_path)
 if (file_format == "csv"){
@@ -17,13 +17,16 @@ if (file_format == "csv"){
   response_df <- openxlsx::read.xlsx(response_file_path)
 }
 
-#read in the shapefile data
-shapefile_files <- "{{resp_combine_shape_path}}"
+# read in the shapefile data
+shapefile_files <- {{resp_combine_shape_path}}
 shapefile_file_paths <- file.path(shapefile_directory, shapefile_files)
 shapefile_file_df <- data.frame(datapath = shapefile_file_paths, name = shapefile_files)
 shapefiles <- disagapp::resp_shape(shapefile_file_df)
 
-#merge
-shape <- disagapp::resp_combine(response_df, "{{resp_combine_spread_area}}", "{{resp_combine_response}}", shapefiles, "{{resp_combine_shape_area}}")
+# merge
+shape <- disagapp::resp_combine(response_df, {{resp_combine_spread_area}}, {{resp_combine_response_name}}, shapefiles, {{resp_combine_shape_area}})
 
+response_name <- {{resp_combine_response_name}}
+response_data <- shape[[response_name]]
+plot_response(response_data)
 ```

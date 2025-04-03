@@ -186,11 +186,12 @@ resp_download_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     resp_download_knit = !is.null(common$meta$resp_download$used),
-    data_path = common$meta$resp_download$datapath,
-    resp_column = common$meta$resp_download$response,
-    area_column = common$meta$resp_download$area_column,
-    admin_level = common$meta$resp_download$admin_level,
-    country_code = printVecAsis(common$meta$resp_download$country)
+    resp_download_data_path = common$meta$resp_download$datapath,
+    resp_download_resp_column = common$meta$resp_download$response,
+    resp_download_area_column = common$meta$resp_download$area_column,
+    resp_download_admin_level = common$meta$resp_download$admin_level,
+    resp_download_country_code = common$meta$resp_download$country,
+    resp_download_response_name = common$response_name
   )
 }
 

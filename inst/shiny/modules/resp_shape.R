@@ -14,8 +14,8 @@ resp_shape_module_ui <- function(id) {
 resp_shape_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-    #not using the usual paradigm in this module due to needing to specify
-    #the response variable prior to running
+    # not using the usual paradigm in this module due to needing to specify
+    # the response variable prior to running
     shape <- reactive({
 
       req(input$shape)
@@ -28,8 +28,6 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
       }
 
       # FUNCTION CALL ####
-      #keeping this for now, but only needed if the Rmd uses sf
-      #shape_file_path <- shpdf$name[grep(pattern = "*.shp$", shpdf$name)]
       shape <- resp_shape(shpdf)
 
       crs <- sf::st_crs(shape)
@@ -142,8 +140,9 @@ resp_shape_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     resp_shape_knit = !is.null(common$meta$resp_shape$used),
-    resp_shape_path = printVecAsis(common$meta$resp_shape$path),
-    resp_shape_resp = common$meta$resp_shape$response
+    resp_shape_path = common$meta$resp_shape$path,
+    resp_shape_resp = common$meta$resp_shape$response,
+    resp_shape_response_name = common$response_name
   )
 }
 

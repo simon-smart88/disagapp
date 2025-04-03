@@ -132,7 +132,7 @@ resp_example_module_rmd <- function(common) {
   list(
     resp_example_knit = !is.null(common$meta$resp_example$used),
     resp_example_dataset = common$meta$resp_example$dataset,
-    resp_example_response = common$meta$resp_example$response
+    resp_example_response_name = common$response_name
   )
 }
 

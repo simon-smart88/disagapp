@@ -8,4 +8,8 @@ shapefile_files <- {{resp_shape_path}}
 shapefile_file_paths <- file.path(shapefile_directory, shapefile_files)
 shapefile_file_df <- data.frame(datapath = shapefile_file_paths, name = shapefile_files)
 shape <- disagapp::resp_shape(shapefile_file_df)
+
+response_name <- {{resp_shape_response_name}}
+response_data <- shape[[response_name]]
+plot_response(response_data)
 ```

@@ -4,7 +4,9 @@ Load the selected example dataset
 
 ```{r, echo = {{resp_example_knit}}, include = {{resp_example_knit}}}
 
-dataset <- "{{resp_example_dataset}}"
-
+dataset <- {{resp_example_dataset}}
 shape <- resp_example(dataset)
+response_name <- {{resp_example_response_name}}
+response_data <- shape[[response_name]]
+plot_response(response_data)
 ```

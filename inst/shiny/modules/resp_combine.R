@@ -186,7 +186,7 @@ resp_combine_module_rmd <- function(common) {
     resp_combine_knit = !is.null(common$meta$resp_combine$used),
     resp_combine_shape_path = common$meta$resp_combine$shape_path,
     resp_combine_spread_path = common$meta$resp_combine$spread_path,
-    resp_combine_response = common$meta$resp_combine$response,
+    resp_combine_response_name = common$response_name,
     resp_combine_spread_area = common$meta$resp_combine$spread_area,
     resp_combine_shape_area = common$meta$resp_combine$shape_area
   )

@@ -77,7 +77,7 @@ resp_edit_module_rmd <- function(common) {
   list(
     resp_edit_knit = !is.null(common$meta$resp_edit$used),
     resp_edit_type = common$meta$resp_edit$type,
-    resp_edit_poly = printVecAsis(common$meta$resp_edit$poly)
+    resp_edit_poly = common$meta$resp_edit$poly
   )
 }
 
