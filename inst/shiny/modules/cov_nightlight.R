@@ -27,7 +27,6 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
   bearer
   })
 
-
   common$tasks$cov_nightlight <- ExtendedTask$new(function(...) {
     promises::future_promise({
       cov_nightlight(...)
@@ -90,6 +89,12 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("cov_nightlight")
+    req(common$meta$cov_nightlight)
+    plot_raster(common$covs, "Nighttime light", log = common$meta$cov_nightlight$log)
+  })
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -108,6 +113,11 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     }
   ))
 })
+}
+
+cov_nightlight_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
 }
 
 cov_nightlight_module_map <- function(map, common) {

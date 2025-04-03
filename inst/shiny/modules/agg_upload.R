@@ -65,6 +65,11 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Aggregation data has been uploaded")
   })
 
+  output$plot <- renderPlot({
+    watch("agg_upload")
+    req(common$meta$agg_upload)
+    plot_raster(list(common$agg), 1, log = input$log)
+  })
 
   return(list(
     save = function() {list(
@@ -83,6 +88,11 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
     }
   ))
 })
+}
+
+agg_upload_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
 }
 
 agg_upload_module_map <- function(map, common) {

@@ -78,6 +78,11 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("agg_worldpop")
+    req(common$agg)
+    plot_raster(list(common$agg), 1, log = input$log)
+  })
 
   return(list(
     save = function() {list(
@@ -102,6 +107,11 @@ agg_worldpop_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+agg_worldpop_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 agg_worldpop_module_map <- function(map, common) {
   raster_map(map, common, common$agg, "Population", common$meta$agg_worldpop$log)
 }
@@ -110,10 +120,11 @@ agg_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     agg_worldpop_knit = !is.null(common$meta$agg_worldpop$used),
-    agg_worldpop_country = printVecAsis(common$meta$agg_worldpop$country),
+    agg_worldpop_country = common$meta$agg_worldpop$country,
     agg_worldpop_method = common$meta$agg_worldpop$method,
     agg_worldpop_resolution = common$meta$agg_worldpop$resolution,
-    agg_worldpop_year = common$meta$agg_worldpop$year
+    agg_worldpop_year = common$meta$agg_worldpop$year,
+    agg_worldpop_log = common$meta$agg_worldpop$log
   )
 }
 

@@ -2,7 +2,13 @@
 Download bioclim data and add to covariates list
 ```
 
+```{asis, echo = {{cov_bioclim_knit}}, eval = {{cov_bioclim_knit}}, include = {{cov_bioclim_knit}}}
+{r, fig.height = {{cov_bioclim_plot_height}}}
+```
 ```{r, echo = {{cov_bioclim_knit}}, include = {{cov_bioclim_knit}}}
-bioclim <- disagapp::cov_bioclim(shape, {{cov_bioclim_country}}, {{cov_bioclim_variables}})
+bioclim_variables <- {{cov_bioclim_variables}}
+bioclim <- disagapp::cov_bioclim(shape, {{cov_bioclim_country}}, bioclim_variables)
 covariates <- append(covariates, bioclim)
+
+plot_raster(covariates, bioclim_variables)
 ```

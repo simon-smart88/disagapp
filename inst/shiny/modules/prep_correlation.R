@@ -80,17 +80,17 @@ prep_correlation_module_server <- function(id, common, parent_session, map) {
     save = function() {list(
       ### Manual save start
       ### Manual save end
-      method = input$method, 
-      type = input$type, 
-      cov_layers = input$cov_layers, 
+      method = input$method,
+      type = input$type,
+      cov_layers = input$cov_layers,
       self = input$self)
     },
     load = function(state) {
       ### Manual load start
       ### Manual load end
-      updateSelectInput(session, "method", selected = state$method) 
-      updateSelectInput(session, "type", selected = state$type) 
-      updateSelectInput(session, "cov_layers", selected = state$cov_layers) 
+      updateSelectInput(session, "method", selected = state$method)
+      updateSelectInput(session, "type", selected = state$type)
+      updateSelectInput(session, "cov_layers", selected = state$cov_layers)
       shinyWidgets::updateMaterialSwitch(session, "self", value = state$self)
     }
   ))
@@ -110,7 +110,7 @@ prep_correlation_module_rmd <- function(common) {
     prep_correlation_type = common$meta$prep_correlation$type,
     prep_correlation_self = common$meta$prep_correlation$self,
     prep_correlation_removed = !is.null(common$meta$prep_correlation$removed),
-    prep_correlation_removed_layers = printVecAsis(common$meta$prep_correlation$removed_layers)
+    prep_correlation_removed_layers = common$meta$prep_correlation$removed_layers
   )
 }
 

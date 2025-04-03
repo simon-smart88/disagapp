@@ -4,13 +4,15 @@ Download nighttime light data and add to covariates list. This module requires a
 
 ```{r, echo = {{cov_nightlight_knit}}, include = {{cov_nightlight_knit}}}
 
-#look to see if an environmental variable containing the NASA credentials is set 
+# look to see if an environmental variable containing the NASA credentials is set 
 if (Sys.getenv("NASA_username") != ""){
   bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
 } else {
-  bearer = "{{cov_nightlight_bearer}}"
+  bearer = {{cov_nightlight_bearer}}
 }
 
 night_light <- disagapp::cov_nightlight(shape, {{cov_nightlight_year}}, bearer)
 covariates[["Nighttime light"]] <- night_light
+
+plot_raster(covariates, "Nighttime light", {{cov_nightlight_log}})
 ```

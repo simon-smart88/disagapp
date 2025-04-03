@@ -164,9 +164,9 @@ prep_mesh_module_rmd <- function(common) {
     prep_mesh_convex = common$meta$prep_mesh$convex[[selected]],
     prep_mesh_concave = common$meta$prep_mesh$concave[[selected]],
     prep_mesh_resolution = common$meta$prep_mesh$resolution[[selected]],
-    prep_mesh_max_edge = printVecAsis(common$meta$prep_mesh$max_edge[[selected]]),
+    prep_mesh_max_edge = common$meta$prep_mesh$max_edge[[selected]],
     prep_mesh_cutoff = common$meta$prep_mesh$cutoff[[selected]],
-    prep_mesh_offset = printVecAsis(common$meta$prep_mesh$offset[[selected]])
+    prep_mesh_offset = common$meta$prep_mesh$offset[[selected]]
   )
 }
 

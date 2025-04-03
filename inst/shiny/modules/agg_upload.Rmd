@@ -3,11 +3,11 @@ Upload an aggregation raster. You need to specify the directory where the file i
 ```
 
 ```{r, echo = {{agg_upload_knit}}, include = {{agg_upload_knit}}}
-
 aggregation_directory <- ""
-aggregation_files <- "{{agg_upload_path}}"
+aggregation_files <- {{agg_upload_path}}
 aggregation_file_path <- file.path(aggregation_directory, aggregation_files)
 aggregation <- disagapp::agg_upload(shape, aggregation_file_path)
-names(aggregation) <- "{{agg_upload_name}}"
-    
+names(aggregation) <- {{agg_upload_name}}
+   
+plot_raster(list(aggregation), 1) 
 ```

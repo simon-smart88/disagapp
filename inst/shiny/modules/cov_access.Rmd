@@ -3,6 +3,9 @@ Load accessibility data and add to covariates list
 ```
 
 ```{r, echo = {{cov_access_knit}}, include = {{cov_access_knit}}}
-access <- disagapp::cov_access(shape, "{{access_layer}}")
-covariates[["{{access_layer}}"]] <- access
+access_layer <- {{cov_access_layer}}
+access <- disagapp::cov_access(shape, access_layer)
+covariates[[access_layer]] <- access
+
+plot_raster(covariates, access_layer)
 ```

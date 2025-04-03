@@ -75,10 +75,20 @@ cov_water_module_server <- function(id, common, parent_session, map) {
     } else {
       common$logger |> writeLog(type = "error", result)
     }
+  })
 
+  output$plot <- renderPlot({
+    watch("cov_water")
+    req(common$meta$cov_water)
+    plot_raster(common$covs, "Distance to water")
   })
 
 })
+}
+
+cov_water_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
 }
 
 cov_water_module_map <- function(map, common) {

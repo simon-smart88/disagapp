@@ -369,14 +369,13 @@ mesh_map <- function(map, common){
 
 #' @title plot_response
 #' @description
-#' For internal use. Plot the response data as a histogram
+#' Plot the response data as a histogram
 #' @param response numeric. The response data
-#' @keywords internal
 #' @export
 #'
 
 plot_response <- function(response){
-  pal <- colorBin("viridis", domain = response, bins = 9, na.color ="#00000000")
+  pal <- colorBin("plasma", domain = response, bins = 9, na.color ="#00000000")
   breaks <- base::pretty(response, n = 9)
   cols <- pal(breaks)
 
@@ -387,6 +386,44 @@ plot_response <- function(response){
                    marker = list(color = cols)) |>
     plotly::layout(xaxis = list(title = "Response"),
                    yaxis = list(title = "Frequency"))
+}
+
+#' @title plot_raster
+#' @description
+#' Plot rasters as a map and a histogram
+#' @param rasters list. List of SpatRasters
+#' @param raster_names character. Vector of names
+#' @param bins numeric. The number of bins to split the data into. Default = 50
+#' @param log logical. Whether to plot values on a log scale
+#' @keywords internal
+#' @export
+#'
+plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
+
+  col <- terra::map.pal("plasma", bins)
+  n_rasters <- length(raster_names)
+  par(mfrow = c(n_rasters, 2), oma = c(0, 0, 0, 0), mar= c(2, 2, 2, 1))
+
+  for (r in raster_names){
+    if (log){
+      raster <- log10(rasters[[r]])
+      minmax <- range(raster[is.finite(raster)])
+    } else {
+      raster <- rasters[[r]]
+      minmax <- terra::minmax(raster)
+    }
+
+    # suppress sampling warning
+    suppressWarnings(terra::hist(raster,
+                breaks = seq(minmax[1], minmax[2], length.out = bins),
+                freq = FALSE,
+                col = col,
+                xlab = "",
+                cex.lab = 0.75,
+                cex.axis = 0.75))
+    terra::plot(raster, col = col, mar = NA)
+
+  }
 }
 
 #' @title plot_mesh

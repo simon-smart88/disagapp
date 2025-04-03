@@ -85,6 +85,12 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("cov_worldpop")
+    req(common$meta$cov_worldpop)
+    plot_raster(common$covs, common$meta$cov_worldpop$name, log = common$meta$cov_worldpop$log)
+  })
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -108,6 +114,11 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+cov_worldpop_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 cov_worldpop_module_map <- function(map, common) {
   raster_map(map, common, common$covs[["Population density"]], "Population density", common$meta$cov_worldpop$log)
 }
@@ -116,9 +127,10 @@ cov_worldpop_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_worldpop_knit = !is.null(common$meta$cov_worldpop$used),
-    cov_worldpop_country = printVecAsis(common$meta$cov_worldpop$country),
+    cov_worldpop_country = common$meta$cov_worldpop$country,
     cov_worldpop_method = common$meta$cov_worldpop$method,
     cov_worldpop_resolution = common$meta$cov_worldpop$resolution,
+    cov_worldpop_log = common$meta$cov_worldpop$log,
     cov_worldpop_year = common$meta$cov_worldpop$year
   )
 }

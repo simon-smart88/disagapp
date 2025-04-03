@@ -7,7 +7,7 @@ environmental variables to automate it as explained here: https://r.esri.com/r-b
 
 your_arcgis_token <- ""
 
-#look to see if an environmental variable containing the NASA bearer token is set 
+# look to see if an environmental variable containing the NASA bearer token is set 
 if (Sys.getenv("ARCGIS_CLIENT") != ""){
   arcgis_token <- arcgisutils::auth_client()
 } else {
@@ -17,4 +17,5 @@ if (Sys.getenv("ARCGIS_CLIENT") != ""){
 distance_to_water <- disagapp::cov_water(shape, arcgis_token)
 covariates[["Distance to water"]] <- distance_to_water
 
+plot_raster(covariates, "Distance to water")
 ```

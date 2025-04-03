@@ -60,6 +60,12 @@ cov_access_module_server <- function(id, common, parent_session, map) {
       }
   })
 
+  output$plot <- renderPlot({
+    watch("cov_access")
+    req(common$meta$cov_access)
+    plot_raster(common$covs, common$meta$cov_access$layer)
+  })
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -75,6 +81,11 @@ cov_access_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+cov_access_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 cov_access_module_map <- function(map, common) {
   layer <- common$meta$cov_access$layer
   raster_map(map, common, common$covs[[layer]], layer)
@@ -84,7 +95,7 @@ cov_access_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_access_knit = !is.null(common$meta$cov_access$used),
-    access_layer = common$meta$cov_access$layer
+    cov_access_layer = common$meta$cov_access$layer
   )
 }
 

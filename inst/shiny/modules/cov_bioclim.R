@@ -75,6 +75,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_bioclim$used <- TRUE
     common$meta$cov_bioclim$country <- country_code
     common$meta$cov_bioclim$variables <- input$variables
+    common$meta$cov_bioclim$plot_height <- length(input$variables) * 400
     common$selected_country <- input$country
     trigger("country_out")
   })
@@ -95,6 +96,12 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("cov_bioclim")
+    req(common$meta$cov_bioclim)
+    plot_raster(common$covs, common$meta$cov_bioclim$variables)
+  }, height = common$meta$cov_bioclim$plot_height)
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -112,6 +119,11 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+cov_bioclim_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 cov_bioclim_module_map <- function(map, common) {
   for (variable in common$meta$cov_bioclim$variables){
     raster_map(map, common, common$covs[[variable]], variable)
@@ -122,8 +134,8 @@ cov_bioclim_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_bioclim_knit = !is.null(common$meta$cov_bioclim$used),
-    cov_bioclim_country = printVecAsis(common$meta$cov_bioclim$country),
-    cov_bioclim_variables = printVecAsis(common$meta$cov_bioclim$variables)
-  )
+    cov_bioclim_country = common$meta$cov_bioclim$country,
+    cov_bioclim_variables = common$meta$cov_bioclim$variables,
+    cov_bioclim_plot_height = common$meta$cov_bioclim$plot_height)
 }
 

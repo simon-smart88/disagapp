@@ -12,4 +12,3 @@ plot_response(response)
 \description{
 For internal use. Plot the response data as a histogram
 }
-\keyword{internal}

@@ -50,6 +50,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     common$meta$cov_landuse$used <- TRUE
     common$meta$cov_landuse$uses <- input$uses
     common$meta$cov_landuse$year <- input$year
+    common$meta$cov_landuse$plot_height <- length(input$uses) * 400
   })
 
   results <- observe({
@@ -69,6 +70,12 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("cov_landuse")
+    req(common$meta$cov_landuse)
+    plot_raster(common$covs, common$meta$cov_landuse$uses)
+  }, height = common$meta$cov_landuse$plot_height)
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -86,6 +93,11 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+cov_landuse_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 cov_landuse_module_map <- function(map, common) {
   for (use in common$meta$cov_landuse$uses){
     land_use <- paste0(use, " land use")
@@ -97,8 +109,9 @@ cov_landuse_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_landuse_knit = !is.null(common$meta$cov_landuse$used),
-    cov_landuse_uses = printVecAsis(common$meta$cov_landuse$uses),
-    cov_landuse_year = common$meta$cov_landuse$year
+    cov_landuse_uses = common$meta$cov_landuse$uses,
+    cov_landuse_year = common$meta$cov_landuse$year,
+    cov_landuse_plot_height = common$meta$cov_landuse$plot_height
   )
 }
 

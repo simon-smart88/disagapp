@@ -63,6 +63,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     } else {
       common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
     }
+    common$meta$cov_upload$plot_height <- length(common$meta$cov_upload$path) * 400
 
     # TRIGGER
     do.call("cov_upload_module_map", list(map, common))
@@ -70,6 +71,11 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Covariate data has been uploaded")
   })
 
+  output$plot <- renderPlot({
+    watch("cov_upload")
+    req(common$meta$cov_upload)
+    plot_raster(common$covs, common$meta$cov_upload$path)
+  }, height = common$meta$cov_upload$plot_height)
 
   return(list(
     save = function() {list(
@@ -86,6 +92,10 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+cov_upload_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
 
 cov_upload_module_map <- function(map, common) {
   for (variable in common$meta$cov_upload$path){
@@ -97,7 +107,8 @@ cov_upload_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     cov_upload_knit = !is.null(common$meta$cov_upload$used),
-    cov_upload_path = printVecAsis(common$meta$cov_upload$path)
+    cov_upload_path = common$meta$cov_upload$path,
+    cov_upload_plot_height = common$meta$cov_upload$plot_height
   )
 }
 

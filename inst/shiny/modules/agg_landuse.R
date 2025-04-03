@@ -65,6 +65,13 @@ agg_landuse_module_server <- function(id, common, parent_session, map) {
     }
   })
 
+  output$plot <- renderPlot({
+    watch("agg_landuse")
+    req(common$meta$agg_landuse)
+    plot_raster(list(common$agg), 1)
+  })
+
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -82,6 +89,11 @@ agg_landuse_module_server <- function(id, common, parent_session, map) {
 })
 }
 
+agg_landuse_module_result <- function(id) {
+  ns <- NS(id)
+  plotOutput(ns("plot"))
+}
+
 agg_landuse_module_map <- function(map, common) {
   raster_map(map, common, common$agg, names(common$agg))
 }
@@ -90,7 +102,7 @@ agg_landuse_module_rmd <- function(common) {
   # Variables used in the module's Rmd code
   list(
     agg_landuse_knit = !is.null(common$meta$agg_landuse$used),
-    agg_landuse_uses = printVecAsis(common$meta$agg_landuse$uses),
+    agg_landuse_uses = common$meta$agg_landuse$uses,
     agg_landuse_year = common$meta$agg_landuse$year
   )
 }
