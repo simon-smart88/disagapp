@@ -159,61 +159,13 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
     output$model_plot <- plotly::renderPlotly({
       watch("fit_fit")
       req(common$fit_plot)
-
-      posteriors <- common$fit_plot$posteriors
-      covariates <- names(common$covs_prep)
-      posteriors <- posteriors %>%
-                      dplyr::mutate(type = ifelse(parameter %in% covariates, "Slope", type))
-
-      unique_types <- unique(posteriors$type)
-
-      plots <- lapply(unique_types, function(type) {
-        subset_data <- posteriors[posteriors$type == type, ]
-
-        plotly::plot_ly(subset_data,
-                y = ~parameter,
-                x = ~mean,
-                type = "scatter",
-                mode = "markers",
-                marker = list(color = "black"),
-                error_x = list(array = ~sd, color = "blue")) |>
-          plotly::layout(title = list(text = type, x = 0.5),
-                 xaxis = list(title = "SD", showline = TRUE, zeroline = FALSE),
-                 yaxis = list(title = "Parameter", showline = TRUE, zeroline = FALSE,
-                              range = c(-1, nrow(subset_data))),
-                 margin = list(t = 100))
-      })
-
-      # Combine subplots into a single plot
-      final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) |>
-        plotly::layout(title = "Model parameters (excluding random effects)",
-               showlegend = FALSE)
-
-      final_plot
-
+      plot_model(common$fit_plot, names(common$covs_prep))
     })
-
 
     output$obs_pred_plot <- plotly::renderPlotly({
       watch("fit_fit")
       req(common$fit_plot)
-      data <- common$fit_plot$data
-      title <- common$fit_plot$title
-
-      x_range <- range(data$obs, data$pred)
-      identity_line <- data.frame(x = x_range, y = x_range)
-
-      obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = 'scatter', mode = 'markers', name = "Including IID") |>
-        plotly::add_trace(data = data, x = ~obs, y = ~pred_no_iid, type = 'scatter', mode = 'markers', name = "Excluding IID",
-                          marker = list(color = "red")) |>
-        plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = "blue"), name = "1:1 line") |>
-        plotly::layout(title = list(text = title, x = 0.5),
-               xaxis = list(title = "Observed", showline = TRUE, zeroline = FALSE),
-               yaxis = list(title = "Predicted", showline = TRUE, zeroline = FALSE),
-               margin = list(t = 100),
-               showlegend = TRUE)
-
-      obspred_plot
+      plot_obs_pred(common$fit_plot)
     })
 
   return(list(

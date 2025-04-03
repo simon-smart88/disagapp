@@ -38,4 +38,23 @@ fitted_model <- disaggregation::disag_model(data = prepared_data,
                                             field = {{fit_field}},
                                             iid = {{fit_iid}}
                                             )
+
+fitted_model_plot_data <- disaggregation::plot_disag_model_data(fitted_model)
+
+```
+
+```{asis, echo = {{fit_knit}}, eval = {{fit_knit}}, include = {{fit_knit}}}
+Plot the parameters of the fitted model
+```
+
+```{r, echo = {{fit_knit}}, include = {{fit_knit}}}
+plot_model(fitted_model_plot_data, names(covariates_prepared))
+```
+
+```{asis, echo = {{fit_knit}}, eval = {{fit_knit}}, include = {{fit_knit}}}
+Plot a comparison of the observed and predicted values
+```
+
+```{r, echo = {{fit_knit}}, include = {{fit_knit}}}
+plot_obs_pred(fitted_model_plot_data)
 ```

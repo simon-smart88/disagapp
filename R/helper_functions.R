@@ -427,7 +427,7 @@ plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
 }
 
 #' @title plot_mesh
-#' @description For internal use. Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
+#' @description Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
 #' https://github.com/inlabru-org/inlabru/blob/53ac741a5dba72c2bd33706fda48a149f0d8d9a9/R/ggplot.R#L750
 #' @param data An `fm_mesh_2d` object.
 #' @param title Character to describe the plot
@@ -449,7 +449,6 @@ plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
 #' @param ny Number of pixels in y direction (when plotting using the color parameter).
 #' @param mask A `SpatialPolygon` or `sf` polygon defining the region that is plotted.
 #' @param ... ignored arguments (S3 generic compatibility).
-#' @keywords internal
 #' @export
 
 plot_mesh <- function(data, title,
@@ -554,6 +553,69 @@ plot_mesh <- function(data, title,
     ggplot2::annotate("text", x = centre_x, y = max_y, label = title, size = 6, hjust = 0.5)
 }
 
+#' @title plot_model
+#' @description
+#' Plot parameters of the fitted model
+#' @param plot_data list. Result of `disaggregation::plot_disag_model_data()`
+#' @param covariate_names character. Vector of the names of the covariates
+#' @export
+#'
+plot_model <- function(plot_data, covariate_names){
+  posteriors <- plot_data$posteriors |>
+    dplyr::mutate(type = ifelse(parameter %in% covariate_names, "Slope", type))
+
+  unique_types <- unique(posteriors$type)
+
+  plots <- lapply(unique_types, function(type) {
+    subset_data <- posteriors[posteriors$type == type, ]
+
+    plotly::plot_ly(subset_data,
+                    y = ~parameter,
+                    x = ~mean,
+                    type = "scatter",
+                    mode = "markers",
+                    marker = list(color = "black"),
+                    error_x = list(array = ~sd, color = "blue")) |>
+      plotly::layout(title = list(text = type, x = 0.5),
+                     xaxis = list(title = "SD", showline = TRUE, zeroline = FALSE),
+                     yaxis = list(title = "Parameter", showline = TRUE, zeroline = FALSE,
+                                  range = c(-1, nrow(subset_data))),
+                     margin = list(t = 100))
+  })
+
+  # Combine subplots into a single plot
+  final_plot <- plotly::subplot(plots, nrows = 1, shareX = FALSE, margin = 0.05) |>
+    plotly::layout(title = "Model parameters (excluding random effects)",
+                   showlegend = FALSE)
+
+  final_plot
+}
+
+#' @title plot_obs_pred
+#' @description
+#' Plot a comparison of the observed and predicted values
+#' @param plot_data list. Result of `disaggregation::plot_disag_model_data()`
+#' @export
+#'
+plot_obs_pred <- function(plot_data){
+  data <- plot_data$data
+  title <- plot_data$title
+
+  x_range <- range(data$obs, data$pred)
+  identity_line <- data.frame(x = x_range, y = x_range)
+
+  obspred_plot <- plotly::plot_ly(data, x = ~obs, y = ~pred, type = "scatter", mode = "markers", name = "Including IID") |>
+    plotly::add_trace(data = data, x = ~obs, y = ~pred_no_iid, type = "scatter", mode = "markers", name = "Excluding IID",
+                      marker = list(color = "red")) |>
+    plotly::add_lines(data = identity_line, x = ~x, y = ~y, line = list(color = "blue"), name = "1:1 line") |>
+    plotly::layout(title = list(text = title, x = 0.5),
+                   xaxis = list(title = "Observed", showline = TRUE, zeroline = FALSE),
+                   yaxis = list(title = "Predicted", showline = TRUE, zeroline = FALSE),
+                   margin = list(t = 100),
+                   showlegend = TRUE)
+
+  obspred_plot
+}
 
 
 ####################### #

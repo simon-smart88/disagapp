@@ -10,5 +10,5 @@ plot_response(response)
 \item{response}{numeric. The response data}
 }
 \description{
-For internal use. Plot the response data as a histogram
+Plot the response data as a histogram
 }

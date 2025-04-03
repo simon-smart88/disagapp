@@ -63,7 +63,6 @@ system to project the mesh to before plotting.}
 \item{...}{ignored arguments (S3 generic compatibility).}
 }
 \description{
-For internal use. Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
+Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
 https://github.com/inlabru-org/inlabru/blob/53ac741a5dba72c2bd33706fda48a149f0d8d9a9/R/ggplot.R#L750
 }
-\keyword{internal}

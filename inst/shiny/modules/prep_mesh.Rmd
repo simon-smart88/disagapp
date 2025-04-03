@@ -11,5 +11,6 @@ mesh <- disaggregation::build_mesh(shape,
                                     max.edge = {{prep_mesh_max_edge}}, 
                                     cutoff = {{prep_mesh_cutoff}},
                                     offset = {{prep_mesh_offset}}))
-    
+
+plot_mesh(mesh)    
 ```

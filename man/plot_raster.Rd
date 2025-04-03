@@ -16,6 +16,6 @@ plot_raster(rasters, raster_names, bins = 50, log = FALSE)
 \item{log}{logical. Whether to plot values on a log scale}
 }
 \description{
-For internal use. Plot rasters as a map and a histogram
+Plot rasters as a map and a histogram
 }
 \keyword{internal}
