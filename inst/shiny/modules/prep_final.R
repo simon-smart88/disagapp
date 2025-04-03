@@ -68,6 +68,14 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       common$logger |> writeLog(type = "error", "Please prepare a mesh first")
       return()
     }
+
+    if (Sys.getenv("leicester_server") == "true" && terra::ncell(common$covs_prep[[1]] > 5e5)){
+      common$logger |> writeLog(type = "warning", "Your covariates contain over 500,000 cells which
+                                may cause this server to crash when you fit the model. It is highly
+                                recommended to save the app before fitting the model and or reduce
+                                the resolution using the Reduce resolution module.")
+    }
+
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
