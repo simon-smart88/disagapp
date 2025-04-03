@@ -130,7 +130,10 @@ resp_download_module_server <- function(id, common, parent_session, map) {
       if (any(response < 0)){
         common$logger |> writeLog(type = "info", "The response data contains negative values")
       }
-
+      if (response_area(common$shape) > 1e6){
+        common$logger |> writeLog(type = "warning", glue::glue("The total area of the response data is {response_area(common$shape)} km2.
+                                                             Some covariates may be slow to download."))
+      }
     }
   })
 
