@@ -32,8 +32,8 @@ if (!exists("priors")) {
 
 fitted_model <- disaggregation::disag_model(data = prepared_data,
                                             priors = priors,
-                                            family = "{{fit_family}}",
-                                            link = "{{fit_link}}",
+                                            family = {{fit_family}},
+                                            link = {{fit_link}},
                                             iterations = {{fit_iterations}},
                                             field = {{fit_field}},
                                             iid = {{fit_iid}}

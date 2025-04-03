@@ -3,7 +3,7 @@ Download population density data from Worldpop
 ```
 
 ```{r, echo = {{cov_worldpop_knit}}, include = {{cov_worldpop_knit}}}
-worldpop <- disagapp::agg_worldpop(shape, {{cov_worldpop_country}}, "{{cov_worldpop_method}}", "{{cov_worldpop_resolution}}", {{cov_worldpop_year}})
+worldpop <- disagapp::agg_worldpop(shape, {{cov_worldpop_country}}, {{cov_worldpop_method}}, {{cov_worldpop_resolution}}, {{cov_worldpop_year}})
 
 covariates[["Population density"]] <- worldpop / terra::cellSize(worldpop, unit = "km")
 

@@ -6,8 +6,8 @@ Plot a correlation matrix of the prepared covariates
 correlation_matrix <- disagapp::prep_correlation(covariates_prepared)
 
 corrplot::corrplot(correlation_matrix, 
-                   method = "{{prep_correlation_method}}",
-                   type = "{{prep_correlation_type}}",
+                   method = {{prep_correlation_method}},
+                   type = {{prep_correlation_type}},
                    diag = {{prep_correlation_self}})
 
 ```

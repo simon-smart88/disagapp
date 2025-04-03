@@ -7,8 +7,8 @@ Prepare the data for fitting the model and plot a summary.
 prepared_data <- disaggregation::prepare_data(polygon_shapefile = shape,
                                      covariate_rasters = covariates_prepared,
                                      aggregation_raster = aggregation_prepared,
-                                     id_var = "{{prep_id_var}}",
-                                     response_var = "{{prep_resp_var}}",
+                                     id_var = {{prep_id_var}},
+                                     response_var = {{prep_resp_var}},
                                      na_action = {{prep_na_action}},
                                      make_mesh = FALSE)
 
