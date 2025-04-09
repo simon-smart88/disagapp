@@ -7,7 +7,10 @@
 unwrap_terra(object)
 }
 \arguments{
-\item{object}{The SpatRaster or the list of SpatRasters to pack}
+\item{object}{The PackedSpatRaster or the list of PackedSpatRasters to unpack}
+}
+\value{
+Either a SpatRaster or list of SpatRasters
 }
 \description{
 For internal use. Flexible function for unwrapping SpatRasters or

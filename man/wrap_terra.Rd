@@ -9,6 +9,9 @@ wrap_terra(object)
 \arguments{
 \item{object}{The SpatRaster or the list of SpatRasters to pack}
 }
+\value{
+Either a PackedSpatRaster or list of PackedSpatRasters
+}
 \description{
 For internal use. Flexible function for wrapping SpatRasters or
 lists of SpatRasters but only when they exist.

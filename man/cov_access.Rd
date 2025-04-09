@@ -23,6 +23,7 @@ This function is called by the cov_access module and downloads data on
 accessibility using data from the Malaria Atlas Project.
 }
 \examples{
+\dontrun{
 x_min <- 0
 x_max <- 0.5
 y_min <- 52
@@ -34,6 +35,7 @@ shape <- sf::st_sf(1, geometry = list(poly))
 sf::st_crs(shape) = 4326
 raster <- cov_access(shape = shape,
                      layer = "Travel Time to Cities (2015)")
+}
 
 }
 \author{

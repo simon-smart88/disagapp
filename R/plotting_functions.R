@@ -6,6 +6,11 @@
 #' @description
 #' Plot the response data as a histogram
 #' @param response numeric. The response data
+#' @returns A plotly object
+#' @examples
+#' shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
+#' response <- shape[['inc']]
+#' plot_response(response)
 #' @export
 #'
 
@@ -30,7 +35,11 @@ plot_response <- function(response){
 #' @param raster_names character. Vector of names
 #' @param bins numeric. The number of bins to split the data into. Default = 50
 #' @param log logical. Whether to plot values on a log scale
-#' @keywords internal
+#' @returns Called for side effects - plots to graphic device
+#' @examples
+#' raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+#' raster_list <- list("EVI" = raster)
+#' plot_raster(raster_list, "EVI")
 #' @export
 #'
 plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
@@ -84,6 +93,11 @@ plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
 #' @param ny Number of pixels in y direction (when plotting using the color parameter).
 #' @param mask A `SpatialPolygon` or `sf` polygon defining the region that is plotted.
 #' @param ... ignored arguments (S3 generic compatibility).
+#' @returns ggplot object
+#' @examples
+#' mesh <- fmesher::fm_mesh_2d_inla(boundary = fmesher::fm_extensions(cbind(2, 1), convex = 1, 2))
+#' plot_mesh(mesh, "Mesh")
+#'
 #' @export
 
 plot_mesh <- function(data, title,
@@ -193,6 +207,7 @@ plot_mesh <- function(data, title,
 #' Plot parameters of the fitted model
 #' @param plot_data list. Result of `disaggregation::plot_disag_model_data()`
 #' @param covariate_names character. Vector of the names of the covariates
+#' @returns A plotly object
 #' @export
 #'
 plot_model <- function(plot_data, covariate_names){
@@ -255,22 +270,26 @@ plot_obs_pred <- function(plot_data){
 
 #' @title plot_resolution
 #' @description
-#' Make either a histogram or boxplot showing the
+#' Make either a histogram or boxplot showing the number of pixels in each polygon of an sf object
 #' @param plot_type character. Either `histogram` or `boxplot`
 #' @param covariates SpatRaster. The covariates
 #' @param shape sf. The response data
-#' @param scale character. Either `original` or `low`
-#' @param original_resolution list. Containing the resolution of the `width` and `height` of the original data.
-#' @return The plotly plot object
+#' @param resolution character. Either `original` or `low`
+#' @param original_resolution list. Containing the resolution of the `width` and `height` of the original data. Default `NULL`.
+#' @returns A plotly object
+#' @examples
+#' raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+#' shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
+#' plot_resolution("histogram", raster, shape, "low")
 #' @export
 #'
-plot_resolution <- function(plot_type, covariates, shape, scale, original_resolution = NULL){
+plot_resolution <- function(plot_type, covariates, shape, resolution, original_resolution = NULL){
 
   pixels_per_poly <- terra::extract(covariates, shape) |>
                      dplyr::group_by(.data$ID) |>
                      dplyr::summarise(n_pixels = dplyr::n())
 
-  if (plot_type == "Histogram"){
+  if (plot_type == "histogram"){
     plot <- plotly::plot_ly( x = pixels_per_poly$n_pixels,
                              type = "histogram",
                              histnorm = "frequency",
@@ -280,7 +299,7 @@ plot_resolution <- function(plot_type, covariates, shape, scale, original_resolu
                      yaxis = list(title = "Frequency"))
   }
 
-  if (plot_type == "Boxplot"){
+  if (plot_type == "boxplot"){
     plot <- plotly::plot_ly(x = pixels_per_poly$n_pixels,
                             type = "box",
                             fillcolor = "#0072B2",
@@ -291,7 +310,7 @@ plot_resolution <- function(plot_type, covariates, shape, scale, original_resolu
                      yaxis = list(title = "", showline = TRUE, zeroline = FALSE))
   }
 
-  if (scale == "original"){
+  if (resolution == "original"){
     annotation <- list(
       list(
         x = 1, y = 0.95, xref = "paper", yref = "paper",

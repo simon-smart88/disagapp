@@ -11,6 +11,9 @@ plot_model(plot_data, covariate_names)
 
 \item{covariate_names}{character. Vector of the names of the covariates}
 }
+\value{
+A plotly object
+}
 \description{
 Plot parameters of the fitted model
 }

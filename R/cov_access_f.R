@@ -11,6 +11,7 @@
 #' @return a SpatRaster object
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
+#' \dontrun{
 #' x_min <- 0
 #' x_max <- 0.5
 #' y_min <- 52
@@ -22,6 +23,7 @@
 #' sf::st_crs(shape) = 4326
 #' raster <- cov_access(shape = shape,
 #'                      layer = "Travel Time to Cities (2015)")
+#' }
 #'
 #' @export
 

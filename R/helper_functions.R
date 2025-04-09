@@ -192,6 +192,7 @@ asyncLog <- function(async, ..., type = "default"){
 #' @title show_loading_modal
 #' @description For internal use. Show a modal when something is loading
 #' @param message character. The message to display to the user.
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 
@@ -206,6 +207,7 @@ show_loading_modal <- function(message){
 #' @title close_loading_modal
 #' @description For internal use. Close the modal once loading is complete
 #' @param session The session object passed to function given to shinyServer.
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 
@@ -222,6 +224,7 @@ close_loading_modal <- function (session = getDefaultReactiveDomain())
 #' @description For internal use. Produce a drop down list of countries and update all inputs once one country has been selected.
 #' @param session The session object passed to function given to shinyServer.
 #' @param common The common data structure
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 country_out <- function(session, common){
@@ -243,6 +246,7 @@ country_out <- function(session, common){
 #' @title show_map
 #' @description For internal use. Switches the view to the Map tab
 #' @param parent_session Session object of the main server function
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 show_map <- function(parent_session){
@@ -252,6 +256,7 @@ show_map <- function(parent_session){
 #' @title show_results
 #' @description For internal use. Switches the view to the Results tab
 #' @param parent_session Session object of the main server function
+#' @returns No return value, called for side effects
 #' @keywords internal
 #' @export
 show_results <- function(parent_session){
@@ -267,6 +272,7 @@ show_results <- function(parent_session){
 #' @description For internal use. Flexible function for wrapping SpatRasters or
 #' lists of SpatRasters but only when they exist.
 #' @param object The SpatRaster or the list of SpatRasters to pack
+#' @returns Either a PackedSpatRaster or list of PackedSpatRasters
 #' @keywords internal
 #' @export
 wrap_terra <- function(object){
@@ -285,7 +291,8 @@ wrap_terra <- function(object){
 #' @title unwrap_terra
 #' @description For internal use. Flexible function for unwrapping SpatRasters or
 #' lists of SpatRasters but only when they exist.
-#' @param object The SpatRaster or the list of SpatRasters to pack
+#' @param object The PackedSpatRaster or the list of PackedSpatRasters to unpack
+#' @returns Either a SpatRaster or list of SpatRasters
 #' @keywords internal
 #' @export
 unwrap_terra <- function(object){

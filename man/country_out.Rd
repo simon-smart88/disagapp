@@ -11,6 +11,9 @@ country_out(session, common)
 
 \item{common}{The common data structure}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 For internal use. Produce a drop down list of countries and update all inputs once one country has been selected.
 }

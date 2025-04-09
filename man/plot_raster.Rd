@@ -15,7 +15,14 @@ plot_raster(rasters, raster_names, bins = 50, log = FALSE)
 
 \item{log}{logical. Whether to plot values on a log scale}
 }
+\value{
+Called for side effects - plots to graphic device
+}
 \description{
 Plot rasters as a map and a histogram
 }
-\keyword{internal}
+\examples{
+raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+raster_list <- list("EVI" = raster)
+plot_raster(raster_list, "EVI")
+}

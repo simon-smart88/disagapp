@@ -8,7 +8,7 @@ plot_resolution(
   plot_type,
   covariates,
   shape,
-  scale,
+  resolution,
   original_resolution = NULL
 )
 }
@@ -19,13 +19,18 @@ plot_resolution(
 
 \item{shape}{sf. The response data}
 
-\item{scale}{character. Either \code{original} or \code{low}}
+\item{resolution}{character. Either \code{original} or \code{low}}
 
-\item{original_resolution}{list. Containing the resolution of the \code{width} and \code{height} of the original data.}
+\item{original_resolution}{list. Containing the resolution of the \code{width} and \code{height} of the original data. Default \code{NULL}.}
 }
 \value{
-The plotly plot object
+A plotly object
 }
 \description{
-Make either a histogram or boxplot showing the
+Make either a histogram or boxplot showing the number of pixels in each polygon of an sf object
+}
+\examples{
+raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
+plot_resolution("histogram", raster, shape, "low")
 }

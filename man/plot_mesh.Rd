@@ -62,7 +62,15 @@ system to project the mesh to before plotting.}
 
 \item{...}{ignored arguments (S3 generic compatibility).}
 }
+\value{
+ggplot object
+}
 \description{
 Plot the spatial mesh. Forked from inlabru::gg.fm_mesh_2d
 https://github.com/inlabru-org/inlabru/blob/53ac741a5dba72c2bd33706fda48a149f0d8d9a9/R/ggplot.R#L750
+}
+\examples{
+mesh <- fmesher::fm_mesh_2d_inla(boundary = fmesher::fm_extensions(cbind(2, 1), convex = 1, 2))
+plot_mesh(mesh, "Mesh")
+
 }

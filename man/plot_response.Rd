@@ -9,6 +9,14 @@ plot_response(response)
 \arguments{
 \item{response}{numeric. The response data}
 }
+\value{
+A plotly object
+}
 \description{
 Plot the response data as a histogram
+}
+\examples{
+shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
+response <- shape[['inc']]
+plot_response(response)
 }

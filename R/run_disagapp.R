@@ -6,7 +6,7 @@
 #' random available port.
 #' @param load_file Path to a saved session file which will be loaded when the
 #' app is opened
-#'
+#' @returns No return value, called for side effects
 #' @examples
 #' if(interactive()) {
 #' run_disagapp()
