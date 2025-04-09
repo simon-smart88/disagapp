@@ -2,13 +2,16 @@ Package: disagapp
 Version: 0.0.1
 Title: A 'shiny' Application for Disaggregation Regression 
 Description: Perform user-friendly disaggregation regression analyses using  
-    'disaggregation'. Multiple options are provided for loading response 
-    data, downloading of covariate data and fitting models. Analyses can be saved 
+    'disaggregation'. Use when analysing response data that are aggregated to 
+    polygon level but the predictor variables are at a higher resolution. 
+    Multiple options are provided for loading response data, downloading 
+    covariate data and fitting models. Analyses can be saved 
     and loaded and an 'rmarkdown' document can be downloaded to reproduce the 
     analysis. To enable all functionality install with 
-    install.packages("disagapp", dependencies = TRUE)
-    Disagapp was built using 'shinyscholar'. A version is deployed at
-    https://disagapp.le.ac.uk .
+    install.packages("disagapp", dependencies = TRUE) .
+    Run locally with run_disagapp() 
+    or use a version deployed to <https://disagapp.le.ac.uk> . 
+    Disagapp was built using 'shinyscholar'. 
 Authors@R: 
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
       person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")))
