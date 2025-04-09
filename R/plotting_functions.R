@@ -37,7 +37,7 @@ plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
 
   col <- terra::map.pal("plasma", bins)
   n_rasters <- length(raster_names)
-  par(mfrow = c(n_rasters, 2), oma = c(0, 0, 0, 0), mar= c(2, 2, 2, 1))
+  graphics::par(mfrow = c(n_rasters, 2), oma = c(0, 0, 0, 0), mar= c(2, 2, 2, 1))
 
   for (r in raster_names){
     if (log){
@@ -197,7 +197,7 @@ plot_mesh <- function(data, title,
 #'
 plot_model <- function(plot_data, covariate_names){
   posteriors <- plot_data$posteriors |>
-    dplyr::mutate(type = ifelse(parameter %in% covariate_names, "Slope", type))
+    dplyr::mutate(type = ifelse(.data$parameter %in% covariate_names, "Slope", .data$type))
 
   unique_types <- unique(posteriors$type)
 
@@ -267,7 +267,7 @@ plot_obs_pred <- function(plot_data){
 plot_resolution <- function(plot_type, covariates, shape, scale, original_resolution = NULL){
 
   pixels_per_poly <- terra::extract(covariates, shape) |>
-                     dplyr::group_by(ID) |>
+                     dplyr::group_by(.data$ID) |>
                      dplyr::summarise(n_pixels = dplyr::n())
 
   if (plot_type == "Histogram"){
