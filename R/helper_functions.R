@@ -127,7 +127,7 @@ writeLog <- function(logger, ..., type = "default") {
     } else if (type == "complete") {
       pre <- paste0(icon("check", class = "log_end"), " ")
     } else if (type == "info") {
-      if (nchar(...) < 80){
+      if (nchar(...) < 350){
         shinyalert::shinyalert(..., type = "info")
       } else {
         shinyalert::shinyalert("Please, check Log window for more information ",
@@ -135,7 +135,7 @@ writeLog <- function(logger, ..., type = "default") {
       }
       pre <- paste0(icon("info", class = "log_info"), " ")
     } else if (type == "error") {
-      if (nchar(...) < 80){
+      if (nchar(...) < 350){
         shinyalert::shinyalert(...,
                                type = "error")
       } else {
@@ -144,7 +144,7 @@ writeLog <- function(logger, ..., type = "default") {
       }
       pre <- paste0(icon("xmark", class = "log_error"), " ")
     } else if (type == "warning") {
-      if (nchar(...) < 80){
+      if (nchar(...) < 350){
         shinyalert::shinyalert(...,
                                type = "warning")
       } else {
