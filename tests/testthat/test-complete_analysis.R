@@ -2,6 +2,7 @@
 test_that("{shinytest2} recording: e2e_complete_analysis", {
 
   skip_on_ci()
+  skip_on_cran()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 120000)
 

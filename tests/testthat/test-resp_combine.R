@@ -12,6 +12,7 @@ test_that("Check resp_combine function works as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_resp_combine", {
+  skip_on_cran()
   rerun_test_setup("resp_combine_test", list(shpdf_small, cdf_path,
                                              cdf_resp_column, cdf_area_column,
                                              shape_area_column, save_path))

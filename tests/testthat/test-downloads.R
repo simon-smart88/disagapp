@@ -1,6 +1,7 @@
 
 # this works
 test_that("{shinytest2} recording: e2e_empty_markdown", {
+  skip_on_cran()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_markdown")
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
@@ -25,7 +26,7 @@ test_that("{shinytest2} recording: e2e_empty_markdown", {
 test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
 
   skip_on_ci()
-
+  skip_on_cran()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 120000)
 
   app$set_inputs(tabs = "resp")

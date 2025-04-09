@@ -10,11 +10,11 @@ test_that("Check cov_water function works as expected", {
 
 test_that("{shinytest2} recording: e2e_cov_water", {
   skip_on_ci()
-  if (Sys.getenv("ARCGIS_CLIENT") != ""){
-    rerun_test_setup("cov_water_test", list(shpdf, save_path))
-    common <- readRDS(save_path)
-    common$covs <- unwrap_terra(common$covs)
-    expect_is(common$covs[[1]], "SpatRaster")
-    expect_equal(length(common$covs), 1)
-  }
+  skip_on_cran()
+  skip_if(Sys.getenv("ARCGIS_CLIENT") == "")
+  rerun_test_setup("cov_water_test", list(shpdf, save_path))
+  common <- readRDS(save_path)
+  common$covs <- unwrap_terra(common$covs)
+  expect_is(common$covs[[1]], "SpatRaster")
+  expect_equal(length(common$covs), 1)
 })

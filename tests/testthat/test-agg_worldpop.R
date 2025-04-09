@@ -38,6 +38,7 @@ expect_error(agg_worldpop(lie_shape, "ZZZ", "Unconstrained", "1km", 2000), "ZZZ 
 })
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {
+  skip_on_cran()
   rerun_test_setup("agg_worldpop_test", list(df_path, resp_column, area_column, save_path))
   common <- readRDS(save_path)
   common$agg <- unwrap_terra(common$agg)

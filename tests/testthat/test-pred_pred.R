@@ -59,6 +59,7 @@ test_that("Check pred_pred function works as expected", {
 test_that("Check fit_fit function works in the app", {
 
   skip_on_ci()
+  skip_on_cran()
 
   # setup common for test
   test_common$fit <- result
