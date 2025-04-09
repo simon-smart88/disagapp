@@ -303,7 +303,7 @@ unwrap_terra <- function(object){
 
 #' @title response_area
 #' @description Calculate the area of the response data in square kilometers
-#' @param object sf. The sf object containing the response data
+#' @param shape sf. The sf object containing the response data
 #' @return numeric. Area in square kilometers
 #' @keywords internal
 #' @export

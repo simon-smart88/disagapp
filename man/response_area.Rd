@@ -7,7 +7,7 @@
 response_area(shape)
 }
 \arguments{
-\item{object}{sf. The sf object containing the response data}
+\item{shape}{sf. The sf object containing the response data}
 }
 \value{
 numeric. Area in square kilometers
