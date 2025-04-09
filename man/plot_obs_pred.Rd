@@ -9,6 +9,9 @@ plot_obs_pred(plot_data)
 \arguments{
 \item{plot_data}{list. Result of \code{disaggregation::plot_disag_model_data()}}
 }
+\value{
+The plotly plot object
+}
 \description{
-Plot a comparison of the observed and predicted values
+Make a scatterplot comparing the observed and predicted values
 }

@@ -15,10 +15,17 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
     original_resolution <- reactiveValues()
 
     init("prep_resolution_current")
-    on("prep_summary", {
+
+    observeEvent(input$summarise, {
+      # WARNING ####
+      if (is.null(common$covs_prep)) {
+        common$logger |> writeLog(type = "error", "Please resample the rasters first")
+        return()
+      }
+
       if (requireNamespace("geosphere", quietly = TRUE)){
         req(common$covs_summary$resampled)
-        #calculate coordinates of top left pixel using minimum and resolution rows
+        # calculate coordinates of top left pixel using minimum and resolution rows
         lng1 <- as.numeric(common$covs_summary$resampled[8, 1])
         lng2 <- as.numeric(common$covs_summary$resampled[8, 1]) + as.numeric(common$covs_summary$resampled[1, 1])
         lat1 <- as.numeric(common$covs_summary$resampled[10, 1])
@@ -31,11 +38,11 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
         original_resolution$width <- geosphere::distm(top_left, top_right, fun = geosphere::distHaversine)
         original_resolution$height <- geosphere::distm(top_left, bottom_left, fun = geosphere::distHaversine)
         trigger("prep_resolution_current")
+        show_results(parent_session)
       } else {
         logger |> writeLog(type = "error", 'This module requires the geosphere package to be installed. Close the app, run install.packages("geosphere") and try again')
       }
     })
-
 
     output$resolution_out <- renderUI({
       watch("prep_resolution_current")
@@ -46,69 +53,11 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       selectInput(session$ns("resolution"), "New cell width (m)", choices = choices)
     })
 
-    observeEvent(input$summarise, {
-      show_results(parent_session)
-    })
-
-
-    output$plot <- plotly::renderPlotly({
+    output$original_plot <- plotly::renderPlotly({
+      watch("prep_resolution_current")
       req(common$covs_prep)
-      if (is.null(common$covs_prep_lores)){
-        pixels_per_poly <- terra::extract(common$covs_prep, common$shape) |>
-          dplyr::group_by(ID) |>
-          dplyr::summarise(n_pixels = dplyr::n())
-      } else {
-        pixels_per_poly <- terra::extract(common$covs_prep_lores, common$shape) |>
-          dplyr::group_by(ID) |>
-          dplyr::summarise(n_pixels = dplyr::n())
-      }
-
-      if (input$plot_type == "Histogram"){
-        plot <- plotly::plot_ly( x = pixels_per_poly$n_pixels,
-                                 type = "histogram",
-                                 histnorm = "frequency",
-                                 marker = list(color = '#0072B2'),
-                                 stroke = list(color = 'black')) |>
-          plotly::layout(xaxis = list(title = "Cells per polygon"),
-                         yaxis = list(title = "Frequency"))
-      }
-
-      if (input$plot_type == "Boxplot"){
-        plot <- plotly::plot_ly(x = pixels_per_poly$n_pixels,
-                                type = "box",
-                                fillcolor = "#0072B2",
-                                line = list(color = "black"),
-                                marker = list(color = "black"),
-                                name = "") |>
-          plotly::layout(xaxis = list(title = "Cells per polygon", showline = TRUE, zeroline = FALSE),
-                         yaxis = list(title = "", showline = TRUE, zeroline = FALSE))
-      }
-
-      plot <- plot |>
-        plotly::layout(
-          annotations = list(
-            list(
-              x = 1, y = 0.95, xref = "paper", yref = "paper",
-              text = glue("Original avg cells per polygon = {round(mean(pixels_per_poly$n_pixels), 2)}"),
-              font = list(size = 16, color = "black"),
-              showarrow = FALSE
-            ),
-            list(
-              x = 1, y = 0.88, xref = "paper", yref = "paper",
-              text = glue("Original cell width (m) = {round(original_resolution$width, 0)}"),
-              font = list(size = 16, color = "black"),
-              showarrow = FALSE
-            ),
-            list(
-              x = 1, y = 0.81, xref = "paper", yref = "paper",
-              text = glue("Original cell height (m) = {round(original_resolution$height, 0)}"),
-              font = list(size = 16, color = "black"),
-              showarrow = FALSE
-            )
-          )
-        )
-      return(plot)
-    }) |> bindEvent(input$summarise)
+      plot_resolution(input$plot_type, common$covs_prep, common$shape, "original", reactiveValuesToList(original_resolution))
+    })
 
     observeEvent(input$run, {
       # WARNING ####
@@ -132,6 +81,12 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
       # exceptionally, the mapping for this module is handled in core_mapping
   })
 
+    output$low_plot <- plotly::renderPlotly({
+      watch("prep_resolution")
+      req(common$covs_prep_lores)
+      plot_resolution(input$plot_type, common$covs_prep_lores, common$shape, "low")
+    })
+
   return(list(
     save = function() {list(
       ### Manual save start
@@ -151,7 +106,10 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
 prep_resolution_module_result <- function(id) {
   ns <- shiny::NS(id)
-plotly::plotlyOutput(ns("plot"))
+  tagList(
+    plotly::plotlyOutput(ns("original_plot")),
+    plotly::plotlyOutput(ns("low_plot"))
+  )
 }
 
 prep_resolution_module_rmd <- function(common) {

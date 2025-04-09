@@ -228,8 +228,9 @@ plot_model <- function(plot_data, covariate_names){
 
 #' @title plot_obs_pred
 #' @description
-#' Plot a comparison of the observed and predicted values
+#' Make a scatterplot comparing the observed and predicted values
 #' @param plot_data list. Result of `disaggregation::plot_disag_model_data()`
+#' @return The plotly plot object
 #' @export
 #'
 plot_obs_pred <- function(plot_data){
@@ -250,4 +251,77 @@ plot_obs_pred <- function(plot_data){
                    showlegend = TRUE)
 
   obspred_plot
+}
+
+#' @title plot_resolution
+#' @description
+#' Make either a histogram or boxplot showing the
+#' @param plot_type character. Either `histogram` or `boxplot`
+#' @param covariates SpatRaster. The covariates
+#' @param shape sf. The response data
+#' @param scale character. Either `original` or `low`
+#' @param original_resolution list. Containing the resolution of the `width` and `height` of the original data.
+#' @return The plotly plot object
+#' @export
+#'
+plot_resolution <- function(plot_type, covariates, shape, scale, original_resolution = NULL){
+
+  pixels_per_poly <- terra::extract(covariates, shape) |>
+                     dplyr::group_by(ID) |>
+                     dplyr::summarise(n_pixels = dplyr::n())
+
+  if (plot_type == "Histogram"){
+    plot <- plotly::plot_ly( x = pixels_per_poly$n_pixels,
+                             type = "histogram",
+                             histnorm = "frequency",
+                             marker = list(color = "#0072B2"),
+                             stroke = list(color = "black")) |>
+      plotly::layout(xaxis = list(title = "Cells per polygon"),
+                     yaxis = list(title = "Frequency"))
+  }
+
+  if (plot_type == "Boxplot"){
+    plot <- plotly::plot_ly(x = pixels_per_poly$n_pixels,
+                            type = "box",
+                            fillcolor = "#0072B2",
+                            line = list(color = "black"),
+                            marker = list(color = "black"),
+                            name = "") |>
+      plotly::layout(xaxis = list(title = "Cells per polygon", showline = TRUE, zeroline = FALSE),
+                     yaxis = list(title = "", showline = TRUE, zeroline = FALSE))
+  }
+
+  if (scale == "original"){
+    annotation <- list(
+      list(
+        x = 1, y = 0.95, xref = "paper", yref = "paper",
+        text = glue::glue("Original mean cells per polygon = {round(mean(pixels_per_poly$n_pixels), 2)}"),
+        font = list(size = 16, color = "black"),
+        showarrow = FALSE
+      ),
+      list(
+        x = 1, y = 0.88, xref = "paper", yref = "paper",
+        text = glue::glue("Original cell width (m) = {round(original_resolution$width, 0)}"),
+        font = list(size = 16, color = "black"),
+        showarrow = FALSE
+      ),
+      list(
+        x = 1, y = 0.81, xref = "paper", yref = "paper",
+        text = glue::glue("Original cell height (m) = {round(original_resolution$height, 0)}"),
+        font = list(size = 16, color = "black"),
+        showarrow = FALSE
+      )
+      )
+  } else {
+    annotation <- list(
+      list(
+        x = 1, y = 0.95, xref = "paper", yref = "paper",
+        text = glue::glue("Low resolution mean cells per polygon = {round(mean(pixels_per_poly$n_pixels), 2)}"),
+        font = list(size = 16, color = "black"),
+        showarrow = FALSE
+      )
+    )
+  }
+
+  plot |> plotly::layout(annotations = annotation)
 }
