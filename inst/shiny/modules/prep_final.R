@@ -83,11 +83,6 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       }
     }
 
-
-     && terra::ncell(common$covs_prep[[1]]
-
-    }
-
     # FUNCTION CALL ####
 
     show_loading_modal("Please wait while the data is prepared")
