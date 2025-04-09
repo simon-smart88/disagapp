@@ -74,6 +74,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       }
 
       # FUNCTION CALL ####
+      show_loading_modal("Resampling covariates")
 
       if (input$resample_layer %in% names(common$covs)){
         resample_template <- common$covs[[input$resample_layer]]
@@ -102,6 +103,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
       common$meta$prep_summary$resample_target <- input$resample_layer
       # TRIGGER
       trigger("prep_summary")
+      close_loading_modal()
       show_results(parent_session)
       shinyWidgets::updateRadioGroupButtons(session, "table", selected = "Resampled")
       do.call("prep_summary_module_map", list(map, common))
