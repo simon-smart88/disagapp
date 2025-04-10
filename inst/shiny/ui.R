@@ -33,7 +33,9 @@ tagList(
     navbarMenu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/disagapp/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
+    if (Sys.getenv("leicester_server") == "") {
     tabPanel(NULL, icon = icon("power-off"), value = "_stopapp")
+    }
   ),
   tags$div(
     class = "container-fluid",
