@@ -2,7 +2,7 @@ prep_resolution_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     # UI
-    selectInput(ns("plot_type"), "Plot type", choices = c("Histogram", "Boxplot")),
+    selectInput(ns("plot_type"), "Plot type", choices = c("Histogram" = "histogram", "Boxplot" = "boxplot")),
     actionButton(ns("summarise"), "Summarise data"),
     uiOutput(ns("resolution_out")),
     actionButton(ns("run"), "Decrease resolution"),
@@ -55,7 +55,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 
     output$original_plot <- plotly::renderPlotly({
       watch("prep_resolution_current")
-      req(common$covs_prep)
+      req(original_resolution$width)
       plot_resolution(input$plot_type, common$covs_prep, common$shape, "original", reactiveValuesToList(original_resolution))
     })
 
