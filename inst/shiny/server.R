@@ -156,15 +156,6 @@ function(input, output, session) {
   core_load_module_server("core_load", common, modules, map, COMPONENT_MODULES, parent_session = session)
 
   ################################
-  ### DEBUGGING ####
-  ################################
-
-  output$debug <- renderPrint({
-    #browser()
-    #print(pryr::mem_used())
-    }) |> bindEvent(input$debug_button)
-
-  ################################
   ### EXPORT TEST VALUES ####
   ################################
   exportTestValues(common = common,
