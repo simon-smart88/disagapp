@@ -6,12 +6,12 @@
 \usage{
 pred_pred(
   fit,
-  aggregation,
-  cases,
-  predict_iid,
+  cases = FALSE,
+  aggregation = NULL,
+  predict_iid = FALSE,
   uncertain = FALSE,
-  N = NULL,
-  CI = NULL,
+  N = 100,
+  CI = 0.95,
   async = FALSE
 )
 }
@@ -19,9 +19,10 @@ pred_pred(
 \item{fit}{disag_model. Object returned by disag_model function that
 contains all the necessary objects for generating predictions.}
 
-\item{aggregation}{SpatRaster. The aggregation raster}
+\item{cases}{logical. Whether to predictions of cases. Default \code{FALSE}}
 
-\item{cases}{logical. Whether to predictions of cases}
+\item{aggregation}{SpatRaster. The aggregation raster. Default \code{NULL}. Must be
+supplied if \code{cases} is \code{TRUE}.}
 
 \item{predict_iid}{logical. Whether to generate predictions including the iid effect}
 
@@ -29,10 +30,10 @@ contains all the necessary objects for generating predictions.}
 intervals}
 
 \item{N}{numeric. The number of realisations to use when generating uncertainty
-predictions}
+predictions. Default \code{100}}
 
 \item{CI}{numeric. The credible interval to user when generating uncertainty
-predictions.}
+predictions. Default \code{0.95}}
 
 \item{async}{logical. Whether or not the function is being used asynchronously}
 }
@@ -44,6 +45,11 @@ This function is called by the pred_pred module and calls
 disaggregation::predict_model() and disaggregation::predict_uncertainty() and
 also generates predicted cases. SpatRasters are wrapped to enable asynchronous
 operation.
+}
+\examples{
+common <- readRDS(system.file("extdata", "fit-minimal.rds", package = "disagapp"))
+common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
+prediction <- pred_pred(common$fit)
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

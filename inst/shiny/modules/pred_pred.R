@@ -67,14 +67,14 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
 
     if (!input$uncertain){
       common$tasks$pred_pred$invoke(fit = common$fit,
-                                    aggregation = common[[aggregation]],
                                     cases = input$cases,
+                                    aggregation = common[[aggregation]],
                                     predict_iid = predict_iid,
                                     async = TRUE)
     } else {
       common$tasks$pred_pred$invoke(fit = common$fit,
-                                    aggregation = common[[aggregation]],
                                     cases = input$cases,
+                                    aggregation = common[[aggregation]],
                                     predict_iid = predict_iid,
                                     uncertain = input$uncertain,
                                     N = input$uncertain_n,
