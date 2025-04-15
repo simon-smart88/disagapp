@@ -110,11 +110,7 @@ shiny, otherwise leave the default NULL</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">shape</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">4326</span></span></span>
 <span class="r-in"><span><span class="va">outside_shape</span> <span class="op">&lt;-</span> <span class="fu">resp_edit</span><span class="op">(</span><span class="va">shape</span>, <span class="va">crop_matrix</span>, <span class="st">"outside"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> although coordinates are longitude/latitude, st_covered_by assumes that they</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> are planar</span>
 <span class="r-in"><span><span class="va">inside_shape</span> <span class="op">&lt;-</span> <span class="fu">resp_edit</span><span class="op">(</span><span class="va">shape</span>, <span class="va">crop_matrix</span>, <span class="st">"inside"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> although coordinates are longitude/latitude, st_covered_by assumes that they</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> are planar</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
