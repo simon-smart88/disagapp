@@ -29,27 +29,27 @@
 pred_pred <- function(fit, cases = FALSE, aggregation = NULL, predict_iid = FALSE, uncertain = FALSE, N = 100, CI = 0.95, async = FALSE){
 
   if (!inherits(fit, "disag_model")){
-    async |> asyncLog(type = "error", "fit must be a disag_model object")
+    return(async |> asyncLog(type = "error", "fit must be a disag_model object"))
   }
 
   if (!inherits(cases, "logical")){
-    async |> asyncLog(type = "error", "cases must be either TRUE or FALSE")
+    return(async |> asyncLog(type = "error", "cases must be either TRUE or FALSE"))
   }
 
   if (!inherits(predict_iid, "logical")){
-    async |> asyncLog(type = "error", "predict_iid must be either TRUE or FALSE")
+    return(async |> asyncLog(type = "error", "predict_iid must be either TRUE or FALSE"))
   }
 
   if (!inherits(uncertain, "logical")){
-    async |> asyncLog(type = "error", "uncertainty must be either TRUE or FALSE")
+    return(async |> asyncLog(type = "error", "uncertainty must be either TRUE or FALSE"))
   }
 
   if (cases && is.null(aggregation)){
-    async |> asyncLog(type = "error", "You must supply an aggregation raster when cases is TRUE")
+    return(async |> asyncLog(type = "error", "You must supply an aggregation raster when cases is TRUE"))
   }
 
   if (!async && cases && !inherits(aggregation, "SpatRaster")){
-    async |> asyncLog(type = "error", "aggregation must be a SpatRaster")
+    return(async |> asyncLog(type = "error", "aggregation must be a SpatRaster"))
   }
 
   if (async){
