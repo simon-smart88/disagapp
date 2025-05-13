@@ -10,7 +10,7 @@ fit_fit_module_ui <- function(id) {
     conditionalPanel("input.priors === true", uiOutput(ns("priors_out")), ns = ns),
     conditionalPanel("input.priors === true && input.field === true", uiOutput(ns("field_out")), ns = ns),
     conditionalPanel("input.priors === true && input.iid === true", uiOutput(ns("iid_out")), ns = ns),
-    bslib::input_task_button(ns("run"), "Fit model")
+    bslib::input_task_button(ns("run"), "Fit model", type = "default")
   )
 }
 

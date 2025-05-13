@@ -4,7 +4,7 @@ cov_access_module_ui <- function(id) {
     selectInput(ns("layer"), "Layer", choices = c("Travel Time to Cities (2015)",
                                                   "Motorized Travel Time to Healthcare (2020)",
                                                   "Walking Only Travel Time to Healthcare (2020)")),
-    bslib::input_task_button(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 

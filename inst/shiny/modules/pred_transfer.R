@@ -4,7 +4,7 @@ pred_transfer_module_ui <- function(id) {
     uiOutput(ns("country_out")),
     uiOutput(ns("cov_out")),
     uiOutput(ns("agg_out")),
-    bslib::input_task_button(ns("run"), "Transfer predictions")
+    bslib::input_task_button(ns("run"), "Transfer predictions", type = "default")
   )
 }
 

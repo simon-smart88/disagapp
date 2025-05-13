@@ -22,7 +22,7 @@ cov_bioclim_module_ui <- function(id) {
                             "Precipitation driest quarter",
                             "Precipitation warmest quarter",
                             "Precipitation coldest quarter")),
-    bslib::input_task_button(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 

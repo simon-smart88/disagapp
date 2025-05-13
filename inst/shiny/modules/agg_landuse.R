@@ -6,7 +6,7 @@ agg_landuse_module_ui <- function(id) {
                 choices = c("Bare", "BuiltUp", "Crops", "Grass",
                             "Shrub", "Tree")),
     selectInput(ns("year"), "Year", choices = 2015:2019, selected = 2019),
-    bslib::input_task_button(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 

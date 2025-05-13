@@ -9,7 +9,7 @@ pred_pred_module_ui <- function(id) {
        numericInput(ns("uncertain_n"), "Number of realisations", value = 100, step = 1),
        numericInput(ns("uncertain_ci"), "Credible interval", value = 0.95, step = 0.01, max = 1, min = 0)
     ),
-    bslib::input_task_button(ns("run"), "Produce model predictions"),
+    bslib::input_task_button(ns("run"), "Produce model predictions", type = "default"),
     tags$br(),
     uiOutput(ns("dl_out"))
   )

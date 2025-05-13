@@ -2,7 +2,7 @@ cov_water_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
     uiOutput(ns("token_out")),
-    bslib::input_task_button(ns("run"), "Download data")
+    bslib::input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
