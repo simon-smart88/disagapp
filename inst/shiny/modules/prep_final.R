@@ -69,19 +69,19 @@ prep_final_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-    if (Sys.getenv("leicester_server") == "true"){
-      if (is.null(input$resolution) || input$resolution == "High resolution"){
-        n_cell <- terra::ncell(common$covs_prep[[1]])
-      } else {
-        n_cell <- terra::ncell(common$covs_prep_lores[[1]])
-      }
-      if (n_cell > 5e5){
-        common$logger |> writeLog(type = "warning", "Your covariates contain over 500,000 cells which
-                                    may cause this server to crash when you fit the model. It is highly
-                                    recommended to save the app before fitting the model and or reduce
-                                    the resolution using the Reduce resolution module.")
-      }
-    }
+    # if (Sys.getenv("leicester_server") == "true"){
+    #   if (is.null(input$resolution) || input$resolution == "High resolution"){
+    #     n_cell <- terra::ncell(common$covs_prep[[1]])
+    #   } else {
+    #     n_cell <- terra::ncell(common$covs_prep_lores[[1]])
+    #   }
+    #   if (n_cell > 5e5){
+    #     common$logger |> writeLog(type = "warning", "Your covariates contain over 500,000 cells which
+    #                                 may cause this server to crash when you fit the model. It is highly
+    #                                 recommended to save the app before fitting the model and or reduce
+    #                                 the resolution using the Reduce resolution module.")
+    #   }
+    # }
 
     # FUNCTION CALL ####
 
