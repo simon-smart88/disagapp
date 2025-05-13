@@ -17,6 +17,7 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
       watch("cov_water")
       watch("cov_upload")
       if (length(common$covs) > 0 ){
+        shinyjs::runjs("Shiny.setInputValue('rep_covs-ready', 'complete');")
         downloadButton(session$ns("download"), "Download covariates")
       } else {
         actionButton(session$ns("dummy"), "Download covariates", icon = icon("download"))
@@ -37,7 +38,7 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
         common$meta$rep_covs$used <- TRUE
 
         directory <- tempfile()
-        dir.create(file.path(directory, "rep_cov"))
+        dir.create(file.path(directory, "rep_cov"), recursive = TRUE)
 
         if (is.null(common$prep)){
           common$meta$rep_covs$pre_prep <- TRUE
