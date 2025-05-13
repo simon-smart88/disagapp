@@ -55,13 +55,6 @@ resp_example_module_server <- function(id, common, parent_session, map) {
     do.call("resp_example_module_map", list(map, common))
     common$logger |> writeLog(type = "complete", "Response data has been loaded and is summarised in the results tab")
 
-    response <- common$shape[[common$response_name]]
-    if (!isTRUE(all.equal(response, as.integer(response)))){
-      common$logger |> writeLog(type = "info", "Some response data is not integers")
-    }
-    if (any(response < 0)){
-      common$logger |> writeLog(type = "info", "The response data contains negative values")
-    }
   })
 
   on("resp_example_data", {
