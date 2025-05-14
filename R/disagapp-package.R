@@ -13,5 +13,4 @@
 #'    for scientific papers and reports. The application is run via the
 #'    function \code{\link{run_disagapp}}.
 #'
-#' @import leaflet shiny
 NULL
