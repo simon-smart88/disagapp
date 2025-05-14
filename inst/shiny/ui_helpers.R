@@ -69,9 +69,6 @@ infoGenerator <- function(pkgName, modName, modAuts, modID) {
        pkgAuts = pkgAuts)
 }
 
-# Join a string vector into a single string separated by commas
-join <- function(v) paste(v, collapse = ", ")
-
 # Add radio buttons for all modules in a component
 insert_modules_option_values <- function(component) {
   unname(lapply(COMPONENT_MODULES[[component]], `[[`, "id"))
