@@ -1,12 +1,15 @@
 resp_shape_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    fileInput(inputId = ns("shape"),
-              label = "Upload all shapefile data",
-              multiple = TRUE,
-              accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
-    uiOutput(ns("resp_var_out")),
-    uiOutput(ns("reset_out")),
+    # to target in core_intro
+    div(id = "resp_shape_intro",
+      fileInput(inputId = ns("shape"),
+                label = "Upload all shapefile data",
+                multiple = TRUE,
+                accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
+      uiOutput(ns("resp_var_out")),
+      uiOutput(ns("reset_out"))
+    ),
     actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }

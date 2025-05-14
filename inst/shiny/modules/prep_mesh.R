@@ -14,7 +14,6 @@ prep_mesh_module_ui <- function(id) {
      sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10)
     ),
     input_task_button(ns("run"), "Make mesh", type = "default", icon = icon("arrow-turn-down")),
-    tags$hr(),
     uiOutput(ns("selected_out"))
   )
 }
