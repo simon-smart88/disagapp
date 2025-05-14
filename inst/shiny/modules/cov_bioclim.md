@@ -2,7 +2,7 @@
 
 **BACKGROUND**
 
-Climate affects disease (examples)
+Climate affects disease, for example cholera is affected by rainfall and flooding, the transmission of airborne disease is influenced by temperature and humidity, and for vector-borne diseases temperature and rainfall affect the lifecycles of vectors (Mahmud *et al.* 2020). Climatic variables are therefore important covariates in many analyses and the WorldClim bioclimatic variables are a global dataset of 19 variables relating to temperature and precipitation.
 
 **IMPLEMENTATION**
 
@@ -36,6 +36,8 @@ Data are downloaded via the `geodata::worldclim_country` function, but unfortuna
 
 **REFERENCES**
 
-1. Fick, S.E. and Hijmans, R.J. (2017). WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas. *International Journal of Climatology*, 37: 4302-4315. <a href="https://doi.org/10.1002/joc.5086" target="_blank">DOI: 10.1002/joc.5086</a>.  
+1. Mahmud, A.S., Martinez, P.P., He, J. et al. (2020). The Impact of Climate Change on Vaccine-Preventable Diseases: Insights From Current Research and New Directions. *Current Environmental Health Report*, 7, 384–391. <a href="https://doi.org/10.1007/s40572-020-00293-2" target="_blank">DOI: 10.1007/s40572-020-00293-2</a>.
 
-2. O'Donnell, M.S. and Ignizio, D.A. (2012). Bioclimatic predictors for supporting ecological applications in the conterminous United States. United States: U.S. Geological Survey Data Series 691. <a href="https://pubs.usgs.gov/ds/691/ds691.pdf" target="_blank">https://pubs.usgs.gov/ds/691/ds691.pdf</a>.
+2. Fick, S.E. and Hijmans, R.J. (2017). WorldClim 2: new 1-km spatial resolution climate surfaces for global land areas. *International Journal of Climatology*, 37: 4302-4315. <a href="https://doi.org/10.1002/joc.5086" target="_blank">DOI: 10.1002/joc.5086</a>.  
+
+3. O'Donnell, M.S. and Ignizio, D.A. (2012). Bioclimatic predictors for supporting ecological applications in the conterminous United States. United States: U.S. Geological Survey Data Series 691. <a href="https://pubs.usgs.gov/ds/691/ds691.pdf" target="_blank">https://pubs.usgs.gov/ds/691/ds691.pdf</a>.
