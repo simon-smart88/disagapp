@@ -1,7 +1,10 @@
 core_intro_module_ui <- function(id) {
   ns <- shiny::NS(id)
   tagList(
-    actionButton(ns("intro"), "Start a guided tour", icon = icon("person-hiking", lib = "font-awesome"), width = "400px", style = "font-size: 2rem;")
+    tags$div(
+      style="text-align: center; padding: 20px;",
+      actionButton(ns("intro"), "Start a guided tour", icon = icon("person-hiking", lib = "font-awesome"), width = "400px", style = "font-size: 2rem;")
+    )
   )
 }
 
@@ -9,8 +12,8 @@ core_intro_module_server <- function(id, common) {
   moduleServer(id, function(input, output, session) {
     #Steps in the introduction - the element to tag, the message to display, position of the tooltip, any javascript needed to move between tabs / click buttons
     steps <- data.frame(c(NA, "Welcome to Disagapp! This tour will show you various features of the application to help get you started", NA, NA),
-                        c("div[class=\"well\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
-                        c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How To Use tab", "bottom","$('a[data-value=\"How To Use\"]').trigger('click');"),
+                        c("aside[class=\"sidebar\"]", "This panel shows all of the possible steps in the analysis", "bottom", NA),
+                        c("a[data-value=\"How To Use\"]", "Detailed instructions can be found in the How to use tab", "bottom","$('a[data-value=\"How To Use\"]').trigger('click');"),
                         c("a[data-value=\"resp\"]", "Click on the tabs to move between components", "bottom", "$('a[data-value=\"resp\"]').trigger('click');"),
                         c("#respHelp", "Click on the question mark to view instructions for the component", "bottom", "$('a[data-value=\"Component Guidance\"]').trigger('click');"),
                         c("#respSel", "Select a module to load the options", "right", "$('input[value=\"resp_shape\"]').trigger('click');"),

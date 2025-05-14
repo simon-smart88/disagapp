@@ -146,3 +146,16 @@ help_comp_ui <- function(name) {
   actionLink(name, label = "", icon = icon("circle-question"),
              class = "compHelpButton")
 }
+
+# adjust layout width depending on screen size
+flex_wrap <- function(content) {
+  layout_columns(
+    col_widths = breakpoints(sm = c(12),
+                             md = c(-1, 10, -1),
+                             lg = c(-2, 8, -2),
+                             xl = c(-2, 8, -2),
+                             xxl = c(-3, 6, -3)),
+    content,
+  )
+}
+

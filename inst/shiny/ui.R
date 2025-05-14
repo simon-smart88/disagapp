@@ -27,7 +27,7 @@ tagList(
     nav_panel("Reproduce", value = "rep"),
     nav_menu("Support", icon = icon("life-ring"),
                HTML('<a href="https://github.com/simon-smart88/disagapp/issues" target="_blank">GitHub Issues</a>'),
-               HTML('<a href="mailto: simon.smart@cantab.net" target="_blank">Send Email</a>')),
+               HTML('<a href="mailto: tim.lucas@le.ac.uk" target="_blank">Send Email</a>')),
     if (Sys.getenv("leicester_server") == "") {
     nav_panel(NULL, icon = icon("power-off"), value = "_stopapp")
     }
@@ -52,8 +52,7 @@ tagList(
     conditionalPanel(
       "input.tabs != 'intro'",
       layout_columns(
-        col_widths = c(3, 6, 3),
-        NULL,
+        col_widths = c(-3, 6, -3),
         div(
           div(style = "margin-top: -10px"),
           strong("Log window"),
@@ -64,8 +63,7 @@ tagList(
           ),
           br(),
           textOutput("running_tasks")
-        ),
-        NULL,
+        )
       )
     ),
     conditionalPanel(
@@ -86,12 +84,12 @@ tagList(
           })
         ),
         nav_panel(
-          "Component Guidance", icon = icon("circle-info"),
-          uiOutput("gtext_component")
+          "Component guidance", icon = icon("circle-info"),
+          flex_wrap(uiOutput("gtext_component"))
         ),
         nav_panel(
-          "Module Guidance", icon = icon("circle-info", class = "mod_icon"),
-          uiOutput("gtext_module")
+          "Module guidance", icon = icon("circle-info", class = "mod_icon"),
+          flex_wrap(uiOutput("gtext_module"))
         ),
         nav_panel(
           "Save", icon = icon("floppy-disk", class = "save_icon"),
@@ -101,38 +99,28 @@ tagList(
     ),
     conditionalPanel(
       "input.tabs == 'intro'",
+      flex_wrap(
       navset_tab(
         id = "introTabs",
         nav_panel(
           "About",
-          br(),
-          tags$div(
-            style="text-align: center;",
-            core_intro_module_ui("core_intro")
-          ),
-          br(),
+          core_intro_module_ui("core_intro"),
           # suppress logo path warnings
           suppressWarnings(includeMarkdown("Rmd/text_about.Rmd"))
         ),
         nav_panel(
           "Team",
-          fluidRow(
-            column(8, includeMarkdown("Rmd/text_team.Rmd")
-            )
-          )
+          includeMarkdown("Rmd/text_team.Rmd")
         ),
         nav_panel(
-          "How To Use",
+          "How to use",
           includeMarkdown("Rmd/text_how_to_use.Rmd")
         ),
         nav_panel(
-          "Load Prior Session",
-        core_load_module_ui("core_load")
+          "Load prior session",
+          core_load_module_ui("core_load")
         )
       )
-    )
+    ))
   )
 )
-
-
-
