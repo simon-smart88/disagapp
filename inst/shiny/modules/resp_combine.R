@@ -13,7 +13,7 @@ resp_combine_module_ui <- function(id) {
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
     uiOutput(ns("shape_area_column_out")),
     uiOutput(ns("reset_out")),
-    actionButton(ns("run"), "Combine data")
+    actionButton(ns("run"), "Combine data", icon = icon("arrow-turn-down"))
   )
 }
 

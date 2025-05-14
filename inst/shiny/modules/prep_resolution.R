@@ -5,7 +5,7 @@ prep_resolution_module_ui <- function(id) {
     selectInput(ns("plot_type"), "Plot type", choices = c("Histogram" = "histogram", "Boxplot" = "boxplot")),
     actionButton(ns("summarise"), "Summarise data"),
     uiOutput(ns("resolution_out")),
-    actionButton(ns("run"), "Decrease resolution"),
+    actionButton(ns("run"), "Decrease resolution", icon = icon("arrow-turn-down")),
   )
 }
 

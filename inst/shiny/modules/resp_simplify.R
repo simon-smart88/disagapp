@@ -5,7 +5,7 @@ resp_simplify_module_ui <- function(id) {
     textOutput(ns("current_size")),
     br(),
     numericInput(ns("distance"), "Simplify distance (metres)", value = 100),
-    actionButton(ns("run"), "Simplify")
+    actionButton(ns("run"), "Simplify", icon = icon("arrow-turn-down"))
   )
 }
 

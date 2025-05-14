@@ -6,7 +6,7 @@ prep_final_module_ui <- function(id) {
     uiOutput(ns("resp_var_out")),
     uiOutput(ns("resolution_out")),
     shinyWidgets::materialSwitch(ns("na_action"), "Handle missing data?", value = TRUE, status = "success"),
-    actionButton(ns("run"), "Prepare data")
+    actionButton(ns("run"), "Prepare data", icon = icon("arrow-turn-down"))
   )
 }
 

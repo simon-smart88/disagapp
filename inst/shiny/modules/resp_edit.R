@@ -2,7 +2,7 @@ resp_edit_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     radioButtons(ns("type"), "Polygons to keep", choices = c("Outside" = "outside", "Inside" = "inside")),
-    actionButton(ns("run"), "Edit shapefile")
+    actionButton(ns("run"), "Edit shapefile", icon = icon("arrow-turn-down"))
   )
 }
 

@@ -10,7 +10,7 @@ resp_download_module_ui <- function(id) {
     uiOutput(ns("country_out")),
     selectInput(ns("admin"), "Administrative level", c("ADM1", "ADM2")),
     uiOutput(ns("reset_out")),
-    actionButton(ns("run"), "Load data")
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 

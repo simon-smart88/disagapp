@@ -2,11 +2,11 @@ prep_summary_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     # UI
-    actionButton(ns("run"), "Prepare covariate summary"),
+    actionButton(ns("prep"), "Prepare covariate summary"),
     shinyWidgets::materialSwitch(ns("remove"), "Remove identical rows?", FALSE, status = "success"),
     shinyWidgets::radioGroupButtons(ns("table"), label = "Choose table", choices = c("Original", "Resampled"), justified = TRUE, status = "switch_button"),
     uiOutput(ns("resample_layer_out")),
-    actionButton(ns("resample"), "Resample covariates")
+    actionButton(ns("run"), "Resample covariates", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -30,7 +30,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     })
 
 
-  observeEvent(input$run, {
+  observeEvent(input$prep, {
     # WARNING ####
 
     ras_status <- unlist(lapply(common$tasks[grep("^(cov_|agg_)", names(common$tasks), value = TRUE)], function(x){x$status()}))
@@ -59,7 +59,7 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     show_results(parent_session)
   })
 
-    observeEvent(input$resample, {
+    observeEvent(input$run, {
       if (length(common$covs) == 0) {
         common$logger |> writeLog(type = "error", "Please upload covariates")
         return()

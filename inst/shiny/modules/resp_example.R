@@ -5,7 +5,7 @@ resp_example_module_ui <- function(id) {
                                                       "Leukemia in New York State" = "nys",
                                                       "Lip cancer in Scotland" = "scot")),
     uiOutput(ns("reset_out")),
-    actionButton(ns("run"), "Load data")
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 

@@ -2,7 +2,7 @@ cov_water_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     uiOutput(ns("token_out")),
-    input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Load data", type = "default", icon = icon("arrow-turn-down"))
   )
 }
 

@@ -7,7 +7,7 @@ resp_shape_module_ui <- function(id) {
               accept = c('.shp','.dbf','.sbn','.sbx','.shx','.prj')),
     uiOutput(ns("resp_var_out")),
     uiOutput(ns("reset_out")),
-    actionButton(ns("run"), "Load data")
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 

@@ -15,7 +15,7 @@ prep_correlation_module_ui <- function(id) {
                             "Upper" = "upper",
                             "Full" = "full")),
     shinyWidgets::materialSwitch(ns("self"), "Include self-correlations?", value = FALSE, status = "success"),
-    actionButton(ns("run"), "Plot correlation matrix"),
+    actionButton(ns("run"), "Plot correlation matrix", icon = icon("arrow-turn-down")),
     uiOutput(ns("cov_layers_out")),
     actionButton(ns("remove"), "Remove selected covariate")
   )

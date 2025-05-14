@@ -6,7 +6,7 @@ cov_upload_module_ui <- function(id) {
               multiple = TRUE,
               accept = c(".tif")),
     uiOutput(ns("example_out")),
-    actionButton(ns("run"), "Upload file(s)")
+    actionButton(ns("run"), "Upload file(s)", icon = icon("arrow-turn-down"))
   )
 }
 

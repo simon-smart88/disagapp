@@ -1,7 +1,7 @@
 agg_uniform_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    actionButton(ns("run"), "Create uniform raster")
+    actionButton(ns("run"), "Create uniform raster", icon = icon("arrow-turn-down"))
   )
 }
 

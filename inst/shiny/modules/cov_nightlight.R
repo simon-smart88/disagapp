@@ -5,7 +5,7 @@ cov_nightlight_module_ui <- function(id) {
     selectInput(ns("year"), "Year", choices = c(2022:2012)),
     uiOutput(ns("bearer_out")),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
-    input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Load data", type = "default", icon = icon("arrow-turn-down"))
   )
 }
 

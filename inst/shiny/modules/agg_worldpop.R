@@ -7,7 +7,7 @@ agg_worldpop_module_ui <- function(id) {
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     uiOutput(ns("year_out")),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
-    input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default", icon = icon("arrow-turn-down"))
   )
 }
 

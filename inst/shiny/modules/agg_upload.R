@@ -12,7 +12,7 @@ agg_upload_module_ui <- function(id) {
     shinyWidgets::materialSwitch(ns("log"),
                   label = "Plot as log values",
                   value = TRUE, status = "success"),
-    actionButton(ns("run"), "Upload file")
+    actionButton(ns("run"), "Upload file", icon = icon("arrow-turn-down"))
   )
 }
 

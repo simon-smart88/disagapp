@@ -13,7 +13,7 @@ prep_mesh_module_ui <- function(id) {
      sliderInput(ns("concave"), "Concave", min = -1, max = -0.1, value = -0.5, step = 0.1),
      sliderInput(ns("resolution"), "Resolution", min = 10, max = 1000, value = 300, step = 10)
     ),
-    input_task_button(ns("run"), "Make mesh", type = "default"),
+    input_task_button(ns("run"), "Make mesh", type = "default", icon = icon("arrow-turn-down")),
     tags$hr(),
     uiOutput(ns("selected_out"))
   )
