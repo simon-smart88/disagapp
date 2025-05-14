@@ -111,7 +111,8 @@ tagList(
             core_intro_module_ui("core_intro")
           ),
           br(),
-          includeMarkdown("Rmd/text_about.Rmd")
+          # suppress logo path warnings
+          suppressWarnings(includeMarkdown("Rmd/text_about.Rmd"))
         ),
         nav_panel(
           "Team",

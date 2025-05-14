@@ -74,7 +74,7 @@ hr {
   color:#699FA1;
 }
 .sidebar_card {
-  background-color: var(--bs-light);
+  background-color: var(--bs-light-bg-subtle);
 }
 .pkgTitl {
   font-size:10pt;
@@ -155,7 +155,7 @@ hr {
 
 .btn.btn-outline-secondary{
   text-align: left;
-  background-color: #E8E8E8;
+  background-color: var(--bs-light-bg-subtle);
   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
 }
 
