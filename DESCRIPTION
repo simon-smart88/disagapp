@@ -17,6 +17,7 @@ Authors@R:
       person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")))
 Depends:
     R (>= 4.2.0),
+    bslib,
     leaflet (>= 2.0.2),
     leaflet.extras (>= 1.0.0),
     gargoyle,

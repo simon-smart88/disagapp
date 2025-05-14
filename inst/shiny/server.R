@@ -123,6 +123,14 @@ function(input, output, session) {
     }
   })
 
+  ############################################# #
+  ### RUN MODULE ON ENTER ####
+  ############################################# #
+
+  observe({
+    shinyjs::js$runOnEnter(module())
+  })
+
   ####################
   ### INITIALISATION ####
   ###################
