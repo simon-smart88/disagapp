@@ -7,9 +7,9 @@
 #' @param fit disag_model. Object returned by disag_model function that
 #' contains all the necessary objects for generating predictions.
 #' @param meta list. The metadata object
-#' @param covdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' @param covdf dataframe. As produced by `fileInput`, containing `name` and
 #' `datapath` columns of covariates
-#' @param aggdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' @param aggdf dataframe. As produced by `fileInput`, containing `name` and
 #' `datapath` columns of the aggregation raster
 #' @param async logical. Whether or not the function is being used asynchronously
 #' @return a list of SpatRaster objects

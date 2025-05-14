@@ -1,5 +1,5 @@
 rep_covs_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     uiOutput(ns("dlbutton"))
 

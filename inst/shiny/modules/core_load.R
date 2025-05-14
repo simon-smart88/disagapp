@@ -1,5 +1,5 @@
 core_load_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
   h4("Load session"),
   includeMarkdown("Rmd/text_loadsesh.Rmd"),

@@ -1,5 +1,5 @@
 prep_summary_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     actionButton(ns("run"), "Prepare covariate summary"),

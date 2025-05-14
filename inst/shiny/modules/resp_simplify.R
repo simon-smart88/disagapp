@@ -1,5 +1,5 @@
 resp_simplify_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     tags$label("Current size:"),
     textOutput(ns("current_size")),

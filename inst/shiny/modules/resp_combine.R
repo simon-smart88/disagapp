@@ -1,5 +1,5 @@
 resp_combine_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     fileInput(inputId = ns("spread"),
               label = "Upload response spreadsheet",

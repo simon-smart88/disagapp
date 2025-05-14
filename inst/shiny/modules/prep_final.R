@@ -1,5 +1,5 @@
 prep_final_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     uiOutput(ns("id_var_out")),

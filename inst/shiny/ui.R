@@ -1,9 +1,9 @@
 resourcePath <- system.file("shiny", "www", package = "disagapp")
-shiny::addResourcePath("disagapp-res", resourcePath)
+addResourcePath("disagapp-res", resourcePath)
 
 tagList(
   page_navbar(
-    theme = bslib::bs_theme(version = 5,
+    theme = bs_theme(version = 5,
                             bootswatch = "spacelab"),
     id = "tabs",
     header = tagList(

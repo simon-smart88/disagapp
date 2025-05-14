@@ -1,5 +1,5 @@
 pred_pred_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     uiOutput(ns("iid_out")),
     shinyWidgets::materialSwitch(ns("cases"), "Include cases?", FALSE, status = "success"),
@@ -9,7 +9,7 @@ pred_pred_module_ui <- function(id) {
        numericInput(ns("uncertain_n"), "Number of realisations", value = 100, step = 1),
        numericInput(ns("uncertain_ci"), "Credible interval", value = 0.95, step = 0.01, max = 1, min = 0)
     ),
-    bslib::input_task_button(ns("run"), "Produce model predictions", type = "default"),
+    input_task_button(ns("run"), "Produce model predictions", type = "default"),
     tags$br(),
     uiOutput(ns("dl_out"))
   )
@@ -39,7 +39,7 @@ pred_pred_module_server <- function(id, common, parent_session, map) {
     promises::future_promise({
       pred_pred(...)
     }, seed = TRUE)
-  }) |> bslib::bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

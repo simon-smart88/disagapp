@@ -7,7 +7,7 @@
 resp_shape(shpdf, logger = NULL)
 }
 \arguments{
-\item{shpdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\item{shpdf}{dataframe. As produced by \code{fileInput}, containing \code{name} and
 \code{datapath} columns}
 
 \item{logger}{Stores all notification messages to be displayed in the Log

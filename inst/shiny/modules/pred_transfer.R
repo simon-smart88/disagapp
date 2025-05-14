@@ -1,10 +1,10 @@
 pred_transfer_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     uiOutput(ns("country_out")),
     uiOutput(ns("cov_out")),
     uiOutput(ns("agg_out")),
-    bslib::input_task_button(ns("run"), "Transfer predictions", type = "default")
+    input_task_button(ns("run"), "Transfer predictions", type = "default")
   )
 }
 
@@ -36,7 +36,7 @@ pred_transfer_module_server <- function(id, common, parent_session, map) {
       promises::future_promise({
         pred_transfer(...)
       }, seed = TRUE)
-    }) |> bslib::bind_task_button("run")
+    }) |> bind_task_button("run")
 
   observeEvent(input$run, {
 

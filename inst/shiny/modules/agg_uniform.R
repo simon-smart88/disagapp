@@ -1,5 +1,5 @@
 agg_uniform_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     actionButton(ns("run"), "Create uniform raster")
   )

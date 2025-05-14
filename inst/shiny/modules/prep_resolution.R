@@ -1,5 +1,5 @@
 prep_resolution_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     selectInput(ns("plot_type"), "Plot type", choices = c("Histogram" = "histogram", "Boxplot" = "boxplot")),
@@ -105,7 +105,7 @@ prep_resolution_module_server <- function(id, common, parent_session, map) {
 }
 
 prep_resolution_module_result <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     plotly::plotlyOutput(ns("original_plot")),
     plotly::plotlyOutput(ns("low_plot"))

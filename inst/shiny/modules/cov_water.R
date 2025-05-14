@@ -1,8 +1,8 @@
 cov_water_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     uiOutput(ns("token_out")),
-    bslib::input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
@@ -28,7 +28,7 @@ cov_water_module_server <- function(id, common, parent_session, map) {
     promises::future_promise({
       cov_water(...)
     }, seed = TRUE)
-  }) |> bslib::bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

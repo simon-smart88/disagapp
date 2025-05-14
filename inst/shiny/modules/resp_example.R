@@ -1,5 +1,5 @@
 resp_example_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     selectInput(ns("dataset"), "Dataset", choices = c("Malaria in Madagascar" = "mad",
                                                       "Leukemia in New York State" = "nys",

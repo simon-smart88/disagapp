@@ -14,10 +14,10 @@ contains all the necessary objects for generating predictions.}
 
 \item{meta}{list. The metadata object}
 
-\item{covdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\item{covdf}{dataframe. As produced by \code{fileInput}, containing \code{name} and
 \code{datapath} columns of covariates}
 
-\item{aggdf}{dataframe. As produced by \code{shiny::fileInput}, containing \code{name} and
+\item{aggdf}{dataframe. As produced by \code{fileInput}, containing \code{name} and
 \code{datapath} columns of the aggregation raster}
 
 \item{async}{logical. Whether or not the function is being used asynchronously}

@@ -1,5 +1,5 @@
 core_intro_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     tags$div(
       style="text-align: center; padding: 20px;",

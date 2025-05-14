@@ -1,5 +1,5 @@
 cov_bioclim_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     uiOutput(ns("country_out")),
     selectInput(ns("variables"), "Bioclim variables", multiple = TRUE,
@@ -22,7 +22,7 @@ cov_bioclim_module_ui <- function(id) {
                             "Precipitation driest quarter",
                             "Precipitation warmest quarter",
                             "Precipitation coldest quarter")),
-    bslib::input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
@@ -35,7 +35,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     promises::future_promise({
       cov_bioclim(...)
     }, seed = TRUE)
-  }) |> bslib::bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

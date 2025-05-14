@@ -1,5 +1,5 @@
 rep_markdown_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     strong("Select download file type"),

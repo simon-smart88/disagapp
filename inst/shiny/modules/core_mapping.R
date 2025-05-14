@@ -1,5 +1,5 @@
 core_mapping_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     leaflet::leafletOutput(ns("map"), height = 700),
     tags$div(

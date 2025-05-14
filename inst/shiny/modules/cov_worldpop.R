@@ -1,5 +1,5 @@
 cov_worldpop_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     uiOutput(ns("country_out")),
@@ -7,7 +7,7 @@ cov_worldpop_module_ui <- function(id) {
     selectInput(ns("resolution"), "Resolution", choices = c("1km", "100m")),
     uiOutput(ns("year_out")),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
-    bslib::input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
@@ -29,7 +29,7 @@ cov_worldpop_module_server <- function(id, common, parent_session, map) {
     promises::future_promise({
       agg_worldpop(...)
     }, seed = TRUE)
-  }) |> bslib::bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

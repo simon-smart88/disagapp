@@ -4,7 +4,7 @@
 #'  shapefile into an sf object. Inspired by a function written by Paula Moraga
 #'  here: https://www.paulamoraga.com/book-geospatial/sec-shinyexample.html#uploading-data
 #'
-#' @param shpdf dataframe. As produced by `shiny::fileInput`, containing `name` and
+#' @param shpdf dataframe. As produced by `fileInput`, containing `name` and
 #' `datapath` columns
 #' @param logger Stores all notification messages to be displayed in the Log
 #' Window. Insert the logger reactive list here for running in

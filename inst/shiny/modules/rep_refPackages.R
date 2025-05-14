@@ -1,5 +1,5 @@
 rep_refPackages_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     strong("Download List of References"), br(), br(),

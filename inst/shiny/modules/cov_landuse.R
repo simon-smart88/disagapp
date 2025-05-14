@@ -1,5 +1,5 @@
 cov_landuse_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     selectInput(ns("uses"), "Land uses", multiple = TRUE,
@@ -7,7 +7,7 @@ cov_landuse_module_ui <- function(id) {
                                     "MossLichen", "PermanentWater", "SeasonalWater",
                                   "Shrub", "Snow", "Tree")),
     selectInput(ns("year"), "Year", choices = 2015:2019, selected = 2019),
-    bslib::input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
@@ -18,7 +18,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
       promises::future_promise({
         cov_landuse(...)
       })
-    }) |> bslib::bind_task_button("run")
+    }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

@@ -1,5 +1,5 @@
 resp_shape_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     fileInput(inputId = ns("shape"),
               label = "Upload all shapefile data",

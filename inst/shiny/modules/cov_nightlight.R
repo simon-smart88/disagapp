@@ -1,11 +1,11 @@
 cov_nightlight_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     selectInput(ns("year"), "Year", choices = c(2022:2012)),
     uiOutput(ns("bearer_out")),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
-    bslib::input_task_button(ns("run"), "Download data", type = "default")
+    input_task_button(ns("run"), "Download data", type = "default")
   )
 }
 
@@ -31,7 +31,7 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     promises::future_promise({
       cov_nightlight(...)
     }, seed = TRUE)
-  }) |> bslib::bind_task_button("run")
+  }) |> bind_task_button("run")
 
   observeEvent(input$run, {
     # WARNING ####

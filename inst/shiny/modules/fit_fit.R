@@ -1,5 +1,5 @@
 fit_fit_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     radioButtons(ns("family"), "Model family", c("Gaussian" = "gaussian", "Poisson" = "poisson"), selected = "poisson"),
     radioButtons(ns("link"), "Model link", c("Log" = "log", "Identity" = "identity"), selected = "log"),
@@ -10,7 +10,7 @@ fit_fit_module_ui <- function(id) {
     conditionalPanel("input.priors === true", uiOutput(ns("priors_out")), ns = ns),
     conditionalPanel("input.priors === true && input.field === true", uiOutput(ns("field_out")), ns = ns),
     conditionalPanel("input.priors === true && input.iid === true", uiOutput(ns("iid_out")), ns = ns),
-    bslib::input_task_button(ns("run"), "Fit model", type = "default")
+    input_task_button(ns("run"), "Fit model", type = "default")
   )
 }
 
@@ -87,7 +87,7 @@ fit_fit_module_server <- function(id, common, parent_session, map) {
       promises::future_promise({
         fit_fit(...)
       }, seed = TRUE)
-    }) |> bslib::bind_task_button("run")
+    }) |> bind_task_button("run")
 
 
   observeEvent(input$run, {

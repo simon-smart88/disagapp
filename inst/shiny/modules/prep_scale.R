@@ -1,5 +1,5 @@
 prep_scale_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     actionButton(ns("run"), "Scale covariates")
   )

@@ -1,5 +1,5 @@
 prep_correlation_module_ui <- function(id) {
-  ns <- shiny::NS(id)
+  ns <- NS(id)
   tagList(
     # UI
     selectInput(ns("method"), "Correlation matrix method",
