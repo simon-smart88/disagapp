@@ -154,7 +154,7 @@ and `common$covs` respectively.
   The input ids need wrapping inside `ns()` to create ids that are unique to the module. The template contains an `actionButton()` which when clicked runs the code inside the `*_module_server` function. 
   - The `<identifier>_module_server` function contains an `observeEvent()` which is run when the `actionButton()` in the UI is clicked. 
   - The structure of the code inside the module server differs depending on whether the module runs synchronously or asynchronously. For synchronous modules:
-    - In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger %>% writeLog()`. These checks are distinct from those inside the function as they
+    - In the *warning* block, examine inputs to check that they are as expected and issue warnings if not using `common$logger |> writeLog()`. These checks are distinct from those inside the function as they
     are checking that the state of the app is correct - for example if the module requires the data to have been prepared, you should check that `common$prep` is not `NULL`. See the documentation of `shinyscholar::writeLog()` for more details.
     - In the *function call* block, pass the inputs to the module function.
     - In the *load into common* block, store the result(s) of the function call in the relevant `common` object.

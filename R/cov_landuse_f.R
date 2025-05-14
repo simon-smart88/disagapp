@@ -126,7 +126,7 @@ cov_landuse <- function(shape, year, landuses, async = FALSE) {
   )
 
   if (length(raster_layers) != length(landuses)){
-    return(async %>% asyncLog(type = "error", message))
+    return(async |> asyncLog(type = "error", message))
   } else {
   if (async){
     raster_layers <- wrap_terra(raster_layers)

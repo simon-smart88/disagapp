@@ -25,7 +25,7 @@ get_nasa_token <- function(username, password) {
   )
 
   if (httr2::resp_status(response) == 200) {
-    body <- response %>% httr2::resp_body_json()
+    body <- response |> httr2::resp_body_json()
     token <- body$access_token
     return(token)
   } else {
@@ -73,23 +73,23 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
   message <- NULL
 
   if (!requireNamespace("blackmarbler", quietly = TRUE)){
-    return(async %>% asyncLog(type = "error", 'This module requires the blackmarbler package to be installed. Close the app, run install.packages("blackmarbler") and try again'))
+    return(async |> asyncLog(type = "error", 'This module requires the blackmarbler package to be installed. Close the app, run install.packages("blackmarbler") and try again'))
   }
 
   if (!inherits(shape, "sf")){
-    return(async %>% asyncLog(type = "error", "Shape must be an sf object"))
+    return(async |> asyncLog(type = "error", "Shape must be an sf object"))
   }
 
   if (year > 2022 | year < 2012){
-    return(async %>% asyncLog(type = "error", "Nighttime data is only available between 2012 and 2022"))
+    return(async |> asyncLog(type = "error", "Nighttime data is only available between 2012 and 2022"))
   }
 
   if (nchar(bearer) < 200){
-    return(async %>% asyncLog(type = "error", "That doesn't look like a valid NASA bearer token"))
+    return(async |> asyncLog(type = "error", "That doesn't look like a valid NASA bearer token"))
   }
 
   if (!check_url("https://ladsweb.modaps.eosdis.nasa.gov")){
-    return(async %>% asyncLog(type = "error", "Sorry the nighttime light data source is currently offline"))
+    return(async |> asyncLog(type = "error", "Sorry the nighttime light data source is currently offline"))
   }
 
   req_shape <- sf::st_boundary(shape)
@@ -108,7 +108,7 @@ cov_nightlight <- function(shape, year, bearer, async = FALSE) {
     if (is.null(message)){
       message <- "An error occurred whilst trying to download night light data"
     }
-    return(async %>% asyncLog(type = "error", message))
+    return(async |> asyncLog(type = "error", message))
 
   } else {
     names(ras) <- "Nighttime light"

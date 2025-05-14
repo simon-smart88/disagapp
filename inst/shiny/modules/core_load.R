@@ -20,7 +20,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       if (!inherits(temp, "common") || temp$state$main$app != "disagapp"){
         close_loading_modal()
-        common$logger %>% writeLog(type = "error", "That is not a valid Disagapp save file")
+        common$logger |> writeLog(type = "error", "That is not a valid Disagapp save file")
         return()
       }
 
@@ -32,7 +32,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       # reload old logs, minus header. if required for testing
       if ("logger" %in% names(temp)){
-        common$logger %>% writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
+        common$logger |> writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
       }
 
       temp_names <- names(temp)
@@ -148,7 +148,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
       show_loading_modal("Loading previous session")
       load_session(load_file_path())
       close_loading_modal()
-      common$logger %>% writeLog(type="info", "The previous session has been loaded successfully")
+      common$logger |> writeLog(type="info", "The previous session has been loaded successfully")
       load_on_start$destroy()
     })
 
