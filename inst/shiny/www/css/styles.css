@@ -73,6 +73,9 @@ hr {
 .modHelpButton:focus {
   color:#699FA1;
 }
+.markdown{
+ padding-top: 20px;
+}
 .sidebar_card {
   background-color: var(--bs-light-bg-subtle);
 }
