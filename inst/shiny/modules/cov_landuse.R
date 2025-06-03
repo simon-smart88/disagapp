@@ -38,8 +38,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     }
 
     if (length(common$covs_prep) > 0) {
-      common$logger |> writeLog(type = "warning", "You will need to prepare the data
-                                again to include land use data in the model")
+      common$logger |> writeLog(type = "warning", "You will need to prepare the data again to include land use data in the model")
     }
 
     # FUNCTION CALL ####
@@ -73,7 +72,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
   output$plot <- renderPlot({
     watch("cov_landuse")
     req(common$meta$cov_landuse)
-    plot_raster(common$covs, common$meta$cov_landuse$uses)
+    plot_raster(common$covs, paste0(common$meta$cov_landuse$uses, " land use"))
   }, height = function(){ifelse(is.null(common$meta$cov_landuse$plot_height), 400, common$meta$cov_landuse$plot_height)})
 
   return(list(
