@@ -59,10 +59,20 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
             } else {
               rmd_vars <- do.call(rmd_function, list(common))
             }
-            knit_params <- c(
-              file = rmd_file,
-              lapply(rmd_vars, printVecAsis)
-            )
+
+            # can't pass common$meta through dput
+            if (module$id == "pred_transfer"){
+              knit_params <- c(
+                file = rmd_file,
+                rmd_vars
+              )
+            } else {
+              knit_params <- c(
+                file = rmd_file,
+                lapply(rmd_vars, printVecAsis)
+              )
+            }
+
             module_rmd <- do.call(knitr::knit_expand, knit_params)
 
             module_rmd_file <- tempfile(pattern = paste0(module$id, "_"),
