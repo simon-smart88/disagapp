@@ -75,7 +75,7 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     watch("cov_upload")
     req(common$meta$cov_upload)
     plot_raster(common$covs, common$meta$cov_upload$path)
-  }, height = common$meta$cov_upload$plot_height)
+  }, function(){ifelse(is.null(common$meta$cov_upload$plot_height), 400, common$meta$cov_upload$plot_height)})
 
   return(list(
     save = function() {list(

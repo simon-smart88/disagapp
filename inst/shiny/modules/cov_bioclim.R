@@ -100,7 +100,7 @@ cov_bioclim_module_server <- function(id, common, parent_session, map) {
     watch("cov_bioclim")
     req(common$meta$cov_bioclim)
     plot_raster(common$covs, common$meta$cov_bioclim$variables)
-  }, height = common$meta$cov_bioclim$plot_height)
+  }, height = function(){ifelse(is.null(common$meta$cov_bioclim$plot_height), 400, common$meta$cov_bioclim$plot_height)})
 
   return(list(
     save = function() {list(

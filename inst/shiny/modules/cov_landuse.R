@@ -74,7 +74,7 @@ cov_landuse_module_server <- function(id, common, parent_session, map) {
     watch("cov_landuse")
     req(common$meta$cov_landuse)
     plot_raster(common$covs, common$meta$cov_landuse$uses)
-  }, height = common$meta$cov_landuse$plot_height)
+  }, height = function(){ifelse(is.null(common$meta$cov_landuse$plot_height), 400, common$meta$cov_landuse$plot_height)})
 
   return(list(
     save = function() {list(
