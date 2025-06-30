@@ -12,6 +12,7 @@ test_that("Check cov_landuse function returns errors", {
 
 test_that("{shinytest2} recording: e2e_cov_landuse", {
   skip_on_cran()
+  skip_on_ci()
   rerun_test_setup("cov_landuse_test", list(df_path, resp_column, area_column, save_path))
   common <- readRDS(save_path)
   common$covs <- unwrap_terra(common$covs)

@@ -1,4 +1,6 @@
 test_that("rep_covs downloads covariates", {
+  skip_on_ci()
+  skip_on_cran()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_upload")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")

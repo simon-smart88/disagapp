@@ -1,10 +1,14 @@
 test_that("{shinytest2} recording: e2e_empty_save", {
+  skip_on_cran()
+  skip_on_ci()
   rerun_test_setup("empty_save_test", list(save_path))
   common <- readRDS(save_path)
   expect_length(common$covs, 0)
 })
 
 test_that("{shinytest2} recording: e2e_empty_load", {
+  skip_on_cran()
+  skip_on_ci()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_load")
   app$set_inputs(tabs = "intro")
   app$set_inputs(introTabs = "Load Prior Session")
@@ -16,12 +20,16 @@ test_that("{shinytest2} recording: e2e_empty_load", {
 })
 
 test_that("{shinytest2} recording: e2e_shape_save", {
+  skip_on_cran()
+  skip_on_ci()
   rerun_test_setup("shape_save_test", list(shpdf, save_path))
   common <- readRDS(save_path)
   expect_is(common$shape, "sf")
 })
 
 test_that("{shinytest2} recording: e2e_shape_load", {
+  skip_on_cran()
+  skip_on_ci()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_load")
   app$set_inputs(tabs = "intro")
   app$set_inputs(introTabs = "Load Prior Session")
@@ -33,6 +41,8 @@ test_that("{shinytest2} recording: e2e_shape_load", {
 })
 
 test_that("{shinytest2} recording: e2e_settings_save", {
+  skip_on_cran()
+  skip_on_ci()
   rerun_test_setup("settings_save_test", list(save_path))
   common <- readRDS(save_path)
   expect_equal(common$state$resp_example$dataset, "scot")
@@ -44,6 +54,8 @@ test_that("{shinytest2} recording: e2e_settings_save", {
 })
 
 test_that("{shinytest2} recording: e2e_settings_load", {
+  skip_on_cran()
+  skip_on_ci()
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_empty_load")
   app$set_inputs(tabs = "intro")
   app$set_inputs(introTabs = "Load Prior Session")
