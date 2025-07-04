@@ -54,8 +54,6 @@ Imports:
     tools,
     zip
 Suggests: 
-    arcgislayers,
-    arcgisutils,
     corrplot,
     geosphere,
     malariaAtlas,

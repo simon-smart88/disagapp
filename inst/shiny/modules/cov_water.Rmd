@@ -1,20 +1,9 @@
 ```{asis, echo = {{cov_water_knit}}, eval = {{cov_water_knit}}, include = {{cov_water_knit}}}
-Download data on the distance to surface water. This module requires authorisation to download the data. Visit https://developers.arcgis.com/sign-up/ to obtain yours and either provide the token below or set the `ARCGIS_CLIENT` and `ARCGIS_SECRET`
-environmental variables to automate it as explained here: https://r.esri.com/r-bridge-site/location-services/connecting-to-a-portal.html 
+Download data on the distance to inland water.
 ```
 
 ```{r, echo = {{cov_water_knit}}, include = {{cov_water_knit}}}
-
-your_arcgis_token <- ""
-
-# look to see if an environmental variable containing the NASA bearer token is set 
-if (Sys.getenv("ARCGIS_CLIENT") != ""){
-  arcgis_token <- arcgisutils::auth_client()
-} else {
-  arcgis_token = httr2::oauth_token(your_arcgis_token, arcgis_host = arcgisutils::arc_host())
-}
-
-distance_to_water <- disagapp::cov_water(shape, arcgis_token)
+distance_to_water <- cov_water(shape, {{cov_water_country}})
 covariates[["Distance to water"]] <- distance_to_water
 
 plot_raster(covariates, "Distance to water")
