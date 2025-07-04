@@ -58,7 +58,7 @@ It returns a SpatRaster for the selected area and year.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cov_nightlight</span><span class="op">(</span><span class="va">shape</span>, <span class="va">year</span>, <span class="va">bearer</span>, async <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cov_nightlight</span><span class="op">(</span><span class="va">shape</span>, <span class="va">country_code</span>, <span class="va">year</span>, async <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,13 +69,12 @@ It returns a SpatRaster for the selected area and year.</p>
 <dd><p>sf. sf object containing the area of interest</p></dd>
 
 
+<dt id="arg-country-code">country_code<a class="anchor" aria-label="anchor" href="#arg-country-code"></a></dt>
+<dd><p>vector. ISO3 code of the country or countries.</p></dd>
+
+
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>numeric. Year for which to download the data. Limited to 2012-2022</p></dd>
-
-
-<dt id="arg-bearer">bearer<a class="anchor" aria-label="anchor" href="#arg-bearer"></a></dt>
-<dd><p>character. NASA bearer token. <a href="https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token" class="external-link">Click here</a>
-for details of how to obtain one.</p></dd>
+<dd><p>numeric. Year for which to download the data. Limited to 2015-2023</p></dd>
 
 
 <dt id="arg-async">async<a class="anchor" aria-label="anchor" href="#arg-async"></a></dt>
@@ -96,16 +95,7 @@ when <code>async</code> is <code>TRUE</code>.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">x_min</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span><span class="va">x_max</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span></span>
-<span class="r-in"><span><span class="va">y_min</span> <span class="op">&lt;-</span> <span class="fl">52</span></span></span>
-<span class="r-in"><span><span class="va">y_max</span> <span class="op">&lt;-</span> <span class="fl">52.5</span></span></span>
-<span class="r-in"><span><span class="va">poly_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x_min</span>, <span class="va">x_min</span>, <span class="va">x_max</span>, <span class="va">x_max</span>, <span class="va">x_min</span>,</span></span>
-<span class="r-in"><span>                        <span class="va">y_min</span>, <span class="va">y_max</span>, <span class="va">y_max</span>, <span class="va">y_min</span>, <span class="va">y_min</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">poly</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">poly_matrix</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">shape</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">st_sf</a></span><span class="op">(</span><span class="fl">1</span>, geometry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">poly</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_crs</a></span><span class="op">(</span><span class="va">shape</span><span class="op">)</span> <span class="op">=</span> <span class="fl">4326</span></span></span>
-<span class="r-in"><span><span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu">cov_nightlight</span><span class="op">(</span>shape <span class="op">=</span> <span class="va">shape</span>, year <span class="op">=</span> <span class="fl">2022</span>, bearer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"NASA_bearer"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu">cov_nightlight</span><span class="op">(</span><span class="st">"LIE"</span>, <span class="fl">2022</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
