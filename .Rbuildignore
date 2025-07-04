@@ -4,3 +4,5 @@ lie_data.rds
 ^\.httr-oauth$
 .github
 Dockerfile
+adding_modules.md
+screenshot.png
