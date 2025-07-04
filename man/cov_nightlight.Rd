@@ -4,15 +4,14 @@
 \alias{cov_nightlight}
 \title{Download nighttime illumination data from using blackmarbler}
 \usage{
-cov_nightlight(shape, year, bearer, async = FALSE)
+cov_nightlight(shape, country_code, year, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
-\item{year}{numeric. Year for which to download the data. Limited to 2012-2022}
+\item{country_code}{vector. ISO3 code of the country or countries.}
 
-\item{bearer}{character. NASA bearer token. \href{https://cran.r-project.org/web/packages/blackmarbler/readme/README.html#token}{Click here}
-for details of how to obtain one.}
+\item{year}{numeric. Year for which to download the data. Limited to 2015-2023}
 
 \item{async}{Whether or not the function is being used asynchronously. When
 \code{TRUE} the returned object is a wrapped SpatRaster.}
@@ -30,16 +29,7 @@ It returns a SpatRaster for the selected area and year.
 }
 \examples{
 \dontrun{
-x_min <- 0
-x_max <- 0.5
-y_min <- 52
-y_max <- 52.5
-poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
-                        y_min, y_max, y_max, y_min, y_min), ncol = 2)
-poly <- sf::st_polygon(list(poly_matrix))
-shape <- sf::st_sf(1, geometry = list(poly))
-sf::st_crs(shape) = 4326
-raster <- cov_nightlight(shape = shape, year = 2022, bearer = Sys.getenv("NASA_bearer"))
+raster <- cov_nightlight("LIE", 2022)
 }
 
 }

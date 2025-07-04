@@ -26,6 +26,8 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
+lie_shape <- resp_download(df, "area", "response", "LIE", "ADM1")
+
 shape <- sf::st_read(list.files(system.file("extdata", "test_data", package="disagapp")
                                 , pattern = ".shp", full.names = TRUE), quiet = TRUE)
 

@@ -56,7 +56,6 @@ Imports:
 Suggests: 
     arcgislayers,
     arcgisutils,
-    blackmarbler,
     corrplot,
     geosphere,
     malariaAtlas,

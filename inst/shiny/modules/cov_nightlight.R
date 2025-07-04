@@ -2,8 +2,8 @@ cov_nightlight_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     # UI
-    selectInput(ns("year"), "Year", choices = c(2022:2012)),
-    uiOutput(ns("bearer_out")),
+    uiOutput(ns("country_out")),
+    selectInput(ns("year"), "Year", choices = c(2023:2015)),
     shinyWidgets::materialSwitch(ns("log"), label = 'Plot as log values', value = TRUE, status = "success"),
     input_task_button(ns("run"), "Load data", type = "default", icon = icon("arrow-turn-down"))
   )
@@ -12,20 +12,7 @@ cov_nightlight_module_ui <- function(id) {
 cov_nightlight_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
-  #use the environmental variable if set, if not display box to enter it
-  output$bearer_out <- renderUI({
-    if (Sys.getenv("NASA_username") == ""){
-    textInput(session$ns("bearer"), "NASA bearer token")}
-  })
-
-  bearer <- reactive({
-  if (Sys.getenv("NASA_username") != ""){
-    bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
-  } else {
-    bearer = input$bearer
-  }
-  bearer
-  })
+  output$country_out <- country_out(session, common)
 
   common$tasks$cov_nightlight <- ExtendedTask$new(function(...) {
     promises::future_promise({
@@ -46,9 +33,8 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
       return()
     }
 
-    if (bearer() == ""){
-      logger |> writeLog(type = "error", "A NASA bearer token is required to download nighttime light data.
-      See the module guidance for details on how to obtain one")
+    if (is.null(input$country)) {
+      common$logger |> writeLog(type = "error", "Please select a country")
       return()
     }
 
@@ -58,19 +44,15 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
     }
 
     # FUNCTION CALL ####
-    common$tasks$cov_nightlight$invoke(common$shape, input$year, bearer(), TRUE)
+    country_code <- common$countries$boundaryISO[common$countries$boundaryName %in% input$country]
+    common$tasks$cov_nightlight$invoke(common$shape, country_code, as.numeric(input$year), TRUE)
     common$logger |> writeLog(type = "starting", "Starting to download nightlight data")
     results$resume()
     # METADATA ####
     common$meta$cov_nightlight$used <- TRUE
-    common$meta$cov_nightlight$year <- input$year
+    common$meta$cov_nightlight$country <- country_code
+    common$meta$cov_nightlight$year <- as.numeric(input$year)
     common$meta$cov_nightlight$log <- input$log
-    if (is.null(input$bearer)){
-      common$meta$cov_nightlight$bearer <- "this is not a bearer"
-    } else {
-      common$meta$cov_nightlight$bearer <- input$bearer
-    }
-
   })
 
   results <- observe({
@@ -98,16 +80,15 @@ cov_nightlight_module_server <- function(id, common, parent_session, map) {
   return(list(
     save = function() {list(
       ### Manual save start
+      country = input$country,
       ### Manual save end
       year = input$year,
-      bearer = input$bearer,
       log = input$log)
     },
     load = function(state) {
       ### Manual load start
+      updateSelectInput(session, "country", selected = state$country)
       ### Manual load end
-      updateSelectInput(session, "year", selected = state$year)
-      updateTextInput(session, "bearer", value = state$bearer)
       updateSelectInput(session, "year", selected = state$year)
       shinyWidgets::updateMaterialSwitch(session, "log", value = state$log)
     }
@@ -129,7 +110,7 @@ cov_nightlight_module_rmd <- function(common) {
   list(
     cov_nightlight_knit = !is.null(common$meta$cov_nightlight$used),
     cov_nightlight_year = common$meta$cov_nightlight$year,
-    cov_nightlight_bearer = common$meta$cov_nightlight$bearer,
+    cov_nightlight_country = common$meta$cov_nightlight$country,
     cov_nightlight_log = common$meta$cov_nightlight$log
   )
 }
