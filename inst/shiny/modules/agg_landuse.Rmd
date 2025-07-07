@@ -1,9 +1,0 @@
-```{asis, echo = {{agg_landuse_knit}}, eval = {{agg_landuse_knit}}, include = {{agg_landuse_knit}}}
-Download land use data to use as aggregation raster
-```
-
-```{r, echo = {{agg_landuse_knit}}, include = {{agg_landuse_knit}}}
-aggregation <- disagapp::cov_landuse(shape, {{agg_landuse_year}}, {{agg_landuse_uses}})
-
-plot_raster(list(aggregation), 1)
-```
