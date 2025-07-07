@@ -2,18 +2,14 @@
 % Please edit documentation in R/cov_water_f.R
 \name{cov_water}
 \alias{cov_water}
-\title{Download data on the distance to water from ArcGIS}
+\title{Download distance to inland water data from Worldpop}
 \usage{
-cov_water(shape, token, async = FALSE)
+cov_water(shape, country_code, async = FALSE)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
-\item{token}{httr2_token. ArcGIS access token.
-\href{https://developers.arcgis.com/sign-up/}{Click here} to obtain yours
-and either provide that or set the \code{ARCGIS_CLIENT} and \code{ARCGIS_SECRET}
-environmental variables to automate it as
-\href{https://r.esri.com/r-bridge-site/location-services/connecting-to-a-portal.html}{explained here}.}
+\item{country_code}{vector. ISO3 code of the country or countries.}
 
 \item{async}{Whether or not the function is being used asynchronously. When
 \code{TRUE} the returned object is a wrapped SpatRaster.}
@@ -23,21 +19,15 @@ a SpatRaster object when \code{async} is \code{FALSE} or a PackedSpatRaster
 when \code{async} is \code{TRUE}.
 }
 \description{
-This function is called by the cov_water module and downloads data on the
-distance to surface water from ArcGIS
+This function is called by the cov_water module and downloads distance to
+inland water data from Worldpop
 }
 \examples{
 \dontrun{
-x_min <- 0
-x_max <- 0.5
-y_min <- 52
-y_max <- 52.5
-poly_matrix <- matrix(c(x_min, x_min, x_max, x_max, x_min,
-                        y_min, y_max, y_max, y_min, y_min), ncol = 2)
-poly <- sf::st_polygon(list(poly_matrix))
-shape <- sf::st_sf(1, geometry = list(poly))
-sf::st_crs(shape) = 4326
-raster <- cov_water(shape = shape, token = arcgisutils::auth_client())
+df_path <- system.file("extdata", "test_data", "lie.csv", package = "disagapp")
+df <- read.csv(df_path)
+lie_shape <- resp_download(df, "area", "response", "LIE", "ADM1")
+raster <- cov_water(lie_shape, "LIE", 2022)
 }
 
 }

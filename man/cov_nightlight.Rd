@@ -2,7 +2,7 @@
 % Please edit documentation in R/cov_nightlight_f.R
 \name{cov_nightlight}
 \alias{cov_nightlight}
-\title{Download nighttime illumination data from using blackmarbler}
+\title{Download nighttime illumination data from Worldpop}
 \usage{
 cov_nightlight(shape, country_code, year, async = FALSE)
 }
@@ -22,14 +22,14 @@ when \code{async} is \code{TRUE}.
 }
 \description{
 This function is called by the cov_nightlight module and downloads annual
-data on night time illumination from NASA (product ID VNP46A4) using the
-blackmarbler package. You must obtain and a token from NASA to use this
-function and set an environmental variable called \code{NASA_bearer} to contain it.
-It returns a SpatRaster for the selected area and year.
+data on night time illumination from Worldpop
 }
 \examples{
 \dontrun{
-raster <- cov_nightlight("LIE", 2022)
+df_path <- system.file("extdata", "test_data", "lie.csv", package = "disagapp")
+df <- read.csv(df_path)
+lie_shape <- resp_download(df, "area", "response", "LIE", "ADM1")
+raster <- cov_nightlight(lie_shape, "LIE", 2022)
 }
 
 }
