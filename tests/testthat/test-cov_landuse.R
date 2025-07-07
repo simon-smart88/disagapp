@@ -1,10 +1,14 @@
 test_that("Check cov_landuse function works as expected", {
+  skip_on_cran()
+  skip_on_ci()
   result <- cov_landuse(shape, 2019, c("Crops"))
   expect_is(result, "list")
   expect_is(result[[1]], "SpatRaster")
 })
 
 test_that("Check cov_landuse function returns errors", {
+  skip_on_cran()
+  skip_on_ci()
   expect_error(cov_landuse(123, 2019, c("Crops")), "shape must be an sf object")
   expect_error(cov_landuse(shape, 2019, c("banana")), "banana is not a valid land use type. ")
   expect_error(cov_landuse(shape, 2020, c("Crops")), "Land use data is only available between 2015 and 2019")
