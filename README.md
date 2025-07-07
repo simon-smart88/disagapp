@@ -4,7 +4,7 @@
 
 Disagapp is an application written in R that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation) as described in [Nandi et al. (2023)](https://doi.org/10.18637/jss.v106.i11). A version is deployed to https://disagapp.le.ac.uk/ 
 
-<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="600" align="center" style="border:10px solid white;">
+<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="580" align="center" style="border:10px solid white;">
 
 Disagapp was built using the [{shinyscholar}](https://github.com/simon-smart88/shinyscholar) template which was itself forked from {wallace} v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html))
 
@@ -16,6 +16,9 @@ devtools::install_github("simon-smart88/disagapp")
 library(disagapp)
 run_disagapp()
 ```
+
+## Introductory workshop
+We are organising a workshop to introduce Disagapp that will be held on Teams from 14:00-16:00 UTC on 16 September 2025. To sign up, please fill in the form at https://forms.office.com/e/pjfbD6RvTi
 
 ## Components and modules
 The application is divided into components that are steps in the analysis and modules that are possible options in each step of the analysis. Each of the modules calls a function of the same name, either in this package or in `{disaggregation}`.
