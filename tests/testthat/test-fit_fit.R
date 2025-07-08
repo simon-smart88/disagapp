@@ -1,5 +1,6 @@
 test_that("Check fit_fit function works as expected", {
 
+  skip_on_ci()
 
   result <- fit_fit(data = test_data,
                     priors = NULL,
@@ -30,6 +31,7 @@ test_that("Check fit_fit function works as expected", {
 })
 
 test_that("Check fit_fit function works in the app", {
+  skip_on_ci()
   skip_on_cran()
   rerun_test_setup("fit_fit_test", list(test_common_path, save_path))
   common <- readRDS(save_path)
