@@ -116,9 +116,7 @@ if (is.null(message)){
             dplyr::select("files")
 
     country_ras <- tryCatch({
-                            ras_file <- tempfile(fileext = ".tif")
-                            utils::download.file(data$files[[1]], ras_file)
-                            terra::rast(ras_file)
+                            terra::rast(data$files[[1]])
     },
     error = function(x){
       message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
