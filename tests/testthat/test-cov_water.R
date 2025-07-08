@@ -19,7 +19,6 @@ test_that("Check cov_nightlight function returns errors as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_water", {
-  skip_on_ci()
   skip_on_cran()
   rerun_test_setup("cov_water_test", list(df_path, resp_column, area_column, save_path))
   common <- readRDS(save_path)
