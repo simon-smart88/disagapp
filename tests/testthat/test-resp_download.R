@@ -39,7 +39,6 @@ test_that("Check resp_download reports errors when data cannot be merged", {
 
 test_that("{shinytest2} recording: e2e_resp_download", {
   skip_on_cran()
-  skip_on_ci()
   rerun_test_setup("resp_download_test", list(df_path, resp_column, area_column, save_path))
   common <- readRDS(save_path)
   expect_is(common$shape, "sf")
