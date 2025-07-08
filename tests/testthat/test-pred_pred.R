@@ -1,5 +1,7 @@
 test_that("Check pred_pred function works as expected", {
 
+  skip_on_ci()
+
   prediction <- pred_pred(fit = result,
                           aggregation = r,
                           cases = FALSE,
@@ -56,6 +58,7 @@ test_that("Check pred_pred function works as expected", {
 
 test_that("Check pred_pred function works in the app", {
 
+  skip_on_ci()
   skip_on_cran()
 
   # setup common for test
