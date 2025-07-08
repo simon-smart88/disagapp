@@ -1,10 +1,10 @@
 # disagapp v0.0.1
 
-<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
+<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="200" align="right" style="border:10px solid white;">
 
 Disagapp is an application written in R that can be used to perform disaggregation regression analyses using [{disaggregation}](https://cran.r-project.org/package=disaggregation) as described in [Nandi et al. (2023)](https://doi.org/10.18637/jss.v106.i11). A version is deployed to https://disagapp.le.ac.uk/ 
 
-<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="580" align="center" style="border:10px solid white;">
+<img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="600" align="center" style="border:10px solid white;">
 
 Disagapp was built using the [{shinyscholar}](https://github.com/simon-smart88/shinyscholar) template which was itself forked from {wallace} v2.0.5 ([CRAN](https://cran.r-project.org/package=wallace), [website](https://wallaceecomod.github.io/wallace/index.html))
 
@@ -34,7 +34,6 @@ The application is divided into components that are steps in the analysis and mo
 ### Covariates - load covariates to use in the analysis (`cov`)
 - Accessibility: The time required to travel to cities or healthcare. Provided by the Malaria Atlas Project via `{malariaAtlas}`
 - Climate: Various bioclimatic variables relating to temperature and precipitation. Provided by Worldclim via `{geodata}`
-- Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme
 - Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via `{blackmarbler}` developed by the World Bank
 - Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA
 - Population density: Population density provided by Worldpop
@@ -42,7 +41,6 @@ The application is divided into components that are steps in the analysis and mo
 
 ### Aggregation - load an aggregation raster (`agg`)
 - Population count: Population counts provided by Worldpop
-- Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme
 - Upload aggregation: Upload your own aggregation raster in the `.tif` format
 - Uniform: Generate a uniform aggregation raster
 
