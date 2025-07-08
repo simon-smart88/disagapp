@@ -40,7 +40,7 @@ resp_column <- "response"
 admin_level <- "ADM1"
 
 if (is_ci){
-  save_path <- tempfile(fileext = ".rds")
+  save_path <- normalizePath(tempfile(fileext = ".rds"), winslash = "\\", mustWork = FALSE)
 } else {
   save_path <- "~/temprds/saved_file.rds"
 }
