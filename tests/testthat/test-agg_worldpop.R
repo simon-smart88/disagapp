@@ -5,8 +5,6 @@ lie_che_shape <- resp_download(mdf, area_column, resp_column, country_code, admi
 
 test_that("Check agg_worldpop function works as expected for single country", {
 
-  skip_on_os("windows")
-
   result <- agg_worldpop(lie_shape, country_code[1], "Constrained", "100m", 2020)
   expect_is(result, "SpatRaster")
 
@@ -25,7 +23,6 @@ test_that("Check agg_worldpop function works as expected for single country", {
 
 
 test_that("Check agg_worldpop function works as expected for multiple countries", {
-  skip_on_os("windows")
 
   result <- agg_worldpop(lie_che_shape, country_code, "Constrained", "1km", 2020)
   expect_is(result, "SpatRaster")
