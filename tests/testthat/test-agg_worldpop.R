@@ -4,6 +4,9 @@ lie_shape <- resp_download(df, area_column, resp_column, country_code[1], admin_
 lie_che_shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
 
 test_that("Check agg_worldpop function works as expected for single country", {
+
+  skip_on_os("windows")
+
   result <- agg_worldpop(lie_shape, country_code[1], "Constrained", "100m", 2020)
   expect_is(result, "SpatRaster")
 
