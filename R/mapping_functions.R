@@ -89,7 +89,7 @@ replot_raster_map <- function(map, common, covariates, aggregation, selected_lay
     if (!is.null(common$meta[[module]]$log)){log <-  common$meta[[module]]$log} else {log = FALSE}
     raster_map(map, common, common[[covariates]][[layer]], layer, log = log, selected = selected_layer)
   }
-  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_landuse$log, common$meta$agg_upload$log, common$meta$agg_uniform$log)
+  agg_log <- c(common$meta$agg_worldpop$log, common$meta$agg_upload$log, common$meta$agg_uniform$log)
   agg_layer <- names(common[[aggregation]])
   raster_map(map, common, common[[aggregation]], agg_layer, agg_log, selected = selected_layer)
   if (!(agg_layer %in% selected_layer)){
