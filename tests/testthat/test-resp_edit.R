@@ -12,7 +12,6 @@ test_that("Check resp_edit function works as expected", {
 
 test_that("{shinytest2} recording: e2e_resp_edit", {
   skip_on_cran()
-  skip_on_ci()
   rerun_test_setup("resp_edit_test", list(shpdf, save_path))
   common <- readRDS(save_path)
   expect_is(common$shape, "sf")
