@@ -35,7 +35,7 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
         paste0("disagapp-session-", Sys.Date(), ".rds")
       },
       content = function(file) {
-        show_loading_modal("Please wait the session is saved")
+        show_loading_modal("Please wait while the session is saved")
 
         common$state$main <- list(
           selected_module = sapply(COMPONENTS, function(x) main_input[[glue("{x}Sel")]], simplify = FALSE)
