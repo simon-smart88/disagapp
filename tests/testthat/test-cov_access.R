@@ -5,7 +5,6 @@ test_that("Check cov_access function works as expected", {
 
 test_that("{shinytest2} recording: e2e_cov_access", {
   skip_on_cran()
-  skip_on_ci()
   rerun_test_setup("cov_access_test", list(shpdf, save_path))
   common <- readRDS(save_path)
   expect_equal(length(common$covs), 1)
