@@ -101,7 +101,7 @@ saveRDS(test_common, test_common_path)
 
 rerun_test_setup <- function(test_function, args){
   attempt <- 0
-  while(attempt < 5){
+  while(attempt < 10){
     x = try(do.call(test_function, args))
     if (inherits(x, "try-error")){
       attempt <- attempt + 1
