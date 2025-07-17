@@ -6,9 +6,6 @@ cov_access_test <- function(shpdf, save_path){
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")
 
-  # common <- app$get_value(export = "common")
-  # expect_is(common$shape, "sf")
-
   app$set_inputs(tabs = "cov")
   app$set_inputs(covSel = "cov_access")
   app$set_inputs("cov_access-layer" = "Travel Time to Cities (2015)")

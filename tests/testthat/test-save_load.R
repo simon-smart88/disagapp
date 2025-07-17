@@ -14,8 +14,8 @@ test_that("{shinytest2} recording: e2e_empty_load", {
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file("core_load-file" = save_path)
   app$click("core_load-run")
-  common <- app$get_value(export = "common")
-  expect_length(common$covs, 0)
+  covs <- app$get_value(export = "covs")
+  expect_length(covs, 0)
   app$stop()
 })
 
@@ -35,8 +35,8 @@ test_that("{shinytest2} recording: e2e_shape_load", {
   app$set_inputs(introTabs = "Load Prior Session")
   app$upload_file("core_load-file" = save_path)
   app$click("core_load-run")
-  common <- app$get_value(export = "common")
-  expect_is(common$shape, "sf")
+  shape <- app$get_value(export = "shape")
+  expect_is(shape, "sf")
   app$stop()
 })
 
