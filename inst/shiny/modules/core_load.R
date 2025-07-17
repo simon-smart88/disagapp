@@ -32,12 +32,12 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       # reload old logs, minus header. if required for testing
       if ("logger" %in% names(temp)){
-        common$logger |> writeLog(strsplit(temp$logger(), "-----<br>")[[1]][3])
+        common$logger |> writeLog(temp$logger)
       }
 
       temp_names <- names(temp)
-      # exclude the non-public and function objects
-      temp_names  <- temp_names[!temp_names %in% c("clone", ".__enclos_env__", "add_map_layer", "logger", "map_layers", "reset", "tasks")]
+      # exclude the logger
+      temp_names <- temp_names[temp_names != "logger"]
       common_names <- names(common)
       for (name in temp_names){
         if (name %in% common_names){
@@ -47,7 +47,7 @@ core_load_module_server <- function(id, common, modules, map, COMPONENT_MODULES,
 
       # blank map
       trigger("clear_map")
-      common$map_layers = NULL
+      common$map_layers <- NULL
 
       # Ask each module to load its own data
       for (module_id in names(common$state)) {
