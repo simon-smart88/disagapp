@@ -15,7 +15,7 @@ df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
                             "Planken","Vaduz"),
                  "response" = 1:11)
 
-df_path <- system.file("extdata", "test_data", "lie.csv", package = "disagapp")
+df_path <- system.file("extdata", "lie.csv", package = "disagapp")
 
 ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden',
            'Basel-Landschaft', 'Basel-Stadt', 'Bern', 'Fribourg', 'Genève',

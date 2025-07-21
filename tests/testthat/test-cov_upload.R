@@ -8,7 +8,7 @@ test_that("Check cov_upload function works as expected", {
 
 test_that("Check cov_upload handles CRS issues", {
 
-  covdf_difcrs <- data.frame(datapath = system.file("extdata", "test_data", "different_projection.tif", package="disagapp"),
+  covdf_difcrs <- data.frame(datapath = file.path(test_data_dir, "different_projection.tif"),
                             name = "different_projection.tif")
 
   result <- cov_upload(shape, covdf_difcrs)
@@ -21,6 +21,8 @@ test_that("Check cov_upload handles CRS issues", {
 
 test_that("{shinytest2} recording: e2e_cov_upload", {
   skip_on_cran()
+
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_upload", timeout = 60000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
