@@ -1,9 +1,6 @@
 
-mad_shape <- resp_shape(shpdf)
-lie_shape <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
-
 test_that("Check cov_upload function works as expected", {
-  result <- cov_upload(mad_shape, covdf)
+  result <- cov_upload(shape, covdf)
   expect_is(result, "list")
   expect_is(result[[1]], "SpatRaster")
   expect_equal(length(result), 4)
@@ -24,11 +21,23 @@ test_that("Check cov_upload handles CRS issues", {
 
 test_that("{shinytest2} recording: e2e_cov_upload", {
   skip_on_cran()
-  skip_on_ci()
-  rerun_test_setup("cov_upload_test", list(shpdf, covdf, save_path))
-  common <- readRDS(save_path)
-  common$covs <- unwrap_terra(common$covs)
-  expect_is(common$covs[[1]], "SpatRaster")
-  expect_equal(length(common$covs), 4)
+
+  app$upload_file("resp_shape-shape" = shpdf$datapath)
+  app$set_inputs("resp_shape-resp_var" = "inc")
+  app$click("resp_shape-run")
+  app$upload_file("cov_upload-cov" = covdf$datapath)
+  app$click("cov_upload-run")
+
+  covs <- app$get_value(export = "covs")
+  covs <- unwrap_terra(covs)
+  expect_is(covs, "list")
+  expect_equal(length(covs), 4)
+  expect_is(covs[[1]], "SpatRaster")
+  expect_is(covs[[2]], "SpatRaster")
+  expect_is(covs[[3]], "SpatRaster")
+  expect_is(covs[[4]], "SpatRaster")
+
+  app$stop()
+
 })
 

@@ -19,11 +19,22 @@ test_that("Check cov_nightlight function returns errors as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_water", {
-  skip_on_ci()
   skip_on_cran()
-  rerun_test_setup("cov_water_test", list(df_path, resp_column, area_column, save_path))
-  common <- readRDS(save_path)
-  common$covs <- unwrap_terra(common$covs)
-  expect_is(common$covs[[1]], "SpatRaster")
-  expect_equal(length(common$covs), 1)
+
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_water", timeout = 60000)
+  app$upload_file("resp_shape-shape" = lie_shpdf$datapath)
+  app$set_inputs("resp_shape-resp_var" = "response")
+  app$click("resp_shape-run")
+
+  app$set_inputs("cov_water-country" = "Liechtenstein")
+  app$click(selector = "#cov_water-run")
+  app$wait_for_value(input = "cov_water-complete")
+
+  covs <- app$get_value(export = "covs")
+  covs <- unwrap_terra(covs)
+  expect_is(covs, "list")
+  expect_is(covs[[1]], "SpatRaster")
+  expect_equal(length(covs), 1)
+  app$stop()
+
 })
