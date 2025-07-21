@@ -7,6 +7,7 @@ test_that("Check agg_uniform function works as expected", {
 
 test_that("{shinytest2} recording: e2e_agg_uniform", {
   skip_on_cran()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_uniform")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")
@@ -15,6 +16,7 @@ test_that("{shinytest2} recording: e2e_agg_uniform", {
   app$click("resp_shape-run")
   app$upload_file("cov_upload-cov" = covdf$datapath)
   app$click("cov_upload-run")
+
   app$click("agg_uniform-run")
 
   agg <- app$get_value(export = "agg")

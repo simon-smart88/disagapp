@@ -24,6 +24,8 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   skip_on_cran()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_nightlight", timeout = 60000)
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = lie_shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "response")
   app$click("resp_shape-run")
@@ -39,7 +41,5 @@ test_that("{shinytest2} recording: e2e_cov_nightlight", {
   covs <- unwrap_terra(covs)
   expect_is(covs, "list")
   expect_is(covs[[1]], "SpatRaster")
-
   app$stop()
-
 })

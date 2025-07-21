@@ -39,6 +39,7 @@ test_that("Check resp_download reports errors when data cannot be merged", {
 
 test_that("{shinytest2} recording: e2e_resp_download", {
   skip_on_cran()
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -48,6 +49,7 @@ test_that("{shinytest2} recording: e2e_resp_download", {
   app$set_inputs("resp_download-country" = "Liechtenstein")
   app$set_inputs("resp_download-admin" = "ADM1")
   app$click("resp_download-run")
+
   shape <- app$get_value(export = "shape")
   expect_is(shape, "sf")
   expect_equal(nrow(shape), 11)

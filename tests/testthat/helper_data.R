@@ -26,15 +26,22 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
-lie_shape <- sf::st_read(file.path("data", "lie_shape.shp"))
+test_data_dir <- normalizePath(testthat::test_path("data"))
 
-lie_shpdf <- data.frame(datapath = list.files("data", pattern = "lie_shape", full.names = TRUE),
-                            name = list.files("data", pattern = "lie_shape"))
+lie_shpdf <- data.frame(
+  datapath = list.files(test_data_dir, pattern = "lie_shape", full.names = TRUE),
+  name = list.files(test_data_dir, pattern = "lie_shape")
+)
+
+lie_shape <- sf::st_read(file.path(test_data_dir, "lie_shape.shp"))
+
+# lie_shpdf <- data.frame(datapath = list.files("data", pattern = "lie_shape", full.names = TRUE),
+#                             name = list.files("data", pattern = "lie_shape"))
 
 shape <- sf::st_read("data/mdg.shp", quiet = TRUE)
 
-shpdf_small <- data.frame(datapath = list.files("data", pattern = "mdg", full.names = TRUE),
-                    name = list.files("data", pattern = "mdg"))
+shpdf_small <- data.frame(datapath = list.files(test_data_dir, pattern = "mdg", full.names = TRUE),
+                    name = list.files(test_data_dir, pattern = "mdg"))
 
 country_code <- c("LIE", "CHE")
 area_column <- "area"

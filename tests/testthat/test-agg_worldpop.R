@@ -40,6 +40,8 @@ test_that("{shinytest2} recording: e2e_agg_worldpop", {
   skip_on_cran()
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop", timeout = 30000)
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = lie_shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "response")
   app$click("resp_shape-run")
@@ -54,7 +56,6 @@ test_that("{shinytest2} recording: e2e_agg_worldpop", {
   agg <- app$get_value(export = "agg")
   agg <- unwrap_terra(agg)
   expect_is(agg, "SpatRaster")
-
   app$stop()
 })
 
