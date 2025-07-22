@@ -1,4 +1,5 @@
 is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
+options(shinytest2.timeout=60000)
 
 covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package = "disagapp"), full.names = TRUE),
                     name = list.files(system.file("extdata", "covariates", package = "disagapp")))
@@ -9,13 +10,9 @@ shpdf <- data.frame(datapath = list.files(system.file("extdata", "shapes", packa
 aggdf <- data.frame(datapath = list.files(system.file("extdata", "aggregation", package = "disagapp"), full.names = TRUE),
                     name = list.files(system.file("extdata", "aggregation", package = "disagapp")))
 
-
-df <- data.frame("area" = c("Triesen", "Schellenberg", "Gamprin", "Triesenberg",
-                            "Eschen", "Ruggell", "Mauren", "Schaan", "Balzers",
-                            "Planken","Vaduz"),
-                 "response" = 1:11)
-
 df_path <- system.file("extdata", "lie.csv", package = "disagapp")
+
+df <- read.csv(df_path)
 
 ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell Innerrhoden',
            'Basel-Landschaft', 'Basel-Stadt', 'Bern', 'Fribourg', 'Genève',
@@ -35,10 +32,7 @@ lie_shpdf <- data.frame(
 
 lie_shape <- sf::st_read(file.path(test_data_dir, "lie_shape.shp"))
 
-# lie_shpdf <- data.frame(datapath = list.files("data", pattern = "lie_shape", full.names = TRUE),
-#                             name = list.files("data", pattern = "lie_shape"))
-
-shape <- sf::st_read("data/mdg.shp", quiet = TRUE)
+shape <- sf::st_read(system.file("extdata", "shapes", "mdg_shapes.shp", package = "disagapp"), quiet = TRUE)
 
 shpdf_small <- data.frame(datapath = list.files(test_data_dir, pattern = "mdg", full.names = TRUE),
                     name = list.files(test_data_dir, pattern = "mdg"))
