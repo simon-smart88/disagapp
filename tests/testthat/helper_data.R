@@ -1,5 +1,4 @@
 is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
-options(shinytest2.timeout=60000)
 
 covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package = "disagapp"), full.names = TRUE),
                     name = list.files(system.file("extdata", "covariates", package = "disagapp")))
@@ -32,7 +31,7 @@ lie_shpdf <- data.frame(
 
 lie_shape <- sf::st_read(file.path(test_data_dir, "lie_shape.shp"))
 
-shape <- sf::st_read(system.file("extdata", "shapes", "mdg_shapes.shp", package = "disagapp"), quiet = TRUE)
+shape <-  sf::st_read(file.path(test_data_dir, "mdg.shp"))
 
 shpdf_small <- data.frame(datapath = list.files(test_data_dir, pattern = "mdg", full.names = TRUE),
                     name = list.files(test_data_dir, pattern = "mdg"))
