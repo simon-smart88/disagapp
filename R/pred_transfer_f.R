@@ -51,21 +51,11 @@ pred_transfer <- function(country, fit, meta, covdf = NULL, aggdf = NULL, async 
   }
 
   if ("cov_nightlight" %in% cov_modules){
-    if (Sys.getenv("NASA_username") != ""){
-      bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
-    } else {
-      bearer = meta$cov_nightlight$bearer
-    }
-    covs[["Nighttime light"]] <- cov_nightlight(new_shape, meta$cov_nightlight$year, bearer)
+    covs[["Nighttime light"]] <- cov_nightlight(new_shape, country, meta$cov_nightlight$year)
   }
 
   if ("cov_water" %in% cov_modules){
-    if (Sys.getenv("ARCGIS_CLIENT") != ""){
-      token <- arcgisutils::auth_client()
-    } else {
-      token <- httr2::oauth_token(meta$cov_water$token, arcgis_host = arcgisutils::arc_host())
-    }
-    covs[["Distance to water"]] <-  cov_water(new_shape, token)
+    covs[["Distance to water"]] <-  cov_water(new_shape, country)
   }
 
   if ("cov_upload" %in% cov_modules){

@@ -2,5 +2,5 @@ component: "cov"
 short_name: "Distance to water"
 long_name: "Download distance to surface water raster"
 authors: "Simon E H Smart"
-package: [arcgis, terra]
+package: [terra]
 class: choice

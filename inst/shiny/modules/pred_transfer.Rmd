@@ -31,23 +31,11 @@ transfer_covariates <- append(transfer_covariates, cov_landuse(transfer_shape, {
 
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}}
 
-#look to see if an environmental variable containing the NASA credentials is set 
-if (Sys.getenv("NASA_username") != ""){
-  nasa_bearer = get_nasa_token(Sys.getenv("NASA_username"), Sys.getenv("NASA_password"))
-} else {
-  nasa_bearer = "{{meta$cov_nightlight$bearer}}"
-}
-transfer_covariates[["Nighttime light"]] <- cov_nightlight(new_shape, {{meta$cov_nightlight$year}}, nasa_bearer)
+transfer_covariates[["Nighttime light"]] <- cov_nightlight(new_shape, transfer_country, {{meta$cov_nightlight$year}})
 ```
 
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_water$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_water$used)))}}}
-
-if (Sys.getenv("ARCGIS_CLIENT") != ""){
-  arcgis_token <- arcgisutils::auth_client()
-} else {
-  arcgis_token <- httr2::oauth_token("{{meta$cov_water$token}}", arcgis_host = arcgisutils::arc_host())
-}
-transfer_covariates[["Distance to water"]] <-  cov_water(transfer_shape, token)
+transfer_covariates[["Distance to water"]] <-  cov_water(transfer_shape, transfer_country)
 ```
 
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_upload$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_upload$used)))}}}
