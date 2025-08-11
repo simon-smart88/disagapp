@@ -21,12 +21,14 @@ output: html_document
 - <span class="module_choice">Accessibility</span>
 - <span class="module_choice">Climate</span>
 - <span class="module_choice">Distance to water</span>
+- <span class="module_choice">Land use</span>
 - <span class="module_choice">Nighttime lights</span>
 - <span class="module_choice">Population density</span>
 - <span class="module_choice">Upload covariates</span>
 
 **3.** *Aggregation*  
 - <span class="module_choice">Population count</span>
+- <span class="module_choice">Land use</span>
 - <span class="module_choice">Upload aggregation</span>
 - <span class="module_choice">Uniform</span>
 
