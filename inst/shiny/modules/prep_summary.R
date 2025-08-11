@@ -16,11 +16,13 @@ prep_summary_module_server <- function(id, common, parent_session, map) {
     output$resample_layer_out <- renderUI({
       watch("cov_access")
       watch("cov_bioclim")
+      watch("cov_landuse")
       watch("cov_nightlight")
       watch("cov_water")
       watch("cov_upload")
       watch("cov_worldpop")
       watch("agg_worldpop")
+      watch("agg_landuse")
       watch("agg_upload")
       watch("agg_uniform")
       req(length(common$covs) > 0)

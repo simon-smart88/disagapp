@@ -12,6 +12,7 @@ rep_covs_module_server <- function(id, common, parent_session, map) {
     output$dlbutton <- renderUI({
       watch("cov_access")
       watch("cov_bioclim")
+      watch("cov_landuse")
       watch("cov_nightlight")
       watch("cov_water")
       watch("cov_upload")

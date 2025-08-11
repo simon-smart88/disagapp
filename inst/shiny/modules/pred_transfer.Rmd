@@ -25,6 +25,10 @@ transfer_covariates[["{{meta$cov_access$layer}}"]] <- cov_access(transfer_shape,
 transfer_covariates <- append(transfer_covariates, cov_bioclim(transfer_shape, transfer_country, "{{meta$cov_bioclim$variables}}"))
 ```
 
+```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_landuse$used)))}}}
+transfer_covariates <- append(transfer_covariates, cov_landuse(transfer_shape, {{meta$cov_landuse$year}}, "{{meta$cov_landuse$uses}}"))
+```
+
 ```{r, echo = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}, include = {{all(c(pred_transfer_knit, !is.null(meta$cov_nightlight$used)))}}}
 
 #look to see if an environmental variable containing the NASA credentials is set 
