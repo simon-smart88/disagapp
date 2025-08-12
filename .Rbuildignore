@@ -1,6 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-lie_data.rds
 ^\.httr-oauth$
 .github
 Dockerfile
@@ -9,6 +8,4 @@ screenshot.png
 inst/shiny/rsconnect/
 inst/shiny/debug*
 inst/shiny/install*
-lie*.rds
-/lie*.csv
 .Renviron
