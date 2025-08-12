@@ -14,7 +14,7 @@
 #' df_path <- system.file("extdata", "lie.csv", package = "disagapp")
 #' df <- read.csv(df_path)
 #' lie_shape <- resp_download(df, "area", "response", "LIE", "ADM1")
-#' raster <- cov_water(lie_shape, "LIE", 2022)
+#' raster <- cov_water(lie_shape, "LIE")
 #' }
 #'
 #' @export
@@ -34,7 +34,7 @@ cov_water <- function(shape, country_code, async = FALSE) {
   }
 
   if (!check_url("https://data.worldpop.org/")){
-    return(async |> asyncLog(type = "error", "Sorry the nighttime light data source is currently offline"))
+    return(async |> asyncLog(type = "error", "Sorry the distance to water data source is currently offline"))
   }
 
   combined_ras <- NULL
@@ -56,7 +56,7 @@ cov_water <- function(shape, country_code, async = FALSE) {
 
   if (is.null(combined_ras)){
     if (is.null(message)){
-      message <- "An error occurred whilst trying to download night light data"
+      message <- "An error occurred whilst trying to download distance to water data"
     }
     return(async |> asyncLog(type = "error", message))
 
@@ -65,7 +65,7 @@ cov_water <- function(shape, country_code, async = FALSE) {
     # check that raster overlaps with shape
     check_overlap <- terra::is.related(combined_ras, terra::vect(shape), "intersects")
     if (check_overlap == FALSE){
-      return(async |> asyncLog(type = "error", "The downloaded nightlight data does not overlap with the response data - check the selected country"))
+      return(async |> asyncLog(type = "error", "The downloaded  distance to water data does not overlap with the response data - check the selected country"))
     }
 
     names(combined_ras) <- "Distance to inland water"
