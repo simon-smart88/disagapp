@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disagapp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="disagapp-v001">disagapp v0.0.1<a class="anchor" aria-label="anchor" href="#disagapp-v001"></a>
+<div class="page-header"><h1 id="disagapp-v100">disagapp v1.0.0<a class="anchor" aria-label="anchor" href="#disagapp-v100"></a>
 </h1></div>
 <p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="200" align="right" style="border:10px solid white;"></p>
 <p>Disagapp is an application written in R that can be used to perform disaggregation regression analyses using <a href="https://cran.r-project.org/package=disaggregation" class="external-link">{disaggregation}</a> as described in <a href="https://doi.org/10.18637/jss.v106.i11" class="external-link">Nandi et al. (2023)</a>. A version is deployed to <a href="https://disagapp.le.ac.uk/" class="external-link uri">https://disagapp.le.ac.uk/</a></p>
@@ -104,8 +104,8 @@
 </li>
 <li>Climate: Various bioclimatic variables relating to temperature and precipitation. Provided by Worldclim via <code>{geodata}</code>
 </li>
-<li>Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via <a href="https://worldbank.github.io/blackmarbler/" class="external-link">blackmarbler</a> developed by the World Bank</li>
-<li>Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA</li>
+<li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme via Zenodo.</li>
+<li>Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via Worldpop</li>
 <li>Population density: Population density provided by Worldpop</li>
 <li>Upload covariates: Upload your own covariates in the <code>.tif</code> format</li>
 </ul>
@@ -115,6 +115,7 @@
 </h3>
 <ul>
 <li>Population count: Population counts provided by Worldpop</li>
+<li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme via Zenodo.</li>
 <li>Upload aggregation: Upload your own aggregation raster in the <code>.tif</code> format</li>
 <li>Uniform: Generate a uniform aggregation raster</li>
 </ul>
@@ -150,9 +151,9 @@
 <h3 id="reproduce---reproduce-the-analysis-rep">Reproduce - reproduce the analysis (<code>rep</code>)<a class="anchor" aria-label="anchor" href="#reproduce---reproduce-the-analysis-rep"></a>
 </h3>
 <ul>
-<li>Download session code: download a <code>.Rmd</code> file that completely replicates the analysis</li>
 <li>Reproduce environment: use <a href="https://rstudio.github.io/renv/" class="external-link">renv</a> to capture dependencies, allowing the analysis to be reproduced exactly</li>
 <li>Download covariates: download copies of the covariate data</li>
+<li>Download session code: download a <code>.Rmd</code> file that completely replicates the analysis</li>
 <li>Download package references: download a list of all the packages used in the analysis</li>
 </ul>
 </div>
