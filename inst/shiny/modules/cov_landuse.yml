@@ -1,0 +1,6 @@
+component: "cov"
+short_name: "Land use"
+long_name: "Download land use data"
+authors: "Simon E H Smart"
+package: [terra]
+class: choice

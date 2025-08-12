@@ -1,4 +1,4 @@
-# disagapp v0.0.1
+# disagapp v1.0.0
 
 <img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="200" align="right" style="border:10px solid white;">
 
@@ -34,13 +34,14 @@ The application is divided into components that are steps in the analysis and mo
 ### Covariates - load covariates to use in the analysis (`cov`)
 - Accessibility: The time required to travel to cities or healthcare. Provided by the Malaria Atlas Project via `{malariaAtlas}`
 - Climate: Various bioclimatic variables relating to temperature and precipitation. Provided by Worldclim via `{geodata}`
-- Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via `{blackmarbler}` developed by the World Bank
-- Distance to water: The distance to surface water. Provided by ESRI using data from USGS and ESA
+- Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme via Zenodo.
+- Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via Worldpop
 - Population density: Population density provided by Worldpop
 - Upload covariates: Upload your own covariates in the `.tif` format
 
 ### Aggregation - load an aggregation raster (`agg`)
 - Population count: Population counts provided by Worldpop
+- Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme via Zenodo.
 - Upload aggregation: Upload your own aggregation raster in the `.tif` format
 - Uniform: Generate a uniform aggregation raster
 
@@ -60,9 +61,9 @@ The application is divided into components that are steps in the analysis and mo
 - Transfer predictions: transfer predictions to a new area of interest
 
 ### Reproduce - reproduce the analysis (`rep`)
-- Download session code: download a `.Rmd` file that completely replicates the analysis
 - Reproduce environment: use `{renv}` to capture dependencies, allowing the analysis to be reproduced exactly
 - Download covariates: download copies of the covariate data
+- Download session code: download a `.Rmd` file that completely replicates the analysis
 - Download package references: download a list of all the packages used in the analysis
 
 ## Adding new modules

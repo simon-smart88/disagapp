@@ -7,15 +7,17 @@ test_that("Check resp_shape function works as expected", {
 
 test_that("{shinytest2} recording: e2e_resp_shape", {
   skip_on_cran()
-  skip_on_ci()
+  skip_on_os("windows")
+
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_shape", timeout = 10000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_shape")
   app$upload_file("resp_shape-shape" = shpdf$datapath)
   app$set_inputs("resp_shape-resp_var" = "inc")
   app$click("resp_shape-run")
-  common <- app$get_value(export = "common")
-  expect_is(common$shape, "sf")
-  expect_equal(nrow(common$shape), 109)
+
+  shape <- app$get_value(export = "shape")
+  expect_is(shape, "sf")
+  expect_equal(nrow(shape), 109)
   app$stop()
 })

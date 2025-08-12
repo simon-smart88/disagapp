@@ -7,7 +7,7 @@ output: html_document
 
 <img src="logo.png" alt="logo" style="width: 200px; float:right; padding:10px;"/>
 
-Welcome to *disagapp* an application that can be used to perform disaggregation regression analyses using the 
+Welcome to *disagapp* v1.0.0 an application that can be used to perform disaggregation regression analyses using the 
 <a href="https://cran.r-project.org/package=disaggregation" target="_blank">disaggregation R package</a> (Nandi *et al.* 2023). Disaggregation can be used when your response data is aggregated at the polygon level (states, counties etc.) but you would like to produce higher resolution predictions. Disagapp aims to simplify disaggregation analyses by guiding users through each step in the analysis and through providing easy access to a range of high resolution covariates with global coverage. Analyses can be saved at any point and you can also download a document that completely reproduces the analysis outside of the application.
 
 The application is written in R with the web app development package <a href="https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/" target="_blank">shiny</a> and was built using the <a href="https://github.com/simon-smart88/shinyscholar" target="_blank">shinyscholar</a> template which was itself forked from wallace v2.0.5 (<a href="https://cran.r-project.org/package=wallace" target="_blank">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" target="_blank">website</a>), an application for modelling species distributions (Kass *et al.* 2018; Kass *et al.* 2022).

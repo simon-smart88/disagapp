@@ -17,6 +17,15 @@ fit_fit_module_ui <- function(id) {
 fit_fit_module_server <- function(id, common, parent_session, map) {
   moduleServer(id, function(input, output, session) {
 
+    observe({
+      if (input$family == "gaussian"){
+        shinyWidgets::updateMaterialSwitch(session, "iid", FALSE)
+      }
+      if (input$family == "poisson"){
+        shinyWidgets::updateMaterialSwitch(session, "iid", TRUE)
+      }
+    })
+
     output$priors_out <- renderUI({
       watch("prep_final")
       validate(need(common$prep, "You need to prepare the data before setting priors"))

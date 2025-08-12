@@ -5,7 +5,7 @@ output: html_document
 
 #### WORKFLOW
 
-*disagapp* (v0.0.1) includes seven components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step. Modules are classified using a colour coding depending system dependent on whether they <span class="module_mandatory">must be used</span>, <span class="module_choice">at least one of several choices must be used</span>, <span class="module_optional">or they are optional</span>.
+*disagapp* (v1.0.0) includes seven components, or steps of a possible workflow. Each component includes one or more modules, which are possible analyses for that step. Modules are classified using a colour coding depending system dependent on whether they <span class="module_mandatory">must be used</span>, <span class="module_choice">at least one of several choices must be used</span>, <span class="module_optional">or they are optional</span>.
 
 **Components:**  
 
@@ -21,12 +21,14 @@ output: html_document
 - <span class="module_choice">Accessibility</span>
 - <span class="module_choice">Climate</span>
 - <span class="module_choice">Distance to water</span>
+- <span class="module_choice">Land use</span>
 - <span class="module_choice">Nighttime lights</span>
 - <span class="module_choice">Population density</span>
 - <span class="module_choice">Upload covariates</span>
 
 **3.** *Aggregation*  
 - <span class="module_choice">Population count</span>
+- <span class="module_choice">Land use</span>
 - <span class="module_choice">Upload aggregation</span>
 - <span class="module_choice">Uniform</span>
 
@@ -47,6 +49,6 @@ output: html_document
 
 **7.** *Reproduce*  
 - <span class="module_optional">Download session code</span>
-- <span class="module_optional">Reproduce environment</span>
 - <span class="module_optional">Download covariates</span>
+- <span class="module_optional">Reproduce environment</span>
 - <span class="module_optional">Download package references</span>

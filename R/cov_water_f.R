@@ -11,7 +11,7 @@
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
 #' \dontrun{
-#' df_path <- system.file("extdata", "test_data", "lie.csv", package = "disagapp")
+#' df_path <- system.file("extdata", "lie.csv", package = "disagapp")
 #' df <- read.csv(df_path)
 #' lie_shape <- resp_download(df, "area", "response", "LIE", "ADM1")
 #' raster <- cov_water(lie_shape, "LIE", 2022)

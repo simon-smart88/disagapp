@@ -38,8 +38,8 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   app$set_inputs(`resp_download-country` = "Liechtenstein")
   app$click("resp_download-run")
 
-  common <- app$get_value(export = "common")
-  expect_is(common$shape, "sf")
+  shape <- app$get_value(export = "shape")
+  expect_is(shape, "sf")
 
   app$set_inputs(tabs = "cov")
   app$set_inputs(covSel = "cov_bioclim")

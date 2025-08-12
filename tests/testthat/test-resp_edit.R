@@ -12,9 +12,21 @@ test_that("Check resp_edit function works as expected", {
 
 test_that("{shinytest2} recording: e2e_resp_edit", {
   skip_on_cran()
-  skip_on_ci()
-  rerun_test_setup("resp_edit_test", list(shpdf, save_path))
-  common <- readRDS(save_path)
-  expect_is(common$shape, "sf")
-  expect_lt(nrow(common$shape), 50)
+  skip_on_os("windows")
+
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_shape")
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
+  app$upload_file("resp_shape-shape" = shpdf$datapath)
+  app$set_inputs("resp_shape-resp_var" = "inc")
+  app$click("resp_shape-run")
+
+  app$set_inputs(respSel = "resp_edit")
+  app$set_inputs("resp_edit-type" = "outside")
+  app$click("resp_edit-run")
+
+  shape <- app$get_value(export = "shape")
+  expect_is(shape, "sf")
+  expect_lt(nrow(shape), 50)
+  app$stop()
 })

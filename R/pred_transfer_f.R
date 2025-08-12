@@ -45,6 +45,11 @@ pred_transfer <- function(country, fit, meta, covdf = NULL, aggdf = NULL, async 
   if ("cov_bioclim" %in% cov_modules){
     covs <- append(covs, cov_bioclim(new_shape, country, meta$cov_bioclim$variables))
   }
+
+  if ("cov_landuse" %in% cov_modules){
+    covs <- append(covs, cov_landuse(new_shape, meta$cov_landuse$year, meta$cov_landuse$uses))
+  }
+
   if ("cov_nightlight" %in% cov_modules){
     covs[["Nighttime light"]] <- cov_nightlight(new_shape, country, meta$cov_nightlight$year)
   }

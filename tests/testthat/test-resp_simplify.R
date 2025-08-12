@@ -10,12 +10,24 @@ test_that("Check resp_simplify function works as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_resp_simplify", {
-  skip_on_ci()
   skip_on_cran()
-  rerun_test_setup("resp_simplify_test", list(shpdf, save_path))
-  common <- readRDS(save_path)
-  expect_is(common$shape, "sf")
-  expect_equal(nrow(common$shape), 109)
-  simple_size <- as.numeric(object.size(common$shape))
+  skip_on_os("windows")
+
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_simplify")
+  app$set_inputs(tabs = "resp")
+  app$set_inputs(respSel = "resp_shape")
+  app$upload_file("resp_shape-shape" = shpdf$datapath)
+  app$set_inputs("resp_shape-resp_var" = "inc")
+  app$click("resp_shape-run")
+
+  app$set_inputs(respSel = "resp_simplify")
+  app$set_inputs("resp_simplify-distance" = 1000)
+  app$click("resp_simplify-run")
+
+  shape <- app$get_value(export = "shape")
+  expect_is(shape, "sf")
+  expect_equal(nrow(shape), 109)
+  simple_size <- as.numeric(object.size(shape))
   expect_lt(simple_size, mad_shape_size)
+  app$stop()
 })

@@ -88,11 +88,13 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     common$logger |> writeLog(type = "complete", "Response data has been uploaded and is summarised in the results tab")
 
     response <- common$shape[[common$response_name]]
-    if (!isTRUE(all.equal(response, as.integer(response)))){
-      common$logger |> writeLog(type = "info", "Some response data is not integers")
-    }
-    if (any(response < 0)){
-      common$logger |> writeLog(type = "info", "The response data contains negative values")
+    if (isFALSE(getOption("shiny.testmode"))) {
+      if (!isTRUE(all.equal(response, as.integer(response)))){
+        common$logger |> writeLog(type = "info", "Some response data is not integers")
+      }
+      if (any(response < 0)){
+        common$logger |> writeLog(type = "info", "The response data contains negative values")
+      }
     }
     if (response_area(common$shape) > 1e6){
       common$logger |> writeLog(type = "warning", glue::glue("The total area of the response data is {response_area(common$shape)} km2.

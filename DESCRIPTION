@@ -1,5 +1,5 @@
 Package: disagapp
-Version: 0.0.1
+Version: 1.0.0
 Title: A 'shiny' Application for Disaggregation Regression 
 Description: Perform user-friendly disaggregation regression analyses using  
     'disaggregation'. Use when analysing response data that are aggregated to 
