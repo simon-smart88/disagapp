@@ -1,8 +1,9 @@
+online <- check_url("https://data.worldpop.org/")
 
 lie_che_shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
 
 test_that("Check agg_worldpop function works as expected for single country", {
-
+  skip_if_not(online)
   result <- agg_worldpop(lie_shape, country_code[1], "Constrained", "100m", 2020)
   expect_is(result, "SpatRaster")
 
@@ -21,6 +22,7 @@ test_that("Check agg_worldpop function works as expected for single country", {
 
 
 test_that("Check agg_worldpop function works as expected for multiple countries", {
+  skip_if_not(online)
   result <- agg_worldpop(lie_che_shape, country_code, "Constrained", "1km", 2020)
   expect_is(result, "SpatRaster")
   n_cells <- terra::ncell(result)
@@ -37,6 +39,7 @@ test_that("Check agg_worldpop function returns errors", {
 })
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {
+  skip_if_not(online)
   skip_on_cran()
   skip_on_os("windows")
 

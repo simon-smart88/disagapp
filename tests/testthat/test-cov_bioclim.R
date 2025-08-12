@@ -1,4 +1,8 @@
+
+online <- check_url("https://geodata.ucdavis.edu/climate/worldclim")
+
 test_that("Check cov_bioclim function works as expected for single country", {
+  skip_if_not(online)
   shape <- resp_download(df, area_column, resp_column, country_code[1], admin_level)
 
   result <- cov_bioclim(shape, country_code[1], c("Mean temperature", "Mean diurnal range"))
@@ -11,6 +15,7 @@ test_that("Check cov_bioclim function works as expected for single country", {
 })
 
 test_that("Check cov_bioclim function works as expected for multiple countries", {
+  skip_if_not(online)
   shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
 
   result <- cov_bioclim(shape, country_code, c("Mean temperature", "Mean diurnal range"))
@@ -29,6 +34,7 @@ test_that("Check cov_bioclim function returns errors as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_bioclim", {
+  skip_if_not(online)
   skip_on_cran()
   skip_on_os("windows")
 

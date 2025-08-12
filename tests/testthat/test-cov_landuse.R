@@ -1,4 +1,7 @@
+online <- check_url("https://zenodo.org/records/3939038")
+
 test_that("Check cov_landuse function works as expected", {
+  skip_if_not(online)
   result <- cov_landuse(shape, 2019, c("Crops"))
   expect_is(result, "list")
   expect_is(result[[1]], "SpatRaster")
@@ -11,6 +14,7 @@ test_that("Check cov_landuse function returns errors", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_bioclim", {
+  skip_if_not(online)
   skip_on_cran()
   skip_on_os("windows")
 

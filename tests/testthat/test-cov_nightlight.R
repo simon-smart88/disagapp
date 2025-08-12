@@ -1,9 +1,12 @@
+online <- check_url("https://data.worldpop.org/")
+
 test_that("Check cov_nightlight function works as expected", {
   result <- cov_nightlight(lie_shape, "LIE", 2022)
   expect_is(result, "SpatRaster")
 })
 
 test_that("Check cov_nightlight function works as expected for multiple countries", {
+  skip_if_not(online)
   shape <- resp_download(mdf, area_column, resp_column, country_code, admin_level)
   result <- cov_nightlight(shape, country_code, 2022)
   expect_is(result, "SpatRaster")
@@ -21,6 +24,7 @@ test_that("Check cov_nightlight function returns errors as expected", {
 })
 
 test_that("{shinytest2} recording: e2e_cov_nightlight", {
+  skip_if_not(online)
   skip_on_cran()
   skip_on_os("windows")
 
