@@ -6,3 +6,9 @@ lie_data.rds
 Dockerfile
 adding_modules.md
 screenshot.png
+inst/shiny/rsconnect/
+inst/shiny/debug*
+inst/shiny/install*
+lie*.rds
+/lie*.csv
+.Renviron
