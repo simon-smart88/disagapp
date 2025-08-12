@@ -18,7 +18,7 @@ test_that("Check cov_nightlight function returns errors as expected", {
   expect_error(cov_water(lie_shape, "ZZZ"), "ZZZ is not a valid IS03 country code. ")
   expect_error(cov_water(lie_shape, c("ZZZ", "LIE")), "ZZZ is not a valid IS03 country code. ")
   expect_error(cov_water(123, country_code[1]), "Shape must be an sf object")
-  expect_error(cov_water(shape, "LIE"), "The downloaded nightlight data does not overlap with the response data")
+  expect_error(cov_water(shape, "LIE"), "The downloaded distance to water data does not overlap with the response data")
 })
 
 test_that("{shinytest2} recording: e2e_cov_water", {

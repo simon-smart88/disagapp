@@ -65,7 +65,7 @@ cov_water <- function(shape, country_code, async = FALSE) {
     # check that raster overlaps with shape
     check_overlap <- terra::is.related(combined_ras, terra::vect(shape), "intersects")
     if (check_overlap == FALSE){
-      return(async |> asyncLog(type = "error", "The downloaded  distance to water data does not overlap with the response data - check the selected country"))
+      return(async |> asyncLog(type = "error", "The downloaded distance to water data does not overlap with the response data - check the selected country"))
     }
 
     names(combined_ras) <- "Distance to inland water"
