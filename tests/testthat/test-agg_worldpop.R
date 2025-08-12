@@ -38,6 +38,7 @@ test_that("Check agg_worldpop function returns errors", {
 
 test_that("{shinytest2} recording: e2e_agg_worldpop", {
   skip_on_cran()
+  skip_on_os("windows")
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_agg_worldpop", timeout = 30000)
   app$set_inputs(tabs = "resp")

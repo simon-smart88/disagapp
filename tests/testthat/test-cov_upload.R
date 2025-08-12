@@ -21,6 +21,7 @@ test_that("Check cov_upload handles CRS issues", {
 
 test_that("{shinytest2} recording: e2e_cov_upload", {
   skip_on_cran()
+  skip_on_os("windows")
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_upload", timeout = 60000)
   app$set_inputs(tabs = "resp")

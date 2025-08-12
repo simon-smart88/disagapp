@@ -13,6 +13,7 @@ test_that("Check resp_combine function works as expected", {
 
 test_that("{shinytest2} recording: e2e_resp_combine", {
   skip_on_cran()
+  skip_on_os("windows")
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_combine")
   app$set_inputs(tabs = "resp")

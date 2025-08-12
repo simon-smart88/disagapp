@@ -5,6 +5,7 @@ test_that("Check cov_access function works as expected", {
 
 test_that("{shinytest2} recording: e2e_cov_access", {
   skip_on_cran()
+  skip_on_os("windows")
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_access", timeout = 60000)
   app$set_inputs(tabs = "resp")

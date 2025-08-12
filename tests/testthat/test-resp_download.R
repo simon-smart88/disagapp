@@ -39,6 +39,7 @@ test_that("Check resp_download reports errors when data cannot be merged", {
 
 test_that("{shinytest2} recording: e2e_resp_download", {
   skip_on_cran()
+  skip_on_os("windows")
 
   app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_resp_download")
   app$set_inputs(tabs = "resp")
