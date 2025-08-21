@@ -13,7 +13,13 @@ tagList(
         script = file.path("disagapp-res", "js", "shinyjs-funcs.js"),
         functions = c("scrollLogger", "disableModule", "enableModule", "runOnEnter")
       ),
-      tags$link(href = "css/styles.css", rel = "stylesheet")
+      tags$link(href = "css/styles.css", rel = "stylesheet"),
+      tags$script(HTML("
+      var heartBeat = function() {
+        Shiny.setInputValue('heartbeat', Math.random());
+      }
+      setInterval(heartBeat, 30000);
+    "))
     ),
     title = img(src = "logo.png", height = "50", width = "50"),
     window_title = "Disagapp",
