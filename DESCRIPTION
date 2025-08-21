@@ -24,15 +24,18 @@ Depends:
     shiny (>= 1.8.1)
 Imports:
     curl,
+    corrplot,
     disaggregation,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     fmesher,
     geodata,
+    geosphere,
     glue,
     ggplot2,
     httr2,
     knitcitations,
+    malariaAtlas,
     markdown,
     openxlsx,
     parallelly,
@@ -44,6 +47,7 @@ Imports:
     rintrojs,
     rlang,
     rmarkdown,
+    SpatialEpi,
     sf,
     shinyalert,
     shinybusy,
@@ -54,11 +58,7 @@ Imports:
     tools,
     zip
 Suggests: 
-    corrplot,
-    geosphere,
-    malariaAtlas,
     shinytest2,
-    SpatialEpi,
     testthat
 SystemRequirements: pandoc is required for generating reproducible reports
 License: GPL-3
