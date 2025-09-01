@@ -47,7 +47,7 @@
 
   # load the data
   covs <- lapply(path_df$datapath, terra::rast)
-  names(covs) <- as.vector(path_df$name)
+  names(covs) <- gsub(".tif", "", as.vector(path_df$name))
 
   # check crs and reproject if necessary
   ras_crs <- lapply(covs, terra::crs, describe = TRUE)

@@ -98,7 +98,7 @@ cov_upload_module_result <- function(id) {
 }
 
 cov_upload_module_map <- function(map, common) {
-  for (variable in common$meta$cov_upload$path){
+  for (variable in gsub(".tif", "", common$meta$cov_upload$path)){
     raster_map(map, common, common$covs[[variable]], variable)
   }
 }
