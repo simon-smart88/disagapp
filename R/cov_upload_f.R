@@ -45,8 +45,29 @@
      return()
    }
 
+  # check all files are .tif
+  extensions <- unlist(lapply(path_df$datapath, tools::file_ext))
+  if (any(extensions != "tif")){
+    for (f in which(extensions != "tif")){
+      logger |> writeLog(type = "error", glue::glue("{path_df$name[f]} is not a .tif file"))
+    }
+    return()
+  }
+
   # load the data
   covs <- lapply(path_df$datapath, terra::rast)
+
+  # check for multiple layered rasters
+  n_layers <- unlist(lapply(covs, terra::nlyr))
+  if (max(n_layers) > 1){
+    for (f in which(n_layers > 1)){
+      logger |> writeLog(type = "error", glue::glue("{path_df$name[f]} contains multiple layers -
+                                                  please convert it to single-layered SpatRasters and reupload"))
+    }
+    return()
+  }
+
+  # name rasters using file names
   names(covs) <- gsub(".tif", "", as.vector(path_df$name))
 
   # check crs and reproject if necessary

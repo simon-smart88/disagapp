@@ -6,7 +6,7 @@ cov_upload_module_ui <- function(id) {
               multiple = TRUE,
               accept = c(".tif")),
     uiOutput(ns("example_out")),
-    actionButton(ns("run"), "Upload file(s)", icon = icon("arrow-turn-down"))
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -22,8 +22,6 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
-
-    # check all files are .tif
 
     if (is.null(input$example) || (input$example == FALSE)){
       # check a file is selected

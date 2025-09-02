@@ -2,7 +2,7 @@ agg_upload_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     fileInput(inputId = ns("agg"),
-              label = "Upload aggregation data",
+              label = "Upload aggregation file",
               multiple = FALSE,
               accept = c(".tif")),
     uiOutput(ns("example_out")),
@@ -12,7 +12,7 @@ agg_upload_module_ui <- function(id) {
     shinyWidgets::materialSwitch(ns("log"),
                   label = "Plot as log values",
                   value = TRUE, status = "success"),
-    actionButton(ns("run"), "Upload file", icon = icon("arrow-turn-down"))
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 
