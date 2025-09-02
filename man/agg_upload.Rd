@@ -30,7 +30,7 @@ path <- list.files(system.file("extdata/aggregation",
 shp_file <- list.files(system.file("extdata/shapes",
         package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp_file, quiet = TRUE)
-raster <- agg_upload(shape = shape, path = path)
+raster <- agg_upload(shape = shape, path = path, name = "population")
 
 }
 \author{
