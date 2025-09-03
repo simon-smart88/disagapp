@@ -3,7 +3,7 @@ test_that("Check cov_upload function works as expected", {
   result <- cov_upload(shape, covdf)
   expect_is(result, "list")
   expect_is(result[[1]], "SpatRaster")
-  expect_equal(length(result), 3)
+  expect_equal(length(result), 4)
 })
 
 test_that("Check cov_upload errors when non-tif files are uploaded", {
@@ -18,6 +18,19 @@ test_that("Check cov_upload errors when a multi-layered SpatRaster is uploaded",
   terra::writeRaster(multilayer, tmp)
   mdf <- data.frame(datapath = tmp, name = "multilayer.tif")
   expect_error(cov_upload(shape, mdf), "multilayer.tif contains multiple layers")
+})
+
+
+test_that("Check cov_upload can handle unnamed rasters", {
+  no_name_raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package="disagapp"))
+  names(no_name_raster) <- ""
+  tmp <- tempfile(fileext = ".tif")
+  tmp_name <- tools::file_path_sans_ext(basename(tmp))
+  terra::writeRaster(no_name_raster, tmp)
+  nndf <- data.frame(datapath = tmp, name = "no_name.tif")
+  result <- cov_upload(shape, nndf)
+  expect_named(result, tmp_name)
+  expect_named(result[[1]], tmp_name)
 })
 
 
@@ -50,10 +63,11 @@ test_that("{shinytest2} recording: e2e_cov_upload", {
   covs <- app$get_value(export = "covs")
   covs <- unwrap_terra(covs)
   expect_is(covs, "list")
-  expect_equal(length(covs), 3)
+  expect_equal(length(covs), 4)
   expect_is(covs[[1]], "SpatRaster")
   expect_is(covs[[2]], "SpatRaster")
   expect_is(covs[[3]], "SpatRaster")
+  expect_is(covs[[4]], "SpatRaster")
 
   app$stop()
 

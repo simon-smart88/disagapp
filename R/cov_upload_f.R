@@ -67,8 +67,8 @@
     return()
   }
 
-  # name rasters using file names
-  names(covs) <- gsub(".tif", "", as.vector(path_df$name))
+  # name rasters using raster names
+  names(covs) <- unlist(lapply(covs, names))
 
   # check crs and reproject if necessary
   ras_crs <- lapply(covs, terra::crs, describe = TRUE)

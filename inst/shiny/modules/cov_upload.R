@@ -58,8 +58,10 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     #prevent over-writing if the module has already been used
     if (is.null(common$meta$cov_upload$path)){
       common$meta$cov_upload$path <- as.vector(covdf$name)
+      common$meta$cov_upload$names <- names(cov_list)
     } else {
       common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
+      common$meta$cov_upload$names <- c(common$meta$cov_upload$names, names(cov_list))
     }
     common$meta$cov_upload$plot_height <- length(common$meta$cov_upload$path) * 400
 
@@ -96,7 +98,7 @@ cov_upload_module_result <- function(id) {
 }
 
 cov_upload_module_map <- function(map, common) {
-  for (variable in gsub(".tif", "", common$meta$cov_upload$path)){
+  for (variable in common$meta$cov_upload$names){
     raster_map(map, common, common$covs[[variable]], variable)
   }
 }

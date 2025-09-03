@@ -22,7 +22,7 @@ Called for side effects - plots to graphic device
 Plot rasters as a map and a histogram
 }
 \examples{
-raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
-raster_list <- list("EVI" = raster)
-plot_raster(raster_list, "EVI")
+raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package = "disagapp"))
+raster_list <- list("Mean temperature" = raster)
+plot_raster(raster_list, "Mean temperature")
 }
