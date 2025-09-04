@@ -37,9 +37,9 @@ plot_response <- function(response){
 #' @param log logical. Whether to plot values on a log scale
 #' @returns Called for side effects - plots to graphic device
 #' @examples
-#' raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
-#' raster_list <- list("EVI" = raster)
-#' plot_raster(raster_list, "EVI")
+#' raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package = "disagapp"))
+#' raster_list <- list("Mean temperature" = raster)
+#' plot_raster(raster_list, "Mean temperature")
 #' @export
 #'
 plot_raster <- function(rasters, raster_names, bins = 50, log = FALSE){
@@ -278,7 +278,7 @@ plot_obs_pred <- function(plot_data){
 #' @param original_resolution list. Containing the resolution of the `width` and `height` of the original data. Default `NULL`.
 #' @returns A plotly object
 #' @examples
-#' raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+#' raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package = "disagapp"))
 #' shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
 #' plot_resolution("histogram", raster, shape, "low")
 #' @export

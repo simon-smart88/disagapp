@@ -4,12 +4,14 @@
 \alias{agg_upload}
 \title{Upload an aggregation raster}
 \usage{
-agg_upload(shape, path, logger = NULL)
+agg_upload(shape, path, name, logger = NULL)
 }
 \arguments{
 \item{shape}{sf. sf object containing the area of interest}
 
 \item{path}{character. The location of the file to be loaded.}
+
+\item{name}{character. The name of the aggregation raster}
 
 \item{logger}{Stores all notification messages to be displayed in the Log
 Window. Insert the logger reactive list here for running in
@@ -28,7 +30,7 @@ path <- list.files(system.file("extdata/aggregation",
 shp_file <- list.files(system.file("extdata/shapes",
         package="disagapp"), pattern = ".shp", full.names = TRUE)
 shape <- sf::st_read(shp_file, quiet = TRUE)
-raster <- agg_upload(shape = shape, path = path)
+raster <- agg_upload(shape = shape, path = path, name = "population")
 
 }
 \author{
