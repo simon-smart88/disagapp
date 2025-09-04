@@ -6,7 +6,7 @@ cov_upload_module_ui <- function(id) {
               multiple = TRUE,
               accept = c(".tif")),
     uiOutput(ns("example_out")),
-    actionButton(ns("run"), "Upload file(s)", icon = icon("arrow-turn-down"))
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -22,8 +22,6 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
 
   observeEvent(input$run, {
     # WARNING ####
-
-    # check all files are .tif
 
     if (is.null(input$example) || (input$example == FALSE)){
       # check a file is selected
@@ -60,8 +58,10 @@ cov_upload_module_server <- function(id, common, parent_session, map) {
     #prevent over-writing if the module has already been used
     if (is.null(common$meta$cov_upload$path)){
       common$meta$cov_upload$path <- as.vector(covdf$name)
+      common$meta$cov_upload$names <- names(cov_list)
     } else {
       common$meta$cov_upload$path <- c(common$meta$cov_upload$path, as.vector(covdf$name))
+      common$meta$cov_upload$names <- c(common$meta$cov_upload$names, names(cov_list))
     }
     common$meta$cov_upload$plot_height <- length(common$meta$cov_upload$path) * 400
 
@@ -98,7 +98,7 @@ cov_upload_module_result <- function(id) {
 }
 
 cov_upload_module_map <- function(map, common) {
-  for (variable in common$meta$cov_upload$path){
+  for (variable in common$meta$cov_upload$names){
     raster_map(map, common, common$covs[[variable]], variable)
   }
 }

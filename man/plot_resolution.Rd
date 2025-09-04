@@ -30,7 +30,7 @@ A plotly object
 Make either a histogram or boxplot showing the number of pixels in each polygon of an sf object
 }
 \examples{
-raster <- terra::rast(system.file("extdata", "covariates", "EVI.tif", package = "disagapp"))
+raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package = "disagapp"))
 shape <- sf::st_read(system.file("extdata", "shapes", package = "disagapp"))
 plot_resolution("histogram", raster, shape, "low")
 }

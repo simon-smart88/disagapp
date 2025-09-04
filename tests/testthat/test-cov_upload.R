@@ -6,6 +6,34 @@ test_that("Check cov_upload function works as expected", {
   expect_equal(length(result), 4)
 })
 
+test_that("Check cov_upload errors when non-tif files are uploaded", {
+  txtdf <- data.frame(datapath = file.path(test_data_dir, "txt.txt"),
+                      name = "txt.txt")
+  expect_error(cov_upload(shape, txtdf), "txt.txt is not a .tif file")
+})
+
+test_that("Check cov_upload errors when a multi-layered SpatRaster is uploaded", {
+  multilayer <- terra::rast(list.files(system.file("extdata", "covariates", package="disagapp"), full.names = TRUE))
+  tmp <- tempfile(fileext = ".tif")
+  terra::writeRaster(multilayer, tmp)
+  mdf <- data.frame(datapath = tmp, name = "multilayer.tif")
+  expect_error(cov_upload(shape, mdf), "multilayer.tif contains multiple layers")
+})
+
+
+test_that("Check cov_upload can handle unnamed rasters", {
+  no_name_raster <- terra::rast(system.file("extdata", "covariates", "Mean_temperature.tif", package="disagapp"))
+  names(no_name_raster) <- ""
+  tmp <- tempfile(fileext = ".tif")
+  tmp_name <- tools::file_path_sans_ext(basename(tmp))
+  terra::writeRaster(no_name_raster, tmp)
+  nndf <- data.frame(datapath = tmp, name = "no_name.tif")
+  result <- cov_upload(shape, nndf)
+  expect_named(result, tmp_name)
+  expect_named(result[[1]], tmp_name)
+})
+
+
 test_that("Check cov_upload handles CRS issues", {
 
   covdf_difcrs <- data.frame(datapath = file.path(test_data_dir, "different_projection.tif"),

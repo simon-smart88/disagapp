@@ -2,7 +2,7 @@ agg_upload_module_ui <- function(id) {
   ns <- NS(id)
   tagList(
     fileInput(inputId = ns("agg"),
-              label = "Upload aggregation data",
+              label = "Upload aggregation file",
               multiple = FALSE,
               accept = c(".tif")),
     uiOutput(ns("example_out")),
@@ -12,7 +12,7 @@ agg_upload_module_ui <- function(id) {
     shinyWidgets::materialSwitch(ns("log"),
                   label = "Plot as log values",
                   value = TRUE, status = "success"),
-    actionButton(ns("run"), "Upload file", icon = icon("arrow-turn-down"))
+    actionButton(ns("run"), "Load data", icon = icon("arrow-turn-down"))
   )
 }
 
@@ -38,21 +38,15 @@ agg_upload_module_server <- function(id, common, parent_session, map) {
       aggdf <- input$agg
     }
 
-    # check all files are .tif(?)
-
     if (is.null(input$example) || (input$example == TRUE)){
     aggdf <- data.frame(datapath = list.files(system.file("extdata", "aggregation", package="disagapp"), full.names = TRUE),
                         name = list.files(system.file("extdata", "aggregation", package="disagapp")))
     }
     # FUNCTION CALL ####
-    agg_raster <- agg_upload(common$shape, aggdf$datapath, common$logger)
-    if (is.null(agg_raster)){
-      return()
-    }
+    agg_raster <- agg_upload(common$shape, aggdf$datapath, input$name, common$logger)
 
     # LOAD INTO COMMON ####
     common$agg <- agg_raster
-    names(common$agg) <- input$name
 
     # METADATA ####
     common$meta$agg_upload$path <- aggdf$name
