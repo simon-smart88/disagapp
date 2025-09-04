@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">disagapp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -41,6 +41,9 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -63,11 +66,11 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="disagapp-v100">disagapp v1.0.0<a class="anchor" aria-label="anchor" href="#disagapp-v100"></a>
+<div class="page-header"><h1 id="disagapp-v101">disagapp v1.0.1<a class="anchor" aria-label="anchor" href="#disagapp-v101"></a>
 </h1></div>
-<p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="200" align="right" style="border:10px solid white;"></p>
+<p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;"></p>
 <p>Disagapp is an application written in R that can be used to perform disaggregation regression analyses using <a href="https://cran.r-project.org/package=disaggregation" class="external-link">{disaggregation}</a> as described in <a href="https://doi.org/10.18637/jss.v106.i11" class="external-link">Nandi et al. (2023)</a>. A version is deployed to <a href="https://disagapp.le.ac.uk/" class="external-link uri">https://disagapp.le.ac.uk/</a></p>
-<p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="600" align="center" style="border:10px solid white;"></p>
+<p><img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/screenshot.png" width="580" align="center" style="border:10px solid white;"></p>
 <p>Disagapp was built using the <a href="https://github.com/simon-smart88/shinyscholar" class="external-link">{shinyscholar}</a> template which was itself forked from {wallace} v2.0.5 (<a href="https://cran.r-project.org/package=wallace" class="external-link">CRAN</a>, <a href="https://wallaceecomod.github.io/wallace/index.html" class="external-link">website</a>)</p>
 <p>Install <em>disagapp</em> via Github and run the application with the following R code.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -106,6 +109,7 @@
 </li>
 <li>Land use: The percentage of land covered by different classes of land use. Provided by the Copernicus programme via Zenodo.</li>
 <li>Nighttime lights: Satellite imagery of the intensity of nighttime lights. Provided by NASA via Worldpop</li>
+<li>Distance to water: The distance to surface water. Provided by Worldpop using data from ESA</li>
 <li>Population density: Population density provided by Worldpop</li>
 <li>Upload covariates: Upload your own covariates in the <code>.tif</code> format</li>
 </ul>

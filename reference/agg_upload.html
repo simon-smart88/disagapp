@@ -18,13 +18,16 @@ raster image."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">disagapp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/simon-smart88/disagapp/" class="external-link">
@@ -52,7 +55,7 @@ raster image.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">agg_upload</span><span class="op">(</span><span class="va">shape</span>, <span class="va">path</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">agg_upload</span><span class="op">(</span><span class="va">shape</span>, <span class="va">path</span>, <span class="va">name</span>, logger <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +68,10 @@ raster image.</p>
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>character. The location of the file to be loaded.</p></dd>
+
+
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
+<dd><p>character. The name of the aggregation raster</p></dd>
 
 
 <dt id="arg-logger">logger<a class="anchor" aria-label="anchor" href="#arg-logger"></a></dt>
@@ -89,7 +96,7 @@ shiny, otherwise leave the default NULL</p></dd>
 <span class="r-in"><span><span class="va">shp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/shapes"</span>,</span></span>
 <span class="r-in"><span>        package<span class="op">=</span><span class="st">"disagapp"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">".shp"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">shape</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="va">shp_file</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu">agg_upload</span><span class="op">(</span>shape <span class="op">=</span> <span class="va">shape</span>, path <span class="op">=</span> <span class="va">path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu">agg_upload</span><span class="op">(</span>shape <span class="op">=</span> <span class="va">shape</span>, path <span class="op">=</span> <span class="va">path</span>, name <span class="op">=</span> <span class="st">"population"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
