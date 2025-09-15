@@ -387,6 +387,31 @@
         "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-03-12 04:52:13 UTC; unix"
       }
     },
+    "XML": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "XML",
+        "Version": "3.99-0.19",
+        "Authors@R": "c(person(\"CRAN Team\", role = c('ctb', 'cre'),\n                    email = \"CRAN@r-project.org\",\n                    comment = \"de facto maintainer since 2013\"),\n             person(\"Duncan\", \"Temple Lang\", role = c(\"aut\"),\n                    email = \"duncan@r-project.org\",\n                    comment = c(ORCID = \"0000-0003-0159-1546\")),\n\t     person(\"Tomas\", \"Kalibera\", role = \"ctb\"),\n\t     person(\"Ivan\", \"Krylov\", role = \"ctb\"))",
+        "Title": "Tools for Parsing and Generating XML Within R and S-Plus",
+        "Depends": "R (>= 4.0.0), methods, utils",
+        "Suggests": "bitops, RCurl",
+        "SystemRequirements": "libxml2 (>= 2.6.3)",
+        "Description": "Many approaches for both reading and\n        creating XML (and HTML) documents (including DTDs), both local\n        and accessible via HTTP or FTP.  Also offers access to an\n        'XPath' \"interpreter\".",
+        "URL": "https://www.omegahat.net/RSXML/",
+        "License": "BSD_3_clause + file LICENSE",
+        "Collate": "AAA.R DTD.R DTDClasses.R DTDRef.R SAXMethods.R XMLClasses.R\napplyDOM.R assignChild.R catalog.R createNode.R dynSupports.R\nerror.R flatTree.R nodeAccessors.R parseDTD.R schema.R\nsummary.R tangle.R toString.R tree.R version.R xmlErrorEnums.R\nxmlEventHandler.R xmlEventParse.R xmlHandler.R\nxmlInternalSource.R xmlOutputDOM.R xmlNodes.R xmlOutputBuffer.R\nxmlTree.R xmlTreeParse.R htmlParse.R hashTree.R zzz.R\nsupports.R parser.R libxmlFeatures.R xmlString.R saveXML.R\nnamespaces.R readHTMLTable.R reflection.R xmlToDataFrame.R\nbitList.R compare.R encoding.R fixNS.R xmlRoot.R serialize.R\nxmlMemoryMgmt.R keyValueDB.R solrDocs.R XMLRErrorInfo.R\nxincludes.R namespaceHandlers.R tangle1.R htmlLinks.R\nhtmlLists.R getDependencies.R getRelativeURL.R xmlIncludes.R\nsimplifyPath.R",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-08-22 06:00:32 UTC; hornik",
+        "Author": "CRAN Team [ctb, cre] (de facto maintainer since 2013),\n  Duncan Temple Lang [aut] (ORCID:\n    <https://orcid.org/0000-0003-0159-1546>),\n  Tomas Kalibera [ctb],\n  Ivan Krylov [ctb]",
+        "Maintainer": "CRAN Team <CRAN@r-project.org>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-08-22 08:38:51 UTC",
+        "Encoding": "UTF-8",
+        "Built": "R 4.5.0; x86_64-pc-linux-gnu; 2025-08-23 04:28:53 UTC; unix"
+      }
+    },
     "askpass": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -519,6 +544,63 @@
         "Repository": "RSPM",
         "Date/Publication": "2023-01-26 08:00:02 UTC",
         "Built": "R 4.4.0; ; 2024-04-26 04:40:19 UTC; unix"
+      }
+    },
+    "bit": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "bit",
+        "Title": "Classes and Methods for Fast Memory-Efficient Boolean Selections",
+        "Version": "4.6.0",
+        "Authors@R": "c(\n    person(\"Michael\", \"Chirico\", email = \"MichaelChirico4@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Jens\", \"Oehlschlägel\", role = \"aut\"),\n    person(\"Brian\", \"Ripley\", role = \"ctb\")\n  )",
+        "Depends": "R (>= 3.4.0)",
+        "Suggests": "testthat (>= 3.0.0), roxygen2, knitr, markdown, rmarkdown,\nmicrobenchmark, bit64 (>= 4.0.0), ff (>= 4.0.0)",
+        "Description": "Provided are classes for boolean and skewed boolean vectors,\n    fast boolean methods, fast unique and non-unique integer sorting,\n    fast set operations on sorted and unsorted sets of integers, and\n    foundations for ff (range index, compression, chunked processing).",
+        "License": "GPL-2 | GPL-3",
+        "LazyLoad": "yes",
+        "ByteCompile": "yes",
+        "Encoding": "UTF-8",
+        "URL": "https://github.com/r-lib/bit",
+        "VignetteBuilder": "knitr, rmarkdown",
+        "RoxygenNote": "7.3.2",
+        "Config/testthat/edition": "3",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-03-05 07:18:45 UTC; michael",
+        "Author": "Michael Chirico [aut, cre],\n  Jens Oehlschlägel [aut],\n  Brian Ripley [ctb]",
+        "Maintainer": "Michael Chirico <MichaelChirico4@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-03-06 10:50:01 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-03-07 05:04:38 UTC; unix"
+      }
+    },
+    "bit64": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "bit64",
+        "Title": "A S3 Class for Vectors of 64bit Integers",
+        "Version": "4.6.0-1",
+        "Authors@R": "c(\n    person(\"Michael\", \"Chirico\", email = \"michaelchirico4@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Jens\", \"Oehlschlägel\", role = \"aut\"),\n    person(\"Leonardo\", \"Silvestri\", role = \"ctb\"),\n    person(\"Ofek\", \"Shilon\", role = \"ctb\")\n  )",
+        "Depends": "R (>= 3.4.0), bit (>= 4.0.0)",
+        "Description": "\n  Package 'bit64' provides serializable S3 atomic 64bit (signed) integers.\n  These are useful for handling database keys and exact counting in +-2^63.\n  WARNING: do not use them as replacement for 32bit integers, integer64 are not\n  supported for subscripting by R-core and they have different semantics when\n  combined with double, e.g. integer64 + double => integer64.\n  Class integer64 can be used in vectors, matrices, arrays and data.frames.\n  Methods are available for coercion from and to logicals, integers, doubles,\n  characters and factors as well as many elementwise and summary functions.\n  Many fast algorithmic operations such as 'match' and 'order' support inter-\n  active data exploration and manipulation and optionally leverage caching.",
+        "License": "GPL-2 | GPL-3",
+        "LazyLoad": "yes",
+        "ByteCompile": "yes",
+        "URL": "https://github.com/r-lib/bit64",
+        "Encoding": "UTF-8",
+        "Imports": "graphics, methods, stats, utils",
+        "Suggests": "testthat (>= 3.0.3), withr",
+        "Config/testthat/edition": "3",
+        "Config/needs/development": "testthat",
+        "RoxygenNote": "7.3.2",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-01-16 14:04:20 UTC; michael",
+        "Author": "Michael Chirico [aut, cre],\n  Jens Oehlschlägel [aut],\n  Leonardo Silvestri [ctb],\n  Ofek Shilon [ctb]",
+        "Maintainer": "Michael Chirico <michaelchirico4@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-01-16 16:00:07 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-01-17 04:19:59 UTC; unix"
       }
     },
     "boot": {
@@ -1274,13 +1356,13 @@
       "Repository": null,
       "description": {
         "Package": "disagapp",
-        "Version": "1.0.1",
+        "Version": "1.0.2",
         "Title": "A 'shiny' Application for Disaggregation Regression",
         "Description": "Perform user-friendly disaggregation regression analyses using  \n    'disaggregation'. Use when analysing response data that are aggregated to \n    polygon level but the predictor variables are at a higher resolution. \n    Multiple options are provided for loading response data, downloading \n    covariate data and fitting models. Analyses can be saved \n    and loaded and an 'rmarkdown' document can be downloaded to reproduce the \n    analysis. To enable all functionality install with \n    install.packages(\"disagapp\", dependencies = TRUE) .\n    Run locally with run_disagapp() \n    or use a version deployed to <https://disagapp.le.ac.uk> . \n    Disagapp was built using 'shinyscholar'. ",
         "Authors@R": "\n    c(person(\"Simon E. H.\", \"Smart\", email = \"simon.smart@cantab.net\", role = c(\"aut\", \"cre\", \"cph\")),\n      person(\"Tim\", \"Lucas\", email =  \"timcdlucas@gmail.com\", role = c(\"aut\"), comment = c(ORCID = \"0000-0003-4694-8107\")))",
         "Depends": "R (>= 4.2.0), bslib, leaflet (>= 2.0.2), leaflet.extras (>=\n1.0.0), gargoyle, shiny (>= 1.8.1)",
-        "Imports": "curl, disaggregation, dplyr (>= 1.0.2), DT (>= 0.5), fmesher,\ngeodata, glue, ggplot2, httr2, knitcitations, markdown,\nopenxlsx, parallelly, promises, plotly, R6, RColorBrewer, renv,\nrintrojs, rlang, rmarkdown, sf, shinyalert, shinybusy, shinyjs,\nshinyWidgets (>= 0.6.0), stats, terra, tools, zip",
-        "Suggests": "corrplot, geosphere, malariaAtlas, shinytest2, SpatialEpi,\ntestthat",
+        "Imports": "curl, corrplot, disaggregation, dplyr (>= 1.0.2), DT (>= 0.5),\nfmesher, geodata, geosphere, glue, ggplot2, httr2,\nknitcitations, malariaAtlas, markdown, openxlsx, parallelly,\npromises, plotly, R6, RColorBrewer, renv, rintrojs, rlang,\nrmarkdown, SpatialEpi, sf, shinyalert, shinybusy, shinyjs,\nshinyWidgets (>= 0.6.0), stats, terra, tools, zip",
+        "Suggests": "shinytest2, testthat",
         "SystemRequirements": "pandoc is required for generating reproducible\nreports",
         "License": "GPL-3",
         "URL": "https://simon-smart88.github.io/disagapp/",
@@ -1292,17 +1374,17 @@
         "RemoteHost": "api.github.com",
         "RemoteRepo": "disagapp",
         "RemoteUsername": "simon-smart88",
-        "RemoteRef": "HEAD",
-        "RemoteSha": "e297f0dc2599a083bd872bd870a8298d78b00f1d",
+        "RemoteRef": "suggests",
+        "RemoteSha": "5633394e9c06917d0226a147eed146123b77b7db",
         "GithubRepo": "disagapp",
         "GithubUsername": "simon-smart88",
-        "GithubRef": "HEAD",
-        "GithubSHA1": "e297f0dc2599a083bd872bd870a8298d78b00f1d",
+        "GithubRef": "suggests",
+        "GithubSHA1": "5633394e9c06917d0226a147eed146123b77b7db",
         "NeedsCompilation": "no",
-        "Packaged": "2025-09-04 09:25:03 UTC; simon",
+        "Packaged": "2025-09-15 15:00:24 UTC; simon",
         "Author": "Simon E. H. Smart [aut, cre, cph],\n  Tim Lucas [aut] (ORCID: <https://orcid.org/0000-0003-4694-8107>)",
         "Maintainer": "Simon E. H. Smart <simon.smart@cantab.net>",
-        "Built": "R 4.5.1; ; 2025-09-04 09:25:03 UTC; unix"
+        "Built": "R 4.5.1; ; 2025-09-15 15:00:24 UTC; unix"
       }
     },
     "disaggregation": {
@@ -1560,6 +1642,33 @@
         "RemoteSha": "1.2.0"
       }
     },
+    "filelock": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "filelock",
+        "Title": "Portable File Locking",
+        "Version": "1.0.3",
+        "Authors@R": "c(\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "Place an exclusive or shared lock on a file. It uses\n    'LockFile' on Windows and 'fcntl' locks on Unix-like systems.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://r-lib.github.io/filelock/,\nhttps://github.com/r-lib/filelock",
+        "BugReports": "https://github.com/r-lib/filelock/issues",
+        "Depends": "R (>= 3.4)",
+        "Suggests": "callr (>= 2.0.0), covr, testthat (>= 3.0.0)",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.2.3",
+        "NeedsCompilation": "yes",
+        "Packaged": "2023-12-11 01:12:05 UTC; gaborcsardi",
+        "Author": "Gábor Csárdi [aut, cre],\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2023-12-11 04:40:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-04-26 04:39:16 UTC; unix"
+      }
+    },
     "fmesher": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -1701,6 +1810,35 @@
         "Built": "R 4.5.0; ; 2025-07-30 04:27:28 UTC; unix"
       }
     },
+    "future.apply": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "future.apply",
+        "Version": "1.20.0",
+        "Title": "Apply Function to Elements in Parallel using Futures",
+        "Depends": "R (>= 3.2.0), future (>= 1.49.0)",
+        "Imports": "globals, parallel, utils",
+        "Suggests": "datasets, stats, tools, listenv, R.rsp, markdown",
+        "VignetteBuilder": "R.rsp",
+        "Authors@R": "c(person(\"Henrik\", \"Bengtsson\",\n                    role = c(\"aut\", \"cre\", \"cph\"),\n                    email = \"henrikb@braju.com\",\n                    comment = c(ORCID = \"0000-0002-7579-5165\")),\n             person(\"R Core Team\", role = c(\"cph\", \"ctb\")))",
+        "Description": "Implementations of apply(), by(), eapply(), lapply(), Map(), .mapply(), mapply(), replicate(), sapply(), tapply(), and vapply() that can be resolved using any future-supported backend, e.g. parallel on the local machine or distributed on a compute cluster. These future_*apply() functions come with the same pros and cons as the corresponding base-R *apply() functions but with the additional feature of being able to be processed via the future framework <doi:10.32614/RJ-2021-048>.",
+        "License": "GPL (>= 2)",
+        "LazyLoad": "TRUE",
+        "URL": "https://future.apply.futureverse.org,\nhttps://github.com/futureverse/future.apply",
+        "BugReports": "https://github.com/futureverse/future.apply/issues",
+        "Language": "en-US",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.2",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-06-06 06:39:06 UTC; henrik",
+        "Author": "Henrik Bengtsson [aut, cre, cph] (ORCID:\n    <https://orcid.org/0000-0002-7579-5165>),\n  R Core Team [cph, ctb]",
+        "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-06 08:00:02 UTC",
+        "Built": "R 4.5.0; ; 2025-06-07 04:15:06 UTC; unix"
+      }
+    },
     "gargoyle": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -1779,6 +1917,35 @@
         "Built": "R 4.4.0; ; 2024-06-11 04:18:22 UTC; unix"
       }
     },
+    "geometa": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "geometa",
+        "Type": "Package",
+        "Title": "Tools for Reading and Writing ISO/OGC Geographic Metadata",
+        "Version": "0.9.2",
+        "Date": "2025-05-27",
+        "Authors@R": "c(\n  person(\"Emmanuel\", \"Blondel\", role = c(\"aut\", \"cre\"), email = \"emmanuel.blondel1@gmail.com\", comment = c(ORCID = \"0000-0002-5870-5762\")),\n  person(\"R Consortium\", role = \"fnd\"))",
+        "Maintainer": "Emmanuel Blondel <emmanuel.blondel1@gmail.com>",
+        "Description": "Provides facilities to read, write and validate geographic metadata \n defined with ISO TC211 / OGC ISO geographic information metadata standards, and \n encoded using the ISO 19139 and ISO 19115-3 (XML) standard technical specifications. \n This includes ISO 19110 (Feature cataloguing), 19115 (dataset metadata), 19119 (service metadata) \n and 19136 (GML). Other interoperable schemas from the OGC are progressively supported \n as well, such as the Sensor Web Enablement (SWE) Common Data Model, the OGC GML \n Coverage Implementation Schema (GMLCOV), or the OGC GML Referenceable Grid (GMLRGRID).",
+        "Depends": "R (>= 3.3.0)",
+        "Imports": "methods, R6, XML, httr, jsonlite, keyring, readr, crayon",
+        "Suggests": "sf, ncdf4, EML, emld, units, testthat, roxygen2",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/eblondel/geometa/wiki",
+        "BugReports": "https://github.com/eblondel/geometa/issues",
+        "LazyLoad": "yes",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.1",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-05-27 14:06:31 UTC; emman",
+        "Author": "Emmanuel Blondel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0002-5870-5762>),\n  R Consortium [fnd]",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-05 22:50:02 UTC",
+        "Built": "R 4.5.0; ; 2025-06-06 04:24:25 UTC; unix"
+      }
+    },
     "geosphere": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -1834,6 +2001,32 @@
         "Repository": "RSPM",
         "Date/Publication": "2025-03-25 00:40:02 UTC",
         "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-03-25 04:33:10 UTC; unix"
+      }
+    },
+    "ggnewscale": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "ggnewscale",
+        "Language": "en-GB",
+        "Title": "Multiple Fill and Colour Scales in 'ggplot2'",
+        "Version": "0.5.2",
+        "Authors@R": "\n    person(given = \"Elio\",\n           family = \"Campitelli\",\n           role = c(\"cre\", \"aut\"),\n           email = \"eliocampitelli@gmail.com\",\n           comment = c(ORCID = \"0000-0002-7742-9230\"))",
+        "Description": "Use multiple fill and colour scales in 'ggplot2'.",
+        "License": "GPL-3",
+        "URL": "https://eliocamp.github.io/ggnewscale/,\nhttps://github.com/eliocamp/ggnewscale",
+        "BugReports": "https://github.com/eliocamp/ggnewscale/issues",
+        "Encoding": "UTF-8",
+        "Imports": "ggplot2 (>= 3.5.0)",
+        "RoxygenNote": "7.3.2",
+        "Suggests": "testthat, vdiffr, covr",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-06-20 03:50:42 UTC; elio",
+        "Author": "Elio Campitelli [cre, aut] (ORCID:\n    <https://orcid.org/0000-0002-7742-9230>)",
+        "Maintainer": "Elio Campitelli <eliocampitelli@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-20 04:50:02 UTC",
+        "Built": "R 4.5.0; ; 2025-06-21 04:19:15 UTC; unix"
       }
     },
     "ggplot2": {
@@ -1992,6 +2185,31 @@
         "RemoteSha": "1.8.0"
       }
     },
+    "gridExtra": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "gridExtra",
+        "Authors@R": "c(person(\"Baptiste\", \"Auguie\",\n    email = \"baptiste.auguie@gmail.com\",\n    role = c(\"aut\", \"cre\")), person(\"Anton\", \"Antonov\",\n    email = \"tonytonov@gmail.com\",\n    role = c(\"ctb\")))",
+        "License": "GPL (>= 2)",
+        "Title": "Miscellaneous Functions for \"Grid\" Graphics",
+        "Type": "Package",
+        "Description": "Provides a number of user-level functions to work with \"grid\"\n    graphics, notably to arrange multiple grid-based plots on a page, and draw\n    tables.",
+        "Version": "2.3",
+        "VignetteBuilder": "knitr",
+        "Imports": "gtable, grid, grDevices, graphics, utils",
+        "Suggests": "ggplot2, egg, lattice, knitr, testthat",
+        "RoxygenNote": "6.0.1",
+        "NeedsCompilation": "no",
+        "Packaged": "2017-09-08 22:52:09 UTC; baptiste",
+        "Author": "Baptiste Auguie [aut, cre],\n  Anton Antonov [ctb]",
+        "Maintainer": "Baptiste Auguie <baptiste.auguie@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2017-09-09 14:12:08 UTC",
+        "Encoding": "UTF-8",
+        "Built": "R 4.4.0; ; 2024-04-25 19:47:16 UTC; unix"
+      }
+    },
     "gtable": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -2048,6 +2266,36 @@
         "Repository": "RSPM",
         "Date/Publication": "2024-05-26 20:00:03 UTC",
         "Built": "R 4.4.0; ; 2024-05-27 04:10:56 UTC; unix"
+      }
+    },
+    "hms": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "hms",
+        "Title": "Pretty Time of Day",
+        "Date": "2023-03-21",
+        "Version": "1.1.3",
+        "Authors@R": "c(\n    person(\"Kirill\", \"Müller\", role = c(\"aut\", \"cre\"), email = \"kirill@cynkra.com\", comment = c(ORCID = \"0000-0002-1416-3412\")),\n    person(\"R Consortium\", role = \"fnd\"),\n    person(\"RStudio\", role = \"fnd\")\n    )",
+        "Description": "Implements an S3 class for storing and formatting time-of-day\n    values, based on the 'difftime' class.",
+        "Imports": "lifecycle, methods, pkgconfig, rlang (>= 1.0.2), vctrs (>=\n0.3.8)",
+        "Suggests": "crayon, lubridate, pillar (>= 1.1.0), testthat (>= 3.0.0)",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "URL": "https://hms.tidyverse.org/, https://github.com/tidyverse/hms",
+        "BugReports": "https://github.com/tidyverse/hms/issues",
+        "RoxygenNote": "7.2.3",
+        "Config/testthat/edition": "3",
+        "Config/autostyle/scope": "line_breaks",
+        "Config/autostyle/strict": "false",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-03-21 16:52:11 UTC; kirill",
+        "Author": "Kirill Müller [aut, cre] (<https://orcid.org/0000-0002-1416-3412>),\n  R Consortium [fnd],\n  RStudio [fnd]",
+        "Maintainer": "Kirill Müller <kirill@cynkra.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2023-03-21 18:10:02 UTC",
+        "Built": "R 4.4.0; ; 2024-04-25 19:48:33 UTC; unix"
       }
     },
     "htmltools": {
@@ -2327,6 +2575,37 @@
         "RemoteSha": "2.0.0"
       }
     },
+    "keyring": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "keyring",
+        "Title": "Access the System Credential Store from R",
+        "Version": "1.4.1",
+        "Authors@R": "c(\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Alec\", \"Wong\", role = \"ctb\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
+        "Description": "Platform independent 'API' to access the operating system's\n    credential store. Currently supports: 'Keychain' on 'macOS',\n    Credential Store on 'Windows', the Secret Service 'API' on 'Linux',\n    and simple, platform independent stores implemented with environment\n    variables or encrypted files.  Additional storage back-ends can be\n    added easily.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://keyring.r-lib.org/, https://github.com/r-lib/keyring",
+        "BugReports": "https://github.com/r-lib/keyring/issues",
+        "Depends": "R (>= 3.5)",
+        "Imports": "askpass, filelock, R6, tools, utils, yaml",
+        "Suggests": "callr, covr, openssl, testthat (>= 3.0.0), withr",
+        "Biarch": "true",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Config/usethis/last-upkeep": "2025-04-30",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.2.9000",
+        "SystemRequirements": "Optional: libsecret on Linux (libsecret-1-dev on\nDebian/Ubuntu, libsecret-devel on Fedora/CentOS)",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-06-15 20:21:23 UTC; gaborcsardi",
+        "Author": "Gábor Csárdi [aut, cre],\n  Alec Wong [ctb],\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+        "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-15 21:10:02 UTC",
+        "Built": "R 4.5.0; x86_64-pc-linux-gnu; 2025-06-16 04:28:20 UTC; unix"
+      }
+    },
     "knitcitations": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -2504,27 +2783,27 @@
         "Type": "Package",
         "Package": "leaflet",
         "Title": "Create Interactive Web Maps with the JavaScript 'Leaflet'\nLibrary",
-        "Version": "2.2.2",
-        "Authors@R": "c(\n    person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Bhaskar\", \"Karambelkar\", role = \"aut\"),\n    person(\"Yihui\", \"Xie\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", role = \"ctb\"),\n    person(\"Kenton\", \"Russell\", role = \"ctb\"),\n    person(\"Kent\", \"Johnson\", role = \"ctb\"),\n    person(\"Vladimir\", \"Agafonkin\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet library\"),\n    person(\"CloudMade\", role = \"cph\",\n           comment = \"Leaflet library\"),\n    person(\"Leaflet contributors\", role = \"ctb\",\n           comment = \"Leaflet library\"),\n    person(\"Brandon Copeland\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-measure plugin\"),\n    person(\"Joerg Dietrich\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.Terminator plugin\"),\n    person(\"Benjamin Becquet\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.MagnifyingGlass plugin\"),\n    person(\"Norkart AS\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.MiniMap plugin\"),\n    person(\"L. Voogdt\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.awesome-markers plugin\"),\n    person(\"Daniel Montague\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.EasyButton plugin\"),\n    person(\"Kartena AB\", role = c(\"ctb\", \"cph\"),\n           comment = \"Proj4Leaflet plugin\"),\n    person(\"Robert Kajic\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-locationfilter plugin\"),\n    person(\"Mapbox\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-omnivore plugin\"),\n    person(\"Michael Bostock\", role = c(\"ctb\", \"cph\"),\n           comment = \"topojson\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Version": "2.2.3",
+        "Authors@R": "c(\n    person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = \"aut\"),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Bhaskar\", \"Karambelkar\", role = \"aut\"),\n    person(\"Yihui\", \"Xie\", role = \"aut\"),\n    person(\"Garrick\", \"Aden-Buie\", , \"garrick@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-7111-0077\")),\n    person(\"Hadley\", \"Wickham\", role = \"ctb\"),\n    person(\"Kenton\", \"Russell\", role = \"ctb\"),\n    person(\"Kent\", \"Johnson\", role = \"ctb\"),\n    person(\"Vladimir\", \"Agafonkin\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet library\"),\n    person(\"CloudMade\", role = \"cph\",\n           comment = \"Leaflet library\"),\n    person(\"Leaflet contributors\", role = \"ctb\",\n           comment = \"Leaflet library\"),\n    person(\"Brandon Copeland\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-measure plugin\"),\n    person(\"Joerg Dietrich\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.Terminator plugin\"),\n    person(\"Benjamin Becquet\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.MagnifyingGlass plugin\"),\n    person(\"Norkart AS\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.MiniMap plugin\"),\n    person(\"L. Voogdt\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.awesome-markers plugin\"),\n    person(\"Daniel Montague\", role = c(\"ctb\", \"cph\"),\n           comment = \"Leaflet.EasyButton plugin\"),\n    person(\"Kartena AB\", role = c(\"ctb\", \"cph\"),\n           comment = \"Proj4Leaflet plugin\"),\n    person(\"Robert Kajic\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-locationfilter plugin\"),\n    person(\"Mapbox\", role = c(\"ctb\", \"cph\"),\n           comment = \"leaflet-omnivore plugin\"),\n    person(\"Michael Bostock\", role = c(\"ctb\", \"cph\"),\n           comment = \"topojson\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "Create and customize interactive maps using the 'Leaflet'\n    JavaScript library and the 'htmlwidgets' package. These maps can be\n    used directly from the R console, from 'RStudio', in Shiny\n    applications and R Markdown documents.",
-        "License": "GPL-3",
+        "License": "MIT + file LICENSE",
         "URL": "https://rstudio.github.io/leaflet/,\nhttps://github.com/rstudio/leaflet",
         "BugReports": "https://github.com/rstudio/leaflet/issues",
-        "Depends": "R (>= 3.1.0)",
-        "Imports": "crosstalk, htmltools, htmlwidgets (>= 1.5.4), jquerylib,\nleaflet.providers (>= 2.0.0), magrittr, methods, png, raster\n(>= 3.6.3), RColorBrewer, scales (>= 1.0.0), sp, stats,\nviridisLite, xfun",
-        "Suggests": "knitr, maps, purrr, R6, RJSONIO, rmarkdown, s2, sf (>=\n0.9-6), shiny, terra, testthat (>= 3.0.0)",
+        "Depends": "R (>= 3.5)",
+        "Imports": "crosstalk, htmltools, htmlwidgets (>= 1.5.4), jquerylib,\nleaflet.providers (>= 2.0.0), magrittr, methods, png, raster\n(>= 3.6.3), RColorBrewer, rlang, scales (>= 1.0.0), sf (>=\n0.9-6), stats, viridisLite, xfun",
+        "Suggests": "knitr, maps, purrr, R6, RJSONIO, rmarkdown, s2, shiny (>=\n1.0.0), sp, terra, testthat (>= 3.0.0)",
+        "Config/Needs/website": "dplyr, ncdf4, rnaturalearth,\ntidyverse/tidytemplate",
         "Config/testthat/edition": "3",
-        "Config/Needs/website": "dplyr, geojsonio, ncdf4, tidyverse/tidytemplate",
         "Encoding": "UTF-8",
         "LazyData": "true",
-        "RoxygenNote": "7.3.1",
+        "RoxygenNote": "7.3.2",
         "NeedsCompilation": "no",
-        "Packaged": "2024-03-25 22:40:52 UTC; cpsievert",
-        "Author": "Joe Cheng [aut, cre],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Bhaskar Karambelkar [aut],\n  Yihui Xie [aut],\n  Hadley Wickham [ctb],\n  Kenton Russell [ctb],\n  Kent Johnson [ctb],\n  Vladimir Agafonkin [ctb, cph] (Leaflet library),\n  CloudMade [cph] (Leaflet library),\n  Leaflet contributors [ctb] (Leaflet library),\n  Brandon Copeland [ctb, cph] (leaflet-measure plugin),\n  Joerg Dietrich [ctb, cph] (Leaflet.Terminator plugin),\n  Benjamin Becquet [ctb, cph] (Leaflet.MagnifyingGlass plugin),\n  Norkart AS [ctb, cph] (Leaflet.MiniMap plugin),\n  L. Voogdt [ctb, cph] (Leaflet.awesome-markers plugin),\n  Daniel Montague [ctb, cph] (Leaflet.EasyButton plugin),\n  Kartena AB [ctb, cph] (Proj4Leaflet plugin),\n  Robert Kajic [ctb, cph] (leaflet-locationfilter plugin),\n  Mapbox [ctb, cph] (leaflet-omnivore plugin),\n  Michael Bostock [ctb, cph] (topojson),\n  Posit Software, PBC [cph, fnd]",
-        "Maintainer": "Joe Cheng <joe@posit.co>",
+        "Packaged": "2025-09-02 15:28:47 UTC; garrick",
+        "Author": "Joe Cheng [aut],\n  Barret Schloerke [aut] (ORCID: <https://orcid.org/0000-0001-9986-114X>),\n  Bhaskar Karambelkar [aut],\n  Yihui Xie [aut],\n  Garrick Aden-Buie [aut, cre] (ORCID:\n    <https://orcid.org/0000-0002-7111-0077>),\n  Hadley Wickham [ctb],\n  Kenton Russell [ctb],\n  Kent Johnson [ctb],\n  Vladimir Agafonkin [ctb, cph] (Leaflet library),\n  CloudMade [cph] (Leaflet library),\n  Leaflet contributors [ctb] (Leaflet library),\n  Brandon Copeland [ctb, cph] (leaflet-measure plugin),\n  Joerg Dietrich [ctb, cph] (Leaflet.Terminator plugin),\n  Benjamin Becquet [ctb, cph] (Leaflet.MagnifyingGlass plugin),\n  Norkart AS [ctb, cph] (Leaflet.MiniMap plugin),\n  L. Voogdt [ctb, cph] (Leaflet.awesome-markers plugin),\n  Daniel Montague [ctb, cph] (Leaflet.EasyButton plugin),\n  Kartena AB [ctb, cph] (Proj4Leaflet plugin),\n  Robert Kajic [ctb, cph] (leaflet-locationfilter plugin),\n  Mapbox [ctb, cph] (leaflet-omnivore plugin),\n  Michael Bostock [ctb, cph] (topojson),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
         "Repository": "RSPM",
-        "Date/Publication": "2024-03-26 19:10:06 UTC",
-        "Built": "R 4.4.0; ; 2024-04-25 02:07:39 UTC; unix"
+        "Date/Publication": "2025-09-04 07:40:02 UTC",
+        "Built": "R 4.5.0; ; 2025-09-05 04:58:02 UTC; unix"
       }
     },
     "leaflet.extras": {
@@ -2743,6 +3022,33 @@
         "RemoteRepos": "https://cloud.r-project.org",
         "RemotePkgPlatform": "source",
         "RemoteSha": "2.0.3"
+      }
+    },
+    "malariaAtlas": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "malariaAtlas",
+        "Title": "An R Interface to Open-Access Malaria Data, Hosted by the\n'Malaria Atlas Project'",
+        "Version": "1.6.4",
+        "Authors@R": "c(\n    person(\"Mauricio\", \"van den Berg\", email =  \"mauricio.vandenberg@thekids.org.au\", role = c(\"aut\", \"cre\")),\n    person(\"Daniel\", \"Pfeffer\", email = \"daniel.pfeffer@uqconnect.edu.au\", role = c(\"aut\"), comment = c(ORCID = \"0000-0002-2204-3488\")),\n    person(\"Tim\", \"Lucas\", email =  \"timcdlucas@gmail.com\", role = c(\"aut\"), comment = c(ORCID = \"0000-0003-4694-8107\")),\n    person(\"Daniel\", \"May\", role = c(\"aut\"), comment = c(ORCID = \"0000-0003-0005-2452\")),\n    person(\"Suzanne\", \"Keddie\", role = c(\"aut\"), comment = c(ORCID = \"0000-0003-1254-7794\")),\n    person(\"Jen\", \"Rozier\", role = c(\"aut\"), comment = c(ORCID = \"0000-0002-2610-7557\")),\n    person(\"Oliver\", \"Watson\", role = c(\"aut\"), comment = c(ORCID = \"0000-0003-2374-0741\")),\n    person(\"Harry\", \"Gibson\", role = c(\"aut\"), comment = c(ORCID = \"0000-0001-6779-3250\")),\n    person(\"Nick\", \"Golding\", role = c(\"ctb\")),\n    person(\"David\", \"Smith\", role = c(\"ctb\")))",
+        "Description": "A suite of tools to allow you to download all \n  publicly available parasite rate survey points, mosquito occurrence points and raster surfaces from \n  the 'Malaria Atlas Project' <https://malariaatlas.org/> servers as well as utility functions for plotting\n  the downloaded data.",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "Imports": "xml2, gridExtra, httr, dplyr, tidyr, methods, stats, utils,\nrlang, sf, lifecycle, terra, tidyterra, ows4R, future.apply,\nlubridate, jsonlite, stringr, ggnewscale",
+        "Depends": "ggplot2",
+        "RoxygenNote": "7.2.3",
+        "Suggests": "testthat, knitr, rmarkdown, palettetown, magrittr, tibble,\nrdhs (>= 0.8.0)",
+        "URL": "https://github.com/malaria-atlas-project/malariaAtlas",
+        "BugReports": "https://github.com/malaria-atlas-project/malariaAtlas/issues",
+        "VignetteBuilder": "knitr",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-06-11 00:15:12 UTC; mvandenberg",
+        "Author": "Mauricio van den Berg [aut, cre],\n  Daniel Pfeffer [aut] (ORCID: <https://orcid.org/0000-0002-2204-3488>),\n  Tim Lucas [aut] (ORCID: <https://orcid.org/0000-0003-4694-8107>),\n  Daniel May [aut] (ORCID: <https://orcid.org/0000-0003-0005-2452>),\n  Suzanne Keddie [aut] (ORCID: <https://orcid.org/0000-0003-1254-7794>),\n  Jen Rozier [aut] (ORCID: <https://orcid.org/0000-0002-2610-7557>),\n  Oliver Watson [aut] (ORCID: <https://orcid.org/0000-0003-2374-0741>),\n  Harry Gibson [aut] (ORCID: <https://orcid.org/0000-0001-6779-3250>),\n  Nick Golding [ctb],\n  David Smith [ctb]",
+        "Maintainer": "Mauricio van den Berg <mauricio.vandenberg@thekids.org.au>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-11 11:00:06 UTC",
+        "Built": "R 4.5.0; ; 2025-06-12 04:31:19 UTC; unix"
       }
     },
     "markdown": {
@@ -2974,6 +3280,35 @@
         "Repository": "RSPM",
         "Date/Publication": "2025-01-25 20:30:02 UTC",
         "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-01-26 04:22:28 UTC; unix"
+      }
+    },
+    "ows4R": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "ows4R",
+        "Version": "0.5",
+        "Date": "2025-06-13",
+        "Title": "Interface to OGC Web-Services (OWS)",
+        "Authors@R": "c(person(\"Emmanuel\", \"Blondel\", role = c(\"aut\", \"cre\"), email = \"emmanuel.blondel1@gmail.com\", comment = c(ORCID = \"0000-0002-5870-5762\")),\n             person(\"Alexandre\", \"Bennici\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0003-2160-3487\")),\n             person(\"Norbert\", \"Billet\", role = c(\"ctb\")))",
+        "Maintainer": "Emmanuel Blondel <emmanuel.blondel1@gmail.com>",
+        "Depends": "R (>= 3.3.0)",
+        "Imports": "methods, R6, httr, openssl, keyring, XML (>= 3.96-1.1),\ngeometa (>= 0.9), sf, terra, parallel, crayon",
+        "Suggests": "testthat, knitr, markdown",
+        "Description": "Provides an Interface to Web-Services defined as standards by the Open Geospatial Consortium (OGC), including Web Feature Service\n (WFS) for vector data, Web Coverage Service (WCS), Catalogue Service (CSW) for ISO/OGC metadata, Web Processing Service (WPS) for data processes,\n and associated standards such as the common web-service specification (OWS) and OGC Filter Encoding. Partial support is provided for the Web Map \n Service (WMS). The purpose is to add support for additional OGC service standards such as Web Coverage Processing Service (WCPS), the Sensor \n Observation Service (SOS), or even new standard services emerging such OGC API or SensorThings.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/eblondel/ows4R,\nhttps://eblondel.github.io/ows4R/,\nhttps://www.ogc.org/standards/",
+        "BugReports": "https://github.com/eblondel/ows4R/issues",
+        "LazyLoad": "yes",
+        "RoxygenNote": "7.3.1",
+        "VignetteBuilder": "knitr",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-06-13 21:18:06 UTC; emman",
+        "Author": "Emmanuel Blondel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0002-5870-5762>),\n  Alexandre Bennici [ctb] (ORCID:\n    <https://orcid.org/0000-0003-2160-3487>),\n  Norbert Billet [ctb]",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-06-15 00:30:06 UTC",
+        "Encoding": "UTF-8",
+        "Built": "R 4.5.0; ; 2025-06-15 04:26:19 UTC; unix"
       }
     },
     "parallelly": {
@@ -3338,6 +3673,34 @@
         "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-09-21 04:23:06 UTC; unix"
       }
     },
+    "progress": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "progress",
+        "Title": "Terminal Progress Bars",
+        "Version": "1.2.3",
+        "Authors@R": "c(\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Rich\", \"FitzJohn\", role = \"aut\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "Configurable Progress bars, they may include percentage,\n    elapsed time, and/or the estimated completion time. They work in\n    terminals, in 'Emacs' 'ESS', 'RStudio', 'Windows' 'Rgui' and the\n    'macOS' 'R.app'. The package also provides a 'C++' 'API', that works\n    with or without 'Rcpp'.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/r-lib/progress#readme,\nhttp://r-lib.github.io/progress/",
+        "BugReports": "https://github.com/r-lib/progress/issues",
+        "Depends": "R (>= 3.6)",
+        "Imports": "crayon, hms, prettyunits, R6",
+        "Suggests": "Rcpp, testthat (>= 3.0.0), withr",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.2.3",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-12-05 09:33:10 UTC; gaborcsardi",
+        "Author": "Gábor Csárdi [aut, cre],\n  Rich FitzJohn [aut],\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+        "Repository": "RSPM",
+        "Date/Publication": "2023-12-06 10:30:02 UTC",
+        "Built": "R 4.4.0; ; 2024-04-25 19:49:26 UTC; unix"
+      }
+    },
     "promises": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3612,6 +3975,38 @@
         "Built": "R 4.1.1; ; 'Fri, 22 Oct 2021 17:21:47 +0530'; unix"
       }
     },
+    "readr": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "readr",
+        "Title": "Read Rectangular Text Data",
+        "Version": "2.1.5",
+        "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"),\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Romain\", \"Francois\", role = \"ctb\"),\n    person(\"Jennifer\", \"Bryan\", , \"jenny@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-6983-2759\")),\n    person(\"Shelby\", \"Bearrows\", role = \"ctb\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")),\n    person(\"https://github.com/mandreyel/\", role = \"cph\",\n           comment = \"mio library\"),\n    person(\"Jukka\", \"Jylänki\", role = c(\"ctb\", \"cph\"),\n           comment = \"grisu3 implementation\"),\n    person(\"Mikkel\", \"Jørgensen\", role = c(\"ctb\", \"cph\"),\n           comment = \"grisu3 implementation\")\n  )",
+        "Description": "The goal of 'readr' is to provide a fast and friendly way to\n    read rectangular data (like 'csv', 'tsv', and 'fwf').  It is designed\n    to flexibly parse many types of data found in the wild, while still\n    cleanly failing when data unexpectedly changes.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://readr.tidyverse.org, https://github.com/tidyverse/readr",
+        "BugReports": "https://github.com/tidyverse/readr/issues",
+        "Depends": "R (>= 3.6)",
+        "Imports": "cli (>= 3.2.0), clipr, crayon, hms (>= 0.4.1), lifecycle (>=\n0.2.0), methods, R6, rlang, tibble, utils, vroom (>= 1.6.0)",
+        "Suggests": "covr, curl, datasets, knitr, rmarkdown, spelling, stringi,\ntestthat (>= 3.2.0), tzdb (>= 0.1.1), waldo, withr, xml2",
+        "LinkingTo": "cpp11, tzdb (>= 0.1.1)",
+        "VignetteBuilder": "knitr",
+        "Config/Needs/website": "tidyverse, tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Config/testthat/parallel": "false",
+        "Encoding": "UTF-8",
+        "Language": "en-US",
+        "RoxygenNote": "7.2.3",
+        "NeedsCompilation": "yes",
+        "Packaged": "2024-01-10 21:03:49 UTC; jenny",
+        "Author": "Hadley Wickham [aut],\n  Jim Hester [aut],\n  Romain Francois [ctb],\n  Jennifer Bryan [aut, cre] (<https://orcid.org/0000-0002-6983-2759>),\n  Shelby Bearrows [ctb],\n  Posit Software, PBC [cph, fnd],\n  https://github.com/mandreyel/ [cph] (mio library),\n  Jukka Jylänki [ctb, cph] (grisu3 implementation),\n  Mikkel Jørgensen [ctb, cph] (grisu3 implementation)",
+        "Maintainer": "Jennifer Bryan <jenny@posit.co>",
+        "Repository": "RSPM",
+        "Date/Publication": "2024-01-10 23:20:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-04-25 19:53:54 UTC; unix"
+      }
+    },
     "remotes": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -3776,8 +4171,8 @@
       "description": {
         "Package": "roxygen2",
         "Title": "In-Line Documentation for R",
-        "Version": "7.3.2",
-        "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = c(\"aut\", \"cre\", \"cph\"),\n           comment = c(ORCID = \"0000-0003-4757-117X\")),\n    person(\"Peter\", \"Danenberg\", , \"pcd@roxygen.org\", role = c(\"aut\", \"cph\")),\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = \"aut\"),\n    person(\"Manuel\", \"Eugster\", role = c(\"aut\", \"cph\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Version": "7.3.3",
+        "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = c(\"aut\", \"cre\", \"cph\"),\n           comment = c(ORCID = \"0000-0003-4757-117X\")),\n    person(\"Peter\", \"Danenberg\", , \"pcd@roxygen.org\", role = c(\"aut\", \"cph\")),\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = \"aut\"),\n    person(\"Manuel\", \"Eugster\", role = c(\"aut\", \"cph\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
         "Description": "Generate your Rd documentation, 'NAMESPACE' file, and\n    collation field using specially formatted comments. Writing\n    documentation in-line with code makes it easier to keep your\n    documentation up-to-date as your requirements change. 'roxygen2' is\n    inspired by the 'Doxygen' system for C++.",
         "License": "MIT + file LICENSE",
         "URL": "https://roxygen2.r-lib.org/, https://github.com/r-lib/roxygen2",
@@ -3793,14 +4188,14 @@
         "Config/testthat/parallel": "TRUE",
         "Encoding": "UTF-8",
         "Language": "en-GB",
-        "RoxygenNote": "7.3.1.9000",
+        "RoxygenNote": "7.3.2.9000",
         "NeedsCompilation": "yes",
-        "Packaged": "2024-06-27 21:29:24 UTC; hadleywickham",
-        "Author": "Hadley Wickham [aut, cre, cph]\n    (<https://orcid.org/0000-0003-4757-117X>),\n  Peter Danenberg [aut, cph],\n  Gábor Csárdi [aut],\n  Manuel Eugster [aut, cph],\n  Posit Software, PBC [cph, fnd]",
+        "Packaged": "2025-09-03 20:12:40 UTC; hadleywickham",
+        "Author": "Hadley Wickham [aut, cre, cph] (ORCID:\n    <https://orcid.org/0000-0003-4757-117X>),\n  Peter Danenberg [aut, cph],\n  Gábor Csárdi [aut],\n  Manuel Eugster [aut, cph],\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
         "Maintainer": "Hadley Wickham <hadley@posit.co>",
         "Repository": "RSPM",
-        "Date/Publication": "2024-06-28 08:20:02 UTC",
-        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-06-29 04:31:48 UTC; unix"
+        "Date/Publication": "2025-09-03 21:40:02 UTC",
+        "Built": "R 4.5.0; x86_64-pc-linux-gnu; 2025-09-04 04:33:39 UTC; unix"
       }
     },
     "rprojroot": {
@@ -4770,6 +5165,35 @@
         "Built": "R 4.4.0; ; 2025-04-16 04:20:36 UTC; unix"
       }
     },
+    "tzdb": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "tzdb",
+        "Title": "Time Zone Database Information",
+        "Version": "0.5.0",
+        "Authors@R": "c(\n    person(\"Davis\", \"Vaughan\", , \"davis@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Howard\", \"Hinnant\", role = \"cph\",\n           comment = \"Author of the included date library\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "Provides an up-to-date copy of the Internet Assigned Numbers\n    Authority (IANA) Time Zone Database. It is updated periodically to\n    reflect changes made by political bodies to time zone boundaries, UTC\n    offsets, and daylight saving time rules. Additionally, this package\n    provides a C++ interface for working with the 'date' library. 'date'\n    provides comprehensive support for working with dates and date-times,\n    which this package exposes to make it easier for other R packages to\n    utilize. Headers are provided for calendar specific calculations,\n    along with a limited interface for time zone manipulations.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://tzdb.r-lib.org, https://github.com/r-lib/tzdb",
+        "BugReports": "https://github.com/r-lib/tzdb/issues",
+        "Depends": "R (>= 4.0.0)",
+        "Suggests": "covr, testthat (>= 3.0.0)",
+        "LinkingTo": "cpp11 (>= 0.5.2)",
+        "Biarch": "yes",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.2",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-03-14 18:41:13 UTC; davis",
+        "Author": "Davis Vaughan [aut, cre],\n  Howard Hinnant [cph] (Author of the included date library),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Davis Vaughan <davis@posit.co>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-03-15 22:50:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-03-17 15:37:01 UTC; unix"
+      }
+    },
     "units": {
       "Source": "CRAN",
       "Repository": "https://cloud.r-project.org",
@@ -4832,15 +5256,15 @@
       "description": {
         "Package": "usethis",
         "Title": "Automate Package and Project Setup",
-        "Version": "3.2.0",
+        "Version": "3.2.1",
         "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0003-4757-117X\")),\n    person(\"Jennifer\", \"Bryan\", , \"jenny@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-6983-2759\")),\n    person(\"Malcolm\", \"Barrett\", , \"malcolmbarrett@gmail.com\", role = \"aut\",\n           comment = c(ORCID = \"0000-0003-0299-5825\")),\n    person(\"Andy\", \"Teucher\", , \"andy.teucher@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0002-7840-692X\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
         "Description": "Automate package and project setup tasks that are otherwise\n    performed manually. This includes setting up unit testing, test\n    coverage, continuous integration, Git, 'GitHub', licenses, 'Rcpp',\n    'RStudio' projects, and more.",
         "License": "MIT + file LICENSE",
         "URL": "https://usethis.r-lib.org, https://github.com/r-lib/usethis",
         "BugReports": "https://github.com/r-lib/usethis/issues",
         "Depends": "R (>= 4.1)",
-        "Imports": "cli (>= 3.0.1), clipr (>= 0.3.0), crayon, curl (>= 2.7), desc\n(>= 1.4.2), fs (>= 1.3.0), gert (>= 1.4.1), gh (>= 1.2.1), glue\n(>= 1.3.0), jsonlite, lifecycle (>= 1.0.0), purrr, rappdirs,\nrlang (>= 1.1.0), rprojroot (>= 1.2), rstudioapi, stats, tools,\nutils, whisker, withr (>= 2.3.0), yaml",
-        "Suggests": "covr, knitr, magick, pkgload (>= 1.3.2.1), quarto, rmarkdown,\nroxygen2 (>= 7.1.2), spelling (>= 1.2), testthat (>= 3.1.8)",
+        "Imports": "cli (>= 3.0.1), clipr (>= 0.3.0), crayon, curl (>= 2.7), desc\n(>= 1.4.2), fs (>= 1.3.0), gert (>= 1.4.1), gh (>= 1.2.1), glue\n(>= 1.3.0), jsonlite, lifecycle (>= 1.0.0), purrr, rappdirs,\nrlang (>= 1.1.0), rprojroot (>= 2.1.1), rstudioapi, stats,\ntools, utils, whisker, withr (>= 2.3.0), yaml",
+        "Suggests": "covr, knitr, magick, pkgload (>= 1.3.2.1), quarto (>= 1.5.1),\nrmarkdown, roxygen2 (>= 7.1.2), spelling (>= 1.2), testthat (>=\n3.1.8)",
         "Config/Needs/website": "r-lib/asciicast, tidyverse/tidytemplate, xml2",
         "Config/testthat/edition": "3",
         "Config/testthat/parallel": "TRUE",
@@ -4848,14 +5272,14 @@
         "Config/usethis/last-upkeep": "2025-04-22",
         "Encoding": "UTF-8",
         "Language": "en-US",
-        "RoxygenNote": "7.3.2.9000",
+        "RoxygenNote": "7.3.3",
         "NeedsCompilation": "no",
-        "Packaged": "2025-08-27 23:32:25 UTC; jenny",
+        "Packaged": "2025-09-05 20:27:33 UTC; jenny",
         "Author": "Hadley Wickham [aut] (ORCID: <https://orcid.org/0000-0003-4757-117X>),\n  Jennifer Bryan [aut, cre] (ORCID:\n    <https://orcid.org/0000-0002-6983-2759>),\n  Malcolm Barrett [aut] (ORCID: <https://orcid.org/0000-0003-0299-5825>),\n  Andy Teucher [aut] (ORCID: <https://orcid.org/0000-0002-7840-692X>),\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
         "Maintainer": "Jennifer Bryan <jenny@posit.co>",
         "Repository": "RSPM",
-        "Date/Publication": "2025-08-28 04:00:03 UTC",
-        "Built": "R 4.5.0; ; 2025-08-29 04:36:50 UTC; unix"
+        "Date/Publication": "2025-09-06 05:10:02 UTC",
+        "Built": "R 4.5.0; ; 2025-09-07 04:15:51 UTC; unix"
       }
     },
     "utf8": {
@@ -4963,6 +5387,39 @@
         "Repository": "RSPM",
         "Date/Publication": "2023-05-02 23:50:02 UTC",
         "Built": "R 4.4.0; ; 2024-04-25 19:41:15 UTC; unix"
+      }
+    },
+    "vroom": {
+      "Source": "CRAN",
+      "Repository": "https://cloud.r-project.org",
+      "description": {
+        "Package": "vroom",
+        "Title": "Read and Write Rectangular Text Data Quickly",
+        "Version": "1.6.5",
+        "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\",\n           comment = c(ORCID = \"0000-0002-2739-7082\")),\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0003-4757-117X\")),\n    person(\"Jennifer\", \"Bryan\", , \"jenny@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-6983-2759\")),\n    person(\"Shelby\", \"Bearrows\", role = \"ctb\"),\n    person(\"https://github.com/mandreyel/\", role = \"cph\",\n           comment = \"mio library\"),\n    person(\"Jukka\", \"Jylänki\", role = \"cph\",\n           comment = \"grisu3 implementation\"),\n    person(\"Mikkel\", \"Jørgensen\", role = \"cph\",\n           comment = \"grisu3 implementation\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "The goal of 'vroom' is to read and write data (like 'csv',\n    'tsv' and 'fwf') quickly. When reading it uses a quick initial\n    indexing step, then reads the values lazily , so only the data you\n    actually use needs to be read.  The writer formats the data in\n    parallel and writes to disk asynchronously from formatting.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://vroom.r-lib.org, https://github.com/tidyverse/vroom",
+        "BugReports": "https://github.com/tidyverse/vroom/issues",
+        "Depends": "R (>= 3.6)",
+        "Imports": "bit64, cli (>= 3.2.0), crayon, glue, hms, lifecycle (>=\n1.0.3), methods, rlang (>= 0.4.2), stats, tibble (>= 2.0.0),\ntidyselect, tzdb (>= 0.1.1), vctrs (>= 0.2.0), withr",
+        "Suggests": "archive, bench (>= 1.1.0), covr, curl, dplyr, forcats, fs,\nggplot2, knitr, patchwork, prettyunits, purrr, rmarkdown,\nrstudioapi, scales, spelling, testthat (>= 2.1.0), tidyr,\nutils, waldo, xml2",
+        "LinkingTo": "cpp11 (>= 0.2.0), progress (>= 1.2.1), tzdb (>= 0.1.1)",
+        "VignetteBuilder": "knitr",
+        "Config/Needs/website": "nycflights13, tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Config/testthat/parallel": "false",
+        "Copyright": "file COPYRIGHTS",
+        "Encoding": "UTF-8",
+        "Language": "en-US",
+        "RoxygenNote": "7.2.3.9000",
+        "NeedsCompilation": "yes",
+        "Packaged": "2023-12-05 16:46:59 UTC; jenny",
+        "Author": "Jim Hester [aut] (<https://orcid.org/0000-0002-2739-7082>),\n  Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>),\n  Jennifer Bryan [aut, cre] (<https://orcid.org/0000-0002-6983-2759>),\n  Shelby Bearrows [ctb],\n  https://github.com/mandreyel/ [cph] (mio library),\n  Jukka Jylänki [cph] (grisu3 implementation),\n  Mikkel Jørgensen [cph] (grisu3 implementation),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Jennifer Bryan <jenny@posit.co>",
+        "Repository": "RSPM",
+        "Date/Publication": "2023-12-05 23:50:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-04-25 19:52:15 UTC; unix"
       }
     },
     "waldo": {
@@ -5660,13 +6117,13 @@
       "checksum": "f7533c1389c7bbff52d292bb344e391f"
     },
     "Rmd/text_about.Rmd": {
-      "checksum": "a964ea177823b1e185f5e970f0a12708"
+      "checksum": "a31a8b62cad6c6f24c38a2223844c0f2"
     },
     "Rmd/text_how_to_use.Rmd": {
       "checksum": "53525620b2fe96369fa57e2d0c4842c7"
     },
     "Rmd/text_intro_tab.Rmd": {
-      "checksum": "761f52ee0044cd445f2da929cdf3cdda"
+      "checksum": "9bf8c3e96932bce34fd5244c2f1ec672"
     },
     "Rmd/text_loadsesh.Rmd": {
       "checksum": "078fcaeefcbe137b593b5bbc684249e2"
@@ -5675,7 +6132,7 @@
       "checksum": "f2d296cdb65887bb026703fef193266f"
     },
     "Rmd/userReport_intro.Rmd": {
-      "checksum": "13f955b9d93c09b23c695c55042410b2"
+      "checksum": "816a8df374867e36b571046df7d34b80"
     },
     "Rmd/userReport_module.Rmd": {
       "checksum": "3792021e737ad1f2e19c343ef983c59a"
