@@ -81,9 +81,11 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
   }
 
   bioclim_ras <- NULL
+  requested_layers <- which(layers %in% variables)
 
   for (c in country_code){
-    country_ras <- tryCatch({terra::rast(glue::glue("/vsicurl/https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{c}_wc2.1_30s_bio.tif"))},
+    url <- glue::glue("/vsicurl/https://geodata.ucdavis.edu/climate/worldclim/2_1/tiles/iso/{c}_wc2.1_30s_bio.tif")
+    country_ras <- tryCatch({terra::rast(url, lyrs = requested_layers)},
                             error = function(x){
                               message <- paste0("An error occurred whilst trying to download bioclim data: ", x)
                               NULL},
@@ -101,6 +103,8 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
   }
 
 
+
+
   if (is.null(bioclim_ras)){
     return(async |> asyncLog(type = "error", message))
   } else {
@@ -112,8 +116,8 @@ cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
     }
 
     bioclim_ras <- terra::crop(bioclim_ras, shape, mask = TRUE )
-    names(bioclim_ras) <- layers
-    bioclim_ras <- as.list(bioclim_ras[[variables]])
+    names(bioclim_ras) <- variables
+    bioclim_ras <- as.list(bioclim_ras)
     names(bioclim_ras) <- variables
   if (async){
     bioclim_ras <- wrap_terra(bioclim_ras)
