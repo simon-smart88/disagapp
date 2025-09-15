@@ -42,7 +42,7 @@ get_worldpop_covariate <- function(covariate, country_code, year){
 
   # see e.g. https://hub.worldpop.org/geodata/summary?id=62270
   # the data returned is a monthly average
-  if (covariate == "total_precipiation"){
+  if (covariate == "total_precipitation"){
     raster <- raster * 0.1 * 12
   }
 
