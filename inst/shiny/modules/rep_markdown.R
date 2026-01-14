@@ -50,6 +50,9 @@ rep_markdown_module_server <- function(id, common, parent_session, COMPONENT_MOD
         for (component in components) {
           for (module in COMPONENT_MODULES[[component]]) {
             # print(module$id)
+            if (module$id == "resp_shape"){
+              browser()
+            }
             rmd_file <- module$rmd_file
             rmd_function <- module$rmd_function
             if (is.null(rmd_file)) next

@@ -1,4 +1,4 @@
-### **Module:** ***Prepare mesh***
+### **Module:** ***Generate mesh***
 
 **BACKGROUND**
 

@@ -1,6 +1,6 @@
 component: "prep"
-short_name: "Reduce resolution"
-long_name: "Reduce covariate resolution"
+short_name: "Decrease resolution"
+long_name: "Decrease covariate resolution"
 authors: "Simon E H Smart"
 package: [terra]
 class: optional

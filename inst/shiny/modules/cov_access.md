@@ -14,7 +14,7 @@ Accessibility affects the ability of people to access resources and services tha
   - Motorized travel time to healthcare (2020)
   - Walking only travel time to healthcare (2020) 
   
-- To download the data, select the layer you want to use from the dropdown list and then click *Download data*.
+- To load the data, select the layer you want to use from the dropdown list and then click *Load data*.
 
 **REFERENCES**
 

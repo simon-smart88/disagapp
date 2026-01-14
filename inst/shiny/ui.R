@@ -15,7 +15,7 @@ tagList(
       ),
       tags$link(href = "css/styles.css", rel = "stylesheet")
     ),
-    title = img(src = "logo.png", height = "50", width = "50"),
+    title = img(src = "logo.png", height = "50"),
     window_title = "Disagapp",
     nav_panel("Intro", value = "intro"),
     nav_panel("Response", value = "resp"),
@@ -29,7 +29,7 @@ tagList(
                HTML('<a href="https://github.com/simon-smart88/disagapp/issues" target="_blank">GitHub Issues</a>'),
                HTML('<a href="mailto: tim.lucas@le.ac.uk" target="_blank">Send Email</a>')),
     if (Sys.getenv("leicester_server") == "") {
-    nav_panel(NULL, icon = icon("power-off"), value = "_stopapp")
+      nav_panel(NULL, icon = icon("power-off"), value = "_stopapp")
     }
   ),
   layout_sidebar(
