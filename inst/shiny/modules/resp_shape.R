@@ -38,10 +38,6 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
         shape <- sf::st_transform(shape, crs = 4326)
       }
 
-      # METADATA ####
-      common$meta$resp_shape$used <- TRUE
-      common$meta$resp_shape$path <- shpdf$name
-
       return(shape)
     }) |> bindEvent(input$shape)
 
@@ -80,6 +76,8 @@ resp_shape_module_server <- function(id, common, parent_session, map) {
     common$shape <- shape()
     common$response_name <- input$resp_var
     # METADATA
+    common$meta$resp_shape$used <- TRUE
+    common$meta$resp_shape$path <- input$shape$name
     common$meta$resp_shape$response <- input$resp_var
 
     # TRIGGER
