@@ -11,3 +11,7 @@ disagapp 1.0.2
 =============
 - `cov_bioclim` only downloads selected layers from the data source
 
+disagapp 1.0.3
+=============
+- Improved consistency of various UI elements
+- Fixed bug preventing `resp_shape` being included in Rmarkdown
