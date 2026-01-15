@@ -64,27 +64,41 @@ test_that("Check pred_pred function works in the app", {
   # setup common for test
   test_common$fit <- result
   test_common$fit$data$covariate_rasters <- wrap_terra(test_common$fit$data$covariate_rasters)
+  test_common$fit$common$covs_prep_lores <- NULL
   test_common$meta$fit_fit$iid <- TRUE
   saveRDS(test_common, test_common_path)
 
-  rerun_test_setup("pred_pred_test", list(test_common_path, save_path))
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_fit_fit", timeout = 60000)
+  app$set_inputs(tabs = "intro")
+  app$set_inputs(introTabs = "Load Prior Session")
+  app$upload_file("core_load-file" = test_common_path)
+  app$click("core_load-run")
 
-  common <- readRDS(save_path)
-  common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
-  common$pred$`prediction (cases)` <- unwrap_terra(common$pred$`prediction (cases)`)
-  common$pred$field <- unwrap_terra(common$pred$field)
-  common$pred$iid <- unwrap_terra(common$pred$iid)
-  common$pred$uncertainty_lower <- unwrap_terra(common$pred$uncertainty_lower)
-  common$pred$uncertainty_upper <- unwrap_terra(common$pred$uncertainty_upper)
-  common$pred$covariates <- unwrap_terra(common$pred$covariates)
+  app$set_inputs(tabs = "pred")
+  app$set_inputs(predSel = "pred_pred")
+  app$set_inputs("pred_pred-cases" = TRUE)
+  app$set_inputs("pred_pred-iid" = TRUE)
+  app$set_inputs("pred_pred-uncertain" = TRUE)
+  app$click(selector = "#pred_pred-run")
+  app$wait_for_value(input = "pred_pred-complete")
 
-  expect_is(common$pred$`prediction (rate)`, "SpatRaster")
-  expect_is(common$pred$`prediction (cases)`, "SpatRaster")
-  expect_is(common$pred$field, "SpatRaster")
-  expect_is(common$pred$iid, "SpatRaster")
-  expect_is(common$pred$uncertainty_lower, "SpatRaster")
-  expect_is(common$pred$uncertainty_upper, "SpatRaster")
-  expect_is(common$pred$covariates, "SpatRaster")
+  pred <- app$get_value(export = "pred")
+
+  pred$`prediction (rate)` <- unwrap_terra(pred$`prediction (rate)`)
+  pred$`prediction (cases)` <- unwrap_terra(pred$`prediction (cases)`)
+  pred$field <- unwrap_terra(pred$field)
+  pred$iid <- unwrap_terra(pred$iid)
+  pred$uncertainty_lower <- unwrap_terra(pred$uncertainty_lower)
+  pred$uncertainty_upper <- unwrap_terra(pred$uncertainty_upper)
+  pred$covariates <- unwrap_terra(pred$covariates)
+
+  expect_is(pred$`prediction (rate)`, "SpatRaster")
+  expect_is(pred$`prediction (cases)`, "SpatRaster")
+  expect_is(pred$field, "SpatRaster")
+  expect_is(pred$iid, "SpatRaster")
+  expect_is(pred$uncertainty_lower, "SpatRaster")
+  expect_is(pred$uncertainty_upper, "SpatRaster")
+  expect_is(pred$covariates, "SpatRaster")
 })
 
 

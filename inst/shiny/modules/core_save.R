@@ -37,8 +37,6 @@ core_save_module_server <- function(id, common, modules, COMPONENTS, main_input)
       content = function(file) {
         show_loading_modal("Please wait while the session is saved")
 
-
-
         temp <- list()
         common_items <- names(common)
         # exclude the non-public and function objects

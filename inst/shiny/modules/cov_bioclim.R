@@ -136,6 +136,6 @@ cov_bioclim_module_rmd <- function(common) {
     cov_bioclim_knit = !is.null(common$meta$cov_bioclim$used),
     cov_bioclim_country = common$meta$cov_bioclim$country,
     cov_bioclim_variables = common$meta$cov_bioclim$variables,
-    cov_bioclim_plot_height = common$meta$cov_bioclim$plot_height)
+    cov_bioclim_plot_height = common$meta$cov_bioclim$plot_height / 72) # convert to inches
 }
 

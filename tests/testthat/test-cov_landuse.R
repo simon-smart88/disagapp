@@ -18,7 +18,7 @@ test_that("{shinytest2} recording: e2e_cov_bioclim", {
   skip_on_cran()
   skip_on_os("windows")
 
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_landuse", timeout = 120000)
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_cov_landuse", timeout = 60000)
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
   app$upload_file("resp_download-spread" = df_path)

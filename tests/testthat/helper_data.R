@@ -44,7 +44,7 @@ admin_level <- "ADM1"
 if (is_ci){
   save_path <- normalizePath(tempfile(fileext = ".rds"), winslash = "\\", mustWork = FALSE)
 } else {
-  save_path <- "~/temprds/saved_file.rds"
+  save_path <- file.path(test_data_dir, "save_file.rds")
 }
 
 polygons <- list()
@@ -93,24 +93,13 @@ test_common$prep <- test_data
 test_common$covs_prep <- wrap_terra(test_common$covs_prep)
 test_common$prep$covariate_rasters <- wrap_terra(test_common$prep$covariate_rasters)
 test_common$state$main$version = as.character(packageVersion("disagapp"))
+test_common$state$main$app <- "disagapp"
+test_common$meta$prep_final$used <- TRUE
 class(test_common) <- "common"
 if (is_ci){
   test_common_path <- normalizePath(tempfile(fileext = ".rds"), winslash = "\\", mustWork = FALSE)
 } else {
-  test_common_path <- "~/temprds/test_common.rds"
+  test_common_path <- file.path(test_data_dir, "test_common.rds")
 }
 saveRDS(test_common, test_common_path)
-
-rerun_test_setup <- function(test_function, args){
-  attempt <- 0
-  while(attempt < 10){
-    x = try(do.call(test_function, args))
-    if (inherits(x, "try-error")){
-      attempt <- attempt + 1
-      print(paste0(test_function, " setup failed - retrying"))
-    } else {
-      break
-    }
-  }
-}
 
