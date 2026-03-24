@@ -1,8 +1,10 @@
+library(disagapp)
+library(bslib)
+library(gargoyle)
 library(glue)
 library(markdown)
-library(disagapp)
-
-options(shiny.fullstacktrace = TRUE)
+library(shiny)
+library(leaflet)
 
 # set number of workers for async operations
 future::plan(future::multisession, workers = length(parallelly::availableWorkers()) - 1)
@@ -26,7 +28,6 @@ base_module_configs <- c("modules/resp_shape.yml",
                          "modules/resp_download.yml",
                          "modules/resp_combine.yml",
                          "modules/resp_example.yml",
-                         "modules/resp_edit.yml",
                          "modules/resp_simplify.yml",
                          "modules/cov_access.yml",
                          "modules/cov_bioclim.yml",

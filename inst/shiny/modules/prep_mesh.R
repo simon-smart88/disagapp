@@ -27,7 +27,6 @@ prep_mesh_module_server <- function(id, common, parent_session, map) {
     watch("resp_download")
     watch("resp_combine")
     watch("resp_example")
-    watch("resp_edit")
     req(common$shape)
 
     limits <- sf::st_bbox(common$shape)
