@@ -21,7 +21,7 @@ empty pixels which is advantageous when fitting the model as empty pixels can be
 
 - In most cases, because of the skewed distribution of population density, to visualise the data more effectively you should plot the data using a log scale, but you can disable this if you prefer by toggling the *Plot as log values* switch.
 
-- To download the data, select the countries, method to use, the desired resolution and then click *Download data*
+- To load the data, select the countries, method to use, the desired resolution and then click *Load data*
 
 **REFERENCES**
 

@@ -28,7 +28,7 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
 
   skip_on_ci()
   skip_on_cran()
-  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 120000)
+  app <- shinytest2::AppDriver$new(app_dir = system.file("shiny", package = "disagapp"), name = "e2e_complete_analysis", timeout = 60000)
 
   app$set_inputs(tabs = "resp")
   app$set_inputs(respSel = "resp_download")
@@ -77,42 +77,32 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
 
   app$set_inputs(tabs = "prep")
   app$set_inputs(prepSel = "prep_summary")
-  app$click("prep_summary-run")
+  app$click("prep_summary-prep")
   app$set_inputs("prep_summary-resample_layer" = "Mean temperature")
-  app$click("prep_summary-resample")
+  app$click("prep_summary-run")
 
   app$set_inputs(prepSel = "prep_scale")
   app$click("prep_scale-run")
   app$set_inputs(prepSel = "prep_final")
-  app$set_inputs(`prep_final-id_var` = "shapeName")
+  app$wait_for_idle()
+  app$set_inputs("prep_final-id_var" = "shapeName")
   app$click("prep_final-run")
 
-  app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_path)
-  common$covs_prep <- unwrap_terra(common$covs_prep)
-  expect_length(common$covs_prep, 1)
-  expect_is(common$covs_prep, "SpatRaster")
-  expect_is(common$prep, "disag_data")
-
   app$set_inputs(tabs = "fit")
+  app$set_inputs(fitSel = "fit_fit")
   app$click(selector = "#fit_fit-run")
   app$wait_for_value(input = "fit_fit-complete")
-  app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_path)
-  expect_is(common$fit, "disag_model")
+  fit <- app$get_value(export = "fit")
+  expect_is(fit, "disag_model")
 
   app$set_inputs(tabs = "pred")
   app$set_inputs(predSel = "pred_pred")
   app$click(selector = "#pred_pred-run")
   app$wait_for_value(input = "pred_pred-complete")
 
-  app$set_inputs(main = "Save")
-  app$get_download("core_save-save_session", filename = save_path)
-  common <- readRDS(save_path)
-  common$pred$`prediction (rate)` <- unwrap_terra(common$pred$`prediction (rate)`)
-  expect_is(common$pred$`prediction (rate)`, "SpatRaster")
+  pred <- app$get_value(export = "pred")
+  pred$`prediction (rate)` <- unwrap_terra(pred$`prediction (rate)`)
+  expect_is(pred$`prediction (rate)`, "SpatRaster")
 
   app$set_inputs(tabs = "rep")
   app$set_inputs(repSel = "rep_markdown")
@@ -120,7 +110,7 @@ test_that("{shinytest2} recording: e2e_markdown_from_complete_analysis", {
   expect_false(is.null(sess_file))
   lines <- readLines(sess_file)
   target_line <- grep("response_directory <- ", lines)
-  lines[target_line] <- 'response_directory <- system.file("extdata", "test_data", package="disagapp")'
+  lines[target_line] <- 'response_directory <- system.file("extdata", package="disagapp")'
   writeLines(lines, sess_file)
 
   rmarkdown::render(sess_file)

@@ -1,4 +1,4 @@
-# disagapp v1.0.2
+# disagapp v1.0.4
 
 <img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 

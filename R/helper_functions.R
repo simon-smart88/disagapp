@@ -41,7 +41,7 @@ check_url <- function(url){
 #' @description For internal use.
 #' @param x x
 #' @keywords internal
-#' @import gargoyle leaflet.extras
+#' @import gargoyle
 #' @export
 spurious <- function(x) {
   curl::curl(x)
@@ -53,7 +53,6 @@ spurious <- function(x) {
   fmesher::fm_as_sfc(x)
   geodata::worldclim_country(x)
   geosphere::centroid(x)
-  leaflet.extras::removeDrawToolbar(x)
   markdown::html_format(x)
   openxlsx::read.xlsx(x)
   parallelly::as.cluster(x)

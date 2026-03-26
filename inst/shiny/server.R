@@ -169,5 +169,8 @@ function(input, output, session) {
   exportTestValues(shape = common$shape,
                    covs = wrap_terra(common$covs),
                    agg = wrap_terra(common$agg),
+                   mesh = common$mesh,
+                   fit = common$fit,
+                   pred = wrap_terra(common$pred),
                    logger = common$logger())
 }
