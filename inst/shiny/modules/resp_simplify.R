@@ -36,6 +36,7 @@ resp_simplify_module_server <- function(id, common, parent_session, map) {
     watch("resp_combine")
     watch("resp_download")
     watch("resp_example")
+    watch("resp_edit")
     watch("resp_simplify")
     req(common$shape)
     glue::glue("{round((object.size(common$shape)/1024^2),2)} Mb")})

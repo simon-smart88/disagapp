@@ -16,21 +16,23 @@ Authors@R:
     c(person("Simon E. H.", "Smart", email = "simon.smart@cantab.net", role = c("aut", "cre", "cph")),
       person("Tim", "Lucas", email =  "timcdlucas@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0003-4694-8107")))
 Depends:
-    R (>= 4.2.0)
-Imports:
+    R (>= 4.2.0),
     bslib,
+    leaflet (>= 2.0.2),
+    leaflet.extras (>= 1.0.0),
+    gargoyle,
+    shiny (>= 1.8.1)
+Imports:
     curl,
     disaggregation,
     dplyr (>= 1.0.2),
     DT (>= 0.5),
     fmesher,
-    gargoyle,
     geodata,
     glue,
     ggplot2,
     httr2,
     knitcitations,
-    leaflet (>= 2.0.2),
     markdown,
     openxlsx,
     parallelly,
@@ -43,7 +45,6 @@ Imports:
     rlang,
     rmarkdown,
     sf,
-    shiny (>= 1.8.1),
     shinyalert,
     shinybusy,
     shinyjs,
@@ -64,5 +65,5 @@ License: GPL-3
 URL: https://simon-smart88.github.io/disagapp/
 BugReports: https://github.com/simon-smart88/disagapp/issues
 Encoding: UTF-8
-RoxygenNote: 7.3.3
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
