@@ -14,11 +14,12 @@
 #' @param async logical. Whether or not the function is being used asynchronously
 #' @return a list of SpatRaster objects
 #' @examples
+#' \dontrun{
 #' common <- readRDS(system.file("extdata", "fit-minimal.rds", package = "disagapp"))
 #' common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
 #' # transfer to Malawi
 #' transfer <- pred_transfer("MWI", common$fit, common$meta)
-#'
+#' }
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @export
 

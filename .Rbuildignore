@@ -5,8 +5,10 @@
 Dockerfile
 adding_modules.md
 screenshot.png
-inst/shiny/rsconnect/
+inst/shiny/rsconnect
 inst/shiny/debug*
 inst/shiny/install*
 inst/shiny/manifest*
 .Renviron
+_modules
+_shiny

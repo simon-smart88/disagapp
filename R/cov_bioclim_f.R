@@ -22,6 +22,7 @@
 #' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
+#' \dontrun{
 #' x_min <- 9.47
 #' x_max <- 9.63
 #' y_min <- 47.05
@@ -35,7 +36,7 @@
 #'                       country_code = "LIE",
 #'                       variables = c("Mean temperature", "Mean diurnal range"))
 #'
-#'
+#' }
 #' @export
 
 cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
