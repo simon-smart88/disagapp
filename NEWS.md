@@ -20,3 +20,7 @@ disagapp 1.0.4
 =============
 - Removed `resp_edit` module due to {leaflet.extras} being archived on CRAN
 - Move dependencies from Imports to Depends and import in `global.R` instead
+
+disagapp 1.0.5
+=============
+- Replaced `resp_edit` module
