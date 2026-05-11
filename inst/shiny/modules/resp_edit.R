@@ -64,12 +64,12 @@ resp_edit_module_server <- function(id, common, parent_session, map) {
 resp_edit_module_map <- function(map, common) {
   map |>
     removeControl("Response") |>
-    removeDrawToolbar(clearFeatures = TRUE)
+    leaflet.extras::removeDrawToolbar(clearFeatures = TRUE)
   shape_map(map, common)
   map |>
-    addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+    leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
                    markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
-                   editOptions = editToolbarOptions(edit = TRUE, remove = TRUE))
+                   editOptions = leaflet.extras::editToolbarOptions(edit = TRUE, remove = TRUE))
 }
 
 resp_edit_module_rmd <- function(common) {
