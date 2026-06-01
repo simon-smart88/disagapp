@@ -32,136 +32,140 @@
 
 agg_worldpop <- function(shape, country_code, method, resolution, year, async = FALSE) {
 
-message <- NULL
-pop_ras <- NULL
+  message <- NULL
+  pop_ras <- NULL
 
-base_url <- "https://hub.worldpop.org/rest/data/pop/"
+  base_url <- "https://hub.worldpop.org/rest/data/pop/"
 
-if (!inherits(shape, "sf")){
-  message <- "shape must be an sf object"
-}
-
-character_variables = list("country_code" = country_code,
-                           "method" = method,
-                           "resolution" = resolution)
-for (i in names(character_variables)){
-  if (!inherits(character_variables[[i]], "character")){
-    message <- glue::glue("{i} must be a character string")
-  }
-}
-
-if (!inherits(year, "numeric")){
-  message <- "year must be numeric"
-}
-
-valid_countries <- utils::read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
-invalid_countries <- country_code[(!country_code %in% valid_countries)]
-if (length(invalid_countries) > 0){
-  message <- glue::glue("{invalid_countries} is not a valid IS03 country code.")
-}
-
-if (is.null(message)){
-  if (!(method %in% c("Unconstrained", "Constrained"))){
-    message <-"Method must be either \"Constrained\" or \"Unconstrained\""
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
   }
 
-  if (!(resolution %in% c("100m", "1km"))){
-    message <- "Resolution must be either \"100m\" or \"1km\""
+  if (!inherits(shape, "sf")){
+    message <- "shape must be an sf object"
   }
 
-  if (method == "Unconstrained" & (year > 2020| year < 2000)){
-    message <- "Unconstrained data is only available between 2000 and 2020"
+  character_variables = list("country_code" = country_code,
+                             "method" = method,
+                             "resolution" = resolution)
+  for (i in names(character_variables)){
+    if (!inherits(character_variables[[i]], "character")){
+      message <- glue::glue("{i} must be a character string")
+    }
   }
 
-  if (method == "Constrained" & year != 2020){
-    message <- "Constrained population data is only available for 2020"
+  if (!inherits(year, "numeric")){
+    message <- "year must be numeric"
   }
 
-  if (!check_url(base_url)){
-    message <- "Sorry the Worldpop data source is currently offline"
+  valid_countries <- utils::read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
+  invalid_countries <- country_code[(!country_code %in% valid_countries)]
+  if (length(invalid_countries) > 0){
+    message <- glue::glue("{invalid_countries} is not a valid IS03 country code.")
   }
 
-}
-
-if (is.null(message)){
-  # select the product url
-  if (method == "Unconstrained" & resolution == "1km"){
-    product <- "wpic1km"
-  }
-  if (method == "Unconstrained" & resolution == "100m"){
-    product <- "wpgp"
-  }
-  if (method == "Constrained"){
-    product <- "cic2020_100m"
-  }
-}
-
-if (is.null(message)){
-  for (c in country_code){
-    # call the API and return error if it doesn't work
-    api_url <- glue::glue("{base_url}{product}?iso3={c}")
-    req <- httr2::request(api_url) |> httr2::req_perform()
-    if (httr2::resp_status(req) != 200){
-      message <- "The requested data could not be found"
+  if (is.null(message)){
+    if (!(method %in% c("Unconstrained", "Constrained"))){
+      message <-"Method must be either \"Constrained\" or \"Unconstrained\""
     }
 
-    # fetch the API call content and return an error if it is empty
-    cont <- httr2::resp_body_json(req)
-    if (length(cont$data) == 0){
-      message <- "The requested data could not be found"
+    if (!(resolution %in% c("100m", "1km"))){
+      message <- "Resolution must be either \"100m\" or \"1km\""
     }
-    # select the file_url and download the raster
-    data <- dplyr::bind_rows(cont$data) |>
-            dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |>
-            dplyr::select("files")
 
-    country_ras <- tryCatch({
-                            terra::rast(data$files[[1]])
-    },
-    error = function(x){
-      message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
-      NULL},
-    warning = function(x){
-      message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
-      NULL}
-    )
-    if (is.null(message)){
-      if (is.null(pop_ras)){
-        pop_ras <- country_ras
-      } else {
-        pop_ras <- terra::merge(pop_ras, country_ras)
+    if (method == "Unconstrained" & (year > 2020| year < 2000)){
+      message <- "Unconstrained data is only available between 2000 and 2020"
+    }
+
+    if (method == "Constrained" & year != 2020){
+      message <- "Constrained population data is only available for 2020"
+    }
+
+    if (!check_url(base_url)){
+      message <- "Sorry the Worldpop data source is currently offline"
+    }
+
+  }
+
+  if (is.null(message)){
+    # select the product url
+    if (method == "Unconstrained" & resolution == "1km"){
+      product <- "wpic1km"
+    }
+    if (method == "Unconstrained" & resolution == "100m"){
+      product <- "wpgp"
+    }
+    if (method == "Constrained"){
+      product <- "cic2020_100m"
+    }
+  }
+
+  if (is.null(message)){
+    for (c in country_code){
+      # call the API and return error if it doesn't work
+      api_url <- glue::glue("{base_url}{product}?iso3={c}")
+      req <- httr2::request(api_url) |> httr2::req_perform()
+      if (httr2::resp_status(req) != 200){
+        message <- "The requested data could not be found"
+      }
+
+      # fetch the API call content and return an error if it is empty
+      cont <- httr2::resp_body_json(req)
+      if (length(cont$data) == 0){
+        message <- "The requested data could not be found"
+      }
+      # select the file_url and download the raster
+      data <- dplyr::bind_rows(cont$data) |>
+              dplyr::filter(.data$popyear == as.character(year) & grepl(".tif", .data$files)) |>
+              dplyr::select("files")
+
+      country_ras <- tryCatch({
+                              terra::rast(data$files[[1]])
+      },
+      error = function(x){
+        message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
+        NULL},
+      warning = function(x){
+        message <- paste0("An error occurred whilst trying to download Worldpop data: ", x)
+        NULL}
+      )
+      if (is.null(message)){
+        if (is.null(pop_ras)){
+          pop_ras <- country_ras
+        } else {
+          pop_ras <- terra::merge(pop_ras, country_ras)
+        }
       }
     }
   }
-}
 
-if (is.null(pop_ras)){
-  return(async |> asyncLog(type = "error", message))
-} else {
-  # aggregate constrained as only available at 100m
-  if (method == "Constrained" & resolution == "1km"){
-    pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
-  }
-
-  # check that raster overlaps with shape
-  check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
-  if (check_overlap == FALSE){
-    message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
+  if (is.null(pop_ras)){
     return(async |> asyncLog(type = "error", message))
+  } else {
+    # aggregate constrained as only available at 100m
+    if (method == "Constrained" & resolution == "1km"){
+      pop_ras <- terra::aggregate(pop_ras, fact = 10, fun = "sum", na.rm = T)
+    }
+
+    # check that raster overlaps with shape
+    check_overlap <- terra::is.related(pop_ras, terra::vect(shape), "intersects")
+    if (check_overlap == FALSE){
+      message <- "The downloaded Worldpop data does not overlap with the response data - check the selected country"
+      return(async |> asyncLog(type = "error", message))
+    }
+
+    # convert NAs to zero
+    pop_ras <- terra::subst(pop_ras, NA, 0)
+
+    pop_ras <- terra::crop(pop_ras, shape)
+    pop_ras <- terra::mask(pop_ras, shape)
+    names(pop_ras) <- "Population"
+
+    if (async){
+      pop_ras <- wrap_terra(pop_ras)
+    }
+    return(pop_ras)
   }
-
-  # convert NAs to zero
-  pop_ras <- terra::subst(pop_ras, NA, 0)
-
-  pop_ras <- terra::crop(pop_ras, shape)
-  pop_ras <- terra::mask(pop_ras, shape)
-  names(pop_ras) <- "Population"
-
-  if (async){
-    pop_ras <- wrap_terra(pop_ras)
-  }
-  return(pop_ras)
-}
 
 
 }

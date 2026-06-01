@@ -31,8 +31,12 @@ cov_access <- function(shape, layer, async = FALSE) {
 
   message <- NULL
 
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
+
   if (!requireNamespace("malariaAtlas", quietly = TRUE)){
-    return(async |> asyncLog(type = "error", 'This module requires the malariaAtlas package to be installed. Close the app, run install.packages("malariaAtlas") and try again'))
+    return(async |> asyncLog(type = "error", 'This function requires the malariaAtlas package to be installed. Close the app, run install.packages("malariaAtlas") and try again'))
   }
 
   if (!inherits(shape, "sf")){

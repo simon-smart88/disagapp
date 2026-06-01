@@ -23,6 +23,10 @@ cov_water <- function(shape, country_code, async = FALSE) {
 
   message <- NULL
 
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
+
   if (!inherits(shape, "sf")){
     return(async |> asyncLog(type = "error", "Shape must be an sf object"))
   }

@@ -41,6 +41,10 @@
 
 cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
 
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
+
   valid_countries <- utils::read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
 
   invalid_countries <- country_code[(!country_code %in% valid_countries)]

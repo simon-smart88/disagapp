@@ -24,7 +24,11 @@
 #' rasters <- cov_upload(shape = shape, path_df = cov_df)
 #' @export
 
- cov_upload <- function(shape, path_df, logger = NULL) {
+cov_upload <- function(shape, path_df, logger = NULL) {
+
+   if (!curl::has_internet()){
+     return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+   }
 
    # check inputs
    if (!inherits(path_df, "data.frame")){

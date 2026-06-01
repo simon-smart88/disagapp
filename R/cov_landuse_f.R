@@ -35,6 +35,10 @@
 
 cov_landuse <- function(shape, year, landuses, async = FALSE) {
 
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
+
   if (!inherits(shape, "sf")){
     return(async |> asyncLog(type = "error", "shape must be an sf object"))
   }
