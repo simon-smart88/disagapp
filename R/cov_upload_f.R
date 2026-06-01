@@ -26,10 +26,6 @@
 
 cov_upload <- function(shape, path_df, logger = NULL) {
 
-   if (!curl::has_internet()){
-     return(async |> asyncLog(type = "error", "This function requires an internet connection"))
-   }
-
    # check inputs
    if (!inherits(path_df, "data.frame")){
      logger |> writeLog(type = "error", "path_df must be a data.frame")
