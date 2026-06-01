@@ -25,3 +25,4 @@ disagapp 1.0.5
 =============
 - Replaced `resp_edit` module
 - Stop running examples that download covariates
+- Check internet connection before downloading data
