@@ -22,7 +22,7 @@ ch_df <- data.frame("area" =  c('Aargau', 'Appenzell Ausserrhoden', 'Appenzell I
 
 mdf <- rbind(df, ch_df)
 
-test_data_dir <- normalizePath(testthat::test_path("data"))
+test_data_dir <- "data"
 
 lie_shpdf <- data.frame(
   datapath = list.files(test_data_dir, pattern = "lie_shape", full.names = TRUE),
@@ -41,11 +41,7 @@ area_column <- "area"
 resp_column <- "response"
 admin_level <- "ADM1"
 
-if (is_ci){
-  save_path <- normalizePath(tempfile(fileext = ".rds"), winslash = "\\", mustWork = FALSE)
-} else {
-  save_path <- file.path(test_data_dir, "save_file.rds")
-}
+save_path <- tempfile(fileext = ".rds")
 
 polygons <- list()
 n_polygon_per_side <- 10
@@ -96,10 +92,6 @@ test_common$state$main$version = as.character(packageVersion("disagapp"))
 test_common$state$main$app <- "disagapp"
 test_common$meta$prep_final$used <- TRUE
 class(test_common) <- "common"
-if (is_ci){
-  test_common_path <- normalizePath(tempfile(fileext = ".rds"), winslash = "\\", mustWork = FALSE)
-} else {
-  test_common_path <- file.path(test_data_dir, "test_common.rds")
-}
+test_common_path <- tempfile(fileext = ".rds")
 saveRDS(test_common, test_common_path)
 
