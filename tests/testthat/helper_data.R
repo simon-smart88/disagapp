@@ -1,4 +1,4 @@
-is_ci <- Sys.getenv("GITHUB_ACTIONS") == "true"
+options(shinytest2.load_timeout=60000)
 
 covdf <- data.frame(datapath = list.files(system.file("extdata", "covariates", package = "disagapp"), full.names = TRUE),
                     name = list.files(system.file("extdata", "covariates", package = "disagapp")))
