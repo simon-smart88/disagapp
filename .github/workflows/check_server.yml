@@ -1,0 +1,143 @@
+name: Check Server
+
+on:
+  schedule:
+    # Run daily at 9:00 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  shiny-health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup R
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: '4.3.0'
+
+    - name: Install R dependencies
+      run: |
+        install.packages(c("httr", "jsonlite", "stringr", "rvest"), repos = "https://cloud.r-project.org")
+      shell: Rscript {0}
+
+    - name: Run Shiny app health check
+      id: health_check
+      run: |
+        library(httr)
+        library(stringr)
+        library(rvest)
+
+        # Configuration
+        SHINY_URL <- "https://disagapp.le.ac.uk/"
+        EXPECTED_TEXT <- "disagapp"
+        MAX_RETRIES <- 3
+        TIMEOUT_SECONDS <- 30
+
+        check_shiny_health <- function() {
+          cat(sprintf("Checking Shiny app at: %s\n", SHINY_URL))
+          cat(sprintf("Looking for expected text: '%s'\n", EXPECTED_TEXT))
+
+          for (attempt in 1:MAX_RETRIES) {
+            cat(sprintf("Attempt %d/%d\n", attempt, MAX_RETRIES))
+
+            tryCatch({
+              # Step 1: Make HTTP request with timeout
+              response <- GET(
+                SHINY_URL,
+                timeout(TIMEOUT_SECONDS),
+                user_agent("GitHub-Action-Health-Check")
+              )
+
+              # Step 2: Check HTTP status
+              if (http_error(response)) {
+                stop(sprintf("HTTP error: %s", status_code(response)))
+              }
+
+              # Step 3: Get content as text
+              content_text <- content(response, "text", encoding = "UTF-8")
+
+              # Step 4: Run various health checks
+              checks <- list(
+                status_code = status_code(response),
+                content_length = nchar(content_text),
+                has_expected_text = str_detect(content_text, fixed(EXPECTED_TEXT)),
+                is_shiny_app = str_detect(content_text, "shiny|Shiny"),
+                has_websocket = str_detect(content_text, "ws://|wss://|websocket"),
+                page_loads = nchar(content_text) > 500
+              )
+
+              # Print check results
+              cat("\nHealth check results:\n")
+              for (check_name in names(checks)) {
+                cat(sprintf("  %s: %s\n", check_name, checks[[check_name]]))
+              }
+
+              # Step 5: Determine overall health
+              essential_checks <- c(
+                checks$has_expected_text,
+                checks$is_shiny_app,
+                checks$page_loads
+              )
+
+              if (all(essential_checks)) {
+                cat("\n✅ Shiny app is HEALTHY\n")
+                return(list(
+                  status = "healthy",
+                  url = SHINY_URL,
+                  checks = checks
+                ))
+              } else {
+                # Identify failing checks
+                failing <- names(checks)[!unlist(checks)]
+                stop(sprintf("Health check failed: %s", paste(failing, collapse = ", ")))
+              }
+
+            }, error = function(e) {
+              cat(sprintf("Attempt %d failed: %s\n", attempt, e$message))
+              if (attempt == MAX_RETRIES) {
+                stop(e)
+              }
+              Sys.sleep(attempt * 5)  # Exponential backoff
+            })
+          }
+        }
+
+        # Execute health check
+        result <- check_shiny_health()
+
+        # Save results for later steps
+        saveRDS(result, "health_check_result.rds")
+
+        # Output for GitHub Actions
+        cat(sprintf("::set-output name=health_status::%s\n", result$status))
+
+      shell: Rscript {0}
+
+    - name: Create issue on failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const date = new Date().toISOString();
+          const url = "https://disagapp.le.ac.uk/";
+
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚨 Shiny App Health Check Failed - ${date.substring(0, 10)}`,
+            body: `## Health Check Failed for Disagapp\n\n`
+              + `**URL:** ${url}\n`
+              + `**Time:** ${date}\n`
+              + `**Expected Text:** "disagapp"\n\n`
+              + `The Shiny app is not responding correctly.
+          });
+
+    - name: Log success for monitoring
+      if: success()
+      run: |
+        echo "✅ Health check passed at $(date)"
+        echo "App is operational with expected content 'disagapp'"
