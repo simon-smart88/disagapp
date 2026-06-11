@@ -19,10 +19,9 @@ jobs:
       with:
         r-version: '4.3.0'
 
-    - name: Install R dependencies
+    - name: Install R packages
       run: |
-        install.packages(c("httr", "jsonlite", "stringr", "rvest"), repos = "https://cloud.r-project.org")
-      shell: Rscript {0}
+        Rscript -e "install.packages(c('httr', 'stringr', 'rvest'), repos = 'https://cloud.r-project.org')"
 
     - name: Run Shiny app health check
       id: health_check
