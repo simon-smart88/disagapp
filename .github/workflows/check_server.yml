@@ -117,25 +117,6 @@ jobs:
 
       shell: Rscript {0}
 
-    - name: Create issue on failure
-      if: failure()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const date = new Date().toISOString();
-          const url = "https://disagapp.le.ac.uk/";
-
-          await github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: `🚨 Shiny App Health Check Failed - ${date.substring(0, 10)}`,
-            body: `## Health Check Failed for Disagapp\n\n`
-              + `**URL:** ${url}\n`
-              + `**Time:** ${date}\n`
-              + `**Expected Text:** "disagapp"\n\n`
-              + `The Shiny app is not responding correctly.
-          });
-
     - name: Log success for monitoring
       if: success()
       run: |
