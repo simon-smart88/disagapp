@@ -22,6 +22,7 @@
 #' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
+#' \dontrun{
 #' x_min <- 9.47
 #' x_max <- 9.63
 #' y_min <- 47.05
@@ -35,10 +36,14 @@
 #'                       country_code = "LIE",
 #'                       variables = c("Mean temperature", "Mean diurnal range"))
 #'
-#'
+#' }
 #' @export
 
 cov_bioclim <- function(shape, country_code, variables,  async = FALSE) {
+
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
 
   valid_countries <- utils::read.csv(system.file("extdata", "countries.csv", package = "disagapp"))$boundaryISO
 

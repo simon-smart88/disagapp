@@ -30,6 +30,7 @@ https://zenodo.org/records/3939038 as documented here:
 https://zenodo.org/records/4723921
 }
 \examples{
+\dontrun{
 x_min <- 0
 x_max <- 0.5
 y_min <- 52
@@ -42,7 +43,7 @@ sf::st_crs(shape) = 4326
 raster <- cov_landuse(shape = shape,
                       year = 2019,
                       landuses = "Crops")
-
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

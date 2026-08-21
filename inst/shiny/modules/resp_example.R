@@ -82,6 +82,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
   output$plot <- plotly::renderPlotly({
     req(common$shape)
     watch("resp_example")
+    watch("resp_edit")
     response <- common$shape[[common$response_name]]
     plot_response(response)
   })
@@ -89,6 +90,7 @@ resp_example_module_server <- function(id, common, parent_session, map) {
   output$table <- DT::renderDataTable({
     req(common$shape)
     watch("resp_example")
+    watch("resp_edit")
     common$shape |> sf::st_drop_geometry()
   })
 

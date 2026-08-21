@@ -17,6 +17,7 @@
 #' `TRUE`
 #' @author Simon Smart <simon.smart@@cantab.net>
 #' @examples
+#' \dontrun{
 #' x_min <- 0
 #' x_max <- 0.5
 #' y_min <- 52
@@ -29,10 +30,14 @@
 #' raster <- cov_landuse(shape = shape,
 #'                       year = 2019,
 #'                       landuses = "Crops")
-#'
+#' }
 #' @export
 
 cov_landuse <- function(shape, year, landuses, async = FALSE) {
+
+  if (!curl::has_internet()){
+    return(async |> asyncLog(type = "error", "This function requires an internet connection"))
+  }
 
   if (!inherits(shape, "sf")){
     return(async |> asyncLog(type = "error", "shape must be an sf object"))

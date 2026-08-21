@@ -30,11 +30,12 @@ This function is called by the pred_transfer module and can transfer predictions
 generated from a model to a new area of interest.
 }
 \examples{
+\dontrun{
 common <- readRDS(system.file("extdata", "fit-minimal.rds", package = "disagapp"))
 common$fit$data$covariate_rasters <- unwrap_terra(common$fit$data$covariate_rasters)
 # transfer to Malawi
 transfer <- pred_transfer("MWI", common$fit, common$meta)
-
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

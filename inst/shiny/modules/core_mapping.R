@@ -12,9 +12,6 @@ core_mapping_module_ui <- function(id) {
     uiOutput(ns("covariates_out"))
     )
   )
-
-
-
 }
 
 core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES) {
@@ -59,6 +56,22 @@ core_mapping_module_server <- function(id, common, main_input, COMPONENT_MODULES
     module <- reactive({
       if (component() == "intro") "intro"
       else main_input[[glue("{component()}Sel")]]
+    })
+
+
+    # Add the draw toolbar when using the resp_edit module
+    observe({
+      req(module())
+      if (module() == "resp_edit"){
+        map |>
+          leaflet.extras::addDrawToolbar(polylineOptions = FALSE, circleOptions = FALSE, rectangleOptions = TRUE,
+                         markerOptions = FALSE, circleMarkerOptions = FALSE, singleFeature = TRUE,
+                         editOptions = leaflet.extras::editToolbarOptions(edit = TRUE, remove = TRUE))
+      }
+      if (module() != "resp_edit"){
+        map |>
+          leaflet.extras::removeDrawToolbar(clearFeatures = TRUE)
+      }
     })
 
     #buttons to switch between covariate states

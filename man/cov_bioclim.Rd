@@ -35,6 +35,7 @@ data on from Bioclim via geodata. It returns a list of SpatRasters for the
 selected variables
 }
 \examples{
+\dontrun{
 x_min <- 9.47
 x_max <- 9.63
 y_min <- 47.05
@@ -48,7 +49,7 @@ raster <- cov_bioclim(shape = shape,
                       country_code = "LIE",
                       variables = c("Mean temperature", "Mean diurnal range"))
 
-
+}
 }
 \author{
 Simon Smart \href{mailto:simon.smart@cantab.net}{simon.smart@cantab.net}

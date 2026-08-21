@@ -1,4 +1,4 @@
-# disagapp v1.0.4
+# disagapp v1.0.5
 
 <img src="https://raw.githubusercontent.com/simon-smart88/disagapp/master/inst/shiny/www/logo.png" width="259" height="300" align="right" style="border:10px solid white;">
 
@@ -11,14 +11,11 @@ Disagapp was built using the [{shinyscholar}](https://github.com/simon-smart88/s
 Install *disagapp* via Github and run the application with the following R code.
 
 ```R
-install.packages("devtools")
-devtools::install_github("simon-smart88/disagapp")
+install.packages("remotes")
+remotes::install_github("simon-smart88/disagapp")
 library(disagapp)
 run_disagapp()
 ```
-
-## Introductory workshop
-We are organising a workshop to introduce Disagapp that will be held on Teams from 14:00-16:00 UTC on 16 September 2025. To sign up, please fill in the form at https://forms.office.com/e/pjfbD6RvTi
 
 ## Components and modules
 The application is divided into components that are steps in the analysis and modules that are possible options in each step of the analysis. Each of the modules calls a function of the same name, either in this package or in `{disaggregation}`.
